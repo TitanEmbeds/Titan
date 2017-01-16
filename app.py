@@ -4,7 +4,7 @@ import requests
 import json
 
 app = Flask(__name__)
-app.secret_key = "doafkjgasfjk"
+app.secret_key = config['client-secret']
 
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
 
@@ -30,7 +30,7 @@ def post_create_message():
     headers = {'Authorization': 'Bot ' + config['bot-token'], 'Content-Type': 'application/json'}
     r = requests.post(_endpoint, headers=headers, data=json.dumps(payload))
     return jsonify(j=json.loads(r.content))
-    
+
 @app.route("/set_username", methods=["GET"])
 def get_set_username():
     return render_template("set_username.html")
