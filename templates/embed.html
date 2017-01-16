@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        function escapeHTML(unsafe) {
+            return unsafe
+                 .replace(/&/g, "&amp;")
+                 .replace(/</g, "&lt;")
+                 .replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;")
+                 .replace(/'/g, "&#039;");
+         }
+      var lastSnowflake = undefined
+      function updateMessages(channelid, aftersnowflake=null) {
+        setTimeout(function() {
+            $.ajax({
+                url: "/api/Get_Channel_Messages",
+                data: {
+                    channel_id: channelid,
+                    after: aftersnowflake
+                },
+                dataType: "json",
+                success: function(data, status){
+                    data = data['j']
+                    for (i = data.length-1; i >= 0; i--) {
+                        item = data[i]
+                        $("#messagesview").append("<p>"+item['id'] + " " + item['timestamp'] + " " + item['author']['username'] + " " + escapeHTML(item['content']) + "</p>")
+                        lastSnowflake = item['id']
+                         
+                        if($("#messagesview").scrollTop() + $("#messagesview").innerHeight() >= $("#messagesview")[0].scrollHeight - 160) {
+                            $('#messagesview').scrollTop($('#messagesview').prop("scrollHeight"));
+                        }
+                    } 
+                },
+                complete: function() {
+                    updateMessages("140252024666062848", lastSnowflake)
+                }
+            });
+        }, 5000);
+      }
+      updateMessages("140252024666062848")
+    </script>
+  </head>
+  <body>
+    <div style="height: 95vh; overflow-y: auto;" id="messagesview"></div>
+
+    <div style="height: 5vh;">
+      <input type="text" id="messagebox" style="height:100%; width:100%; font-size:15px;">
+    </div>
+    
+    <script>
+        var channelid = "140252024666062848"
+        $('#messagebox').bind("enterKey",function(e){
+           var content = $('#messagebox').val();
+           $('#messagebox').val('')
+           $.ajax({
+                url: "/api/Create_Message",
+                method: "post",
+                data: {
+                    channel_id: channelid,
+                    content: content
+                },
+                dataType: "json"
+           })
+        });
+        $('#messagebox').keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                var content = $('#messagebox').val();
+                if (/\S/.test(content)) {
+                    $(this).trigger("enterKey");
+                }
+            }
+        });
+    </script>
+  </body>
+</html>

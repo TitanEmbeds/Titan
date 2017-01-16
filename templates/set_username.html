@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <form method="post">
+            <h1>Set username:<h1>
+            <input type="text" name="username" id="username" required>
+        </form>
+        <script>
+            $("input").keypress(function(event) {
+                var content = $('#username').val();
+                if (event.which == 13 && /\S/.test(content)) {
+                    event.preventDefault();
+                    $("form").submit();
+                }
+            });
+        </script>
+    <body>
+</html>
