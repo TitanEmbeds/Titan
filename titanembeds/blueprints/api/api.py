@@ -27,7 +27,6 @@ def checkUserBanned(guild_id, ip_address=None):
     banned = True
     if user_unauthenticated():
         dbUser = UnauthenticatedBans.query.filter(and_(UnauthenticatedBans.guild_id == guild_id, UnauthenticatedBans.ip_address == ip_address)).all()
-        print dbUser
         if not dbUser:
             banned = False
         else:
@@ -93,7 +92,6 @@ def fetch():
     else:
         key = None
     status = update_user_status(channel_id, session['username'], key)
-    print status['revoked']
     if status['banned'] or status['revoked']:
         messages = {}
     else:

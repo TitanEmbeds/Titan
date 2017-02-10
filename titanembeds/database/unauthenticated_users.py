@@ -1,5 +1,6 @@
 from titanembeds.database import db
 import datetime
+import time
 import random
 import string
 
@@ -20,7 +21,7 @@ class UnauthenticatedUsers(db.Model):
         self.discriminator = discriminator
         self.user_key = "".join(random.choice(string.ascii_letters) for _ in range(0, 32))
         self.ip_address = ip_address
-        self.last_timestamp = datetime.datetime.now
+        self.last_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
         self.revoked = False
 
     def __repr__(self):
@@ -40,6 +41,6 @@ class UnauthenticatedUsers(db.Model):
         return self.revoked
 
     def bumpTimestamp(self):
-        self.last_timestamp = datetime.datetime.now
+        self.last_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
         db.session.commit()
         return self.last_timestamp
