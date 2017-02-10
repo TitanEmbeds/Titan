@@ -1,0 +1,37 @@
+session:
+- unauthenticated T/F
+- user_id - random generated 4 digit discrim upon nick creation, otherwise the discord client id if authed
+- username
+- user_keys {guildid: key, ...} - unused if authed
+
+database:
+
+unauthenticated Users:
+- id
+- guildid
+- username
+- discrim
+- user key
+- ip address
+- last used timestamp
+- revoked - cannot be used again if true
+
+unauth bans:
+- id
+- guildid
+- ip address
+- last known username
+- last known discrim
+- timestamp
+- reason
+
+auth users:
+- id
+- guildid
+- clientid
+- timestamp
+
+guilds:
+- id
+- guildid
+- enable unauthenticated users
