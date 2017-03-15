@@ -1,6 +1,6 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans
 from titanembeds.decorators import valid_session_required
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, abort, jsonify, session, request
 from sqlalchemy import and_
 from werkzeug.contrib.cache import SimpleCache
 import random
@@ -156,6 +156,8 @@ def create_unauthenticated_user():
     username = request.form['username']
     guild_id = request.form['guild_id']
     ip_address = get_client_ipaddr()
+    if not check_guild_existance(guild_id):
+        abort(404)
     if not checkUserBanned(guild_id, ip_address):
         session['username'] = username
         if 'user_id' not in session:
