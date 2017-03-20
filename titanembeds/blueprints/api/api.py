@@ -1,5 +1,6 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans
 from titanembeds.decorators import valid_session_required
+from titanembeds.discordrest import DiscordREST
 from flask import Blueprint, abort, jsonify, session, request
 from sqlalchemy import and_
 from werkzeug.contrib.cache import SimpleCache
@@ -10,9 +11,8 @@ import time
 from config import config
 
 api = Blueprint("api", __name__)
+discord_api = DiscordREST(config['bot-token'])
 cache = SimpleCache()
-
-_DISCORD_API_BASE = "https://discordapp.com/api/v6"
 
 def user_unauthenticated():
     if 'unauthenticated' in session:
@@ -48,32 +48,13 @@ def get_client_ipaddr():
     else: # general
         return request.remote_addr
 
-def get_all_guilds():
-    _endpoint = _DISCORD_API_BASE + "/users/@me/guilds"
-    payload = {}
-    guilds = []
-    headers = {'Authorization': 'Bot ' + config['bot-token']}
-    count = 1 #priming the loop
-    last_guild = ""
-    while count > 0:
-        r = requests.get(_endpoint, params=payload, headers=headers)
-        js = r.json()
-        if r.status_code == 200:
-            count = len(js)
-            guilds.extend(js)
-            if count > 0:
-                payload['after'] = js[-1]['id']
-        else:
-            time.sleep(js['retry_after'] / float(1000))
-        return guilds
-
 def check_guild_existance(guild_id):
-    dbGuild = Guild.query.filter_by(guild_id=guild_id).first()
+    dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
     if not dbGuild:
         return False
     guilds = cache.get('bot_guilds')
     if guilds is None:
-        guilds = get_all_guilds()
+        guilds = discord_api.get_all_guilds()
         cache.set('bot_guilds', guilds)
     for guild in guilds:
         if guild_id == guild['id']:
@@ -103,22 +84,6 @@ def update_user_status(guild_id, username, user_key=None):
         pass #authenticated user todo
     return status
 
-def get_channel_messages(channel_id, after_snowflake=None):
-    _endpoint = _DISCORD_API_BASE + "/channels/{channel_id}/messages".format(channel_id=channel_id)
-    payload = {}
-    if after_snowflake is not None:
-        payload = {'after': after_snowflake}
-    headers = {'Authorization': 'Bot ' + config['bot-token']}
-    r = requests.get(_endpoint, params=payload, headers=headers)
-    return json.loads(r.content)
-
-def post_create_message(channel_id, content):
-    _endpoint = _DISCORD_API_BASE + "/channels/{channel_id}/messages".format(channel_id=channel_id)
-    payload = {'content': session['username'] + ": " + content}
-    headers = {'Authorization': 'Bot ' + config['bot-token'], 'Content-Type': 'application/json'}
-    r = requests.post(_endpoint, headers=headers, data=json.dumps(payload))
-    return json.loads(r.content)
-
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
 def fetch():
@@ -132,7 +97,7 @@ def fetch():
     if status['banned'] or status['revoked']:
         messages = {}
     else:
-        messages = get_channel_messages(channel_id, after_snowflake)
+        messages = discord_api.get_channel_messages(channel_id, after_snowflake)
     return jsonify(messages=messages, status=status)
 
 @api.route("/post", methods=["POST"])
@@ -147,7 +112,7 @@ def post():
     status = update_user_status(channel_id, session['username'], key)
     if status['banned'] or status['revoked']:
         return jsonify(status=status)
-    message = post_create_message(channel_id, content)
+    message = discord_api.create_message(channel_id, content)
     return jsonify(message=message, status=status)
 
 @api.route("/create_unauthenticated_user", methods=["POST"])
@@ -157,7 +122,7 @@ def create_unauthenticated_user():
     guild_id = request.form['guild_id']
     ip_address = get_client_ipaddr()
     if not check_guild_existance(guild_id):
-        abort(404)
+        abort(400)
     if not checkUserBanned(guild_id, ip_address):
         session['username'] = username
         if 'user_id' not in session:
