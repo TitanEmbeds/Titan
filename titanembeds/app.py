@@ -2,6 +2,7 @@ from config import config
 from database import db
 from flask import Flask, render_template, request, session, url_for, redirect
 import blueprints.api
+import blueprints.user
 import os
 
 
@@ -14,6 +15,7 @@ app.secret_key = config['app-secret']
 db.init_app(app)
 
 app.register_blueprint(blueprints.api.api, url_prefix="/api", template_folder="/templates")
+app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
 
 @app.route("/set_username/<guildid>/<channelid>", methods=["GET"])
 def get_set_username(guildid, channelid):
