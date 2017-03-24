@@ -2,8 +2,11 @@ import requests
 import sys
 import time
 import json
+from cachetools import cached, TTLCache
 
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
+get_widget_cache = TTLCache(200, 300)
+guild_list_cache = TTLCache(1, 300) # Pop the list if new guilds are added
 
 def json_or_text(response):
     text = response.text
@@ -81,6 +84,63 @@ class DiscordREST:
             'content': json_or_text(req),
         }
 
+    #####################
+    # Channel
+    #####################
+
+    def get_channel_messages(self, channel_id, after_snowflake=None):
+        _endpoint = "/channels/{channel_id}/messages".format(channel_id=channel_id)
+        params = {}
+        if after_snowflake is not None:
+            params = {'after': after_snowflake}
+        r = self.request("GET", _endpoint, params=params)
+        return r
+
+    def create_message(self, channel_id, content):
+        _endpoint = "/channels/{channel_id}/messages".format(channel_id=channel_id)
+        payload = {'content': content}
+        r = self.request("POST", _endpoint, data=payload)
+        return r
+
+    #####################
+    # Guild
+    #####################
+
+    def get_guild_channels(self, guild_id):
+        _endpoint = "/guilds/{guild_id}/channels".format(guild_id=guild_id)
+        r = self.request("GET", _endpoint)
+        return r
+
+    def get_guild_roles(self, guild_id):
+        _endpoint = "/guilds/{guild_id}/roles".format(guild_id=guild_id)
+        r = self.request("GET", _endpoint)
+        return r
+
+    def get_guild_member(self, guild_id, user_id):
+        _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
+        r = self.request("GET", _endpoint)
+        return r
+
+    def modify_guild_member(self, guild_id, user_id, **kwargs):
+        _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
+        r = self.request("PATCH", _endpoint, data=kwargs, json=True)
+        return r
+
+    def get_guild_embed(self, guild_id):
+        _endpoint = "/guilds/{guild_id}/embed".format(guild_id=guild_id)
+        r = self.request("GET", _endpoint)
+        return r
+
+    def modify_guild_embed(self, guild_id, **kwargs):
+        _endpoint = "/guilds/{guild_id}/embed".format(guild_id=guild_id)
+        r = self.request("PATCH", _endpoint, data=kwargs, json=True)
+        return r
+
+    #####################
+    # User
+    #####################
+
+    @cached(guild_list_cache)
     def get_all_guilds(self):
         _endpoint = "/users/@me/guilds"
         params = {}
@@ -99,16 +159,15 @@ class DiscordREST:
                 count = 0
         return guilds
 
-    def get_channel_messages(self, channel_id, after_snowflake=None):
-        _endpoint = "/channels/{channel_id}/messages".format(channel_id=channel_id)
-        params = {}
-        if after_snowflake is not None:
-            params = {'after': after_snowflake}
-        r = self.request("GET", _endpoint, params=params)
-        return r
+    #####################
+    # Widget Handler
+    #####################
 
-    def create_message(self, channel_id, content):
-        _endpoint = "/channels/{channel_id}/messages".format(channel_id=channel_id)
-        payload = {'content': content}
-        r = self.request("POST", _endpoint, data=payload)
-        return r
+    @cached(get_widget_cache)
+    def get_widget(self, guild_id):
+        _endpoint = _DISCORD_API_BASE + "/servers/{guild_id}/widget.json".format(guild_id=guild_id)
+        embed = self.get_guild_embed(guild_id)
+        if not embed['content']['enabled']:
+            self.modify_guild_embed(guild_id, enabled=True, channel_id=guild_id)
+        widget = requests.get(_endpoint).json()
+        return widget
