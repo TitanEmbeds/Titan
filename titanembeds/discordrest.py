@@ -5,8 +5,7 @@ import json
 from cachetools import cached, TTLCache
 
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
-get_widget_cache = TTLCache(200, 300)
-guild_list_cache = TTLCache(1, 300) # Pop the list if new guilds are added
+cache = TTLCache(200, 300)
 
 def json_or_text(response):
     text = response.text
@@ -140,7 +139,7 @@ class DiscordREST:
     # User
     #####################
 
-    @cached(guild_list_cache)
+    @cached(cache)
     def get_all_guilds(self):
         _endpoint = "/users/@me/guilds"
         params = {}
@@ -163,7 +162,7 @@ class DiscordREST:
     # Widget Handler
     #####################
 
-    @cached(get_widget_cache)
+    @cached(cache)
     def get_widget(self, guild_id):
         _endpoint = _DISCORD_API_BASE + "/servers/{guild_id}/widget.json".format(guild_id=guild_id)
         embed = self.get_guild_embed(guild_id)
