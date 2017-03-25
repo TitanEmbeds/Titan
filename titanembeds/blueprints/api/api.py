@@ -1,9 +1,8 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers
 from titanembeds.decorators import valid_session_required, discord_users_only
-from titanembeds.discordrest import DiscordREST
+from titanembeds.utils import discord_api, cache
 from flask import Blueprint, abort, jsonify, session, request
 from sqlalchemy import and_
-from werkzeug.contrib.cache import SimpleCache
 import random
 import requests
 import json
@@ -11,8 +10,6 @@ import time
 from config import config
 
 api = Blueprint("api", __name__)
-discord_api = DiscordREST(config['bot-token'])
-cache = SimpleCache()
 
 def user_unauthenticated():
     if 'unauthenticated' in session:

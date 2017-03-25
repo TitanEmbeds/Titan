@@ -2,6 +2,7 @@ from flask import Blueprint, request, redirect, jsonify, abort, session, url_for
 from requests_oauthlib import OAuth2Session
 from config import config
 from titanembeds.decorators import discord_users_only
+from titanembeds.utils import discord_api
 
 user = Blueprint("user", __name__)
 redirect_url = config['app-base-url'] + "/user/callback"
@@ -16,7 +17,7 @@ def make_authenticated_session(token=None, state=None, scope=None):
         token=token,
         state=state,
         scope=scope,
-        redirect_uri=request.url_root + "user/callback",
+        redirect_uri=url_for("user.callback", _external=True),
     )
 
 def discordrest_from_user(endpoint):
@@ -53,6 +54,10 @@ def generate_avatar_url(id, av):
 
 def generate_guild_icon_url(id, hash):
     return guild_icon_url + str(id) + "/" + str(hash) + ".jpg"
+
+def generate_bot_invite_url(guild_id):
+    url = "https://discordapp.com/oauth2/authorize?&client_id={}&scope=bot&permissions={}&guild_id={}&response_type=code&redirect_uri={}".format(config['client-id'], '536083583', guild_id, url_for("user.dashboard", _external=True))
+    return url
 
 @user.route("/login_authenticated", methods=["GET"])
 def login_authenticated():
@@ -101,7 +106,10 @@ def dashboard():
 @user.route("/administrate_guild/<guild_id>")
 @discord_users_only()
 def administrate_guild(guild_id):
-    return str(guild_id)
+    guild = discord_api.get_guild(guild_id)
+    if guild['code'] == 403:
+        return redirect(generate_bot_invite_url(guild_id))
+    return str(guild)
 
 @user.route('/me')
 @discord_users_only()
