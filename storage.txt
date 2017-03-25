@@ -2,7 +2,8 @@ session:
 - unauthenticated T/F
 - user_id - random generated 4 digit discrim upon nick creation, otherwise the discord client id if authed
 - username
-- user_keys {guildid: key, ...} - unused if authed
+- avatar
+- user_keys {guildid: key, ...} - replaced with discord token dict if authed
 
 database:
 

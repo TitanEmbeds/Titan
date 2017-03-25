@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" integrity="sha256-6DQKO56c9MZL0LAc7QNtxqJyqSa3rS9Gq5FVcIhtA+w=" crossorigin="anonymous" media="screen,projection"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>{% block title %}{% endblock %} - Titan Embeds for Discord</title>
+  </head>
+  <body>
+    <main>
+      {% if session['unauthenticated'] is defined and not session['unauthenticated'] %}
+      <ul id="menu_dropdown" class="dropdown-content">
+        <li><a href="{{ url_for('user.dashboard') }}">Dashboard</a></li>
+        <li class="divider"></li>
+        <li><a href="{{ url_for('user.logout') }}">Logout</a></li>
+      </ul>
+      {% endif %}
+
+      <nav>
+        <div class="nav-wrapper container">
+          <a href="/" class="brand-logo"><b>Titan</b>Embeds</a>
+          <ul id="nav-mobile" class="right">
+            <li><a href="#" class="waves-effect btn z-depth-3">Visit Us!</a></li> <!-- TODO: Add discord guild invite -->
+            {% if session['unauthenticated'] is defined and not session['unauthenticated'] %}
+            <li><a id="menu_drop" data-activates="menu_dropdown" class="waves-effect btn z-depth-3 btn-floating dropdown-button avatar_menu" style='background-image: url("  {{ session['avatar'] }}  ")'></a></li>
+            {% else %}
+            <li><a href="{{ url_for('user.login_authenticated') }}" class="waves-effect btn z-depth-3">Login</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+    <footer class="page-footer">
+      <div class="footer-copyright">
+        <div class="container">
+        A project by EndenDragon
+        <a class="grey-text text-lighten-4 right" href="https://github.com/EndenDragon/Titan">GitHub Repo</a>
+        </div>
+      </div>
+    </footer>
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js" integrity="sha256-ToPQhpo/E89yaCd7+V8LUCjobNRkjilRXfho6x3twLU=" crossorigin="anonymous"></script>
+  </body>
+</html>

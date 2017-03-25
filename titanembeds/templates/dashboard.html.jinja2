@@ -1,0 +1,32 @@
+{% extends 'site_layout.html.jinja2' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>User Dashboard</h1>
+<p class="flow-text">Select a server to configure Titan Embeds.</p>
+<p>*List missing some servers? It's because you must have either <strong>Manage Server</strong>, <strong>Kick Members</strong>, or <strong>Ban Members</strong> permissions to modify embed settings.</p>
+<div class="row">
+  {% for server in servers %}
+  <div class="col s6">
+    <div class="card-panel grey lighten-5 z-depth-1">
+      <div class="row valign-wrapper">
+        <div class="col s2">
+          {% if server.icon %}
+          <img src="{{ icon_generate(server.id, server.icon) }}" alt="" class="circle responsive-img">
+          {% else %}
+          <span class="black-text">No icon :(</span>
+          {% endif %}
+        </div>
+        <div class="col s10">
+          <span class="black-text">
+            <p class="flow-text">{{ server.name }}</p>
+            <br>
+            <a class="waves-effect waves-light btn" href="{{url_for('user.administrate_guild', guild_id=server['id'])}}">Modify</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

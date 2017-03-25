@@ -1,0 +1,52 @@
+html {
+  background-color: #7986cb;
+  color: white;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+nav {
+  background-color: #3f51b5;
+  background: linear-gradient(rgba(63, 81, 181, 1), rgba(255,0,0,0));
+  box-shadow: none;
+}
+
+.page-footer {
+  background-color: transparent;
+}
+
+@media only screen and (max-width: 992px) {
+  nav .brand-logo {
+    left: 10%;
+  }
+}
+
+.btn {
+  background-color: #303f9f;
+}
+
+.btn:hover {
+  background-color: #3f51b5;
+}
+
+.btn:focus {
+  background-color: #536dfe;
+}
+
+.avatar_menu {
+  background-size: contain;
+}
+
+.center_content {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

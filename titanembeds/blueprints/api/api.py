@@ -1,5 +1,5 @@
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans
-from titanembeds.decorators import valid_session_required
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers
+from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.discordrest import DiscordREST
 from flask import Blueprint, abort, jsonify, session, request
 from sqlalchemy import and_
@@ -141,8 +141,21 @@ def create_unauthenticated_user():
         status = {'banned': True}
         return jsonify(status=status)
 
+@api.route("/new_guild", methods=["POST"])
+@discord_users_only(api=True)
+def post_new_guild():
+    pass
+
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)
 def query_guild():
     guild_id = request.args.get('guild_id')
     return jsonify(exists=check_guild_existance(guild_id))
+
+@api.route("/check_discord_authentication", methods=["GET"])
+@discord_users_only(api=True)
+def check_discord_authentication():
+    if not session['unauthenticated']:
+        return jsonify(error=False)
+    else:
+        return jsonify(error=True)

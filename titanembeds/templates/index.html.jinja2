@@ -1,0 +1,17 @@
+{% extends 'site_layout.html.jinja2' %}
+{% block title %}Index{% endblock %}
+
+{% block content %}
+<h1 class="center-align">Embed Discord like a<br><strong>true Titan</strong></h1>
+<p class="flow-text center-align">Add <strong>Titan</strong> to your discord server to create your own personalized chat embed!</p>
+<a class="waves-effect waves-light btn btn-large center_content" href="{{ url_for('user.dashboard') }}">Start here!</a>
+<br /><br />
+<div style="display: flex;align-items: center;">
+  <video preload="true"  loop="" style="width:100%; border-radius: 10px;">
+    <source src="http://mee6.xyz/static/mee6.mp4" type="video/mp4">
+    <source src="http://mee6.xyz/static/mee6.webm" type="video/webm; codecs=vp8, vorbis">
+    <source type="video/ogg; codecs=theora, vorbis" src="http://mee6.xyz/static/mee6.ogg">
+    Your browser does not support the video tag.
+  </video> <!-- TODO: Fix video and add autoplay -->
+</div>
+{% endblock %}

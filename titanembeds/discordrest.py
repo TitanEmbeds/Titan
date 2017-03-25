@@ -105,6 +105,11 @@ class DiscordREST:
     # Guild
     #####################
 
+    def get_guild(self, guild_id):
+        _endpoint = "/guilds/{guild_id}".format(guild_id=guild_id)
+        r = self.request("GET", _endpoint)
+        return r
+
     def get_guild_channels(self, guild_id):
         _endpoint = "/guilds/{guild_id}/channels".format(guild_id=guild_id)
         r = self.request("GET", _endpoint)
