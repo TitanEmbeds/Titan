@@ -20,9 +20,9 @@
         <div class="card-stacked">
           <div class="card-content">
             <p class="flow-text">Direct Link</p>
-            <input disabled value="{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}" id="disabled" type="text"> <!-- Switch to url_for later -->
+            <input readonly value="{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}" id="disabled" type="text" onClick="this.setSelectionRange(0, this.value.length)">
             <p class="flow-text">iFrame Embed</p>
-            <input disabled value=" &lt;iframe src=&quot;{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}&quot;  height=&quot;200&quot; width=&quot;300&quot; /&gt;  " id="disabled" type="text"> <!-- Switch to url_for later -->
+            <input readonly value=" &lt;iframe src=&quot;{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}&quot;  height=&quot;200&quot; width=&quot;300&quot; /&gt;  " id="disabled" type="text" onClick="this.setSelectionRange(0, this.value.length)">
           </div>
         </div>
       </div>
@@ -35,16 +35,14 @@
         <div class="card-stacked">
           <div class="card-content">
             <p class="flow-text">Unauthenticated (Guest) Users</p>
-            <form action="#">
-              <div class="switch">
-                <label>
-                  Disable
-                  <input type="checkbox" id="unauth_users" name="unauth_users" {% if dbguild['unauth_users'] %}checked{% endif %}  >
-                  <span class="lever"></span>
-                  Enable
-                </label>
-              </div>
-            </form>
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="unauth_users" name="unauth_users" {% if dbguild['unauth_users'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -76,8 +74,12 @@
               <tbody>
                 {% for member in members %}
                   <tr>
-                    <td><a class="waves-effect waves-light btn orange"  {% if "Kick Members" not in permissions %}disabled{% endif %}  >Kick</a></td>
-                    <td><a class="waves-effect waves-light btn red"   {% if "Ban Members" not in permissions %}disabled{% endif %}  >Ban</a></td>
+                    <td><a class="waves-effect waves-light btn orange"  {% if "Kick Members" not in permissions or member["kicked"] %}disabled{% endif %}   >Kick</a></td>
+                    {% if not member["banned"] %}
+                    <td><a class="waves-effect waves-light btn red"   {% if "Ban Members" not in permissions %}disabled{% endif %}  {% if "Ban Members" in permissions %}  onclick='initiate_ban( "{{ guild['id'] }}" , {{ member['id'] }} )'  {% endif %}  >Ban</a></td>
+                    {% else %}
+                    <td><a class="waves-effect waves-light btn red lighten-2"   {% if "Ban Members" not in permissions %}disabled{% endif %}  {% if "Ban Members" in permissions %}  onclick='remove_ban( "{{ guild['id'] }}" , {{ member['id'] }} )'  {% endif %}  >Lift</a></td>
+                    {% endif %}
                     <td>{{ member['username'] }}</td>
                     <td>{{ member['discrim'] }}</td>
                     <td>{{ member['last_visit'] }}</td>
@@ -90,6 +92,7 @@
                 {% endfor %}
               </tbody>
             </table>
+            <p>Note that all bans are by IP. Seeing duplicates? It is because users are generated a unique session on each browser load.</p>
           </div>
         </div>
       </div>
@@ -97,4 +100,7 @@
     {% endif %}
 
   </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/administrate_guild.js') }}"></script>
 {% endblock %}

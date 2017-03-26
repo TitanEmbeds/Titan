@@ -129,11 +129,6 @@ def create_unauthenticated_user():
         status = {'banned': True}
         return jsonify(status=status)
 
-@api.route("/new_guild", methods=["POST"])
-@discord_users_only(api=True)
-def post_new_guild():
-    pass
-
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)
 def query_guild():

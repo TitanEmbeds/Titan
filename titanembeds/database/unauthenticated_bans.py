@@ -1,5 +1,6 @@
 from titanembeds.database import db
 import datetime
+import time
 
 class UnauthenticatedBans(db.Model):
     __tablename__ = "unauthenticated_bans"
@@ -18,9 +19,9 @@ class UnauthenticatedBans(db.Model):
         self.ip_address = ip_address
         self.last_username = last_username
         self.last_discriminator = last_discriminator
-        self.timestamp = datetime.datetime.now
+        self.timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
         self.reason = reason
-        self.lifter_id = null
+        self.lifter_id = None
         self.placer_id = placer_id
 
     def liftBan(self, lifter_id):

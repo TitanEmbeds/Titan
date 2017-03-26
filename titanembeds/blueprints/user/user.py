@@ -54,8 +54,6 @@ def get_user_guilds():
 def get_user_managed_servers():
     guilds = get_user_guilds()
     if guilds.status_code != 200:
-        print(guilds.text)
-        print(guilds.headers)
         abort(guilds.status_code)
     guilds = guilds.json()
     filtered = []
@@ -87,7 +85,7 @@ def check_user_permission(guild_id, id):
     guilds = get_user_managed_servers_safe()
     for guild in guilds:
         if guild['id'] == guild_id:
-            return user_has_permission(guild['permissions'], id)
+            return user_has_permission(guild['permissions'], id) or guild['owner']
     return False
 
 def generate_avatar_url(id, av):
@@ -174,12 +172,31 @@ def administrate_guild(guild_id):
         permissions.append("Ban Members")
     if check_user_permission(guild_id, 1):
         permissions.append("Kick Members")
-    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).all()
+    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.last_timestamp).all()
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
     users.reverse()
     dbguild_dict = {"unauth_users": db_guild.unauth_users}
     return render_template("administrate_guild.html.j2", guild=guild['content'], dbguild=dbguild_dict, members=users, permissions=permissions)
+
+@user.route("/administrate_guild/<guild_id>", methods=["POST"])
+@discord_users_only()
+def update_administrate_guild(guild_id):
+    if not check_user_can_administrate_guild(guild_id):
+        abort(403)
+    guild = discord_api.get_guild(guild_id)
+    if guild['code'] != 200:
+        abort(guild['code'])
+    db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    if db_guild is None:
+        abort(400)
+    db_guild.unauth_users = request.form.get("unauth_users", db_guild.unauth_users) in ["true", True]
+    db.session.commit()
+    return jsonify(
+        id=db_guild.id,
+        guild_id=db_guild.guild_id,
+        unauth_users=db_guild.unauth_users,
+    )
 
 @user.route('/me')
 @discord_users_only()
@@ -213,3 +230,67 @@ def prepare_guild_members_list(members, bans):
             continue
         all_users.append(user)
     return all_users
+
+@user.route("/ban", methods=["POST"])
+@discord_users_only(api=True)
+def ban_unauthenticated_user():
+    guild_id = request.form.get("guild_id", None)
+    user_id = request.form.get("user_id", None)
+    reason = request.form.get("reason", None)
+    if reason is not None:
+        reason = reason.strip()
+        if reason == "":
+            reason = None
+    if not guild_id or not user_id:
+        abort(400)
+    if not check_user_permission(guild_id, 2):
+        abort(401)
+    db_user = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id, UnauthenticatedUsers.id == user_id).order_by(UnauthenticatedUsers.id.desc()).first()
+    if db_user is None:
+        abort(404)
+    db_ban = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id, UnauthenticatedBans.ip_address == db_user.ip_address).first()
+    if db_ban is not None:
+        if db_ban.lifter_id is None:
+            abort(409)
+        db.session.delete(db_ban)
+    db_ban = UnauthenticatedBans(guild_id, db_user.ip_address, db_user.username, db_user.discriminator, reason, session["user_id"])
+    db.session.add(db_ban)
+    db.session.commit()
+    return ('', 204)
+
+@user.route("/ban", methods=["DELETE"])
+@discord_users_only(api=True)
+def unban_unauthenticated_user():
+    guild_id = request.args.get("guild_id", None)
+    user_id = request.args.get("user_id", None)
+    if not guild_id or not user_id:
+        abort(400)
+    if not check_user_permission(guild_id, 2):
+        abort(401)
+    db_user = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id, UnauthenticatedUsers.id == user_id).order_by(UnauthenticatedUsers.id.desc()).first()
+    if db_user is None:
+        abort(404)
+    db_ban = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id, UnauthenticatedBans.ip_address == db_user.ip_address).first()
+    if db_ban is None:
+        abort(404)
+    if db_ban.lifter_id is not None:
+        abort(409)
+    db_ban.liftBan(session["user_id"])
+    return ('', 204)
+
+@user.route("/revoke", methods=["POST"])
+@discord_users_only(api=True)
+def revoke_unauthenticated_user():
+    guild_id = request.args.get("guild_id", None)
+    user_id = request.args.get("user_id", None)
+    if not guild_id or not user_id:
+        abort(400)
+    if not check_user_permission(guild_id, 1):
+        abort(401)
+    db_user = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id, UnauthenticatedUsers.id == user_id).order_by(UnauthenticatedUsers.id.desc()).first()
+    if db_user is None:
+        abort(404)
+    if db_user.isRevoked():
+        abort(409)
+    db_user.revokeUser()
+    return ('', 204)
