@@ -6,6 +6,7 @@ from titanembeds.database import db, Guilds, UnauthenticatedUsers, Unauthenticat
 from titanembeds.oauth import authorize_url, token_url, make_authenticated_session, get_current_authenticated_user, get_user_managed_servers, check_user_can_administrate_guild, check_user_permission, generate_avatar_url, generate_guild_icon_url, generate_bot_invite_url
 
 user = Blueprint("user", __name__)
+
 @user.route("/login_authenticated", methods=["GET"])
 def login_authenticated():
     session["redirect"] = request.args.get("redirect")

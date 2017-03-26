@@ -1,6 +1,6 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers
 from titanembeds.decorators import valid_session_required, discord_users_only
-from titanembeds.utils import get_client_ipaddr, discord_api
+from titanembeds.utils import get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
 from flask import Blueprint, abort, jsonify, session, request
 from sqlalchemy import and_
 import random
@@ -78,11 +78,23 @@ def update_user_status(guild_id, username, user_key=None):
             dbUser.ip_address = ip_address
             db.session.commit()
     else:
-        pass #authenticated user todo
+        status = {
+            'username': username,
+            'guild_id': guild_id,
+            'user_id': session['user_id'],
+            'banned': checkUserBanned(guild_id),
+            'revoked': checkUserRevoke(guild_id)
+        }
+        if status['banned'] or status['revoked']:
+            return status
+        dbUser = db.session.query(AuthenticatedUsers).filter(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == status['user_id']).first()
+        dbUser.bumpTimestamp()
     return status
 
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
+@rate_limiter.limit("2500/hour")
+@rate_limiter.limit("12/minute", key_func = channel_ratelimit_key)
 def fetch():
     channel_id = request.args.get('channel_id')
     after_snowflake = request.args.get('after', None, type=int)
@@ -93,12 +105,18 @@ def fetch():
     status = update_user_status(channel_id, session['username'], key)
     if status['banned'] or status['revoked']:
         messages = {}
+        status_code = 401
     else:
         messages = discord_api.get_channel_messages(channel_id, after_snowflake)
-    return jsonify(messages=messages, status=status)
+        status_code = messages['code']
+    response = jsonify(messages=messages.get('content', messages), status=status)
+    resonse.status_code = status_code
+    return response
 
 @api.route("/post", methods=["POST"])
 @valid_session_required(api=True)
+@rate_limiter.limit("1200/hour")
+@rate_limiter.limit("6/minute", key_func = channel_ratelimit_key)
 def post():
     channel_id = request.form.get('channel_id')
     content = request.form.get('content')
@@ -108,11 +126,17 @@ def post():
         key = None
     status = update_user_status(channel_id, session['username'], key)
     if status['banned'] or status['revoked']:
-        return jsonify(status=status)
-    message = discord_api.create_message(channel_id, content)
-    return jsonify(message=message, status=status)
+        message = {}
+        status_code = 401
+    else:
+        message = discord_api.create_message(channel_id, content)
+        status_code = messages['code']
+    response = jsonify(message=message.get('content', message), status=status)
+    response.status_code = status_code
+    return response
 
 @api.route("/create_unauthenticated_user", methods=["POST"])
+@rate_limiter.limit("4/hour", key_func=guild_ratelimit_key)
 def create_unauthenticated_user():
     session['unauthenticated'] = True
     username = request.form['username']
