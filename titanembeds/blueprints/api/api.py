@@ -22,7 +22,12 @@ def checkUserRevoke(guild_id, user_key=None):
         dbUser = UnauthenticatedUsers.query.filter(and_(UnauthenticatedUsers.guild_id == guild_id, UnauthenticatedUsers.user_key == user_key)).first()
         revoked = dbUser.isRevoked()
     else:
-        pass # Todo: handle authenticated user revocation status
+        banned = checkUserBanned(guild_id)
+        if banned:
+            return revoked
+        member = discord_api.get_guild_member(guild_id, session['user_id'])
+        if member['code'] == 200:
+            revoked = True
     return revoked
 
 def checkUserBanned(guild_id, ip_address=None):
@@ -37,7 +42,7 @@ def checkUserBanned(guild_id, ip_address=None):
                     banned = False
     else:
         banned = False
-        bans = discord_api(guild_id)
+        bans = discord_api.get_guild_bans(guild_id)['content']
         for user in bans:
             if session['user_id'] == user['id']:
                 return True
@@ -47,7 +52,7 @@ def check_guild_existance(guild_id):
     dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
     if not dbGuild:
         return False
-    guilds = discord_api.get_all_guilds()
+    guilds = discord_api.get_all_guilds()['content']
     for guild in guilds:
         if guild_id == guild['id']:
             return True
