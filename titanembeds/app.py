@@ -1,6 +1,7 @@
 from config import config
 from database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
+from titanembeds.utils import cache
 import blueprints.api
 import blueprints.user
 import os
@@ -13,6 +14,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no 
 app.secret_key = config['app-secret']
 
 db.init_app(app)
+cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
 app.register_blueprint(blueprints.api.api, url_prefix="/api", template_folder="/templates")
 app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
@@ -28,7 +30,7 @@ def post_set_username(guildid, channelid):
 
 @app.route("/")
 def index():
-    return render_template("index.html.jinja2")
+    return render_template("index.html.j2")
 
 @app.route("/embed/<guildid>/<channelid>")
 def embed_get(guildid, channelid):

@@ -8,7 +8,7 @@ class Guilds(db.Model):
 
     def __init__(self, guild_id):
         self.guild_id = guild_id
-        self.unauth_users = true # defaults to true
+        self.unauth_users = True # defaults to true
 
     def __repr__(self):
         return '<Guilds {0} {1}>'.format(self.id, self.guild_id)

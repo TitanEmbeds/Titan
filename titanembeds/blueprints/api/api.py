@@ -1,6 +1,6 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers
 from titanembeds.decorators import valid_session_required, discord_users_only
-from titanembeds.utils import discord_api, cache
+from titanembeds.utils import get_client_ipaddr, discord_api
 from flask import Blueprint, abort, jsonify, session, request
 from sqlalchemy import and_
 import random
@@ -39,20 +39,11 @@ def checkUserBanned(guild_id, ip_address=None):
         pass #todo: handle authenticated user banned status
     return banned
 
-def get_client_ipaddr():
-    if hasattr(request.headers, "X-Real-IP"): # pythonanywhere specific
-        return request.headers['X-Real-IP']
-    else: # general
-        return request.remote_addr
-
 def check_guild_existance(guild_id):
     dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
     if not dbGuild:
         return False
-    guilds = cache.get('bot_guilds')
-    if guilds is None:
-        guilds = discord_api.get_all_guilds()
-        cache.set('bot_guilds', guilds)
+    guilds = discord_api.get_all_guilds()
     for guild in guilds:
         if guild_id == guild['id']:
             return True

@@ -1,4 +1,4 @@
-{% extends 'site_layout.html.jinja2' %}
+{% extends 'site_layout.html.j2' %}
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
@@ -7,19 +7,19 @@
 <p>*List missing some servers? It's because you must have either <strong>Manage Server</strong>, <strong>Kick Members</strong>, or <strong>Ban Members</strong> permissions to modify embed settings.</p>
 <div class="row">
   {% for server in servers %}
-  <div class="col s6">
-    <div class="card-panel grey lighten-5 z-depth-1">
+  <div class="col s4">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
       <div class="row valign-wrapper">
-        <div class="col s2">
+        <div class="col s5">
           {% if server.icon %}
           <img src="{{ icon_generate(server.id, server.icon) }}" alt="" class="circle responsive-img">
           {% else %}
           <span class="black-text">No icon :(</span>
           {% endif %}
         </div>
-        <div class="col s10">
+        <div class="col s7">
           <span class="black-text">
-            <p class="flow-text">{{ server.name }}</p>
+            <p class="flow-text truncate">{{ server.name }}</p>
             <br>
             <a class="waves-effect waves-light btn" href="{{url_for('user.administrate_guild', guild_id=server['id'])}}">Modify</a>
           </span>

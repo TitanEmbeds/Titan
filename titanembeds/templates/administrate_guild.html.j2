@@ -1,0 +1,99 @@
+{% extends 'site_layout.html.j2' %}
+{% block title %}Administrate Guild: {{ guild['name'] }}{% endblock %}
+
+{% block content %}
+<h1>Administrating: {{ guild['name'] }}</h1>
+<p class="flow-text">For this server, you are allowed the following actions:
+  {% for permission in permissions %}
+    {{ permission }}
+    {% if not loop.last %}
+      ,
+    {% endif %}
+  {% endfor %}
+  .</p>
+
+  <div class="row">
+
+    <div class="col s12">
+      <h2 class="header">Embed URLs</h2>
+      <div class="card horizontal black-text indigo lighten-5 z-depth-3 hoverable">
+        <div class="card-stacked">
+          <div class="card-content">
+            <p class="flow-text">Direct Link</p>
+            <input disabled value="http://localhost:3000/embed/{{ guild['id'] }}" id="disabled" type="text"> <!-- Switch to url_for later -->
+            <p class="flow-text">iFrame Embed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if "Manage Embed Settings" in permissions %}
+    <div class="col s12">
+      <h2 class="header">Embed Settings</h2>
+      <div class="card horizontal black-text indigo lighten-5 z-depth-3 hoverable">
+        <div class="card-stacked">
+          <div class="card-content">
+            <p class="flow-text">Unauthenticated (Guest) Users</p>
+            <form action="#">
+              <div class="switch">
+                <label>
+                  Disable
+                  <input type="checkbox" id="unauth_users" name="unauth_users">
+                  <span class="lever"></span>
+                  Enable
+                </label>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if "Ban Members" in permissions or "Kick Members" in permissions %}
+    <div class="col s12">
+      <h2 class="header">Moderate Unauthenticated Members</h2>
+      <div class="card horizontal black-text indigo lighten-5 z-depth-3 hoverable">
+        <div class="card-stacked">
+          <div class="card-content">
+            <p class="flow-text">Select Action</p>
+            <table class="striped responsive-table">
+              <thead>
+                <tr>
+                    <th>Kick User</th>
+                    <th>Ban User</th>
+                    <th>Username</th>
+                    <th>Discrim</th>
+                    <th>Last Visit</th>
+                    <th>IP Address</th>
+                    <th>Banned Timestamp</th>
+                    <th>Banned by</th>
+                    <th>Banned Reason</th>
+                    <th>Ban Lifted by</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for member in members %}
+                  <tr>
+                    <td><a class="waves-effect waves-light btn orange"  {% if "Kick Members" not in permissions %}disabled{% endif %}  >Kick</a></td>
+                    <td><a class="waves-effect waves-light btn red"   {% if "Ban Members" not in permissions %}disabled{% endif %}  >Ban</a></td>
+                    <td>{{ member['username'] }}</td>
+                    <td>{{ member['discrim'] }}</td>
+                    <td>{{ member['last_visit'] }}</td>
+                    <td>{{ member['ip'] }}</td>
+                    <td>{{ member['banned_timestamp'] }}</td>
+                    <td>{{ member['banned_by'] }}</td>
+                    <td>{{ member['banned_reason'] }}</td>
+                    <td>{{ member['ban_lifted_by'] }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+{% endblock %}
