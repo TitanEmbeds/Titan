@@ -140,6 +140,11 @@ class DiscordREST:
         r = self.request("PATCH", _endpoint, data=kwargs, json=True)
         return r
 
+    def get_guild_bans(self, guild_id):
+        _endpoint = "/guilds/{guild_id}/embed".format(guild_id=guild_id)
+        r = self.request("GET", _endpoint)
+        return r
+
     #####################
     # User
     #####################

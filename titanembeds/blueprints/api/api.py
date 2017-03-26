@@ -36,7 +36,11 @@ def checkUserBanned(guild_id, ip_address=None):
                 if usr.lifter_id is not None:
                     banned = False
     else:
-        pass #todo: handle authenticated user banned status
+        banned = False
+        bans = discord_api(guild_id)
+        for user in bans:
+            if session['user_id'] == user['id']:
+                return True
     return banned
 
 def check_guild_existance(guild_id):
