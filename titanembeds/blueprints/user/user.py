@@ -162,7 +162,7 @@ def administrate_guild(guild_id):
     guild = discord_api.get_guild(guild_id)
     if guild['code'] != 200:
         return redirect(generate_bot_invite_url(guild_id))
-    db_guild = Guilds.query.filter_by(guild_id=guild_id).first()
+    db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     if not db_guild:
         db_guild = Guilds(guild_id)
         db.session.add(db_guild)
@@ -177,7 +177,9 @@ def administrate_guild(guild_id):
     all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).all()
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
-    return render_template("administrate_guild.html.j2", guild=guild['content'], members=users, permissions=permissions)
+    users.reverse()
+    dbguild_dict = {"unauth_users": db_guild.unauth_users}
+    return render_template("administrate_guild.html.j2", guild=guild['content'], dbguild=dbguild_dict, members=users, permissions=permissions)
 
 @user.route('/me')
 @discord_users_only()

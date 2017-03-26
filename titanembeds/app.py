@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, session, url_for, redirect, j
 from titanembeds.utils import cache
 import blueprints.api
 import blueprints.user
+import blueprints.embed
 import os
 
 
@@ -18,6 +19,7 @@ cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
 app.register_blueprint(blueprints.api.api, url_prefix="/api", template_folder="/templates")
 app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
+app.register_blueprint(blueprints.embed.embed, url_prefix="/embed", template_folder="/templates")
 
 @app.route("/set_username/<guildid>/<channelid>", methods=["GET"])
 def get_set_username(guildid, channelid):
@@ -32,7 +34,7 @@ def post_set_username(guildid, channelid):
 def index():
     return render_template("index.html.j2")
 
-@app.route("/embed/<guildid>/<channelid>")
+@app.route("/oldembed/<guildid>/<channelid>")
 def embed_get(guildid, channelid):
     if 'username' not in session:
         return redirect(url_for("get_set_username", guildid=guildid, channelid=channelid))

@@ -20,8 +20,9 @@
         <div class="card-stacked">
           <div class="card-content">
             <p class="flow-text">Direct Link</p>
-            <input disabled value="http://localhost:3000/embed/{{ guild['id'] }}" id="disabled" type="text"> <!-- Switch to url_for later -->
+            <input disabled value="{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}" id="disabled" type="text"> <!-- Switch to url_for later -->
             <p class="flow-text">iFrame Embed</p>
+            <input disabled value=" &lt;iframe src=&quot;{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}&quot;  height=&quot;200&quot; width=&quot;300&quot; /&gt;  " id="disabled" type="text"> <!-- Switch to url_for later -->
           </div>
         </div>
       </div>
@@ -38,7 +39,7 @@
               <div class="switch">
                 <label>
                   Disable
-                  <input type="checkbox" id="unauth_users" name="unauth_users">
+                  <input type="checkbox" id="unauth_users" name="unauth_users" {% if dbguild['unauth_users'] %}checked{% endif %}  >
                   <span class="lever"></span>
                   Enable
                 </label>
