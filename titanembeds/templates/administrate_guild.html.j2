@@ -74,7 +74,7 @@
               <tbody>
                 {% for member in members %}
                   <tr>
-                    <td><a class="waves-effect waves-light btn orange"  {% if "Kick Members" not in permissions or member["kicked"] %}disabled{% endif %}   >Kick</a></td>
+                    <td><a class="waves-effect waves-light btn orange"  {% if "Kick Members" not in permissions or member["kicked"] %}disabled{% endif %} onclick='revoke_user( "{{ guild['id'] }}" , {{ member['id'] }} )'  >Kick</a></td>
                     {% if not member["banned"] %}
                     <td><a class="waves-effect waves-light btn red"   {% if "Ban Members" not in permissions %}disabled{% endif %}  {% if "Ban Members" in permissions %}  onclick='initiate_ban( "{{ guild['id'] }}" , {{ member['id'] }} )'  {% endif %}  >Ban</a></td>
                     {% else %}
