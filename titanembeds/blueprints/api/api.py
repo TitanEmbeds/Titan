@@ -226,9 +226,9 @@ def create_unauthenticated_user():
         return jsonify(status=status)
     else:
         status = {'banned': True}
-        request = jsonify(status=status)
-        request.status_code = 403
-        return request
+        response = jsonify(status=status)
+        response.status_code = 403
+        return response
 
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)
