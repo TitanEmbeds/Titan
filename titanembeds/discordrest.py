@@ -120,6 +120,7 @@ class DiscordREST:
         r = self.request("GET", _endpoint)
         return r
 
+    @cached(cache)
     def get_guild_member(self, guild_id, user_id):
         _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
         r = self.request("GET", _endpoint)
@@ -141,7 +142,7 @@ class DiscordREST:
         return r
 
     def get_guild_bans(self, guild_id):
-        _endpoint = "/guilds/{guild_id}/embed".format(guild_id=guild_id)
+        _endpoint = "/guilds/{guild_id}/bans".format(guild_id=guild_id)
         r = self.request("GET", _endpoint)
         return r
 

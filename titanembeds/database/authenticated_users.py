@@ -1,5 +1,6 @@
 from titanembeds.database import db
 import datetime
+import time
 
 class AuthenticatedUsers(db.Model):
     __tablename__ = "authenticated_users"
@@ -11,9 +12,9 @@ class AuthenticatedUsers(db.Model):
     def __init__(self, guild_id, client_id):
         self.guild_id = guild_id
         self.client_id = client_id
-        self.last_timestamp = datetime.datetime.now
+        self.last_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
     def bumpTimestamp(self):
-        self.last_timestamp = datetime.datetime.now
+        self.last_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
         db.session.commit()
         return self.last_timestamp
