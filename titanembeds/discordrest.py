@@ -126,9 +126,21 @@ class DiscordREST:
         r = self.request("GET", _endpoint)
         return r
 
+    def get_guild_member_nocache(self, guild_id, user_id):
+        _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
+        r = self.request("GET", _endpoint)
+        return r
+
     def modify_guild_member(self, guild_id, user_id, **kwargs):
         _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
         r = self.request("PATCH", _endpoint, data=kwargs, json=True)
+        return r
+
+    def add_guild_member(self, guild_id, user_id, access_token, **kwargs):
+        _endpoint = "/guilds/{guild_id}/members/{user_id}".format(user_id=user_id, guild_id=guild_id)
+        payload = {'access_token': access_token}
+        payload.update(kwargs)
+        r = self.request("PUT", _endpoint, data=payload, json=True)
         return r
 
     def get_guild_embed(self, guild_id):

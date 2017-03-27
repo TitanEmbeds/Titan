@@ -45,7 +45,7 @@ def checkUserBanned(guild_id, ip_address=None):
         banned = False
         bans = discord_api.get_guild_bans(guild_id)['content']
         for user in bans:
-            if session['user_id'] == user['id']:
+            if session['user_id'] == user['user']['id']:
                 return True
     return banned
 
@@ -96,7 +96,7 @@ def check_user_in_guild(guild_id):
     if user_unauthenticated():
         return guild_id in session['user_keys']
     else:
-        return 200 == discord_api.get_guild_member(guild_id, session['user_id'])['code']
+        return 200 == discord_api.get_guild_member_nocache(guild_id, session['user_id'])['code']
 
 @cache.cached(timeout=300, key_prefix=make_guildchannels_cache_key)
 def get_guild_channels(guild_id):
@@ -151,6 +151,10 @@ def get_online_embed_users(guild_id):
         users['authenticated'].append(meta)
     return users
 
+def guild_query_unauth_users_bool(guild_id):
+    dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
+    return dbGuild.unauth_users
+
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
 @rate_limiter.limit("2500/hour")
@@ -204,6 +208,8 @@ def create_unauthenticated_user():
     ip_address = get_client_ipaddr()
     if not check_guild_existance(guild_id):
         abort(404)
+    if not guild_query_unauth_users_bool(guild_id):
+        abort(401)
     if not checkUserBanned(guild_id, ip_address):
         session['username'] = username
         if 'user_id' not in session:
@@ -220,7 +226,9 @@ def create_unauthenticated_user():
         return jsonify(status=status)
     else:
         status = {'banned': True}
-        return jsonify(status=status)
+        request = jsonify(status=status)
+        request.status_code = 403
+        return request
 
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)
@@ -232,8 +240,8 @@ def query_guild():
             discordmembers = get_online_discord_users(guild_id)
             embedmembers = get_online_embed_users(guild_id)
             return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers)
-        return 403
-    return 404
+        abort(403)
+    abort(404)
 
 @api.route("/create_authenticated_user", methods=["POST"])
 @discord_users_only(api=True)
@@ -252,6 +260,8 @@ def create_authenticated_user():
                 db_user = AuthenticatedUsers(guild_id, session['user_id'])
                 db.session.add(db_user)
                 db.session.commit()
+            if not check_user_in_guild(guild_id):
+                discord_api.add_guild_member(guild_id, session['user_id'], session['user_keys']['access_token'])
             status = update_user_status(guild_id, session['username'])
             return jsonify(error=False)
         else:
