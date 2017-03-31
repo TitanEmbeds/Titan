@@ -1,11 +1,12 @@
 #!/usr/bin/env python2
 from titanembeds.app import app
 
-if __name__ == "__main__":
+def init_debug():
     import os
     from flask import jsonify, request
+    
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' # Testing oauthlib
-
+    
     # Session viewer https://gist.github.com/babldev/502364a3f7c9bafaa6db
     def decode_flask_cookie(secret_key, cookie_str):
         import hashlib
@@ -19,7 +20,7 @@ if __name__ == "__main__":
         }
         s = URLSafeTimedSerializer(secret_key, salt=salt, serializer=serializer, signer_kwargs=signer_kwargs)
         return s.loads(cookie_str)
-
+    
     @app.route("/session")
     def session():
         cookie = request.cookies.get('session')
@@ -29,5 +30,6 @@ if __name__ == "__main__":
             decoded = None
         return jsonify(session_cookie=decoded)
 
-
+if __name__ == "__main__":
+    init_debug()
     app.run(host="0.0.0.0",port=3000,debug=True)
