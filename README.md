@@ -6,4 +6,5 @@ Discord webpage embedded client
 - cachetools
 - Flask-Cache
 - flask_limiter
-- requests_oauthlib 
+- requests_oauthlib
+- mysql-python
