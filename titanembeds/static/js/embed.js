@@ -109,6 +109,8 @@ function prepare_guild(guildobj) {
     fill_discord_members(guildobj.discordmembers);
     fill_authenticated_users(guildobj.embedmembers.authenticated);
     fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
+    console.log("running fetch routine");
+    run_fetch_routine();
 }
 
 function fill_channels(channels) {
@@ -174,6 +176,34 @@ function _wait_for_discord_login(index) {
             }
         });
     }, 5000);
+}
+
+function run_fetch_routine() {
+    var channel_id = guild_id; //TODO: implement channel selector
+    var fet = fetch(channel_id);
+    fet.done(function(data) {
+        console.log(data);
+        
+        var guild = query_guild();
+        guild.done(function(guildobj) {
+            fill_channels(guildobj.channels);
+            fill_discord_members(guildobj.discordmembers);
+            fill_authenticated_users(guildobj.embedmembers.authenticated);
+            fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
+            setTimeout(run_fetch_routine, 10000);
+        });
+    });
+    fet.fail(function(data) {
+            if (data.status == 403) {
+                $('#loginmodal').modal('open');
+                Materialize.toast('Authentication error! You have been banned.', 10000);
+            }
+            if (data.status == 401) {
+                $('#loginmodal').modal('open');
+                Materialize.toast('Session expired! You have been logged out.', 10000);
+            }
+            setTimeout(run_fetch_routine, 10000);
+    });
 }
 
 $("#discordlogin_btn").click(function() {

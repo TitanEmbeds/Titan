@@ -20,7 +20,6 @@ def get_logingreeting():
 
 @embed.route("/<string:guild_id>")
 def guild_embed(guild_id):
-    print guild_id
     if check_guild_existance(guild_id):
         guild = discord_api.get_guild(guild_id)['content']
         return render_template("embed.html.j2", 
