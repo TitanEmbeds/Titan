@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" integrity="sha256-6DQKO56c9MZL0LAc7QNtxqJyqSa3rS9Gq5FVcIhtA+w=" crossorigin="anonymous" media="screen,projection"/>
+
+    <style>
+      html {
+        background-color: #455a64;
+        color: white;
+      }
+
+      main {
+        min-height: calc(100vh - 80px);
+      }
+      
+      footer {
+        position: fixed; 
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+        background-color: #37474f;
+      }
+
+      nav {
+        background-color: #263238;
+        background: linear-gradient(rgba(38, 50, 56, 1), rgba(255,0,0,0));
+        box-shadow: none;
+      }
+
+      nav .brand-logo {
+        font-size: 1.5rem;
+      }
+
+      @media only screen and (min-width: 993px) {
+        .container {
+          width: 85%;
+        }
+      }
+      
+      .side-nav {
+        color: white;
+        background-color: #607d8b;
+      }
+      
+      .side-nav .userView .name {
+        font-size: 20px;
+      }
+      
+      .side-nav li>a {
+        color: #eceff1;
+      }
+      
+      .side-nav .subheader {
+        color: #cfd8dc;
+        font-variant: small-caps;
+      }
+      
+      .divider {
+        background-color: #90a4ae;
+      }
+      
+      .channel-hash {
+        font-size: 95%;
+        color: #b0bec5;
+      }
+      
+      .membercircle {
+        margin-top: 5px;
+        height: 40px;
+      }
+      
+      .membername {
+        position: absolute;
+        padding-left: 10px;
+      }
+      
+      .chatcontent {
+        padding-left: 1%;
+        padding-top: 1%;
+        padding-bottom: 40px;
+      }
+      
+      @media only screen and (min-width: 601px) {
+        nav a.button-collapse {
+          display: block;
+        }
+      }
+      
+      .chatusername {
+        font-weight: bold;
+        color: #eceff1;
+      }
+      
+      .chattimestamp {
+        font-size: 10px;
+        color: #90a4ae;
+      }
+      
+      .footercontainer {
+        width: 100%;
+        position: relative;
+        margin: 10px;
+      }
+      
+      .currentuserchip {
+        display: inline-block;
+        position: relative;
+        top: -6px;
+        padding: 6px;
+        padding-right: 9px;
+        background-color: #455a64;
+      }
+      
+      .currentuserimage {
+        width: 30px;
+      }
+      
+      .currentusername {
+        position: relative;
+        top: 7px;
+        left: 5px;
+      }
+      
+      .input-field {
+        position: relative;
+        top: -19px;
+      }
+      
+      .left {
+        float: left;
+      }
+      
+      .modal {
+        background-color: #546e7a;
+      }
+    </style>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Embed - Titan Embeds for Discord</title>
+  </head>
+  <body>
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper">
+          <a href="#" data-activates="guild-nav" class="button-collapse" id="guild-btn"><i class="material-icons">menu</i></a>
+          <div class="container">
+            <a href="#" class="brand-logo"><b>Titan</b>Embeds</a>
+          </div>
+          <a href="#" data-activates="members-nav" class="button-collapse right" id="members-btn"><i class="material-icons">person</i></a>
+        </div>
+      </nav>
+    </div>
+    <main>
+      <div class="chatcontent">
+        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
+        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
+        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
+        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
+        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
+        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
+        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
+        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
+        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> adfsadfsdfas</p>
+      </div>
+    </main>
+  
+      <ul id="guild-nav" class="side-nav">
+        <li>
+          <div class="userView">
+            <img class="circle" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg">
+            <span class="name">Guild Name</span>
+          </div>
+        </li>
+        <li><a class="subheader">Actions</a></li>
+        <li><a href="#!" class="waves-effect">Manage Guild Embed</a></li>
+        <li><a href="#!" class="waves-effect">Open Server on Discordapp</a></li>
+        
+        <li><div class="divider"></div></li>
+        
+        <li><a class="subheader">Channels</a></li>
+        <li><a class="waves-effect truncate" href="#!"><span class="channel-hash">#</span> channel-1</a></li>
+        <li><a class="waves-effect truncate" href="#!"><span class="channel-hash">#</span> channel-2</a></li>
+        <li><a class="waves-effect truncate" href="#!"><span class="channel-hash">#</span> channel-3</a></li>
+      </ul>
+  
+      <ul id="members-nav" class="side-nav">
+        <li><a class="subheader">Online Server Members</a></li>
+        <li><a class="waves-effect truncate" href="#!"><img class="circle membercircle" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg"> <span class="membername">EndenDragon</span></a></li>
+        <li><a class="waves-effect truncate" href="#!"><img class="circle membercircle" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg"> <span class="membername">EndenDragon</span></a></li>
+        <li><a class="waves-effect truncate" href="#!"><img class="circle membercircle" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg"> <span class="membername">EndenDragon</span></a></li>
+        
+        <li><div class="divider"></div></li>
+        
+        <li><a class="subheader">Authenticated Embed Users</a></li>
+        <li><a class="waves-effect truncate" href="#!"><img class="circle membercircle" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg"> <span class="membername">EndenDragon</span></a></li>
+        <li><a class="waves-effect truncate" href="#!"><img class="circle membercircle" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg"> <span class="membername">EndenDragon</span></a></li>
+        <li><a class="waves-effect truncate" href="#!"><img class="circle membercircle" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg"> <span class="membername">EndenDragon</span></a></li>
+
+        <li><a class="subheader">Guest Embed Users</a></li>
+        <li><a class="waves-effect truncate" href="#!"><span class="membername">EndenDragon#6969</span></a></li>
+        <li><a class="waves-effect truncate" href="#!"><span class="membername">EndenDragon#1234</span></a></li>
+        <li><a class="waves-effect truncate" href="#!"><span class="membername">EndenDragon#3333</span></a></li>
+      </ul>
+      
+      <div id="loginmodal" class="modal">
+        <div class="modal-content">
+          <h4>Let's get to know each other! My name is Titan, what's yours?</h4>
+          <p class="flow-text">Please choose one of the following methods to login!</p>
+          
+          <div class="row">
+            <div class="col s1 m4">
+              <a class="waves-effect waves-light btn-large">Login with Discord</a>
+            </div>
+            <div class="col s1 m8">
+              <p>Of course, you also have the option to login by picking a temporary username.</p>
+              <input id="custom_username_field" type="text">
+              <label class="active" for="custom_username_field">Username</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <footer class="footer">
+      <div class="footercontainer">
+        <div class="currentuserchip left" id="nameplate">
+          <div class="left"><img src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg" class="circle left currentuserimage"></div>
+          <div class="currentusername left">EndenDragon#4151</div>
+        </div>
+        <div id="messageboxouter" class="input-field inline"><textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea"></textarea></div>
+      </div>
+    </footer>
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js" integrity="sha256-ToPQhpo/E89yaCd7+V8LUCjobNRkjilRXfho6x3twLU=" crossorigin="anonymous"></script>
+
+    <script>
+      function resize_messagebox() {
+        var namebox_width = $("#nameplate").outerWidth(true);
+        var screen_width = $(document).width();
+        $("#messageboxouter").width(screen_width - namebox_width - 40);
+      }
+    
+      $(function(){ 
+      	resize_messagebox()
+
+        $("#loginmodal").modal({
+            dismissible: false, // Modal can be dismissed by clicking outside of the modal
+            opacity: .5, // Opacity of modal background
+            inDuration: 300, // Transition in duration
+            outDuration: 200, // Transition out duration
+            startingTop: '4%', // Starting top style attribute
+            endingTop: '10%', // Ending top style attribute
+          }
+        );
+        $('#loginmodal').modal('open');
+      });
+      
+      $(window).resize(function() {
+        resize_messagebox()
+      });
+    
+      $('#guild-btn').sideNav({
+          menuWidth: 300, // Default is 300
+          edge: 'left', // Choose the horizontal origin
+          closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+          draggable: true // Choose whether you can drag to open on touch screens
+        }
+      );
+
+      $('#members-btn').sideNav({
+          menuWidth: 300, // Default is 300
+          edge: 'right', // Choose the horizontal origin
+          draggable: true // Choose whether you can drag to open on touch screens
+        }
+      );
+    </script>
+
+  </body>
+</html>

@@ -39,7 +39,7 @@ def callback():
     session['avatar'] = generate_avatar_url(user['id'], user['avatar'])
     if session["redirect"]:
         redir = session["redirect"]
-        session.pop('redirect', None)
+        session['redirect'] = None
         return redirect(redir)
     return redirect(url_for("user.dashboard"))
 

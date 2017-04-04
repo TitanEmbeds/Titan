@@ -1,0 +1,130 @@
+html {
+background-color: #455a64;
+color: white;
+}
+
+main {
+min-height: calc(100vh - 80px);
+}
+
+footer {
+position: fixed; 
+bottom: 0;
+left: 0;
+right: 0;
+height: 50px;
+background-color: #37474f;
+}
+
+nav {
+background-color: #263238;
+background: linear-gradient(rgba(38, 50, 56, 1), rgba(255,0,0,0));
+box-shadow: none;
+}
+
+nav .brand-logo {
+font-size: 1.5rem;
+}
+
+@media only screen and (min-width: 993px) {
+.container {
+  width: 85%;
+}
+}
+
+.side-nav {
+color: white;
+background-color: #607d8b;
+}
+
+.side-nav .userView .name {
+font-size: 20px;
+}
+
+.side-nav li>a {
+color: #eceff1;
+}
+
+.side-nav .subheader {
+color: #cfd8dc;
+font-variant: small-caps;
+}
+
+.divider {
+background-color: #90a4ae;
+}
+
+.channel-hash {
+font-size: 95%;
+color: #b0bec5;
+}
+
+.membercircle {
+margin-top: 5px;
+height: 40px;
+}
+
+.membername {
+position: absolute;
+padding-left: 10px;
+}
+
+.chatcontent {
+padding-left: 1%;
+padding-top: 1%;
+padding-bottom: 40px;
+}
+
+@media only screen and (min-width: 601px) {
+nav a.button-collapse {
+  display: block;
+}
+}
+
+.chatusername {
+font-weight: bold;
+color: #eceff1;
+}
+
+.chattimestamp {
+font-size: 10px;
+color: #90a4ae;
+}
+
+.footercontainer {
+width: 100%;
+position: relative;
+margin: 10px;
+}
+
+.currentuserchip {
+display: inline-block;
+position: relative;
+top: -6px;
+padding: 6px;
+padding-right: 9px;
+background-color: #455a64;
+}
+
+.currentuserimage {
+width: 30px;
+}
+
+.currentusername {
+position: relative;
+top: 7px;
+left: 5px;
+}
+
+.input-field {
+position: relative;
+top: -19px;
+}
+
+.left {
+float: left;
+}
+
+.modal {
+background-color: #546e7a;
+}

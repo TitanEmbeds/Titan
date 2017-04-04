@@ -1,3 +1,4 @@
+from titanembeds.database import db, Guilds
 from titanembeds.discordrest import DiscordREST
 from flask import request, session
 from flask.ext.cache import Cache
@@ -51,5 +52,18 @@ def guild_ratelimit_key():
     guild_id = request.args.get('guild_id', "0")
     return (sess + guild_id).encode('utf-8')
 
+def check_guild_existance(guild_id):
+    dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
+    if not dbGuild:
+        return False
+    guilds = discord_api.get_all_guilds()
+    for guild in guilds:
+        if guild_id == guild['id']:
+            return True
+    return False
 
+def guild_query_unauth_users_bool(guild_id):
+    dbGuild = db.session.query(Guilds).filter(Guilds.guild_id==guild_id).first()
+    return dbGuild.unauth_users
+    
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address

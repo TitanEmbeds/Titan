@@ -1,6 +1,6 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers
 from titanembeds.decorators import valid_session_required, discord_users_only
-from titanembeds.utils import get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, cache, make_guildchannels_cache_key
+from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, cache, make_guildchannels_cache_key
 from titanembeds.oauth import user_has_permission, generate_avatar_url
 from flask import Blueprint, abort, jsonify, session, request
 from sqlalchemy import and_
@@ -49,16 +49,6 @@ def checkUserBanned(guild_id, ip_address=None):
                 return True
     return banned
 
-def check_guild_existance(guild_id):
-    dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
-    if not dbGuild:
-        return False
-    guilds = discord_api.get_all_guilds()
-    for guild in guilds:
-        if guild_id == guild['id']:
-            return True
-    return False
-
 def update_user_status(guild_id, username, user_key=None):
     if user_unauthenticated():
         ip_address = get_client_ipaddr()
@@ -88,7 +78,7 @@ def update_user_status(guild_id, username, user_key=None):
         }
         if status['banned'] or status['revoked']:
             return status
-        dbUser = db.session.query(AuthenticatedUsers).filter(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == status['user_id']).first()
+        dbUser = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == status['user_id'])).first()
         dbUser.bumpTimestamp()
     return status
 
@@ -144,16 +134,13 @@ def get_online_embed_users(guild_id):
         client_id = user.client_id
         u = discord_api.get_guild_member(guild_id, client_id)['content']['user']
         meta = {
+            'id': u['id'],
             'username': u['username'],
             'discriminator': u['discriminator'],
-            'avatar': generate_avatar_url(u['id'], u['avatar']),
+            'avatar_url': generate_avatar_url(u['id'], u['avatar']),
         }
         users['authenticated'].append(meta)
     return users
-
-def guild_query_unauth_users_bool(guild_id):
-    dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
-    return dbGuild.unauth_users
 
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
@@ -174,7 +161,7 @@ def fetch():
         messages = discord_api.get_channel_messages(channel_id, after_snowflake)
         status_code = messages['code']
     response = jsonify(messages=messages.get('content', messages), status=status)
-    resonse.status_code = status_code
+    response.status_code = status_code
     return response
 
 @api.route("/post", methods=["POST"])
@@ -194,7 +181,7 @@ def post():
         status_code = 401
     else:
         message = discord_api.create_message(channel_id, content)
-        status_code = messages['code']
+        status_code = message['code']
     response = jsonify(message=message.get('content', message), status=status)
     response.status_code = status_code
     return response
@@ -255,7 +242,7 @@ def create_authenticated_user():
         if not check_guild_existance(guild_id):
             abort(404)
         if not checkUserBanned(guild_id):
-            db_user = db.session.query(AuthenticatedUsers).filter(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id']).first()
+            db_user = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
             if not db_user:
                 db_user = AuthenticatedUsers(guild_id, session['user_id'])
                 db.session.add(db_user)
@@ -263,7 +250,7 @@ def create_authenticated_user():
             if not check_user_in_guild(guild_id):
                 discord_api.add_guild_member(guild_id, session['user_id'], session['user_keys']['access_token'])
             status = update_user_status(guild_id, session['username'])
-            return jsonify(error=False)
+            return jsonify(status=status)
         else:
             status = {'banned': True}
             response = jsonify(status=status)
