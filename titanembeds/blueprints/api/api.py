@@ -193,6 +193,8 @@ def create_unauthenticated_user():
     username = request.form['username']
     guild_id = request.form['guild_id']
     ip_address = get_client_ipaddr()
+    if len(username) < 2 or len(username) > 32:
+        abort(406)
     if not check_guild_existance(guild_id):
         abort(404)
     if not guild_query_unauth_users_bool(guild_id):
