@@ -183,7 +183,8 @@ function run_fetch_routine() {
     var fet = fetch(channel_id);
     fet.done(function(data) {
         console.log(data);
-        
+        var status = data.status;
+        update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id);
         var guild = query_guild();
         guild.done(function(guildobj) {
             fill_channels(guildobj.channels);
@@ -204,6 +205,17 @@ function run_fetch_routine() {
                 setTimeout(run_fetch_routine, 10000);
             }
     });
+}
+
+function update_embed_userchip(authenticated, avatar, username, userid) {
+    if (authenticated) {
+        $("#currentuserimage").show();
+        $("#currentuserimage").attr("src", avatar);
+        $("#currentusername").text(username);
+    } else {
+        $("#currentuserimage").hide();
+        $("#currentusername").text(username + "#" + userid);
+    }
 }
 
 $("#discordlogin_btn").click(function() {

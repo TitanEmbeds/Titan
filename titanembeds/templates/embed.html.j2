@@ -79,7 +79,7 @@
           </div>
           <div class="row">
             <div class="col s1 m4">
-              <a id="discordlogin_btn" href="{{ url_for("embed.login_discord", _external=True) }}" class="waves-effect waves-light btn-large" target="_blank">Login with Discord</a>
+              <a id="discordlogin_btn" href="{{ url_for("embed.login_discord", _external=True) }}" class="waves-effect waves-light btn-large" target="_blank">Discord Login</a>
             </div>
             {% if unauth_enabled %}
             <div class="col s1 m8">
@@ -95,8 +95,8 @@
     <footer class="footer">
       <div class="footercontainer">
         <div class="currentuserchip left" id="nameplate">
-          <div class="left"><img src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg" class="circle left currentuserimage"></div>
-          <div class="currentusername left">EndenDragon#4151</div>
+          <div class="left"><img id="currentuserimage" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg" class="circle left currentuserimage" style="display: none;"></div>
+          <div id="currentusername" class="currentusername left">Titan#0001</div>
         </div>
         <div id="messageboxouter" class="input-field inline"><textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea"></textarea></div>
       </div>

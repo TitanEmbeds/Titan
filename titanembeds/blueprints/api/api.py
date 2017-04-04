@@ -53,10 +53,13 @@ def update_user_status(guild_id, username, user_key=None):
     if user_unauthenticated():
         ip_address = get_client_ipaddr()
         status = {
+            'authenticated': False,
+            'avatar': None,
             'ip_address': ip_address,
             'username': username,
             'user_key': user_key,
             'guild_id': guild_id,
+            'user_id': session['user_id'],
             'banned': checkUserBanned(guild_id, ip_address),
             'revoked': checkUserRevoke(guild_id, user_key),
         }
@@ -70,6 +73,8 @@ def update_user_status(guild_id, username, user_key=None):
             db.session.commit()
     else:
         status = {
+            'authenticated': True,
+            'avatar': session["avatar"],
             'username': username,
             'guild_id': guild_id,
             'user_id': session['user_id'],
