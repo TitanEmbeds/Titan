@@ -198,11 +198,12 @@ function run_fetch_routine() {
                 $('#loginmodal').modal('open');
                 Materialize.toast('Authentication error! You have been banned.', 10000);
             }
-            if (data.status == 401) {
+            else if (data.status == 401) {
                 $('#loginmodal').modal('open');
                 Materialize.toast('Session expired! You have been logged out.', 10000);
+            } else {
+                setTimeout(run_fetch_routine, 10000);
             }
-            setTimeout(run_fetch_routine, 10000);
     });
 }
 
