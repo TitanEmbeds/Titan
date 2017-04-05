@@ -165,7 +165,7 @@ def fetch():
     channel_id = request.args.get('channel_id')
     after_snowflake = request.args.get('after', None, type=int)
     if user_unauthenticated():
-        key = session['user_keys'][channel_id]
+        key = session['user_keys'][guild_id]
     else:
         key = None
     status = update_user_status(guild_id, session['username'], key)
