@@ -128,3 +128,9 @@ float: left;
 .modal {
 background-color: #546e7a;
 }
+
+.betatag {
+  font-variant: small-caps;
+  font-size: 15px;
+  color: #eceff1;
+}

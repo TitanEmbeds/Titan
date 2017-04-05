@@ -18,7 +18,7 @@
         <div class="nav-wrapper">
           <a href="#" data-activates="guild-nav" class="button-collapse" id="guild-btn"><i class="material-icons">menu</i></a>
           <div class="container">
-            <a href="#" class="brand-logo"><b>Titan</b>Embeds</a>
+            <a href="{{ url_for("index") }}" target="_blank" class="brand-logo"><b>Titan</b>Embeds <span class="betatag">BETA</span></a>
           </div>
           <a href="#" data-activates="members-nav" class="button-collapse right" id="members-btn"><i class="material-icons">person</i></a>
         </div>
@@ -85,7 +85,7 @@
     <footer class="footer">
       <div class="footercontainer">
         <div class="currentuserchip left" id="nameplate">
-          <div class="left"><img id="currentuserimage" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg" class="circle left currentuserimage" style="display: none;"></div>
+          <div class="left"><img id="currentuserimage" src="" class="circle left currentuserimage" style="display: none;"></div>
           <div id="currentusername" class="currentusername left">Titan#0001</div>
         </div>
         <div id="messageboxouter" class="input-field inline"><textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea" rows="1"></textarea></div>

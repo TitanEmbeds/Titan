@@ -23,15 +23,6 @@ app.register_blueprint(blueprints.api.api, url_prefix="/api", template_folder="/
 app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
 app.register_blueprint(blueprints.embed.embed, url_prefix="/embed", template_folder="/templates")
 
-@app.route("/set_username/<guildid>/<channelid>", methods=["GET"])
-def get_set_username(guildid, channelid):
-    return render_template("set_username.html")
-
-@app.route("/set_username/<guildid>/<channelid>", methods=["POST"])
-def post_set_username(guildid, channelid):
-    session['username'] = request.form.get('username')
-    return redirect(url_for("embed_get", guildid=guildid, channelid=channelid))
-
 @app.route("/")
 def index():
     return render_template("index.html.j2")
