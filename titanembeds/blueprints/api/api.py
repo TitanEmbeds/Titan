@@ -1,7 +1,7 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers
 from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, cache, make_guildchannels_cache_key
-from titanembeds.oauth import user_has_permission, generate_avatar_url
+from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 from flask import Blueprint, abort, jsonify, session, request
 from sqlalchemy import and_
 import random
@@ -55,6 +55,7 @@ def update_user_status(guild_id, username, user_key=None):
         status = {
             'authenticated': False,
             'avatar': None,
+            'manage_embed': False,
             'ip_address': ip_address,
             'username': username,
             'user_key': user_key,
@@ -75,6 +76,7 @@ def update_user_status(guild_id, username, user_key=None):
         status = {
             'authenticated': True,
             'avatar': session["avatar"],
+            'manage_embed': check_user_can_administrate_guild(guild_id),
             'username': username,
             'guild_id': guild_id,
             'user_id': session['user_id'],

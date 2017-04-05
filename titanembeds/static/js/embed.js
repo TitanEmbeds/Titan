@@ -117,12 +117,10 @@ function initialize_embed(guildobj) {
 }
 
 function prepare_guild(guildobj) {
-    console.log(guildobj);
     fill_channels(guildobj.channels);
     fill_discord_members(guildobj.discordmembers);
     fill_authenticated_users(guildobj.embedmembers.authenticated);
     fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
-    console.log("running fetch routine");
     run_fetch_routine();
 }
 
@@ -221,10 +219,14 @@ function run_fetch_routine() {
         jumpscroll = element_in_view($('#discordmessage_'+last_message_id), true);
     }
     fet.done(function(data) {
-        console.log(data);
         var status = data.status;
         update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id);
         last_message_id = fill_discord_messages(data.messages, jumpscroll);
+        if (status.manage_embed) {
+            $("#administrate_link").show();
+        } else {
+            $("#administrate_link").hide();
+        }
         var guild = query_guild();
         guild.done(function(guildobj) {
             fill_channels(guildobj.channels);

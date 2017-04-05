@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, redirect, url_for, session
 from titanembeds.utils import check_guild_existance, discord_api, guild_query_unauth_users_bool
-from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url, check_user_can_administrate_guild
+from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
 import random
 
 embed = Blueprint("embed", __name__)
