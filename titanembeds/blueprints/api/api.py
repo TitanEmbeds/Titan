@@ -93,7 +93,8 @@ def check_user_in_guild(guild_id):
     if user_unauthenticated():
         return guild_id in session['user_keys']
     else:
-        return 200 == discord_api.get_guild_member_nocache(guild_id, session['user_id'])['code']
+        dbUser = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
+        return 200 == discord_api.get_guild_member_nocache(guild_id, session['user_id'])['code'] and dbUser is not None
 
 def format_post_content(message):
     if (session['unauthenticated']):

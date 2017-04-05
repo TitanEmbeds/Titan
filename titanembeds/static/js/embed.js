@@ -204,12 +204,14 @@ function _wait_for_discord_login(index) {
 }
 
 function select_channel(channel_id) {
-    selected_channel = channel_id;
-    last_message_id = null;
-    $("#channels-list > li.active").removeClass("active");
-    $("#channel-"+selected_channel).parent().addClass("active");
-    clearTimeout(fetchtimeout);
-    run_fetch_routine();
+    if (selected_channel != channel_id) {
+        selected_channel = channel_id;
+        last_message_id = null;
+        $("#channels-list > li.active").removeClass("active");
+        $("#channel-"+selected_channel).parent().addClass("active");
+        clearTimeout(fetchtimeout);
+        run_fetch_routine();
+    }
 }
 
 function replace_message_mentions(message) {
@@ -332,8 +334,11 @@ $("#custom_username_field").keyup(function(event){
 });
 
 $("#messagebox").keyup(function(event){
-    $(this).val($.trim($(this).val()));
+    if ($(this).val().length == 1) {
+        $(this).val($.trim($(this).val()));
+    }
     if(event.keyCode == 13 && $(this).val().length >= 1 && $(this).val().length <= 350) {
+        $(this).val($.trim($(this).val()));
         $(this).blur();
         var funct = post(selected_channel, $(this).val());
         funct.done(function(data) {
