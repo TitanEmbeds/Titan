@@ -3,6 +3,7 @@
 /* global Mustache */
 /* global guild_id */
 /* global bot_client_id */
+/* global moment */
 
 var logintimer; // timer to keep track of user inactivity after hitting login
 var fetchtimeout; // fetch routine timer
@@ -235,7 +236,14 @@ function format_bot_message(message) {
         message.author.username = usernamefield.split("#")[0];
         message.author.discriminator = usernamefield.split("#")[1];
     }
-    return message
+    return message;
+}
+
+function parse_message_time(message) {
+    var mome = moment(message.timestamp);
+    message.formatted_timestamp = mome.toDate().toString();
+    message.formatted_time = mome.format("HH:mm A");
+    return message;
 }
 
 function fill_discord_messages(messages, jumpscroll) {
@@ -249,7 +257,8 @@ function fill_discord_messages(messages, jumpscroll) {
         var message = messages[i];
         message = replace_message_mentions(message);
         message = format_bot_message(message);
-        var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.timestamp, "time": message.timestamp, "username": message.author.username, "discriminator": message.author.discriminator, "content": message.content});
+        message = parse_message_time(message);
+        var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": message.content});
         $("#chatcontent").append(rendered);
         last = message.id;
     }
