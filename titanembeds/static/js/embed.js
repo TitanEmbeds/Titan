@@ -217,6 +217,7 @@ function replace_message_mentions(message) {
     for (var i = 0; i < mentions.length; i++) {
         var mention = mentions[i];
         message.content = message.content.replace(new RegExp("<@" + mention.id + ">", 'g'), "@" + mention.username + "#" + mention.discriminator);
+        message.content = message.content.replace(new RegExp("<@!" + mention.id + ">", 'g'), "@" + mention.username + "#" + mention.discriminator);
     }
     return message;
 }

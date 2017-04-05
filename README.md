@@ -2,6 +2,7 @@
 Discord webpage embedded client
 
 ## Required PIP Packages
+- flask
 - flask-sqlalchemy
 - cachetools
 - Flask-Cache

@@ -26,7 +26,7 @@
         <div class="nav-wrapper container">
           <a href="/" class="brand-logo"><b>Titan</b>Embeds <span class="betatag">BETA</span></a>
           <ul id="nav-mobile" class="right">
-            <li><a href="{{url_for("embed.guild_embed", guild_id="295085744249110529")}}" class="waves-effect btn z-depth-3">Visit Us!</a></li> <!-- TODO: Add discord guild invite -->
+            <li><a href="{{url_for("embed.guild_embed", guild_id="295085744249110529")}}" class="waves-effect btn z-depth-3">Visit Us!</a></li>
             {% if session['unauthenticated'] is defined and not session['unauthenticated'] %}
             <li><a id="menu_drop" data-activates="menu_dropdown" class="waves-effect btn z-depth-3 btn-floating dropdown-button avatar_menu" style='background-image: url("  {{ session['avatar'] }}  ")'></a></li>
             {% else %}
