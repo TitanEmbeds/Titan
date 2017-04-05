@@ -4,6 +4,20 @@
 /* global guild_id */
 
 var logintimer; // timer to keep track of user inactivity after hitting login
+var last_message_id;
+
+function element_in_view(element, fullyInView) {
+    var pageTop = $(window).scrollTop();
+    var pageBottom = pageTop + $(window).height();
+    var elementTop = $(element).offset().top;
+    var elementBottom = elementTop + $(element).height();
+
+    if (fullyInView === true) {
+        return ((pageTop < elementTop) && (pageBottom > elementBottom));
+    } else {
+        return ((elementTop <= pageBottom) && (elementBottom >= pageTop));
+    }
+}
 
 function resize_messagebox() {
     var namebox_width = $("#nameplate").outerWidth(true);
@@ -51,8 +65,7 @@ function fetch(channel_id, after=null) {
 }
 
 $(function(){ 
-  resize_messagebox();
-
+    resize_messagebox();
     $("#loginmodal").modal({
         dismissible: false, // Modal can be dismissed by clicking outside of the modal
         opacity: .5, // Opacity of modal background
@@ -178,13 +191,40 @@ function _wait_for_discord_login(index) {
     }, 5000);
 }
 
+function fill_discord_messages(messages, jumpscroll) {
+    if (messages.length == 0) {
+        return last_message_id;
+    }
+    var last = 0;
+    var template = $('#mustache_usermessage').html();
+    Mustache.parse(template);
+    for (var i = messages.length-1; i >= 0; i--) {
+        var message = messages[i];
+        var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.timestamp, "time": message.timestamp, "username": message.author.username, "discriminator": message.author.discriminator, "content": message.content});
+        $("#chatcontent").append(rendered);
+        last = message.id;
+    }
+    $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+    return last;
+}
+
 function run_fetch_routine() {
     var channel_id = guild_id; //TODO: implement channel selector
-    var fet = fetch(channel_id);
+    var fet;
+    var jumpscroll;
+    if (last_message_id == null) {
+        $("#chatcontent").empty();
+        fet = fetch(channel_id);
+        jumpscroll = true;
+    } else {
+        fet = fetch(channel_id, last_message_id);
+        jumpscroll = element_in_view($('#discordmessage_'+last_message_id), true);
+    }
     fet.done(function(data) {
         console.log(data);
         var status = data.status;
         update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id);
+        last_message_id = fill_discord_messages(data.messages, jumpscroll);
         var guild = query_guild();
         guild.done(function(guildobj) {
             fill_channels(guildobj.channels);
@@ -195,15 +235,16 @@ function run_fetch_routine() {
         });
     });
     fet.fail(function(data) {
-            if (data.status == 403) {
-                $('#loginmodal').modal('open');
-                Materialize.toast('Authentication error! You have been banned.', 10000);
-            } else if (data.status == 401) {
-                $('#loginmodal').modal('open');
-                Materialize.toast('Session expired! You have been logged out.', 10000);
-            } else {
-                setTimeout(run_fetch_routine, 10000);
-            }
+        if (data.status == 403) {
+            $('#loginmodal').modal('open');
+            Materialize.toast('Authentication error! You have been banned.', 10000);
+        } else if (data.status == 401) {
+            $('#loginmodal').modal('open');
+            Materialize.toast('Session expired! You have been logged out.', 10000);
+        }
+    });
+    fet.catch(function(data) {
+        setTimeout(run_fetch_routine, 10000);
     });
 }
 
@@ -216,6 +257,7 @@ function update_embed_userchip(authenticated, avatar, username, userid) {
         $("#currentuserimage").hide();
         $("#currentusername").text(username + "#" + userid);
     }
+    resize_messagebox();
 }
 
 $("#discordlogin_btn").click(function() {
