@@ -130,7 +130,6 @@ function initialize_embed(guildobj) {
 }
 
 function prepare_guild(guildobj) {
-    console.log(guildobj)
     fill_channels(guildobj.channels);
     fill_discord_members(guildobj.discordmembers);
     fill_authenticated_users(guildobj.embedmembers.authenticated);
