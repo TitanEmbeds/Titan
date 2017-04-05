@@ -25,17 +25,7 @@
       </nav>
     </div>
     <main>
-      <div id="chatcontent" class="chatcontent">
-        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
-        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
-        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
-        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
-        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
-        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
-        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
-        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> Hello everyone!</p>
-        <p><span title="March 31, 2017 3:30PM" class="chattimestamp">3:30PM</span> <span class="chatusername">EndenDragon#69420</span> adfsadfsdfas</p>
-      </div>
+      <div id="chatcontent" class="chatcontent"></div>
     </main>
   
       <ul id="guild-nav" class="side-nav">
@@ -109,7 +99,7 @@
 
     {% raw %}
     <script id="mustache_channellistings" type="text/template">
-      <li><a class="waves-effect truncate" id="channel-{{channelid}}"><span class="channel-hash">#</span> {{channelname}}</a></li>
+      <li><a class="waves-effect truncate" id="channel-{{channelid}}" onclick='select_channel("{{channelid}}");'><span class="channel-hash">#</span> {{channelname}}</a></li>
     </script>
     
     <script id="mustache_authedusers" type="text/template">

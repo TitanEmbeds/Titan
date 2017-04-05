@@ -154,16 +154,17 @@ def get_online_embed_users(guild_id):
 @rate_limiter.limit("2500/hour")
 @rate_limiter.limit("12/minute", key_func = channel_ratelimit_key)
 def fetch():
+    guild_id = request.args.get("guild_id")
     channel_id = request.args.get('channel_id')
     after_snowflake = request.args.get('after', None, type=int)
     if user_unauthenticated():
         key = session['user_keys'][channel_id]
     else:
         key = None
-    status = update_user_status(channel_id, session['username'], key)
+    status = update_user_status(guild_id, session['username'], key)
     if status['banned'] or status['revoked']:
         messages = {}
-        status_code = 401
+        status_code = 403
     else:
         messages = discord_api.get_channel_messages(channel_id, after_snowflake)
         status_code = messages['code']
@@ -176,13 +177,14 @@ def fetch():
 @rate_limiter.limit("1200/hour")
 @rate_limiter.limit("6/minute", key_func = channel_ratelimit_key)
 def post():
+    guild_id = request.args.get("guild_id")
     channel_id = request.form.get('channel_id')
     content = request.form.get('content')
     if user_unauthenticated():
         key = session['user_keys'][channel_id]
     else:
         key = None
-    status = update_user_status(channel_id, session['username'], key)
+    status = update_user_status(guild_id, session['username'], key)
     if status['banned'] or status['revoked']:
         message = {}
         status_code = 401

@@ -4,7 +4,9 @@
 /* global guild_id */
 
 var logintimer; // timer to keep track of user inactivity after hitting login
-var last_message_id;
+var fetchtimeout; // fetch routine timer
+var last_message_id; // last message tracked
+var selected_channel = guild_id; // user selected channel, defaults to #general channel
 
 function element_in_view(element, fullyInView) {
     var pageTop = $(window).scrollTop();
@@ -59,7 +61,7 @@ function fetch(channel_id, after=null) {
         method: "GET",
         dataType: "json",
         url: "/api/fetch",
-        data: {"channel_id": channel_id, "after": after}
+        data: {"guild_id": guild_id,"channel_id": channel_id, "after": after}
     });
     return funct.promise();
 }
@@ -133,6 +135,7 @@ function fill_channels(channels) {
         var rendered = Mustache.render(template, {"channelid": chan.id, "channelname": chan.name});
         $("#channels-list").append(rendered);
     }
+    $("#channel-"+selected_channel).parent().addClass("active");
 }
 
 function fill_discord_members(discordmembers) {
@@ -189,6 +192,24 @@ function _wait_for_discord_login(index) {
     }, 5000);
 }
 
+function select_channel(channel_id) {
+    selected_channel = channel_id;
+    last_message_id = null;
+    $("#channels-list > li.active").removeClass("active");
+    $("#channel-"+selected_channel).parent().addClass("active");
+    clearTimeout(fetchtimeout);
+    run_fetch_routine();
+}
+
+function replace_message_mentions(message) {
+    var mentions = message.mentions;
+    for (var i = 0; i < mentions.length; i++) {
+        var mention = mentions[i];
+        message.content = message.content.replace(new RegExp("<@" + mention.id + ">", 'g'), "@" + mention.username + "#" + mention.discriminator);
+    }
+    return message;
+}
+
 function fill_discord_messages(messages, jumpscroll) {
     if (messages.length == 0) {
         return last_message_id;
@@ -198,7 +219,7 @@ function fill_discord_messages(messages, jumpscroll) {
     Mustache.parse(template);
     for (var i = messages.length-1; i >= 0; i--) {
         var message = messages[i];
-        var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.timestamp, "time": message.timestamp, "username": message.author.username, "discriminator": message.author.discriminator, "content": message.content});
+        var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.timestamp, "time": message.timestamp, "username": message.author.username, "discriminator": message.author.discriminator, "content": replace_message_mentions(message).content});
         $("#chatcontent").append(rendered);
         last = message.id;
     }
@@ -207,7 +228,7 @@ function fill_discord_messages(messages, jumpscroll) {
 }
 
 function run_fetch_routine() {
-    var channel_id = guild_id; //TODO: implement channel selector
+    var channel_id = selected_channel;
     var fet;
     var jumpscroll;
     if (last_message_id == null) {
@@ -220,6 +241,7 @@ function run_fetch_routine() {
     }
     fet.done(function(data) {
         var status = data.status;
+        console.log(data);
         update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id);
         last_message_id = fill_discord_messages(data.messages, jumpscroll);
         if (status.manage_embed) {
@@ -233,7 +255,7 @@ function run_fetch_routine() {
             fill_discord_members(guildobj.discordmembers);
             fill_authenticated_users(guildobj.embedmembers.authenticated);
             fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
-            setTimeout(run_fetch_routine, 10000);
+            fetchtimeout = setTimeout(run_fetch_routine, 10000);
         });
     });
     fet.fail(function(data) {
@@ -246,7 +268,7 @@ function run_fetch_routine() {
         }
     });
     fet.catch(function(data) {
-        setTimeout(run_fetch_routine, 10000);
+        fetchtimeout = setTimeout(run_fetch_routine, 10000);
     });
 }
 
