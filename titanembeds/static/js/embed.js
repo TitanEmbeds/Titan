@@ -2,6 +2,7 @@
 /* global Materialize */
 /* global Mustache */
 /* global guild_id */
+/* global bot_client_id */
 
 var logintimer; // timer to keep track of user inactivity after hitting login
 var fetchtimeout; // fetch routine timer
@@ -66,6 +67,16 @@ function fetch(channel_id, after=null) {
     return funct.promise();
 }
 
+function post(channel_id, content) {
+    var funct = $.ajax({
+        method: "POST",
+        dataType: "json",
+        url: "/api/post",
+        data: {"guild_id": guild_id, "channel_id": channel_id, "content": content}
+    });
+    return funct.promise();
+}
+
 $(function(){ 
     resize_messagebox();
     $("#loginmodal").modal({
@@ -119,6 +130,7 @@ function initialize_embed(guildobj) {
 }
 
 function prepare_guild(guildobj) {
+    console.log(guildobj)
     fill_channels(guildobj.channels);
     fill_discord_members(guildobj.discordmembers);
     fill_authenticated_users(guildobj.embedmembers.authenticated);
@@ -210,6 +222,20 @@ function replace_message_mentions(message) {
     return message;
 }
 
+function getPosition(string, subString, index) {
+   return string.split(subString, index).join(subString).length;
+}
+
+function format_bot_message(message) {
+    if (message.author.id == bot_client_id && (message.content.includes("**") && ( (message.content.includes("<")&&message.content.includes(">")) || (message.content.includes("[") && message.content.includes("]")) ))) {
+        var usernamefield = message.content.substring(getPosition(message.content, "**", 1)+3, getPosition(message.content, "**", 2)-1);
+        message.content = message.content.substring(usernamefield.length+7);
+        message.author.username = usernamefield.split("#")[0];
+        message.author.discriminator = usernamefield.split("#")[1];
+    }
+    return message
+}
+
 function fill_discord_messages(messages, jumpscroll) {
     if (messages.length == 0) {
         return last_message_id;
@@ -219,7 +245,9 @@ function fill_discord_messages(messages, jumpscroll) {
     Mustache.parse(template);
     for (var i = messages.length-1; i >= 0; i--) {
         var message = messages[i];
-        var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.timestamp, "time": message.timestamp, "username": message.author.username, "discriminator": message.author.discriminator, "content": replace_message_mentions(message).content});
+        message = replace_message_mentions(message);
+        message = format_bot_message(message);
+        var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.timestamp, "time": message.timestamp, "username": message.author.username, "discriminator": message.author.discriminator, "content": message.content});
         $("#chatcontent").append(rendered);
         last = message.id;
     }
@@ -241,7 +269,6 @@ function run_fetch_routine() {
     }
     fet.done(function(data) {
         var status = data.status;
-        console.log(data);
         update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id);
         last_message_id = fill_discord_messages(data.messages, jumpscroll);
         if (status.manage_embed) {
@@ -301,6 +328,27 @@ $("#custom_username_field").keyup(function(event){
                 Materialize.toast('Authentication error! You have been banned.', 10000);
             }
         })
+    }
+});
+
+$("#messagebox").keyup(function(event){
+    $(this).val($.trim($(this).val()));
+    if(event.keyCode == 13 && $(this).val().length >= 1 && $(this).val().length <= 350) {
+        $(this).blur();
+        var funct = post(selected_channel, $(this).val());
+        funct.done(function(data) {
+            $("#messagebox").val("");
+            clearTimeout(fetchtimeout);
+            run_fetch_routine();
+        });
+        funct.fail(function(data) {
+            Materialize.toast('Failed to send message.', 10000);
+        });
+        funct.catch(function(data) {
+            if (data.status == 429) {
+                Materialize.toast('You are sending messages too fast! 1 msg / 5 secs', 10000);
+            }
+        });
     }
 });
 

@@ -95,6 +95,13 @@ def check_user_in_guild(guild_id):
     else:
         return 200 == discord_api.get_guild_member_nocache(guild_id, session['user_id'])['code']
 
+def format_post_content(message):
+    if (session['unauthenticated']):
+        message = "**[{}#{}]** {}".format(session['username'], session['user_id'], message)
+    else:
+        message = "**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
+    return message
+
 @cache.cached(timeout=300, key_prefix=make_guildchannels_cache_key)
 def get_guild_channels(guild_id):
     if user_unauthenticated():
@@ -177,9 +184,10 @@ def fetch():
 @rate_limiter.limit("1200/hour")
 @rate_limiter.limit("6/minute", key_func = channel_ratelimit_key)
 def post():
-    guild_id = request.args.get("guild_id")
+    guild_id = request.form.get("guild_id")
     channel_id = request.form.get('channel_id')
     content = request.form.get('content')
+    content = format_post_content(content)
     if user_unauthenticated():
         key = session['user_keys'][channel_id]
     else:

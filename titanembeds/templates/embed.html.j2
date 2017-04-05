@@ -88,7 +88,7 @@
           <div class="left"><img id="currentuserimage" src="https://cdn.discordapp.com/icons/213459805048668160/14aa7c0ad94e3c80d2eeef3a83cae1c1.jpg" class="circle left currentuserimage" style="display: none;"></div>
           <div id="currentusername" class="currentusername left">Titan#0001</div>
         </div>
-        <div id="messageboxouter" class="input-field inline"><textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea"></textarea></div>
+        <div id="messageboxouter" class="input-field inline"><textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea" rows="1"></textarea></div>
       </div>
     </footer>
 
@@ -117,6 +117,7 @@
 
     <script>
         var guild_id = "{{ guild_id }}";
+        var bot_client_id = "{{ client_id }}";
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
