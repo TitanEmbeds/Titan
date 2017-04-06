@@ -159,8 +159,7 @@ def get_online_embed_users(guild_id):
 
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
-@rate_limiter.limit("2500/hour")
-@rate_limiter.limit("12/minute", key_func = channel_ratelimit_key)
+@rate_limiter.limit("1 per 5 second", key_func = channel_ratelimit_key)
 def fetch():
     guild_id = request.args.get("guild_id")
     channel_id = request.args.get('channel_id')
@@ -182,8 +181,7 @@ def fetch():
 
 @api.route("/post", methods=["POST"])
 @valid_session_required(api=True)
-@rate_limiter.limit("1200/hour")
-@rate_limiter.limit("6/minute", key_func = channel_ratelimit_key)
+@rate_limiter.limit("1 per 10 second", key_func = channel_ratelimit_key)
 def post():
     guild_id = request.form.get("guild_id")
     channel_id = request.form.get('channel_id')
@@ -205,7 +203,7 @@ def post():
     return response
 
 @api.route("/create_unauthenticated_user", methods=["POST"])
-@rate_limiter.limit("4/hour", key_func=guild_ratelimit_key)
+@rate_limiter.limit("1 per 15 minute", key_func=guild_ratelimit_key)
 def create_unauthenticated_user():
     session['unauthenticated'] = True
     username = request.form['username']
