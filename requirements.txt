@@ -1,0 +1,7 @@
+flask
+flask-sqlalchemy
+cachetools
+Flask-Cache
+flask_limiter
+requests_oauthlib
+mysql-python
