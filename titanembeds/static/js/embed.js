@@ -360,7 +360,7 @@ $("#messagebox").keyup(function(event){
         });
         funct.catch(function(data) {
             if (data.status == 429) {
-                Materialize.toast('You are sending messages too fast! 1 msg / 5 secs', 10000);
+                Materialize.toast('You are sending messages too fast! 1 message per 10 seconds', 10000);
             }
         });
     }
