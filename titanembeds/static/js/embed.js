@@ -342,6 +342,7 @@ $("#custom_username_field").keyup(function(event){
             } else if (data.status == 403) {
                 Materialize.toast('Authentication error! You have been banned.', 10000);
             }
+            unlock_login_fields();
         })
     }
 });
