@@ -65,6 +65,7 @@ def update_user_status(guild_id, username, user_key=None):
             'revoked': checkUserRevoke(guild_id, user_key),
         }
         if status['banned'] or status['revoked']:
+            session['user_keys'].pop(guild_id, None)
             return status
         dbUser = UnauthenticatedUsers.query.filter(and_(UnauthenticatedUsers.guild_id == guild_id, UnauthenticatedUsers.user_key == user_key)).first()
         dbUser.bumpTimestamp()

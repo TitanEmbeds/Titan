@@ -78,7 +78,7 @@ function post(channel_id, content) {
     return funct.promise();
 }
 
-$(function(){ 
+$(function(){
     resize_messagebox();
     $("#loginmodal").modal({
         dismissible: false, // Modal can be dismissed by clicking outside of the modal
@@ -89,12 +89,12 @@ $(function(){
         endingTop: '10%', // Ending top style attribute
       }
     );
-    
+
     var guild = query_guild();
     guild.fail(function() {
         $('#loginmodal').modal('open');
     });
-    
+
     guild.done(function(data) {
         initialize_embed(data);
         //$('#loginmodal').modal('open');
@@ -299,14 +299,16 @@ function run_fetch_routine() {
     fet.fail(function(data) {
         if (data.status == 403) {
             $('#loginmodal').modal('open');
-            Materialize.toast('Authentication error! You have been banned.', 10000);
+            Materialize.toast('Authentication error! You have been disconnected by the server.', 10000);
         } else if (data.status == 401) {
             $('#loginmodal').modal('open');
             Materialize.toast('Session expired! You have been logged out.', 10000);
         }
     });
     fet.catch(function(data) {
-        fetchtimeout = setTimeout(run_fetch_routine, 10000);
+      if (data.status != 403) {
+          fetchtimeout = setTimeout(run_fetch_routine, 10000);
+      }
     });
 }
 
@@ -335,7 +337,9 @@ $("#custom_username_field").keyup(function(event){
             initialize_embed();
         });
         usr.fail(function(data) {
-            if (data.status == 403) {
+            if (data.status == 429) {
+              Materialize.toast('Sorry! You are allowed to log in as a guest once every 15 minutes.', 10000);
+            } else if (data.status == 403) {
                 Materialize.toast('Authentication error! You have been banned.', 10000);
             }
         })
