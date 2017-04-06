@@ -189,7 +189,7 @@ def post():
     content = request.form.get('content')
     content = format_post_content(content)
     if user_unauthenticated():
-        key = session['user_keys'][channel_id]
+        key = session['user_keys'][guild_id]
     else:
         key = None
     status = update_user_status(guild_id, session['username'], key)
