@@ -22,7 +22,7 @@
             <p class="flow-text">Direct Link</p>
             <input readonly value="{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}" id="disabled" type="text" onClick="this.setSelectionRange(0, this.value.length)">
             <p class="flow-text">iFrame Embed</p>
-            <input readonly value=" &lt;iframe src=&quot;{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}&quot;  height=&quot;200&quot; width=&quot;300&quot; /&gt;  " id="disabled" type="text" onClick="this.setSelectionRange(0, this.value.length)">
+            <input readonly value=" &lt;iframe src=&quot;{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}&quot;  height=&quot;600&quot; width=&quot;800&quot; /&gt;  " id="disabled" type="text" onClick="this.setSelectionRange(0, this.value.length)">
           </div>
         </div>
       </div>
