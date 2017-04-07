@@ -7,10 +7,10 @@
 <p>*List missing some servers? It's because you must have either <strong>Manage Server</strong>, <strong>Kick Members</strong>, or <strong>Ban Members</strong> permissions to modify embed settings.</p>
 <div class="row">
   {% for server in servers %}
-  <div class="col s4">
+  <div class="col l4 m6 s12">
     <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
       <div class="row valign-wrapper">
-        <div class="col s5">
+        <div class="col s3">
           {% if server.icon %}
           <img src="{{ icon_generate(server.id, server.icon) }}" alt="" class="circle responsive-img">
           {% else %}
