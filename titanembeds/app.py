@@ -1,6 +1,7 @@
 from config import config
 from database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
+from flask_sslify import SSLify
 from titanembeds.utils import cache, rate_limiter
 import blueprints.api
 import blueprints.user
@@ -18,6 +19,7 @@ app.secret_key = config['app-secret']
 db.init_app(app)
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 rate_limiter.init_app(app)
+sslify = SSLify(app, permanent=True)
 
 app.register_blueprint(blueprints.api.api, url_prefix="/api", template_folder="/templates")
 app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
