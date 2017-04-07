@@ -5,3 +5,4 @@ Flask-Cache
 flask_limiter
 requests_oauthlib
 mysql-python
+Flask-SSLify
