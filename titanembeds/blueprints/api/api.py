@@ -98,6 +98,8 @@ def check_user_in_guild(guild_id):
         return 200 == discord_api.get_guild_member_nocache(guild_id, session['user_id'])['code'] and dbUser is not None
 
 def format_post_content(message):
+    message = message.replace("<", "\<")
+    message = message.replace(">", "\>") #escape mentions for now
     if (session['unauthenticated']):
         message = "**[{}#{}]** {}".format(session['username'], session['user_id'], message)
     else:
