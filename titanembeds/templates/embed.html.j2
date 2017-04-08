@@ -27,7 +27,7 @@
     <main>
       <div id="chatcontent" class="chatcontent"></div>
     </main>
-  
+
       <ul id="guild-nav" class="side-nav">
         <li>
           <div class="userView">
@@ -40,26 +40,26 @@
         <li><a class="subheader">Actions</a></li>
         <li><a href="{{ url_for("user.administrate_guild", guild_id=guild['id']) }}" class="waves-effect" target="_blank" id="administrate_link" style="display: none;">Manage Guild Embed</a></li>
         <li><a href="https://discordapp.com/channels/{{ guild['id'] }}/" class="waves-effect" target="_blank">Open Server on Discordapp</a></li>
-        
+
         <li><div class="divider"></div></li>
-        
+
         <li><a class="subheader">Channels</a></li>
         <span id="channels-list"></span>
       </ul>
-  
+
       <ul id="members-nav" class="side-nav">
         <li><a class="subheader">Online Server Members</a></li>
         <span id="discord-members"></span>
 
         <li><div class="divider"></div></li>
-        
+
         <li><a class="subheader">Authenticated Embed Users</a></li>
         <span id="embed-discord-members"></span>
 
         <li><a class="subheader">Guest Embed Users</a></li>
         <span id="embed-unauth-users"></span>
       </ul>
-      
+
       <div id="loginmodal" class="modal">
         <div class="modal-content">
           <h4>{{ login_greeting }}</h4>
@@ -74,14 +74,14 @@
             {% if unauth_enabled %}
             <div class="col s1 m8">
               <p>Of course, you also have the option to login by picking a temporary username.</p>
-              <input id="custom_username_field" type="text">
+              <input id="custom_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% endif %}>
               <label class="active" for="custom_username_field">Username</label>
             </div>
             {% endif %}
           </div>
         </div>
       </div>
-      
+
     <footer class="footer">
       <div class="footercontainer">
         <div class="currentuserchip left" id="nameplate">
@@ -102,15 +102,15 @@
     <script id="mustache_channellistings" type="text/template">
       <li><a class="waves-effect truncate" id="channel-{{channelid}}" onclick='select_channel("{{channelid}}");'><span class="channel-hash">#</span> {{channelname}}</a></li>
     </script>
-    
+
     <script id="mustache_authedusers" type="text/template">
       <li><a class="waves-effect truncate" id="discorduser-{{id}}"><img class="circle membercircle" src="{{avatar}}"> <span class="membername">{{username}}</span></a></li>
     </script>
-    
+
     <script id="mustache_unauthedusers" type="text/template">
       <li><a class="waves-effect truncate"><span class="membername">{{username}}#{{discriminator}}</span></a></li>
     </script>
-    
+
     <script id="mustache_usermessage" type="text/template">
       <p><span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatusername">{{username}}#{{discriminator}}</span> {{content}}</p>
     </script>
