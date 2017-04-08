@@ -26,7 +26,7 @@ function element_in_view(element, fullyInView) {
 function resize_messagebox() {
     var namebox_width = $("#nameplate").outerWidth(true);
     var screen_width = $(document).width();
-    $("#messageboxouter").width(screen_width - namebox_width - 40);
+    $("#messageboxouter").width(screen_width - namebox_width - 400);
 }
 
 function query_guild() {
