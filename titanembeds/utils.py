@@ -37,19 +37,19 @@ def make_guilds_cache_key():
     return (sess + ip + "user_guilds").encode('utf-8')
 
 def make_guildchannels_cache_key():
-    guild_id = request.args.get('guild_id', "0")
+    guild_id = request.values.get('guild_id', "0")
     sess = generate_session_key()
     ip = get_client_ipaddr()
     return (sess + ip + guild_id + "user_guild_channels").encode('utf-8')
 
 def channel_ratelimit_key(): # Generate a bucket with given channel & unique session key
     sess = generate_session_key()
-    channel_id = request.args.get('channel_id', "0")
+    channel_id = request.values.get('channel_id', "0")
     return (sess + channel_id).encode('utf-8')
 
 def guild_ratelimit_key():
     sess = generate_session_key()
-    guild_id = request.args.get('guild_id', "0")
+    guild_id = request.values.get('guild_id', "0")
     return (sess + guild_id).encode('utf-8')
 
 def check_guild_existance(guild_id):
@@ -62,5 +62,5 @@ def check_guild_existance(guild_id):
 def guild_query_unauth_users_bool(guild_id):
     dbGuild = db.session.query(Guilds).filter(Guilds.guild_id==guild_id).first()
     return dbGuild.unauth_users
-    
+
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
