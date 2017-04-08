@@ -191,8 +191,8 @@ def get_online_discord_users(guild_id):
 
 def get_online_embed_users(guild_id):
     time_past = (datetime.datetime.now() - datetime.timedelta(seconds = 120)).strftime('%Y-%m-%d %H:%M:%S')
-    unauths = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.last_timestamp > time_past, UnauthenticatedUsers.revoked == False).all()
-    auths = db.session.query(AuthenticatedUsers).filter(AuthenticatedUsers.last_timestamp > time_past).all()
+    unauths = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.last_timestamp > time_past, UnauthenticatedUsers.revoked == False, UnauthenticatedUsers.guild_id == guild_id).all()
+    auths = db.session.query(AuthenticatedUsers).filter(AuthenticatedUsers.last_timestamp > time_past, AuthenticatedUsers.guild_id == guild_id).all()
     users = {'unauthenticated':[], 'authenticated':[]}
     for user in unauths:
         meta = {
