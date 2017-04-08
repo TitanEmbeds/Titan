@@ -11,7 +11,7 @@ discord_api = DiscordREST(config['bot-token'])
 cache = Cache()
 
 def get_client_ipaddr():
-    if hasattr(request.headers, "X-Real-IP"): # pythonanywhere specific
+    if "X-Real-IP" in request.headers: # pythonanywhere specific
         return request.headers['X-Real-IP']
     else: # general
         return request.remote_addr
