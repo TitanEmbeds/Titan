@@ -258,6 +258,18 @@ function parse_message_time(message) {
     return message;
 }
 
+function parse_message_attachments(message) {
+    for (var i = 0; i < message.attachments.length; i++) {
+        var attach = "";
+        if (message.content.length != 0) {
+            attach = " ";
+        }
+        attach += message.attachments[i].url;
+        message.content += attach;
+    }
+    return message;
+}
+
 function fill_discord_messages(messages, jumpscroll) {
     if (messages.length == 0) {
         return last_message_id;
@@ -270,6 +282,7 @@ function fill_discord_messages(messages, jumpscroll) {
         message = replace_message_mentions(message);
         message = format_bot_message(message);
         message = parse_message_time(message);
+        message = parse_message_attachments(message);
         var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": message.content});
         $("#chatcontent").append(rendered);
         last = message.id;
