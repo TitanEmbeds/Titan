@@ -111,6 +111,8 @@ def get_guild_channels(guild_id):
     else:
         member = discord_api.get_guild_member(guild_id, session['user_id'])['content']
         member_roles = member['roles']
+        if guild_id not in member_roles:
+            member_roles.append(guild_id)
     guild_channels = discord_api.get_guild_channels(guild_id)['content']
     guild_roles = discord_api.get_guild_roles(guild_id)["content"]
     guild_owner = discord_api.get_guild(guild_id)['content']['owner_id']
