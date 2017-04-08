@@ -341,20 +341,28 @@ $("#discordlogin_btn").click(function() {
 });
 
 $("#custom_username_field").keyup(function(event){
-    if(event.keyCode == 13 && $(this).val().length >= 2 && $(this).val().length <= 32) {
-        lock_login_fields();
-        var usr = create_unauthenticated_user($(this).val());
-        usr.done(function(data) {
-            initialize_embed();
-        });
-        usr.fail(function(data) {
-            if (data.status == 429) {
-              Materialize.toast('Sorry! You are allowed to log in as a guest once every 15 minutes.', 10000);
-            } else if (data.status == 403) {
-                Materialize.toast('Authentication error! You have been banned.', 10000);
-            }
-            unlock_login_fields();
-        })
+    if (event.keyCode == 13) {
+        if (!(new RegExp(/^[a-z\d\-_\s]+$/i).test($(this).val()))) {
+            Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
+            return;
+        }
+        if($(this).val().length >= 2 && $(this).val().length <= 32) {
+            lock_login_fields();
+            var usr = create_unauthenticated_user($(this).val());
+            usr.done(function(data) {
+                initialize_embed();
+            });
+            usr.fail(function(data) {
+                if (data.status == 429) {
+                    Materialize.toast('Sorry! You are allowed to log in as a guest once every 15 minutes.', 10000);
+                } else if (data.status == 403) {
+                    Materialize.toast('Authentication error! You have been banned.', 10000);
+                } else if (data.status == 406) {
+                    Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
+                }
+                unlock_login_fields();
+            })
+        }
     }
 });
 
