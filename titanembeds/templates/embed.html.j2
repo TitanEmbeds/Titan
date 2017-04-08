@@ -68,11 +68,11 @@
               <div class="indeterminate"></div>
           </div>
           <div class="row">
-            <div class="col s1 m4">
+            <div class="col s12 m4">
               <a id="discordlogin_btn" href="{{ url_for("embed.login_discord", _external=True) }}" class="waves-effect waves-light btn-large" target="_blank">Discord Login</a>
             </div>
             {% if unauth_enabled %}
-            <div class="col s1 m8">
+            <div class="col s12 m8">
               <p>Of course, you also have the option to login by picking a temporary username.</p>
               <input id="custom_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% endif %}>
               <label class="active" for="custom_username_field">Username</label>
