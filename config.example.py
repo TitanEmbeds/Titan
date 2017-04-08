@@ -9,5 +9,4 @@ config = {
     'app-secret': "Type something random here, go wild.",
 
     'database-uri': "driver://username:password@host:port/database",
-    'app-base-url': "The base domain of the site",
 }

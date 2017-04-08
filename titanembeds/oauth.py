@@ -3,7 +3,6 @@ from requests_oauthlib import OAuth2Session
 from titanembeds.utils import cache, make_guilds_cache_key
 from flask import session, abort, url_for
 
-redirect_url = config['app-base-url'] + "/user/callback"
 authorize_url = "https://discordapp.com/api/oauth2/authorize"
 token_url = "https://discordapp.com/api/oauth2/token"
 avatar_base_url = "https://cdn.discordapp.com/avatars/"
