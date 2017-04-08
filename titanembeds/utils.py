@@ -48,9 +48,9 @@ def channel_ratelimit_key(): # Generate a bucket with given channel & unique ses
     return (sess + channel_id).encode('utf-8')
 
 def guild_ratelimit_key():
-    sess = generate_session_key()
+    ip = get_client_ipaddr()
     guild_id = request.values.get('guild_id', "0")
-    return (sess + guild_id).encode('utf-8')
+    return (ip + guild_id).encode('utf-8')
 
 def check_guild_existance(guild_id):
     dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
