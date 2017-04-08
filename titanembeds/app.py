@@ -14,6 +14,7 @@ app = Flask(__name__, static_folder="static")
 app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no need this on for now.
 app.config['RATELIMIT_HEADERS_ENABLED'] = True
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 250
 app.secret_key = config['app-secret']
 
 db.init_app(app)
