@@ -107,29 +107,83 @@ def format_post_content(message):
 @cache.cached(timeout=300, key_prefix=make_guildchannels_cache_key)
 def get_guild_channels(guild_id):
     if user_unauthenticated():
-        roles = [guild_id] #equivilant to @everyone role
+        member_roles = [guild_id] #equivilant to @everyone role
     else:
         member = discord_api.get_guild_member(guild_id, session['user_id'])['content']
-        roles = member['roles']
+        member_roles = member['roles']
     guild_channels = discord_api.get_guild_channels(guild_id)['content']
+    guild_roles = discord_api.get_guild_roles(guild_id)["content"]
     guild_owner = discord_api.get_guild(guild_id)['content']['owner_id']
     result_channels = []
     for channel in guild_channels:
         if channel['type'] == 0:
+            result = {"channel": channel, "read": False, "write": False}
             if guild_owner == session['user_id']:
-                result_channels.append(channel)
+                result["read"] = True
+                result["write"] = True
+                result_channels.append(result)
                 continue
-            if len(channel['permission_overwrites']) == 0:
-                result_channels.append(channel)
-            else:
-                for overwrite in channel['permission_overwrites']:
-                    if overwrite['type'] == "role" and overwrite['id'] == roles[-1] and not user_has_permission(overwrite['deny'], 10):
-                        result_channels.append(channel)
-                        break
-                    elif overwrite['type'] == "member" and not user_unauthenticated and overwrite['id'] == session['user_id'] and not user_has_permission(overwrite['deny'], 10):
-                        result_channels.append(channel)
-                        break
+            channel_perm = 0
+
+            # @everyone
+            for role in guild_roles:
+                if role["id"] == guild_id:
+                    channel_perm |= role["permissions"]
+                    continue
+
+            # User Guild Roles
+            for m_role in member_roles:
+                for g_role in guild_roles:
+                    if g_role["id"] == m_role:
+                        channel_perm |= g_role["permissions"]
+                        continue
+
+            # If has server administrator permission
+            if user_has_permission(channel_perm, 3):
+                result["read"] = True
+                result["write"] = True
+                result_channels.append(result)
+                continue
+
+            denies = 0
+            allows = 0
+
+            # channel specific
+            for overwrite in channel["permission_overwrites"]:
+                if overwrite["type"] == "role" and overwrite["id"] in member_roles:
+                    denies |= overwrite["deny"]
+                    allows |= overwrite["allow"]
+
+            channel_perm = (channel_perm & ~denies) | allows
+
+            # member specific
+            for overwrite in channel["permission_overwrites"]:
+                if overwrite["type"] == "member" and overwrite["id"] == session["user_id"]:
+                    channel_perm = (channel_perm & ~overwrite['deny']) | overwrite['allow']
+                    break
+
+            result["read"] = user_has_permission(channel_perm, 10)
+            result["write"] = user_has_permission(channel_perm, 11)
+
+            # If default channel, you can read
+            if channel["id"] == guild_id:
+                result["read"] = True
+
+            # If you cant read channel, you cant write in it
+            if not user_has_permission(channel_perm, 10):
+                result["read"] = False
+                result["write"] = False
+
+            if result["read"]:
+                result_channels.append(result)
     return result_channels
+
+def filter_guild_channel(guild_id, channel_id):
+    channels = get_guild_channels(guild_id)
+    for chan in channels:
+        if chan["channel"]["id"] == guild_id:
+            return chan
+    return None
 
 def get_online_discord_users(guild_id):
     embed = discord_api.get_widget(guild_id)
@@ -170,12 +224,16 @@ def fetch():
     else:
         key = None
     status = update_user_status(guild_id, session['username'], key)
+    messages = {}
     if status['banned'] or status['revoked']:
-        messages = {}
         status_code = 403
     else:
-        messages = discord_api.get_channel_messages(channel_id, after_snowflake)
-        status_code = messages['code']
+        chan = filter_guild_channel(guild_id, channel_id)
+        if not chan.get("read"):
+            status_code = 401
+        else:
+            messages = discord_api.get_channel_messages(channel_id, after_snowflake)
+            status_code = messages['code']
     response = jsonify(messages=messages.get('content', messages), status=status)
     response.status_code = status_code
     return response
@@ -193,12 +251,16 @@ def post():
     else:
         key = None
     status = update_user_status(guild_id, session['username'], key)
+    message = {}
     if status['banned'] or status['revoked']:
-        message = {}
         status_code = 401
     else:
-        message = discord_api.create_message(channel_id, content)
-        status_code = message['code']
+        chan = filter_guild_channel(guild_id, channel_id)
+        if not chan.get("write"):
+            status_code = 401
+        else:
+            message = discord_api.create_message(channel_id, content)
+            status_code = message['code']
     response = jsonify(message=message.get('content', message), status=status)
     response.status_code = status_code
     return response

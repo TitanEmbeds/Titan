@@ -144,8 +144,19 @@ function fill_channels(channels) {
     $("#channels-list").empty();
     for (var i = 0; i < channels.length; i++) {
         var chan = channels[i];
-        var rendered = Mustache.render(template, {"channelid": chan.id, "channelname": chan.name});
-        $("#channels-list").append(rendered);
+        if (chan.read) {
+          var rendered = Mustache.render(template, {"channelid": chan.channel.id, "channelname": chan.channel.name});
+          $("#channels-list").append(rendered);
+          if (chan.channel.id == selected_channel) {
+            if (chan.write) {
+              $("#messagebox").prop('disabled', false);
+              $("#messagebox").prop('placeholder', "Enter message");
+            } else {
+              $("#messagebox").prop('disabled', true);
+              $("#messagebox").prop('placeholder', "Messages is disabled in this channel.");
+            }
+          }
+        }
     }
     $("#channel-"+selected_channel).parent().addClass("active");
 }
