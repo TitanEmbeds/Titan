@@ -60,6 +60,10 @@ def dashboard():
     if not guilds:
         session["redirect"] = url_for("user.dashboard")
         return redirect(url_for("user.logout"))
+    if session["redirect"]:
+        redir = session['redirect']
+        session['redirect'] = None
+        return redirect(redir)
     return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url)
 
 @user.route("/administrate_guild/<guild_id>", methods=["GET"])
@@ -69,6 +73,7 @@ def administrate_guild(guild_id):
         return redirect(url_for("user.dashboard"))
     guild = discord_api.get_guild(guild_id)
     if guild['code'] != 200:
+        session["redirect"] = url_for("user.administrate_guild", guild_id=guild_id, _external=True)
         return redirect(generate_bot_invite_url(guild_id))
     db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     if not db_guild:
