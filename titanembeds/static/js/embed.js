@@ -374,6 +374,7 @@ $("#messagebox").keyup(function(event){
     if(event.keyCode == 13 && $(this).val().length >= 1 && $(this).val().length <= 350) {
         $(this).val($.trim($(this).val()));
         $(this).blur();
+        $("#messagebox").attr('readonly', true);
         var funct = post(selected_channel, $(this).val());
         funct.done(function(data) {
             $("#messagebox").val("");
@@ -388,6 +389,9 @@ $("#messagebox").keyup(function(event){
                 Materialize.toast('You are sending messages too fast! 1 message per 10 seconds', 10000);
             }
         });
+        funct.always(function() {
+            $("#messagebox").attr('readonly', false);
+        })
     }
 });
 
