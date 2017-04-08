@@ -37,9 +37,15 @@
             <span class="name">{{ guild['name'] }}</span>
           </div>
         </li>
+
         <li><a class="subheader">Actions</a></li>
         <li><a href="{{ url_for("user.administrate_guild", guild_id=guild['id']) }}" class="waves-effect" target="_blank" id="administrate_link" style="display: none;">Manage Guild Embed</a></li>
         <li><a href="https://discordapp.com/channels/{{ guild['id'] }}/" class="waves-effect" target="_blank">Open Server on Discordapp</a></li>
+
+        <li><div class="divider"></div></li>
+
+        <li><a class="subheader">Channel Topic</a></li>
+        <div id="channeltopic"></div>
 
         <li><div class="divider"></div></li>
 

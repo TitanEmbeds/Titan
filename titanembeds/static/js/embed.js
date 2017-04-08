@@ -155,6 +155,7 @@ function fill_channels(channels) {
               $("#messagebox").prop('disabled', true);
               $("#messagebox").prop('placeholder', "Messages is disabled in this channel.");
             }
+            $("#channeltopic").text(chan.channel.topic);
           }
         }
     }

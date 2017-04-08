@@ -8,7 +8,7 @@ min-height: calc(100vh - 80px);
 }
 
 footer {
-position: fixed; 
+position: fixed;
 bottom: 0;
 left: 0;
 right: 0;
@@ -133,4 +133,11 @@ background-color: #546e7a;
   font-variant: small-caps;
   font-size: 15px;
   color: #eceff1;
+}
+
+#channeltopic {
+  width: 80%;
+  margin-left: 30px;
+  margin-right: auto;
+  font-size: 85%;
 }
