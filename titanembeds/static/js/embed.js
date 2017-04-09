@@ -155,14 +155,25 @@ function fill_channels(channels) {
     $("#channel-"+selected_channel).parent().addClass("active");
 }
 
+function mention_member(member_id) {
+  if (!$('#messagebox').prop('disabled')) {
+    $('#messagebox').val( $('#messagebox').val() + "[@" + member_id + "] " );
+    $('.button-collapse').sideNav('hide');
+    $("#messagebox").focus();
+  }
+}
+
 function fill_discord_members(discordmembers) {
     var template = $('#mustache_authedusers').html();
     Mustache.parse(template);
     $("#discord-members").empty();
     for (var i = 0; i < discordmembers.length; i++) {
         var member = discordmembers[i];
-        var rendered = Mustache.render(template, {"id": member.id, "username": member.username, "avatar": member.avatar_url});
+        var rendered = Mustache.render(template, {"id": member.id.toString() + "d", "username": member.username, "avatar": member.avatar_url});
         $("#discord-members").append(rendered);
+        $( "#discorduser-" + member.id.toString() + "d").click(function() {
+          mention_member(member.id.toString());
+        });
     }
 }
 
@@ -172,8 +183,11 @@ function fill_authenticated_users(users) {
     $("#embed-discord-members").empty();
     for (var i = 0; i < users.length; i++) {
         var member = users[i];
-        var rendered = Mustache.render(template, {"id": member.id, "username": member.username, "avatar": member.avatar_url});
+        var rendered = Mustache.render(template, {"id": member.id.toString() + "a", "username": member.username, "avatar": member.avatar_url});
         $("#embed-discord-members").append(rendered);
+        $( "#discorduser-" + member.id.toString() + "a").click(function() {
+          mention_member(member.id.toString());
+        });
     }
 }
 

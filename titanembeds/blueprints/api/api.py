@@ -8,6 +8,7 @@ import random
 import requests
 import json
 import datetime
+import re
 from config import config
 
 api = Blueprint("api", __name__)
@@ -99,7 +100,13 @@ def check_user_in_guild(guild_id):
 
 def format_post_content(message):
     message = message.replace("<", "\<")
-    message = message.replace(">", "\>") #escape mentions for now
+    message = message.replace(">", "\>")
+
+    pattern = re.compile(r'\[@[0-9]+\]')
+    for match in re.findall(pattern, message):
+        mention = "<@" + match[2: len(match) - 1] + ">"
+        message = message.replace(match, mention, 1)
+
     if (session['unauthenticated']):
         message = "**[{}#{}]** {}".format(session['username'], session['user_id'], message)
     else:
