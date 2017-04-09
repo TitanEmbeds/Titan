@@ -53,53 +53,58 @@
     <div class="col s12">
       <h2 class="header">Moderate Unauthenticated Members</h2>
       <div class="card horizontal black-text indigo lighten-5 z-depth-3 hoverable">
-        <div class="card-stacked">
+        <div class="card-stacked" style="overflow-x: hidden;">
           <div class="card-content">
-            <p class="flow-text">Select Action</p>
-            <table class="striped responsive-table">
-              <thead>
-                <tr>
-                    <th>Kick User</th>
-                    <th>Ban User</th>
-                    <th>Username</th>
-                    <th>Discrim</th>
-                    <th>Last Visit</th>
-                    <th>IP Address</th>
-                    <th>Banned Timestamp</th>
-                    <th>Banned by</th>
-                    <th>Banned Reason</th>
-                    <th>Ban Lifted by</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for member in members %}
-                  <tr>
-                    <td><a class="waves-effect waves-light btn orange"  {% if "Kick Members" not in permissions or member["kicked"] %}disabled{% endif %} onclick='revoke_user( "{{ guild['id'] }}" , {{ member['id'] }} )'  >Kick</a></td>
-                    {% if not member["banned"] %}
-                    <td><a class="waves-effect waves-light btn red"   {% if "Ban Members" not in permissions %}disabled{% endif %}  {% if "Ban Members" in permissions %}  onclick='initiate_ban( "{{ guild['id'] }}" , {{ member['id'] }} )'  {% endif %}  >Ban</a></td>
-                    {% else %}
-                    <td><a class="waves-effect waves-light btn red lighten-2"   {% if "Ban Members" not in permissions %}disabled{% endif %}  {% if "Ban Members" in permissions %}  onclick='remove_ban( "{{ guild['id'] }}" , {{ member['id'] }} )'  {% endif %}  >Lift</a></td>
-                    {% endif %}
-                    <td>{{ member['username'] }}</td>
-                    <td>{{ member['discrim'] }}</td>
-                    <td>{{ member['last_visit'] }}</td>
-                    <td>{{ member['ip'] }}</td>
-                    <td>{{ member['banned_timestamp'] }}</td>
-                    <td>{{ member['banned_by'] }}</td>
-                    <td>{{ member['banned_reason'] }}</td>
-                    <td>{{ member['ban_lifted_by'] }}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            <p>Note that all bans are by IP. Seeing duplicates? It is because users are generated a unique session on each browser load.</p>
+            <div class="row">
+              <div class="col s12">
+
+                <p class="flow-text">Select Action</p>
+                <table class="striped responsive-table">
+                  <thead>
+                    <tr>
+                        <th>Kick User</th>
+                        <th>Ban User</th>
+                        <th>Username</th>
+                        <th>Discrim</th>
+                        <th>Last Visit</th>
+                        <th>IP Address</th>
+                        <th>Banned Timestamp</th>
+                        <th>Banned by</th>
+                        <th>Banned Reason</th>
+                        <th>Ban Lifted by</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for member in members %}
+                      <tr>
+                        <td><a class="waves-effect waves-light btn orange"  {% if "Kick Members" not in permissions or member["kicked"] %}disabled{% endif %} onclick='revoke_user( "{{ guild['id'] }}" , {{ member['id'] }} )'  >Kick</a></td>
+                        {% if not member["banned"] %}
+                        <td><a class="waves-effect waves-light btn red"   {% if "Ban Members" not in permissions %}disabled{% endif %}  {% if "Ban Members" in permissions %}  onclick='initiate_ban( "{{ guild['id'] }}" , {{ member['id'] }} )'  {% endif %}  >Ban</a></td>
+                        {% else %}
+                        <td><a class="waves-effect waves-light btn red lighten-2"   {% if "Ban Members" not in permissions %}disabled{% endif %}  {% if "Ban Members" in permissions %}  onclick='remove_ban( "{{ guild['id'] }}" , {{ member['id'] }} )'  {% endif %}  >Lift</a></td>
+                        {% endif %}
+                        <td>{{ member['username'] }}</td>
+                        <td>{{ member['discrim'] }}</td>
+                        <td>{{ member['last_visit'] }}</td>
+                        <td>{{ member['ip'] }}</td>
+                        <td>{{ member['banned_timestamp'] }}</td>
+                        <td>{{ member['banned_by'] }}</td>
+                        <td>{{ member['banned_reason'] }}</td>
+                        <td>{{ member['ban_lifted_by'] }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <p>Note that all bans are by IP. Seeing duplicates? It is because users are generated a unique session on each browser load.</p>
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     {% endif %}
 
-  </div>
+    </div>
 {% endblock %}
 {% block script %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/administrate_guild.js') }}"></script>
