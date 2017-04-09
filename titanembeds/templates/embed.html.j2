@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <title>{{ guild['name'] }} - Embed - Titan Embeds for Discord</title>
+    {% include 'google_analytics.html.j2' %}
   </head>
   <body>
     <div class="navbar-fixed">
@@ -128,8 +129,5 @@
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
-
-    {% include 'google_analytics.html.j2' %}
-
   </body>
 </html>

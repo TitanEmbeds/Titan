@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <title>{% block title %}{% endblock %} - Titan Embeds for Discord</title>
+    
+    {% include 'google_analytics.html.j2' %}
   </head>
   <body>
     <main>
@@ -52,6 +54,5 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js" integrity="sha256-ToPQhpo/E89yaCd7+V8LUCjobNRkjilRXfho6x3twLU=" crossorigin="anonymous"></script>
     {% block script %}{% endblock %}
-    {% include 'google_analytics.html.j2' %}
   </body>
 </html>
