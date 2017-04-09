@@ -324,7 +324,7 @@ function run_fetch_routine() {
         }
     });
     fet.catch(function(data) {
-      if (data.status != 403) {
+      if (!(data.status != 403 || data.status != 401)) {
           fetchtimeout = setTimeout(run_fetch_routine, 10000);
       }
     });
