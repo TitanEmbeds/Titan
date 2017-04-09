@@ -26,7 +26,7 @@ def checkUserRevoke(guild_id, user_key=None):
         banned = checkUserBanned(guild_id)
         if banned:
             return revoked
-        member = discord_api.get_guild_member(guild_id, session['user_id'])
+        member = discord_api.get_guild_member_nocache(guild_id, session['user_id'])
         if member['code'] == 200:
             revoked = False
     return revoked
