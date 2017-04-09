@@ -180,7 +180,7 @@ def get_guild_channels(guild_id):
 
             if result["read"]:
                 result_channels.append(result)
-    return sorted(result_channels, key=lambda k: k['channel']['position']) 
+    return sorted(result_channels, key=lambda k: k['channel']['position'])
 
 def filter_guild_channel(guild_id, channel_id):
     channels = get_guild_channels(guild_id)
@@ -194,7 +194,7 @@ def get_online_discord_users(guild_id):
     return embed['members']
 
 def get_online_embed_users(guild_id):
-    time_past = (datetime.datetime.now() - datetime.timedelta(seconds = 120)).strftime('%Y-%m-%d %H:%M:%S')
+    time_past = (datetime.datetime.now() - datetime.timedelta(seconds = 60)).strftime('%Y-%m-%d %H:%M:%S')
     unauths = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.last_timestamp > time_past, UnauthenticatedUsers.revoked == False, UnauthenticatedUsers.guild_id == guild_id).all()
     auths = db.session.query(AuthenticatedUsers).filter(AuthenticatedUsers.last_timestamp > time_past, AuthenticatedUsers.guild_id == guild_id).all()
     users = {'unauthenticated':[], 'authenticated':[]}
