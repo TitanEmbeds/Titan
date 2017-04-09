@@ -23,12 +23,6 @@ function element_in_view(element, fullyInView) {
     }
 }
 
-function resize_messagebox() {
-    var namebox_width = $("#nameplate").outerWidth(true);
-    var screen_width = $(document).width();
-    $("#messageboxouter").width(screen_width - namebox_width - 40);
-}
-
 function query_guild() {
     var funct = $.ajax({
         dataType: "json",
@@ -79,7 +73,6 @@ function post(channel_id, content) {
 }
 
 $(function(){
-    resize_messagebox();
     $("#loginmodal").modal({
         dismissible: false, // Modal can be dismissed by clicking outside of the modal
         opacity: .5, // Opacity of modal background
@@ -346,7 +339,6 @@ function update_embed_userchip(authenticated, avatar, username, userid) {
         $("#currentuserimage").hide();
         $("#currentusername").text(username + "#" + userid);
     }
-    resize_messagebox();
 }
 
 $("#discordlogin_btn").click(function() {
@@ -406,10 +398,6 @@ $("#messagebox").keyup(function(event){
             $("#messagebox").attr('readonly', false);
         })
     }
-});
-
-$(window).resize(function() {
-    resize_messagebox();
 });
 
 $('#guild-btn').sideNav({

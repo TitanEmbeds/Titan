@@ -5,6 +5,7 @@ color: white;
 
 main {
 min-height: calc(100vh - 80px);
+overflow-x: hidden;
 }
 
 footer {
@@ -112,6 +113,13 @@ color: #90a4ae;
 width: 100%;
 position: relative;
 margin: 10px;
+white-space: nowrap;
+overflow: hidden;
+}
+
+#messageboxouter {
+  width: 100%;
+  overflow: hidden;
 }
 
 .currentuserchip {
