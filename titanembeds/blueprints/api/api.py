@@ -180,7 +180,7 @@ def get_guild_channels(guild_id):
 
             if result["read"]:
                 result_channels.append(result)
-    return result_channels
+    return sorted(result_channels, key=lambda k: k['channel']['position']) 
 
 def filter_guild_channel(guild_id, channel_id):
     channels = get_guild_channels(guild_id)
