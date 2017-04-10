@@ -171,8 +171,8 @@ function fill_discord_members(discordmembers) {
         var member = discordmembers[i];
         var rendered = Mustache.render(template, {"id": member.id.toString() + "d", "username": member.username, "avatar": member.avatar_url});
         $("#discord-members").append(rendered);
-        $( "#discorduser-" + member.id.toString() + "d").click(function() {
-          mention_member(member.id.toString());
+        $( "#discorduser-" + member.id.toString() + "d").click({"member_id": member.id.toString()}, function(event) {
+          mention_member(event.data.member_id);
         });
     }
 }
@@ -185,8 +185,8 @@ function fill_authenticated_users(users) {
         var member = users[i];
         var rendered = Mustache.render(template, {"id": member.id.toString() + "a", "username": member.username, "avatar": member.avatar_url});
         $("#embed-discord-members").append(rendered);
-        $( "#discorduser-" + member.id.toString() + "a").click(function() {
-          mention_member(member.id.toString());
+        $( "#discorduser-" + member.id.toString() + "a").click({"member_id": member.id.toString()}, function(event) {
+          mention_member(event.data.member_id);
         });
     }
 }
