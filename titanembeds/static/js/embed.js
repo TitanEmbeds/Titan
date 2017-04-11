@@ -295,6 +295,9 @@ function fill_discord_messages(messages, jumpscroll) {
         last = message.id;
     }
     $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+    $('#chatcontent').linkify({
+        target: "_blank"
+    });
     return last;
 }
 
