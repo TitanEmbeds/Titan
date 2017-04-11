@@ -325,7 +325,7 @@ function run_fetch_routine() {
             fill_discord_members(guildobj.discordmembers);
             fill_authenticated_users(guildobj.embedmembers.authenticated);
             fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
-            fetchtimeout = setTimeout(run_fetch_routine, 10000);
+            fetchtimeout = setTimeout(run_fetch_routine, 5000);
         });
     });
     fet.fail(function(data) {

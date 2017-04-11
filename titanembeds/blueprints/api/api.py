@@ -225,7 +225,7 @@ def get_online_embed_users(guild_id):
 
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
-@rate_limiter.limit("1 per 2 second", key_func = channel_ratelimit_key)
+@rate_limiter.limit("2 per 2 second", key_func = channel_ratelimit_key)
 def fetch():
     guild_id = request.args.get("guild_id")
     channel_id = request.args.get('channel_id')
