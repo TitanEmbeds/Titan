@@ -6,15 +6,17 @@ from flask_limiter import Limiter
 from config import config
 import random
 import string
+import hashlib
 
 discord_api = DiscordREST(config['bot-token'])
 cache = Cache()
 
 def get_client_ipaddr():
     if "X-Real-IP" in request.headers: # pythonanywhere specific
-        return request.headers['X-Real-IP']
+        ip = request.headers['X-Real-IP']
     else: # general
-        return request.remote_addr
+        ip = request.remote_addr
+    return hashlib.sha512(config['app-secret'] + ip).hexdigest()[:15]
 
 def generate_session_key():
     sess = session.get("sessionunique", None)
