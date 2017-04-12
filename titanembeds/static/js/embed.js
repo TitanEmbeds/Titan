@@ -240,6 +240,7 @@ function replace_message_mentions(message) {
         var mention = mentions[i];
         message.content = message.content.replace(new RegExp("<@" + mention.id + ">", 'g'), "@" + mention.username + "#" + mention.discriminator);
         message.content = message.content.replace(new RegExp("<@!" + mention.id + ">", 'g'), "@" + mention.username + "#" + mention.discriminator);
+        message.content = message.content.replace("<@&" + guild_id + ">", "@everyone");
     }
     return message;
 }
@@ -277,6 +278,16 @@ function parse_message_attachments(message) {
     return message;
 }
 
+function handle_last_message_mention() {
+    var lastmsg = $("#chatcontent p:last-child");
+    var content = lastmsg.text().toLowerCase();
+    var username_discrim = $("#currentusername").text().toLowerCase();
+    if (content.includes("@everyone") || content.includes("@" + username_discrim)) {
+        lastmsg.css( "color", "#ff5252" );
+        lastmsg.css( "font-weight", "bold" );
+    }
+}
+
 function fill_discord_messages(messages, jumpscroll) {
     if (messages.length == 0) {
         return last_message_id;
@@ -293,6 +304,7 @@ function fill_discord_messages(messages, jumpscroll) {
         var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": message.content});
         $("#chatcontent").append(rendered);
         last = message.id;
+        handle_last_message_mention();
     }
     $("html, body").animate({ scrollTop: $(document).height() }, "slow");
     $('#chatcontent').linkify({
@@ -315,7 +327,7 @@ function run_fetch_routine() {
     }
     fet.done(function(data) {
         var status = data.status;
-        update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id);
+        update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id, status.discriminator);
         last_message_id = fill_discord_messages(data.messages, jumpscroll);
         if (status.manage_embed) {
             $("#administrate_link").show();
@@ -347,11 +359,11 @@ function run_fetch_routine() {
     });
 }
 
-function update_embed_userchip(authenticated, avatar, username, userid) {
+function update_embed_userchip(authenticated, avatar, username, userid, discrim=null) {
     if (authenticated) {
         $("#currentuserimage").show();
         $("#currentuserimage").attr("src", avatar);
-        $("#currentusername").text(username);
+        $("#currentusername").text(username + "#" + discrim);
     } else {
         $("#currentuserimage").hide();
         $("#currentusername").text(username + "#" + userid);

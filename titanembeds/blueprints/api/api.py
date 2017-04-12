@@ -80,6 +80,7 @@ def update_user_status(guild_id, username, user_key=None):
             'avatar': session["avatar"],
             'manage_embed': check_user_can_administrate_guild(guild_id),
             'username': username,
+            'discriminator': session['discriminator'],
             'guild_id': guild_id,
             'user_id': session['user_id'],
             'banned': checkUserBanned(guild_id),
