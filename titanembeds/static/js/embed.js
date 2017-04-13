@@ -371,7 +371,8 @@
             }
         });
         fet.catch(function(data) {
-          if (data.status != 403 && data.status != 401) {
+          if (500 <= data.status < 600) {
+              Materialize.toast('Fetching messages error! Webserver down?', 10000);
               fetchtimeout = setTimeout(run_fetch_routine, 10000);
           }
         });
