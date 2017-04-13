@@ -10,6 +10,7 @@
     var fetchtimeout; // fetch routine timer
     var last_message_id; // last message tracked
     var selected_channel = guild_id; // user selected channel, defaults to #general channel
+    var guild_channels = {}; // all server channels used to highlight channels in messages
     
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -138,6 +139,7 @@
         $("#channels-list").empty();
         for (var i = 0; i < channels.length; i++) {
             var chan = channels[i];
+            guild_channels[chan.channel.id] = chan;
             if (chan.read) {
               var rendered = Mustache.render(template, {"channelid": chan.channel.id, "channelname": chan.channel.name});
               $("#channels-list").append(rendered);
@@ -306,6 +308,15 @@
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
     }
     
+    function parse_channels_in_message(message) {
+        var channelids = Object.keys(guild_channels);
+        for (var i = 0; i < channelids.length; i++) {
+            var pattern = "<#" + channelids[i] + ">";
+            message.content = message.content.replace(new RegExp(pattern, "g"), "#" + guild_channels[channelids[i]].channel.name);
+        }
+        return message;
+    }
+    
     function fill_discord_messages(messages, jumpscroll) {
         if (messages.length == 0) {
             return last_message_id;
@@ -319,6 +330,7 @@
             message = format_bot_message(message);
             message = parse_message_time(message);
             message = parse_message_attachments(message);
+            message = parse_channels_in_message(message);
             var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": nl2br(escapeHtml(message.content))});
             $("#chatcontent").append(rendered);
             last = message.id;
