@@ -288,6 +288,20 @@ function handle_last_message_mention() {
     }
 }
 
+function escapeHtml(unsafe) { /* http://stackoverflow.com/questions/6234773/can-i-escape-html-special-chars-in-javascript */
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
+ 
+function nl2br (str, is_xhtml) {   /* http://stackoverflow.com/questions/2919337/jquery-convert-line-breaks-to-br-nl2br-equivalent/ */
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
+}
+
 function fill_discord_messages(messages, jumpscroll) {
     if (messages.length == 0) {
         return last_message_id;
@@ -301,7 +315,7 @@ function fill_discord_messages(messages, jumpscroll) {
         message = format_bot_message(message);
         message = parse_message_time(message);
         message = parse_message_attachments(message);
-        var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": message.content});
+        var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": nl2br(escapeHtml(message.content))});
         $("#chatcontent").append(rendered);
         last = message.id;
         handle_last_message_mention();
