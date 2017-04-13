@@ -109,7 +109,7 @@
 
     {% raw %}
     <script id="mustache_channellistings" type="text/template">
-      <li><a class="waves-effect truncate" id="channel-{{channelid}}" onclick='select_channel("{{channelid}}");'><span class="channel-hash">#</span> {{channelname}}</a></li>
+      <li><a class="waves-effect truncate" id="channel-{{channelid}}"><span class="channel-hash">#</span> {{channelname}}</a></li>
     </script>
 
     <script id="mustache_authedusers" type="text/template">
@@ -126,8 +126,8 @@
     {% endraw %}
 
     <script>
-        var guild_id = "{{ guild_id }}";
-        var bot_client_id = "{{ client_id }}";
+        const guild_id = "{{ guild_id }}";
+        const bot_client_id = "{{ client_id }}";
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
