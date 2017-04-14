@@ -11,20 +11,20 @@
     var last_message_id; // last message tracked
     var selected_channel = guild_id; // user selected channel, defaults to #general channel
     var guild_channels = {}; // all server channels used to highlight channels in messages
-    
+
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
         var pageBottom = pageTop + $(window).height();
         var elementTop = $(element).offset().top;
         var elementBottom = elementTop + $(element).height();
-    
+
         if (fullyInView === true) {
             return ((pageTop < elementTop) && (pageBottom > elementBottom));
         } else {
             return ((elementTop <= pageBottom) && (elementBottom >= pageTop));
         }
     }
-    
+
     function query_guild() {
         var funct = $.ajax({
             dataType: "json",
@@ -33,7 +33,7 @@
         });
         return funct.promise();
     }
-    
+
     function create_authenticated_user() {
         var funct = $.ajax({
             method: "POST",
@@ -43,7 +43,7 @@
         });
         return funct.promise();
     }
-    
+
     function create_unauthenticated_user(username) {
         var funct = $.ajax({
             method: "POST",
@@ -53,7 +53,7 @@
         });
         return funct.promise();
     }
-    
+
     function fetch(channel_id, after=null) {
         var funct = $.ajax({
             method: "GET",
@@ -63,7 +63,7 @@
         });
         return funct.promise();
     }
-    
+
     function post(channel_id, content) {
         var funct = $.ajax({
             method: "POST",
@@ -73,7 +73,7 @@
         });
         return funct.promise();
     }
-    
+
     $(function(){
         $("#loginmodal").modal({
             dismissible: false, // Modal can be dismissed by clicking outside of the modal
@@ -84,18 +84,18 @@
             endingTop: '10%', // Ending top style attribute
           }
         );
-    
+
         var guild = query_guild();
         guild.fail(function() {
             $('#loginmodal').modal('open');
         });
-    
+
         guild.done(function(data) {
             initialize_embed(data);
             //$('#loginmodal').modal('open');
         });
     });
-    
+
     function lock_login_fields() {
         $("#loginProgress").show();
         $("#discordlogin_btn").attr("disabled",true);
@@ -104,14 +104,14 @@
             unlock_login_fields();
         }, 60000);
     }
-    
+
     function unlock_login_fields() {
         $("#loginProgress").hide();
         $("#discordlogin_btn").attr("disabled",false);
         $("#custom_username_field").prop("disabled",false);
         clearTimeout(logintimer);
     }
-    
+
     function initialize_embed(guildobj) {
         $('#loginmodal').modal('close');
         unlock_login_fields();
@@ -124,7 +124,7 @@
             prepare_guild(guildobj);
         }
     }
-    
+
     function prepare_guild(guildobj) {
         fill_channels(guildobj.channels);
         fill_discord_members(guildobj.discordmembers);
@@ -132,7 +132,7 @@
         fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
         run_fetch_routine();
     }
-    
+
     function fill_channels(channels) {
         var template = $('#mustache_channellistings').html();
         Mustache.parse(template);
@@ -160,7 +160,7 @@
         }
         $("#channel-"+selected_channel).parent().addClass("active");
     }
-    
+
     function mention_member(member_id) {
       if (!$('#messagebox').prop('disabled')) {
         $('#messagebox').val( $('#messagebox').val() + "[@" + member_id + "] " );
@@ -168,21 +168,65 @@
         $("#messagebox").focus();
       }
     }
-    
+
     function fill_discord_members(discordmembers) {
         var template = $('#mustache_authedusers').html();
         Mustache.parse(template);
         $("#discord-members").empty();
+        var guild_members = {};
         for (var i = 0; i < discordmembers.length; i++) {
             var member = discordmembers[i];
-            var rendered = Mustache.render(template, {"id": member.id.toString() + "d", "username": member.username, "avatar": member.avatar_url});
-            $("#discord-members").append(rendered);
+            if (member["hoist-role"]) {
+              if (!(member["hoist-role"]["id"] in guild_members)) {
+                guild_members[member["hoist-role"]["id"]] = {};
+                guild_members[member["hoist-role"]["id"]]["name"] = member["hoist-role"]["name"];
+                guild_members[member["hoist-role"]["id"]]["members"] = [];
+                guild_members[member["hoist-role"]["id"]]["position"] = member["hoist-role"]["position"]
+              }
+              guild_members[member["hoist-role"]["id"]]["members"].push(member);
+            } else {
+              if (!("0" in guild_members)) {
+                guild_members["0"] = {};
+                guild_members["0"]["name"] = null;
+                guild_members["0"]["members"] = [];
+                guild_members["0"]["position"] = 0;
+              }
+              guild_members["0"]["members"].push(member);
+            }
+        }
+        var guild_members_arr = [];
+        for (key in guild_members) {
+          guild_members_arr.push(guild_members[key]);
+        }
+        guild_members_arr.sort(function(a, b) {
+          return parseInt(b.position) - parseInt(a.position);
+        })
+        var template_role = $('#mustache_memberrole').html();
+        Mustache.parse(template_role);
+        var template_user = $('#mustache_authedusers').html();
+        Mustache.parse(template_user);
+        $("#discord-members").empty();
+        for (var i = 0; i < guild_members_arr.length; i++) {
+          var roleobj = guild_members_arr[i];
+          if (!roleobj["name"]) {
+            roleobj["name"] = "Uncategorized";
+          }
+          var rendered_role = Mustache.render(template_role, {"name": roleobj["name"]});
+          $("#discord-members").append(rendered_role);
+          for (var j = 0; j < roleobj.members.length; j++) {
+            var member = roleobj.members[j];
+            var rendered_user = Mustache.render(template_user, {"id": member.id.toString() + "d", "username": member.username, "avatar": member.avatar_url});
+            $("#discord-members").append(rendered_user);
             $( "#discorduser-" + member.id.toString() + "d").click({"member_id": member.id.toString()}, function(event) {
               mention_member(event.data.member_id);
             });
+            if (member.color) {
+              $( "#discorduser-" + member.id.toString() + "d").css("color", "#" + member.color);
+            }
+          }
         }
     }
-    
+
     function fill_authenticated_users(users) {
         var template = $('#mustache_authedusers').html();
         Mustache.parse(template);
@@ -196,7 +240,7 @@
             });
         }
     }
-    
+
     function fill_unauthenticated_users(users) {
         var template = $('#mustache_unauthedusers').html();
         Mustache.parse(template);
@@ -207,11 +251,11 @@
             $("#embed-unauth-users").append(rendered);
         }
     }
-    
+
     function wait_for_discord_login() {
         _wait_for_discord_login(0);
     }
-    
+
     function _wait_for_discord_login(index) {
         setTimeout(function() {
             var usr = create_authenticated_user();
@@ -228,7 +272,7 @@
             });
         }, 5000);
     }
-    
+
     function select_channel(channel_id) {
         if (selected_channel != channel_id) {
             selected_channel = channel_id;
@@ -239,7 +283,7 @@
             run_fetch_routine();
         }
     }
-    
+
     function replace_message_mentions(message) {
         var mentions = message.mentions;
         for (var i = 0; i < mentions.length; i++) {
@@ -250,11 +294,11 @@
         }
         return message;
     }
-    
+
     function getPosition(string, subString, index) {
        return string.split(subString, index).join(subString).length;
     }
-    
+
     function format_bot_message(message) {
         if (message.author.id == bot_client_id && (message.content.includes("**") && ( (message.content.includes("<")&&message.content.includes(">")) || (message.content.includes("[") && message.content.includes("]")) ))) {
             var usernamefield = message.content.substring(getPosition(message.content, "**", 1)+3, getPosition(message.content, "**", 2)-1);
@@ -264,14 +308,14 @@
         }
         return message;
     }
-    
+
     function parse_message_time(message) {
         var mome = moment(message.timestamp);
         message.formatted_timestamp = mome.toDate().toString();
         message.formatted_time = mome.format("h:mm A");
         return message;
     }
-    
+
     function parse_message_attachments(message) {
         for (var i = 0; i < message.attachments.length; i++) {
             var attach = "";
@@ -283,7 +327,7 @@
         }
         return message;
     }
-    
+
     function handle_last_message_mention() {
         var lastmsg = $("#chatcontent p:last-child");
         var content = lastmsg.text().toLowerCase();
@@ -293,7 +337,7 @@
             lastmsg.css( "font-weight", "bold" );
         }
     }
-    
+
     function escapeHtml(unsafe) { /* http://stackoverflow.com/questions/6234773/can-i-escape-html-special-chars-in-javascript */
         return unsafe
              .replace(/&/g, "&amp;")
@@ -302,12 +346,12 @@
              .replace(/"/g, "&quot;")
              .replace(/'/g, "&#039;");
      }
-     
+
     function nl2br (str, is_xhtml) {   /* http://stackoverflow.com/questions/2919337/jquery-convert-line-breaks-to-br-nl2br-equivalent/ */
-        var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
+        var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
     }
-    
+
     function parse_channels_in_message(message) {
         var channelids = Object.keys(guild_channels);
         for (var i = 0; i < channelids.length; i++) {
@@ -316,7 +360,7 @@
         }
         return message;
     }
-    
+
     function fill_discord_messages(messages, jumpscroll) {
         if (messages.length == 0) {
             return last_message_id;
@@ -342,7 +386,7 @@
         });
         return last;
     }
-    
+
     function run_fetch_routine() {
         var channel_id = selected_channel;
         var fet;
@@ -389,7 +433,7 @@
           }
         });
     }
-    
+
     function update_embed_userchip(authenticated, avatar, username, userid, discrim=null) {
         if (authenticated) {
             $("#currentuserimage").show();
@@ -400,12 +444,12 @@
             $("#currentusername").text(username + "#" + userid);
         }
     }
-    
+
     $("#discordlogin_btn").click(function() {
         lock_login_fields();
         wait_for_discord_login();
     });
-    
+
     $("#custom_username_field").keyup(function(event){
         if (event.keyCode == 13) {
             if (!(new RegExp(/^[a-z\d\-_\s]+$/i).test($(this).val()))) {
@@ -431,7 +475,7 @@
             }
         }
     });
-    
+
     $("#messagebox").keyup(function(event){
         if ($(this).val().length == 1) {
             $(this).val($.trim($(this).val()));
@@ -459,7 +503,7 @@
             });
         }
     });
-    
+
     $('#guild-btn').sideNav({
         menuWidth: 300, // Default is 300
         edge: 'left', // Choose the horizontal origin
@@ -467,7 +511,7 @@
         draggable: true // Choose whether you can drag to open on touch screens
     }
     );
-    
+
     $('#members-btn').sideNav({
         menuWidth: 300, // Default is 300
         edge: 'right', // Choose the horizontal origin

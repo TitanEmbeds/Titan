@@ -2,10 +2,12 @@ import requests
 import sys
 import time
 import json
+from functools import partial
 from cachetools import cached, TTLCache
+from cachetools.keys import hashkey
 
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
-cache = TTLCache(200, 300)
+cache = TTLCache(200, 200)
 
 def json_or_text(response):
     text = response.text
@@ -120,7 +122,7 @@ class DiscordREST:
         r = self.request("GET", _endpoint)
         return r
 
-    @cached(cache)
+    @cached(cache, key=partial(hashkey, 'get_guild_member'))
     def get_guild_member(self, guild_id, user_id):
         _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
         r = self.request("GET", _endpoint)
@@ -158,11 +160,30 @@ class DiscordREST:
         r = self.request("GET", _endpoint)
         return r
 
+    @cached(cache, key=partial(hashkey, 'list_all_guild_members'))
+    def list_all_guild_members(self, guild_id):
+        _endpoint = "/guilds/{guild_id}/members".format(guild_id=guild_id)
+        count = 1
+        last_usrid = ""
+        users = []
+        params = {"limit": 1000}
+        while count > 0:
+            r = self.request("GET", _endpoint, params=params)
+            if r["success"] == True:
+                content = r["content"]
+                count = len(content)
+                users.extend(content)
+                if count > 0:
+                    params["after"] = content[-1]["user"]["id"]
+            else:
+                count = 0
+        return users
+
     #####################
     # User
     #####################
 
-    @cached(cache)
+    @cached(cache, key=partial(hashkey, 'get_all_guilds'))
     def get_all_guilds(self):
         _endpoint = "/users/@me/guilds"
         params = {}
@@ -185,7 +206,7 @@ class DiscordREST:
     # Widget Handler
     #####################
 
-    @cached(cache)
+    @cached(cache, key=partial(hashkey, 'get_widget'))
     def get_widget(self, guild_id):
         _endpoint = _DISCORD_API_BASE + "/servers/{guild_id}/widget.json".format(guild_id=guild_id)
         embed = self.get_guild_embed(guild_id)

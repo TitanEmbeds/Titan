@@ -51,6 +51,12 @@ color: #cfd8dc;
 font-variant: small-caps;
 }
 
+.role-title {
+  margin-bottom: -15px !important;
+  font-variant: normal !important;
+  font-size: 80% !important;
+}
+
 .divider {
 background-color: #90a4ae;
 }

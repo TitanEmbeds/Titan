@@ -186,8 +186,8 @@ def get_guild_channels(guild_id):
                 result["read"] = False
                 result["write"] = False
 
-            #if result["read"]:
-            result_channels.append(result)
+            if result["read"]:
+                result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
 
 def filter_guild_channel(guild_id, channel_id):
@@ -199,6 +199,28 @@ def filter_guild_channel(guild_id, channel_id):
 
 def get_online_discord_users(guild_id):
     embed = discord_api.get_widget(guild_id)
+    apimembers = discord_api.list_all_guild_members(guild_id)
+    apimembers_filtered = {}
+    for member in apimembers:
+        apimembers_filtered[member["user"]["id"]] = member
+    guild_roles = discord_api.get_guild_roles(guild_id)["content"]
+    guildroles_filtered = {}
+    for role in guild_roles:
+        guildroles_filtered[role["id"]] = role
+    for member in embed['members']:
+        apimem = apimembers_filtered.get(member["id"])
+        member["hoist-role"] = None
+        member["color"] = None
+        if apimem:
+            for roleid in reversed(apimem["roles"]):
+                role = guildroles_filtered[roleid]
+                if role["color"] != 0:
+                    member["color"] = '{0:02x}'.format(role["color"]) #int to hex
+                if role["hoist"]:
+                    member["hoist-role"] = {}
+                    member["hoist-role"]["name"] = role["name"]
+                    member["hoist-role"]["id"] = role["id"]
+                    member["hoist-role"]["position"] = role["position"]
     return embed['members']
 
 def get_online_embed_users(guild_id):
@@ -287,7 +309,7 @@ def create_unauthenticated_user():
     username = username.strip()
     if len(username) < 2 or len(username) > 32:
         abort(406)
-    if not all(x.isalnum() or x.isspace() or "-" == x or "_" == x for x in username):
+    if not all(x.isalpha() or x.isspace() or "-" == x or "_" == x for x in username):
         abort(406)
     if not check_guild_existance(guild_id):
         abort(404)
