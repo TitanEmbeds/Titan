@@ -186,8 +186,8 @@ def get_guild_channels(guild_id):
                 result["read"] = False
                 result["write"] = False
 
-            if result["read"]:
-                result_channels.append(result)
+            #if result["read"]:
+            result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
 
 def filter_guild_channel(guild_id, channel_id):
@@ -309,7 +309,7 @@ def create_unauthenticated_user():
     username = username.strip()
     if len(username) < 2 or len(username) > 32:
         abort(406)
-    if not all(x.isalpha() or x.isspace() or "-" == x or "_" == x for x in username):
+    if not all(x.isalnum() or x.isspace() or "-" == x or "_" == x for x in username):
         abort(406)
     if not check_guild_existance(guild_id):
         abort(404)
