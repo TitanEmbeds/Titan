@@ -317,7 +317,7 @@ def create_unauthenticated_user():
         abort(401)
     if not checkUserBanned(guild_id, ip_address):
         session['username'] = username
-        if 'user_id' not in session:
+        if 'user_id' not in session or len(str(session["user_id"])) > 4:
             session['user_id'] = random.randint(0,9999)
         user = UnauthenticatedUsers(guild_id, username, session['user_id'], ip_address)
         db.session.add(user)
