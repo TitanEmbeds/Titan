@@ -8,6 +8,7 @@
 (function () {
     var logintimer; // timer to keep track of user inactivity after hitting login
     var fetchtimeout; // fetch routine timer
+    var currently_fetching; // fetch lock- if true, do not fetch
     var last_message_id; // last message tracked
     var selected_channel = guild_id; // user selected channel, defaults to #general channel
     var guild_channels = {}; // all server channels used to highlight channels in messages
@@ -200,7 +201,7 @@
         }
         guild_members_arr.sort(function(a, b) {
           return parseInt(b.position) - parseInt(a.position);
-        })
+        });
         var template_role = $('#mustache_memberrole').html();
         Mustache.parse(template_role);
         var template_user = $('#mustache_authedusers').html();
@@ -388,6 +389,10 @@
     }
 
     function run_fetch_routine() {
+        if (currently_fetching) {
+            return;
+        }
+        currently_fetching = true;
         var channel_id = selected_channel;
         var fet;
         var jumpscroll;
@@ -431,6 +436,9 @@
               Materialize.toast('Fetching messages error! Webserver down?', 10000);
               fetchtimeout = setTimeout(run_fetch_routine, 10000);
           }
+        });
+        fet.always(function() {
+            currently_fetching = false;
         });
     }
 
