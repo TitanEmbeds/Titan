@@ -2,7 +2,7 @@ from config import config
 from database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import cache, rate_limiter
+from titanembeds.utils import rate_limiter, cache
 import blueprints.api
 import blueprints.user
 import blueprints.embed
@@ -19,7 +19,6 @@ app.config['RATELIMIT_STORAGE_URL'] = 'redislite://redislite.db'
 app.secret_key = config['app-secret']
 
 db.init_app(app)
-cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 rate_limiter.init_app(app)
 sslify = SSLify(app, permanent=True)
 

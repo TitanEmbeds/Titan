@@ -42,7 +42,7 @@ def get_current_authenticated_user():
 def user_has_permission(permission, index):
     return bool((int(permission) >> index) & 1)
 
-@cache.cached(timeout=120, key_prefix=make_guilds_cache_key)
+@cache.cache(make_guilds_cache_key, expire=120)
 def get_user_guilds():
     req = discordrest_from_user("/users/@me/guilds")
     return req

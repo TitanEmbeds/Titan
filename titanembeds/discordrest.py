@@ -3,11 +3,9 @@ import sys
 import time
 import json
 from functools import partial
-from cachetools import cached, TTLCache
-from cachetools.keys import hashkey
+from titanembeds.utils import cache
 
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
-cache = TTLCache(200, 200)
 
 def json_or_text(response):
     text = response.text
@@ -122,7 +120,7 @@ class DiscordREST:
         r = self.request("GET", _endpoint)
         return r
 
-    @cached(cache, key=partial(hashkey, 'get_guild_member'))
+    @cache.cache('get_guild_member', expire=200)
     def get_guild_member(self, guild_id, user_id):
         _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
         r = self.request("GET", _endpoint)
@@ -160,7 +158,7 @@ class DiscordREST:
         r = self.request("GET", _endpoint)
         return r
 
-    @cached(cache, key=partial(hashkey, 'list_all_guild_members'))
+    @cache.cache('list_all_guild_members', expire=200)
     def list_all_guild_members(self, guild_id):
         _endpoint = "/guilds/{guild_id}/members".format(guild_id=guild_id)
         count = 1
@@ -183,7 +181,7 @@ class DiscordREST:
     # User
     #####################
 
-    @cached(cache, key=partial(hashkey, 'get_all_guilds'))
+    @cache.cache('get_all_guilds', expire=100)
     def get_all_guilds(self):
         _endpoint = "/users/@me/guilds"
         params = {}
@@ -206,7 +204,7 @@ class DiscordREST:
     # Widget Handler
     #####################
 
-    @cached(cache, key=partial(hashkey, 'get_widget'))
+    @cache.cache('get_widget', expire=200)
     def get_widget(self, guild_id):
         _endpoint = _DISCORD_API_BASE + "/servers/{guild_id}/widget.json".format(guild_id=guild_id)
         embed = self.get_guild_embed(guild_id)
