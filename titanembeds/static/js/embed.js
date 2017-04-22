@@ -207,12 +207,14 @@
         var template_user = $('#mustache_authedusers').html();
         Mustache.parse(template_user);
         $("#discord-members").empty();
+        var discordmembercnt = 0;
         for (var i = 0; i < guild_members_arr.length; i++) {
           var roleobj = guild_members_arr[i];
           if (!roleobj["name"]) {
             roleobj["name"] = "Uncategorized";
           }
-          var rendered_role = Mustache.render(template_role, {"name": roleobj["name"]});
+          var rendered_role = Mustache.render(template_role, {"name": roleobj["name"] + " - " + roleobj["members"].length});
+          discordmembercnt += roleobj["members"].length;
           $("#discord-members").append(rendered_role);
           for (var j = 0; j < roleobj.members.length; j++) {
             var member = roleobj.members[j];
@@ -226,12 +228,14 @@
             }
           }
         }
+        $("#discord-members-count").html(discordmembercnt);
     }
 
     function fill_authenticated_users(users) {
         var template = $('#mustache_authedusers').html();
         Mustache.parse(template);
         $("#embed-discord-members").empty();
+        $("#embed-discord-members-count").html(users.length);
         for (var i = 0; i < users.length; i++) {
             var member = users[i];
             var rendered = Mustache.render(template, {"id": member.id.toString() + "a", "username": member.username, "avatar": member.avatar_url});
@@ -246,6 +250,7 @@
         var template = $('#mustache_unauthedusers').html();
         Mustache.parse(template);
         $("#embed-unauth-users").empty();
+        $("#guest-members-count").html(users.length);
         for (var i = 0; i < users.length; i++) {
             var member = users[i];
             var rendered = Mustache.render(template, {"username": member.username, "discriminator": member.discriminator});
