@@ -12,16 +12,14 @@ class LimitsRedisLite(Storage): # For Python Limits
         return True
 
     def get_expiry(self, key):
-        return self.redis_instance.ttl(key)
+        return self.redis_instance.ttl(key) or 0
 
     def incr(self, key, expiry, elastic_expiry=False):
         if not self.redis_instance.exists(key):
-            self.redis_instance.set(key, 1)
-            self.redis_instance.expireat(key, int(time.time() + expiry))
+            self.redis_instance.set(key, 1, ex=expiry)
         else:
             oldexp = self.get_expiry(key)
-            self.redis_instance.set(key, int(self.redis_instance.get(key))+1)
-            self.redis_instance.expireat(key, int(time.time() + oldexp))
+            self.redis_instance.set(key, int(self.redis_instance.get(key))+1, ex=oldexp)
         return
 
     def get(self, key):
