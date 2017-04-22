@@ -110,6 +110,7 @@ class DiscordREST:
         r = self.request("GET", _endpoint)
         return r
 
+    @cache.cache('get_guild_channels', expire=200)
     def get_guild_channels(self, guild_id):
         _endpoint = "/guilds/{guild_id}/channels".format(guild_id=guild_id)
         r = self.request("GET", _endpoint)
