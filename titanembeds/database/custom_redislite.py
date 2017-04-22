@@ -25,7 +25,6 @@ class LimitsRedisLite(Storage): # For Python Limits
         return
 
     def get(self, key):
-        print key + " " + str(int(self.redis_instance.get(key))) + " " + str(self.get_expiry(key))
         return int(self.redis_instance.get(key))
 
     def reset(self):
