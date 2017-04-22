@@ -114,7 +114,7 @@ def format_post_content(message):
         message = "**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
     return message
 
-@cache.cached(timeout=60, key_prefix=make_guildchannels_cache_key)
+@cache.cache(make_guildchannels_cache_key, expires=60)
 def get_guild_channels(guild_id):
     if user_unauthenticated():
         member_roles = [guild_id] #equivilant to @everyone role

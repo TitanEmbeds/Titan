@@ -1,15 +1,23 @@
+from beaker.cache import CacheManager
+from beaker.util import parse_cache_config_options
 from titanembeds.database import db, Guilds
-from titanembeds.discordrest import DiscordREST
 from flask import request, session
-from flask.ext.cache import Cache
 from flask_limiter import Limiter
 from config import config
 import random
 import string
 import hashlib
 
+cache_opts = {
+    'cache.type': 'file',
+    'cache.data_dir': 'tmp/cachedata',
+    'cache.lock_dir': 'tmp/cachelock'
+}
+cache = CacheManager(**parse_cache_config_options(cache_opts))
+
+from titanembeds.discordrest import DiscordREST
+
 discord_api = DiscordREST(config['bot-token'])
-cache = Cache()
 
 def get_client_ipaddr():
     if "X-Real-IP" in request.headers: # pythonanywhere specific

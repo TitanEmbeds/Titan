@@ -90,3 +90,7 @@ ENV/
 
 # Project specifc
 config.py
+redislite.db
+redislite.db.settings
+tmp/*
+!tmp/.gitinclude
