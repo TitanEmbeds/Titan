@@ -4,6 +4,7 @@ import time
 import json
 from functools import partial
 from titanembeds.utils import cache
+from redislite import Redis
 
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
 
@@ -15,11 +16,24 @@ def json_or_text(response):
 
 class DiscordREST:
     def __init__(self, bot_token):
+        self.global_redis_prefix = "discordapiratelimit/"
         self.bot_token = bot_token
         self.user_agent = "TitanEmbeds (https://github.com/EndenDragon/Titan) Python/{} requests/{}".format(sys.version_info, requests.__version__)
-        self.rate_limit_bucket = {}
-        self.global_limited = False
-        self.global_limit_expire = 0
+        self.rate_limit_bucket = Redis("redislite.db")
+
+        if not self._bucket_contains("global_limited"):
+            self._set_bucket("global_limited", False)
+            self._set_bucket("global_limit_expire", 0)
+
+    def _get_bucket(self, key):
+        value = self.rate_limit_bucket.get(self.global_redis_prefix + key)
+        return value
+
+    def _set_bucket(self, key, value):
+        return self.rate_limit_bucket.set(self.global_redis_prefix + key, value)
+
+    def _bucket_contains(self, key):
+        return self.rate_limit_bucket.exists(self.global_redis_prefix + key)
 
     def request(self, verb, url, **kwargs):
         headers = {
@@ -38,12 +52,12 @@ class DiscordREST:
 
         for tries in range(5):
             curepoch = time.time()
-            if self.global_limited:
-                time.sleep(self.global_limit_expire - curepoch)
+            if self._get_bucket("global_limited") == "True":
+                time.sleep(int(self._get_bucket("global_limit_expire")) - curepoch)
                 curepoch = time.time()
 
-            if url in self.rate_limit_bucket and self.rate_limit_bucket[url] > curepoch:
-                time.sleep(self.rate_limit_bucket[url] - curepoch)
+            if self._bucket_contains(url) and int(self._get_bucket(url)) > curepoch:
+                time.sleep(int(self._get_bucket(url)) - curepoch)
 
             url_formatted = _DISCORD_API_BASE + url
             req = requests.request(verb, url_formatted, params=params, data=data, headers=headers)
@@ -52,10 +66,10 @@ class DiscordREST:
             if 'X-RateLimit-Remaining' in req.headers:
                 remaining = req.headers['X-RateLimit-Remaining']
                 if remaining == '0' and req.status_code != 429:
-                    self.rate_limit_bucket[url] = int(req.headers['X-RateLimit-Reset'])
+                    self._set_bucket(url, int(req.headers['X-RateLimit-Reset']))
 
             if 300 > req.status_code >= 200:
-                self.global_limited = False
+                self._set_bucket("global_limited", False)
                 return {
                     'success': True,
                     'content': json_or_text(req),
@@ -64,9 +78,10 @@ class DiscordREST:
 
             if req.status_code == 429:
                 if 'X-RateLimit-Global' not in req.headers:
-                    self.rate_limit_bucket[url] = int(req.headers['X-RateLimit-Reset'])
+                    self._set_bucket(url, int(req.headers['X-RateLimit-Reset']))
                 else:
-                    self.global_limit_expire = time.time() + int(req.headers['Retry-After'])
+                    self._set_bucket("global_limited", True)
+                    self._set_bucket("global_limit_expire", time.time() + int(req.headers['Retry-After']))
 
             if req.status_code == 502 and tries <= 5:
                 time.sleep(1 + tries * 2)
