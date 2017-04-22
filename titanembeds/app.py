@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no need this on for now.
 app.config['RATELIMIT_HEADERS_ENABLED'] = True
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 250
-#app.config['RATELIMIT_STORAGE_URL'] = 'redislite://redislite.db'
+app.config['RATELIMIT_STORAGE_URL'] = 'redislite://redislite.db'
 app.secret_key = config['app-secret']
 
 db.init_app(app)
