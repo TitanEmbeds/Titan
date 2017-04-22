@@ -1,6 +1,7 @@
 import urlparse
 from limits.storage import Storage
 from redislite import Redis
+import time
 
 class LimitsRedisLite(Storage): # For Python Limits
     STORAGE_SCHEME = "redislite"
@@ -14,12 +15,18 @@ class LimitsRedisLite(Storage): # For Python Limits
         return self.redis_instance.ttl(key)
 
     def incr(self, key, expiry, elastic_expiry=False):
-        if self.redis_instance.exists(key):
-            self.redis_instance.set(key, int(self.redis_instance.get(key))+1)
-        else:
+        if not self.redis_instance.exists(key):
             self.redis_instance.set(key, 1)
-        self.redis_instance.expire(key, expiry)
+            self.redis_instance.expireat(key, int(time.time() + expiry))
+        else:
+            oldexp = self.get_expiry(key)
+            self.redis_instance.set(key, int(self.redis_instance.get(key))+1)
+            self.redis_instance.expireat(key, int(time.time() + oldexp))
         return
 
     def get(self, key):
+        print key + " " + str(int(self.redis_instance.get(key))) + " " + str(self.get_expiry(key))
         return int(self.redis_instance.get(key))
+
+    def reset(self):
+        return self.redis_instance.flushdb()
