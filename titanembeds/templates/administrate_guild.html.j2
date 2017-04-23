@@ -1,6 +1,10 @@
 {% extends 'site_layout.html.j2' %}
 {% block title %}Administrate Guild: {{ guild['name'] }}{% endblock %}
 
+{% block additional_head_elements %}
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/administrate_guild.css') }}">
+{% endblock %}
+
 {% block content %}
 <h1>Administrating: {{ guild['name'] }}</h1>
 <p class="flow-text">For this server, you are allowed the following actions:
@@ -72,6 +76,7 @@
                         <th>Banned by</th>
                         <th>Banned Reason</th>
                         <th>Ban Lifted by</th>
+                        <th>Recent Aliases</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -91,11 +96,22 @@
                         <td>{{ member['banned_by'] }}</td>
                         <td>{{ member['banned_reason'] }}</td>
                         <td>{{ member['ban_lifted_by'] }}</td>
+                        <td>
+                          <ul>
+                            {% if member['aliases']|length > 0 %}
+                              {% for alias in member['aliases'] %}
+                              <li>{{ alias }}</li>
+                              {% endfor %}
+                            {% else %}
+                              <li>None</li>
+                            {% endif %}
+                          </ul>
+                        </td>
                       </tr>
                     {% endfor %}
                   </tbody>
                 </table>
-                <p>Note that all bans are by IP. Seeing duplicates? It is because users are generated a unique session on each browser load.</p>
+                <p>Note that all bans are by IP. Seeing duplicates? It is because users are generated a unique session on each browser load. (Though we try to remove/concat any duplicates IP hashes)</p>
 
               </div>
             </div>

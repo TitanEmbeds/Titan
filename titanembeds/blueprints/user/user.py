@@ -4,6 +4,8 @@ from titanembeds.decorators import discord_users_only
 from titanembeds.utils import discord_api
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans
 from titanembeds.oauth import authorize_url, token_url, make_authenticated_session, get_current_authenticated_user, get_user_managed_servers, check_user_can_administrate_guild, check_user_permission, generate_avatar_url, generate_guild_icon_url, generate_bot_invite_url
+import time
+import datetime
 
 user = Blueprint("user", __name__)
 
@@ -90,7 +92,6 @@ def administrate_guild(guild_id):
     all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.last_timestamp).all()
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
-    users.reverse()
     dbguild_dict = {"unauth_users": db_guild.unauth_users}
     return render_template("administrate_guild.html.j2", guild=guild['content'], dbguild=dbguild_dict, members=users, permissions=permissions)
 
@@ -120,6 +121,8 @@ def me():
 
 def prepare_guild_members_list(members, bans):
     all_users = []
+    ip_pool = []
+    members = sorted(members, key=lambda k: datetime.datetime.strptime(str(k.last_timestamp), "%Y-%m-%d %H:%M:%S"), reverse=True)
     for member in members:
         user = {
             "id": member.id,
@@ -133,6 +136,7 @@ def prepare_guild_members_list(members, bans):
             "banned_by": None,
             "banned_reason": None,
             "ban_lifted_by": None,
+            "aliases": [],
         }
         for banned in bans:
             if banned.ip_address == member.ip_address:
@@ -143,7 +147,16 @@ def prepare_guild_members_list(members, bans):
                 user['banned_reason'] = banned.reason
                 user['ban_lifted_by'] = banned.lifter_id
             continue
-        all_users.append(user)
+        if user["ip"] not in ip_pool:
+            all_users.append(user)
+            ip_pool.append(user["ip"])
+        else:
+            for usr in all_users:
+                if user["ip"] == usr["ip"]:
+                    alias = user["username"]+"#"+str(user["discrim"])
+                    if len(usr["aliases"]) < 5 and alias not in usr["aliases"]:
+                        usr["aliases"].append(alias)
+                    continue
     return all_users
 
 @user.route("/ban", methods=["POST"])
