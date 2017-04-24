@@ -26,7 +26,10 @@ class LimitsRedisLite(Storage): # For Python Limits
         return int(self.get(key))
 
     def get(self, key):
-        return int(self.redis_instance.get(key))
+        value = self.redis_instance.get(key)
+        if value:
+            return int(value)
+        return 0
 
     def reset(self):
         return self.redis_instance.flushdb()
