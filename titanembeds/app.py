@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no need this on for now.
 app.config['RATELIMIT_HEADERS_ENABLED'] = True
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 250
-app.config['RATELIMIT_STORAGE_URL'] = 'redislite://redislite.db'
+app.config['RATELIMIT_STORAGE_URL'] = 'keyvalprops://'
 app.secret_key = config['app-secret']
 
 db.init_app(app)
@@ -29,9 +29,3 @@ app.register_blueprint(blueprints.embed.embed, url_prefix="/embed", template_fol
 @app.route("/")
 def index():
     return render_template("index.html.j2")
-
-@app.route("/oldembed/<guildid>/<channelid>")
-def embed_get(guildid, channelid):
-    if 'username' not in session:
-        return redirect(url_for("get_set_username", guildid=guildid, channelid=channelid))
-    return render_template("embed.html")

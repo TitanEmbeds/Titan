@@ -1,6 +1,6 @@
 from beaker.cache import CacheManager
 from beaker.util import parse_cache_config_options
-from titanembeds.database import db, Guilds
+from titanembeds.database import db, Guilds, KeyValueProperties
 from flask import request, session
 from flask_limiter import Limiter
 from config import config
