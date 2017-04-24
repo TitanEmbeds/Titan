@@ -29,19 +29,3 @@ app.register_blueprint(blueprints.embed.embed, url_prefix="/embed", template_fol
 @app.route("/")
 def index():
     return render_template("index.html.j2")
-
-@app.route("/oldembed/<guildid>/<channelid>")
-def embed_get(guildid, channelid):
-    if 'username' not in session:
-        return redirect(url_for("get_set_username", guildid=guildid, channelid=channelid))
-    return render_template("embed.html")
-
-if config.get("redis-stats-endpoint"):
-    from redislite import Redis
-    @app.route("/redis-stats")
-    def redis_stats():
-        redis = Redis("redislite.db")
-        data = []
-        for key in redis.keys():
-            data.append({"key": key, "value": redis.get(key), "expiration": redis.ttl(key)})
-        return jsonify(redis=data)
