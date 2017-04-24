@@ -4,7 +4,8 @@ import time
 import json
 from functools import partial
 from titanembeds.utils import cache
-from titanembeds.database import db, KeyValueProperties, get_keyvalproperty, set_keyvalproperty
+from titanembeds.database import db, KeyValueProperties, get_keyvalproperty, set_keyvalproperty, ifexists_keyvalproperty
+from flask import request
 
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
 
@@ -20,6 +21,7 @@ class DiscordREST:
         self.bot_token = bot_token
         self.user_agent = "TitanEmbeds (https://github.com/EndenDragon/Titan) Python/{} requests/{}".format(sys.version_info, requests.__version__)
 
+    def init_discordrest(self):
         if not self._bucket_contains("global_limited"):
             self._set_bucket("global_limited", False)
             self._set_bucket("global_limit_expire", 0)
@@ -29,11 +31,10 @@ class DiscordREST:
         return value
 
     def _set_bucket(self, key, value):
-        #set_keyvalproperty("", "")
-        return ""#set_keyvalproperty(self.global_redis_prefix + key, value)
+        return set_keyvalproperty(self.global_redis_prefix + key, value)
 
     def _bucket_contains(self, key):
-        return ""#ifexists_keyvalproperty(self.global_redis_prefix + key)
+        return ifexists_keyvalproperty(self.global_redis_prefix + key)
 
     def request(self, verb, url, **kwargs):
         headers = {

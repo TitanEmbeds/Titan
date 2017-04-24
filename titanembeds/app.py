@@ -2,7 +2,7 @@ from config import config
 from database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, cache
+from titanembeds.utils import rate_limiter, cache, discord_api
 import blueprints.api
 import blueprints.user
 import blueprints.embed
@@ -29,3 +29,7 @@ app.register_blueprint(blueprints.embed.embed, url_prefix="/embed", template_fol
 @app.route("/")
 def index():
     return render_template("index.html.j2")
+
+@app.before_request
+def before_request():
+    discord_api.init_discordrest()
