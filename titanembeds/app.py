@@ -2,7 +2,7 @@ from config import config
 from database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, cache
+from titanembeds.utils import rate_limiter, cache, discord_api
 import blueprints.api
 import blueprints.user
 import blueprints.embed
@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no need this on for now.
 app.config['RATELIMIT_HEADERS_ENABLED'] = True
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 250
-app.config['RATELIMIT_STORAGE_URL'] = 'redislite://redislite.db'
+app.config['RATELIMIT_STORAGE_URL'] = 'keyvalprops://'
 app.secret_key = config['app-secret']
 
 db.init_app(app)
@@ -29,3 +29,8 @@ app.register_blueprint(blueprints.embed.embed, url_prefix="/embed", template_fol
 @app.route("/")
 def index():
     return render_template("index.html.j2")
+
+@app.before_request
+def before_request():
+    db.create_all()
+    discord_api.init_discordrest()

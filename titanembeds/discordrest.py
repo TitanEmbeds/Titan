@@ -2,9 +2,9 @@ import requests
 import sys
 import time
 import json
-from functools import partial
 from titanembeds.utils import cache
-from redislite import Redis
+from titanembeds.database import db, KeyValueProperties, get_keyvalproperty, set_keyvalproperty, ifexists_keyvalproperty
+from flask import request
 
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
 
@@ -19,21 +19,21 @@ class DiscordREST:
         self.global_redis_prefix = "discordapiratelimit/"
         self.bot_token = bot_token
         self.user_agent = "TitanEmbeds (https://github.com/EndenDragon/Titan) Python/{} requests/{}".format(sys.version_info, requests.__version__)
-        self.rate_limit_bucket = Redis("redislite.db")
 
+    def init_discordrest(self):
         if not self._bucket_contains("global_limited"):
             self._set_bucket("global_limited", False)
             self._set_bucket("global_limit_expire", 0)
 
     def _get_bucket(self, key):
-        value = self.rate_limit_bucket.get(self.global_redis_prefix + key)
+        value = get_keyvalproperty(self.global_redis_prefix + key)
         return value
 
     def _set_bucket(self, key, value):
-        return self.rate_limit_bucket.set(self.global_redis_prefix + key, value)
+        return set_keyvalproperty(self.global_redis_prefix + key, value)
 
     def _bucket_contains(self, key):
-        return self.rate_limit_bucket.exists(self.global_redis_prefix + key)
+        return ifexists_keyvalproperty(self.global_redis_prefix + key)
 
     def request(self, verb, url, **kwargs):
         headers = {
