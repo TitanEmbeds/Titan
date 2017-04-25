@@ -8,9 +8,13 @@ def set_keyvalproperty(key, value, expiration=None):
     if q.count() == 0:
         db.session.add(KeyValueProperties(key=key, value=value, expiration=expiration))
     else:
+        if expiration is not None:
+            converted_expr = datetime.fromtimestamp(time.time() + expiration)
+        else:
+            converted_expr = None
         firstobj = q.first()
         firstobj.value = value
-        firstobj.expiration = expiration
+        firstobj.expiration = converted_expr
     db.session.commit()
 
 def get_keyvalproperty(key):
@@ -24,8 +28,6 @@ def getexpir_keyvalproperty(key):
     q = db.session.query(KeyValueProperties).filter(KeyValueProperties.key == key)
     now = datetime.now()
     if q.count() > 0 and (q.first().expiration is not None and q.first().expiration > now):
-        print q.first().expiration
-        print datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         return int(q.first().expiration.strftime('%s'))
     return 0
 

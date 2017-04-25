@@ -9,9 +9,9 @@ import string
 import hashlib
 
 cache_opts = {
-    'cache.type': 'file',
-    'cache.data_dir': 'tmp/cachedata',
-    'cache.lock_dir': 'tmp/cachelock'
+    'cache.type': 'ext:database',
+    'cache.lock_dir': 'tmp/cachelock',
+    'cache.url': config["database-uri"],
 }
 cache = CacheManager(**parse_cache_config_options(cache_opts))
 

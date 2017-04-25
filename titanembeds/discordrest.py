@@ -2,7 +2,6 @@ import requests
 import sys
 import time
 import json
-from functools import partial
 from titanembeds.utils import cache
 from titanembeds.database import db, KeyValueProperties, get_keyvalproperty, set_keyvalproperty, ifexists_keyvalproperty
 from flask import request

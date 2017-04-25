@@ -32,4 +32,5 @@ def index():
 
 @app.before_request
 def before_request():
+    db.create_all()
     discord_api.init_discordrest()
