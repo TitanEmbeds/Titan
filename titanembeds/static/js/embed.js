@@ -12,6 +12,7 @@
     var last_message_id; // last message tracked
     var selected_channel = guild_id; // user selected channel, defaults to #general channel
     var guild_channels = {}; // all server channels used to highlight channels in messages
+    var times_fetched = 0; // kept track of how many times that it has fetched
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -418,14 +419,18 @@
             } else {
                 $("#administrate_link").hide();
             }
-            var guild = query_guild();
-            guild.done(function(guildobj) {
-                fill_channels(guildobj.channels);
-                fill_discord_members(guildobj.discordmembers);
-                fill_authenticated_users(guildobj.embedmembers.authenticated);
-                fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
-                fetchtimeout = setTimeout(run_fetch_routine, 5000);
-            });
+            if (times_fetched % 10 == 0) {
+              var guild = query_guild();
+              guild.done(function(guildobj) {
+                  fill_channels(guildobj.channels);
+                  fill_discord_members(guildobj.discordmembers);
+                  fill_authenticated_users(guildobj.embedmembers.authenticated);
+                  fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
+                  fetchtimeout = setTimeout(run_fetch_routine, 5000);
+              });
+            } else {
+              fetchtimeout = setTimeout(run_fetch_routine, 5000);
+            }
         });
         fet.fail(function(data) {
             if (data.status == 403) {
@@ -438,12 +443,13 @@
         });
         fet.catch(function(data) {
           if (500 <= data.status && data.status < 600) {
-              Materialize.toast('Fetching messages error! Webserver down?', 10000);
+              Materialize.toast('Fetching messages error! EndenDragon probably broke something. Sorry =(', 10000);
               fetchtimeout = setTimeout(run_fetch_routine, 10000);
           }
         });
         fet.always(function() {
             currently_fetching = false;
+            times_fetched += 1;
         });
     }
 
