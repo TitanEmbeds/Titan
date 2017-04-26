@@ -177,3 +177,11 @@ background-color: #546e7a;
 a {
   color: #82b1ff;
 }
+
+#fetching-indicator {
+  position: absolute;
+  right: 1vw;
+  bottom: 13px;
+  width: 25px;
+  height: 25px;
+}

@@ -407,6 +407,7 @@
         var channel_id = selected_channel;
         var fet;
         var jumpscroll;
+        $("#fetching-indicator").fadeIn(800);
         if (last_message_id == null) {
             $("#chatcontent").empty();
             fet = fetch(channel_id);
@@ -454,6 +455,7 @@
         });
         fet.always(function() {
             currently_fetching = false;
+            $("#fetching-indicator").fadeOut(800);
         });
     }
 
