@@ -87,14 +87,16 @@
           }
         );
 
+        $('#loginmodal').modal('open');
+        lock_login_fields();
+
         var guild = query_guild();
         guild.fail(function() {
-            $('#loginmodal').modal('open');
+            unlock_login_fields();
         });
 
         guild.done(function(data) {
             initialize_embed(data);
-            //$('#loginmodal').modal('open');
         });
     });
 
@@ -115,15 +117,17 @@
     }
 
     function initialize_embed(guildobj) {
-        $('#loginmodal').modal('close');
-        unlock_login_fields();
         if (guildobj === undefined) {
             var guild = query_guild();
             guild.done(function(data) {
                 prepare_guild(data);
+                $('#loginmodal').modal('close');
+                unlock_login_fields();
             });
         } else {
             prepare_guild(guildobj);
+            $('#loginmodal').modal('close');
+            unlock_login_fields();
         }
     }
 
@@ -399,6 +403,7 @@
             return;
         }
         currently_fetching = true;
+        times_fetched += 1;
         var channel_id = selected_channel;
         var fet;
         var jumpscroll;
@@ -449,7 +454,6 @@
         });
         fet.always(function() {
             currently_fetching = false;
-            times_fetched += 1;
         });
     }
 
