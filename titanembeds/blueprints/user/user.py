@@ -62,7 +62,8 @@ def dashboard():
     if not guilds:
         session["redirect"] = url_for("user.dashboard")
         return redirect(url_for("user.logout"))
-    if session["redirect"]:
+    error = request.args.get("error")
+    if session["redirect"] and not (error and error == "access_denied"):
         redir = session['redirect']
         session['redirect'] = None
         return redirect(redir)
@@ -77,6 +78,7 @@ def administrate_guild(guild_id):
     if guild['code'] != 200:
         session["redirect"] = url_for("user.administrate_guild", guild_id=guild_id, _external=True)
         return redirect(generate_bot_invite_url(guild_id))
+    session["redirect"] = None
     db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     if not db_guild:
         db_guild = Guilds(guild_id)
