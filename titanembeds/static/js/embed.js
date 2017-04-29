@@ -13,6 +13,7 @@
     var selected_channel = guild_id; // user selected channel, defaults to #general channel
     var guild_channels = {}; // all server channels used to highlight channels in messages
     var times_fetched = 0; // kept track of how many times that it has fetched
+    var fetch_error_count = 0; // Number of errors fetch has encountered
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -449,7 +450,10 @@
         });
         fet.catch(function(data) {
           if (500 <= data.status && data.status < 600) {
-              Materialize.toast('Fetching messages error! EndenDragon probably broke something. Sorry =(', 10000);
+              if (fetch_error_count % 5 == 0) {
+                  Materialize.toast('Fetching messages error! EndenDragon probably broke something. Sorry =(', 10000);
+              }
+              fetch_error_count += 1;
               fetchtimeout = setTimeout(run_fetch_routine, 10000);
           }
         });
