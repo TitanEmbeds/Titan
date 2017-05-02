@@ -5,7 +5,7 @@ config = {
     'client-secret': "Your discord client secret",
     'bot-token': "Discord bot token",
 
-    'app-location': "/var/www/Titan/",
+    'app-location': "/var/www/Titan/webapp/",
     'app-secret': "Type something random here, go wild.",
 
     'database-uri': "driver://username:password@host:port/database",
