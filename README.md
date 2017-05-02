@@ -13,10 +13,10 @@ There was a time when Discord doesn't support embedding the chat on a webpage. B
 
 # Installation
 Would you like to run your own copy of Titan Embeds?
-1. Clone the repo (make sure you have python 2.7 installed on your system)
+1. Clone the repo (make sure you have python 2.7 installed on your system. This project depends on that specific python version)
 2. Install the pip requirements `pip install -r requirements.txt`
 3. Clone `config.example.py` and rename it to `config.py`. Edit the file to your standards
-4. Make sure that the bot is online in the websockets once. This is required because the bot cannot send messages until it has used the ws. Use something like discord.py to log the bot into discord websockets. You can close it afterwards. So basically if the bot acciunt is online ONCE in it's lifespan- you're good.
+4. Make sure that the bot is online in the websockets once. This is required because the bot cannot send messages until it has used the ws. Use something like discord.py to log the bot into discord websockets. You can close it afterwards. So basically if the bot account is online ONCE in it's lifespan- you're good.
 5. Run the development web via `python run.py` -- Though we suggest to use a better server software (look into gunicorn, nginx, uwsgi, etc)
 
 
