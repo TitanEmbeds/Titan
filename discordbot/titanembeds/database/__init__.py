@@ -1,17 +1,35 @@
-from config import config
-from sqlalchemy_aio import ASYNCIO_STRATEGY
+from contextlib import contextmanager
+from asyncio_extras import threadpool
 import sqlalchemy as db
+from sqlalchemy.engine import Engine, create_engine
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-from .guilds import Guilds
+from titanembeds.database.guilds import Guilds
 
-engine = db.create_engine(config["database-uri"])
+class DatabaseInterface(object):
+    # Courtesy of https://github.com/SunDwarf/Jokusoramame
+    def __init__(self, bot):
+        self.bot = bot
 
-Base.metadata.create_all(engine)
+        self.engine = None  # type: Engine
+        self._sessionmaker = None  # type: sessionmaker
 
-from sqlalchemy.orm import sessionmaker
-DBSession = sessionmaker()
-DBSession.bind = engine
-session = DBSession()
+    async def connect(self, dburi):
+        async with threadpool():
+            self.engine = create_engine(dburi)
+            self._sessionmaker = sessionmaker(bind=self.engine, expire_on_commit=False)
+
+    @contextmanager
+    def get_session(self) -> Session:
+        session = self._sessionmaker()  # type: Session
+        try:
+            yield session
+            session.commit()
+        except:
+            session.rollback()
+            raise
+        finally:
+            session.close()

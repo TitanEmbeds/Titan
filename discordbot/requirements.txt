@@ -1,2 +1,3 @@
 discord.py
-sqlalchemy-aio
+sqlalchemy
+asyncio_extras

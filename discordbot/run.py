@@ -1,4 +1,11 @@
-from titanembeds.bot import client
-from config import config
+from titanembeds import Titan
+import gc
 
-client.run(config["bot-token"])
+def main():
+    print("Starting...")
+    te = Titan()
+    te.run()
+    gc.collect()
+
+if __name__ == '__main__':
+    main()
