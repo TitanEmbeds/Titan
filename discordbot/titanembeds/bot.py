@@ -55,3 +55,10 @@ class Titan(discord.Client):
             traceback.print_exc()
             await self.logout()
             return
+
+    async def on_message(self, message):
+        await self.database.push_message(message)
+        # TODO: Will add command handler + ban/kick command
+
+    async def on_message_edit(self, message_before, message_after):
+        await self.database.update_message(message_after)
