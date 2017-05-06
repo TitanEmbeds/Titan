@@ -68,8 +68,9 @@ class DatabaseInterface(object):
                         .filter(Messages.guild_id == message.server.id) \
                         .filter(Messages.channel_id == message.channel.id) \
                         .filter(Messages.message_id == message.id).first()
-                    msg.content = message.content
-                    msg.edited_timestamp = message.edited_timestamp
-                    msg.mentions = json.dumps(message.mentions)
-                    msg.attachments = json.dumps(message.attachments)
-                    session.commit()
+                    if msg:
+                        msg.content = message.content
+                        msg.edited_timestamp = message.edited_timestamp
+                        msg.mentions = json.dumps(message.mentions)
+                        msg.attachments = json.dumps(message.attachments)
+                        session.commit()
