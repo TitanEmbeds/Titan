@@ -22,7 +22,7 @@ class DatabaseInterface(object):
 
     async def connect(self, dburi):
         async with threadpool():
-            self.engine = create_engine(dburi)
+            self.engine = create_engine(dburi, pool_recycle=250)
             self._sessionmaker = sessionmaker(bind=self.engine, expire_on_commit=False)
 
     @contextmanager
