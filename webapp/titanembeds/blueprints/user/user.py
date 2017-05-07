@@ -1,7 +1,6 @@
 from flask import Blueprint, request, redirect, jsonify, abort, session, url_for, render_template
 from config import config
 from titanembeds.decorators import discord_users_only
-from titanembeds.utils import discord_api
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans
 from titanembeds.oauth import authorize_url, token_url, make_authenticated_session, get_current_authenticated_user, get_user_managed_servers, check_user_can_administrate_guild, check_user_permission, generate_avatar_url, generate_guild_icon_url, generate_bot_invite_url
 import time
@@ -74,16 +73,11 @@ def dashboard():
 def administrate_guild(guild_id):
     if not check_user_can_administrate_guild(guild_id):
         return redirect(url_for("user.dashboard"))
-    guild = discord_api.get_guild(guild_id)
-    if guild['code'] != 200:
+    db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    if not db_guild:
         session["redirect"] = url_for("user.administrate_guild", guild_id=guild_id, _external=True)
         return redirect(generate_bot_invite_url(guild_id))
     session["redirect"] = None
-    db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-    if not db_guild:
-        db_guild = Guilds(guild_id)
-        db.session.add(db_guild)
-        db.session.commit()
     permissions=[]
     if check_user_permission(guild_id, 5):
         permissions.append("Manage Embed Settings")
@@ -95,18 +89,15 @@ def administrate_guild(guild_id):
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
     dbguild_dict = {"unauth_users": db_guild.unauth_users}
-    return render_template("administrate_guild.html.j2", guild=guild['content'], dbguild=dbguild_dict, members=users, permissions=permissions)
+    return render_template("administrate_guild.html.j2", guild=db_guild, dbguild=dbguild_dict, members=users, permissions=permissions)
 
 @user.route("/administrate_guild/<guild_id>", methods=["POST"])
 @discord_users_only()
 def update_administrate_guild(guild_id):
     if not check_user_can_administrate_guild(guild_id):
         abort(403)
-    guild = discord_api.get_guild(guild_id)
-    if guild['code'] != 200:
-        abort(guild['code'])
     db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-    if db_guild is None:
+    if not db_guild:
         abort(400)
     db_guild.unauth_users = request.form.get("unauth_users", db_guild.unauth_users) in ["true", True]
     db.session.commit()
