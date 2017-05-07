@@ -1,4 +1,5 @@
 from titanembeds.database import db
+import json
 
 class GuildMembers(db.Model):
     __tablename__ = "guild_members"
@@ -26,3 +27,19 @@ class GuildMembers(db.Model):
 
     def __repr__(self):
         return '<GuildMembers {0} {1} {2} {3} {4}>'.format(self.id, self.guild_id, self.user_id, self.username, self.discriminator)
+
+def list_all_guild_members(guild_id):
+    memlist = []
+    members = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id).all()
+    for member in members:
+        memlist.append({
+            "user": {
+                "username": member.username,
+                "discriminator": member.discriminator,
+                "id": member.user_id,
+                "avatar": member.avatar
+            },
+            "roles": json.loads(member.roles),
+            "nickname": member.nickname,
+        })
+    return memlist

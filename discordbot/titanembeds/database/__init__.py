@@ -145,6 +145,7 @@ class DatabaseInterface(object):
                 "color": role.color.value,
                 "hoist": role.hoist,
                 "position": role.position,
+                "permissions": role.permissions.value
             })
         return roles
 
