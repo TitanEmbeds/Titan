@@ -1,4 +1,4 @@
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties, get_channel_messages
 from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
@@ -265,10 +265,9 @@ def fetch():
         if not chan.get("read"):
             status_code = 401
         else:
-            messages = discord_api.get_channel_messages(channel_id, after_snowflake)
-            status_code = messages['code']
-    response = jsonify(messages=messages.get('content', messages), status=status)
-    response.status_code = status_code
+            messages = get_channel_messages(channel_id, after_snowflake)
+    response = jsonify(messages=messages, status=status)
+    response.status_code = 200
     return response
 
 @api.route("/post", methods=["POST"])

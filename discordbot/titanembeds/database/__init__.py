@@ -54,13 +54,37 @@ class DatabaseInterface(object):
                         message.channel.id,
                         message.id,
                         message.content,
+                        json.dumps(self.get_message_author(message)),
                         str(message.timestamp),
                         edit_ts,
-                        json.dumps(message.mentions),
+                        json.dumps(self.get_message_mentions(message.mentions)),
                         json.dumps(message.attachments)
                     )
                     session.add(msg)
                     session.commit()
+
+    def get_message_author(self, message):
+        author = message.author
+        obj = {
+            "username": author.name,
+            "discriminator": author.discriminator,
+            "bot": author.bot,
+            "id": author.id,
+            "avatar": author.avatar
+        }
+        return obj
+
+    def get_message_mentions(self, mentions):
+        ments = []
+        for author in mentions:
+            ments.append({
+                "username": author.name,
+                "discriminator": author.discriminator,
+                "bot": author.bot,
+                "id": author.id,
+                "avatar": author.avatar
+            })
+        return ments
 
     async def update_message(self, message):
         if message.server:
@@ -73,8 +97,9 @@ class DatabaseInterface(object):
                     if msg:
                         msg.content = message.content
                         msg.edited_timestamp = message.edited_timestamp
-                        msg.mentions = json.dumps(message.mentions)
+                        msg.mentions = json.dumps(self.get_message_mentions(message.mentions))
                         msg.attachments = json.dumps(message.attachments)
+                        msg.author = json.dumps(self.get_message_author(message))
                         session.commit()
 
     async def delete_message(self, message):
