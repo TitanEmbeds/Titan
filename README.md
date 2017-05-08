@@ -9,15 +9,10 @@ There was a time when Discord doesn't support embedding the chat on a webpage. B
 - Moderation Features (Kick & ban users by IP addresses, toggling guest users)
 - Discord OAuth support. (Allows those who have a discord account to access the embed)
 - Responsive material design! (Thanks materializecss!!)
-- All features are done via REST apis (respects discord's rate limiting). Although do not provide consistant connection to Discord, they are easier to maintain and does not often "disconnects" from Discord servers.
 
 # Installation
-Would you like to run your own copy of Titan Embeds?
-1. Clone the repo (make sure you have python 2.7 installed on your system. This project depends on that specific python version)
-2. Install the pip requirements `pip install -r requirements.txt`
-3. Clone `config.example.py` and rename it to `config.py`. Edit the file to your standards
-4. Make sure that the bot is online in the websockets once. This is required because the bot cannot send messages until it has used the ws. Use something like discord.py to log the bot into discord websockets. You can close it afterwards. So basically if the bot account is online ONCE in it's lifespan- you're good.
-5. Run the development web via `python run.py` -- Though we suggest to use a better server software (look into gunicorn, nginx, uwsgi, etc)
+Would you like to run your own copy of Titan Embeds? There are two parts that integrate nicely together. The webapp (website) handles the frontend and communication with the database to retrieve server messages, etc. The discordbot (bot) handles the communcation
+between Discord's websockets and pushing out the data to the database for the webapp. Check out the respective folder for their installation (pay attention to the python versions!) instructions.
 
 
 ## Join us!

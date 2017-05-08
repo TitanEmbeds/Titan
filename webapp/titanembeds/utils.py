@@ -67,8 +67,8 @@ def check_guild_existance(guild_id):
     dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
     if not dbGuild:
         return False
-    guild = discord_api.get_guild(guild_id)
-    return guild['code'] == 200
+    else:
+        return True
 
 def guild_query_unauth_users_bool(guild_id):
     dbGuild = db.session.query(Guilds).filter(Guilds.guild_id==guild_id).first()

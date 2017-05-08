@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, abort, redirect, url_for, session
-from titanembeds.utils import check_guild_existance, discord_api, guild_query_unauth_users_bool
+from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
+from titanembeds.database import db, Guilds
 from config import config
 import random
 
@@ -22,7 +23,7 @@ def get_logingreeting():
 @embed.route("/<string:guild_id>")
 def guild_embed(guild_id):
     if check_guild_existance(guild_id):
-        guild = discord_api.get_guild(guild_id)['content']
+        guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
         return render_template("embed.html.j2",
             login_greeting=get_logingreeting(),
             guild_id=guild_id, guild=guild,

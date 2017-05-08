@@ -1,4 +1,4 @@
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties, GuildMembers, get_channel_messages, list_all_guild_members
 from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
@@ -27,9 +27,8 @@ def checkUserRevoke(guild_id, user_key=None):
         banned = checkUserBanned(guild_id)
         if banned:
             return revoked
-        member = discord_api.get_guild_member_nocache(guild_id, session['user_id'])
-        if member['code'] == 200:
-            revoked = False
+        dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == session["user_id"]).first()
+        revoked = not dbUser.active
     return revoked
 
 def checkUserBanned(guild_id, ip_address=None):
@@ -44,10 +43,8 @@ def checkUserBanned(guild_id, ip_address=None):
                     banned = False
     else:
         banned = False
-        bans = discord_api.get_guild_bans(guild_id)['content']
-        for user in bans:
-            if session['user_id'] == user['user']['id']:
-                return True
+        dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == session["user_id"]).first()
+        banned = dbUser.banned
     return banned
 
 def update_user_status(guild_id, username, user_key=None):
@@ -97,7 +94,7 @@ def check_user_in_guild(guild_id):
         return guild_id in session['user_keys']
     else:
         dbUser = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
-        return 200 == discord_api.get_guild_member_nocache(guild_id, session['user_id'])['code'] and dbUser is not None
+        return not checkUserRevoke(guild_id) and dbUser is not None
 
 def format_post_content(message):
     message = message.replace("<", "\<")
@@ -114,20 +111,28 @@ def format_post_content(message):
         message = "**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
     return message
 
+def get_member_roles(guild_id, user_id):
+    q = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == user_id).first()
+    return json.loads(q.roles)
+
+def get_dbguild_channels(guild_id):
+    q = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    return json.loads(q.channels)
+
 def get_guild_channels(guild_id):
     if user_unauthenticated():
         member_roles = [guild_id] #equivilant to @everyone role
     else:
-        member = discord_api.get_guild_member(guild_id, session['user_id'])['content']
-        member_roles = member['roles']
+        member_roles = get_member_roles(guild_id, session['user_id'])
         if guild_id not in member_roles:
             member_roles.append(guild_id)
-    guild_channels = discord_api.get_guild_channels(guild_id)['content']
-    guild_roles = discord_api.get_guild_roles(guild_id)["content"]
-    guild_owner = discord_api.get_guild(guild_id)['content']['owner_id']
+    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    guild_channels = json.loads(dbguild.channels)
+    guild_roles = json.loads(dbguild.roles)
+    guild_owner = json.loads(dbguild.owner_id)
     result_channels = []
     for channel in guild_channels:
-        if channel['type'] == 0:
+        if channel['type'] == "text":
             result = {"channel": channel, "read": False, "write": False}
             if guild_owner == session['user_id']:
                 result["read"] = True
@@ -192,17 +197,17 @@ def get_guild_channels(guild_id):
 def filter_guild_channel(guild_id, channel_id):
     channels = get_guild_channels(guild_id)
     for chan in channels:
-        if chan["channel"]["id"] == guild_id:
+        if chan["channel"]["id"] == channel_id:
             return chan
     return None
 
 def get_online_discord_users(guild_id):
     embed = discord_api.get_widget(guild_id)
-    apimembers = discord_api.list_all_guild_members(guild_id)
+    apimembers = list_all_guild_members(guild_id)
     apimembers_filtered = {}
     for member in apimembers:
         apimembers_filtered[member["user"]["id"]] = member
-    guild_roles = discord_api.get_guild_roles(guild_id)["content"]
+    guild_roles = json.loads(db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().roles)
     guildroles_filtered = {}
     for role in guild_roles:
         guildroles_filtered[role["id"]] = role
@@ -235,12 +240,12 @@ def get_online_embed_users(guild_id):
         users['unauthenticated'].append(meta)
     for user in auths:
         client_id = user.client_id
-        u = discord_api.get_guild_member(guild_id, client_id)['content']['user']
+        usrdb = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == client_id).first()
         meta = {
-            'id': u['id'],
-            'username': u['username'],
-            'discriminator': u['discriminator'],
-            'avatar_url': generate_avatar_url(u['id'], u['avatar']),
+            'id': usrdb.user_id,
+            'username': usrdb.username,
+            'discriminator': usrdb.discriminator,
+            'avatar_url': generate_avatar_url(usrdb.user_id, usrdb.avatar),
         }
         users['authenticated'].append(meta)
     return users
@@ -265,10 +270,9 @@ def fetch():
         if not chan.get("read"):
             status_code = 401
         else:
-            messages = discord_api.get_channel_messages(channel_id, after_snowflake)
-            status_code = messages['code']
-    response = jsonify(messages=messages.get('content', messages), status=status)
-    response.status_code = status_code
+            messages = get_channel_messages(channel_id, after_snowflake)
+    response = jsonify(messages=messages, status=status)
+    response.status_code = 200
     return response
 
 @api.route("/post", methods=["POST"])
