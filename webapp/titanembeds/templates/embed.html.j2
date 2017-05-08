@@ -10,7 +10,7 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>{{ guild.name }} - Embed - Titan Embeds for Discord</title>
+    <title>{{ guild['name'] }} - Embed - Titan Embeds for Discord</title>
     {% include 'google_analytics.html.j2' %}
   </head>
   <body>
@@ -32,16 +32,16 @@
       <ul id="guild-nav" class="side-nav">
         <li>
           <div class="userView">
-            {% if guild.icon %}
-            <img class="circle" src="{{ generate_guild_icon( guild.id, guild.icon  ) }}">
+            {% if guild['icon'] %}
+            <img class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
             {% endif %}
-            <span class="name">{{ guild.name }}</span>
+            <span class="name">{{ guild['name'] }}</span>
           </div>
         </li>
 
         <li><a class="subheader">Actions</a></li>
-        <li><a href="{{ url_for("user.administrate_guild", guild_id=guild.id) }}" class="waves-effect" target="_blank" id="administrate_link" style="display: none;">Manage Guild Embed</a></li>
-        <li><a href="https://discordapp.com/channels/{{ guild.id }}/" class="waves-effect" target="_blank">Open Server on Discordapp</a></li>
+        <li><a href="{{ url_for("user.administrate_guild", guild_id=guild['id']) }}" class="waves-effect" target="_blank" id="administrate_link" style="display: none;">Manage Guild Embed</a></li>
+        <li><a href="https://discordapp.com/channels/{{ guild['id'] }}/" class="waves-effect" target="_blank">Open Server on Discordapp</a></li>
 
         <li><div class="divider"></div></li>
 

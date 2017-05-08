@@ -24,9 +24,15 @@ def get_logingreeting():
 def guild_embed(guild_id):
     if check_guild_existance(guild_id):
         guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+        guild_dict = {
+            "id": guild.guild_id,
+            "name": guild.name,
+            "unauth_users": guild.unauth_users,
+            "icon": guild.icon
+        }
         return render_template("embed.html.j2",
             login_greeting=get_logingreeting(),
-            guild_id=guild_id, guild=guild,
+            guild_id=guild_id, guild=guild_dict,
             generate_guild_icon=generate_guild_icon_url,
             unauth_enabled=guild_query_unauth_users_bool(guild_id),
             client_id=config['client-id']

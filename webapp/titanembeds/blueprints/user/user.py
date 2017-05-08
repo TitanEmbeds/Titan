@@ -88,8 +88,13 @@ def administrate_guild(guild_id):
     all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.last_timestamp).all()
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
-    dbguild_dict = {"unauth_users": db_guild.unauth_users}
-    return render_template("administrate_guild.html.j2", guild=db_guild, dbguild=dbguild_dict, members=users, permissions=permissions)
+    dbguild_dict = {
+        "id": db_guild.guild_id,
+        "name": db_guild.name,
+        "unauth_users": db_guild.unauth_users,
+        "icon": db_guild.icon
+    }
+    return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions)
 
 @user.route("/administrate_guild/<guild_id>", methods=["POST"])
 @discord_users_only()
