@@ -45,7 +45,7 @@ def user_has_permission(permission, index):
     return bool((int(permission) >> index) & 1)
 
 def get_user_guilds():
-    cache = get_keyvalproperty("OAUTH/USERGUILDS/"+make_cache_key())
+    cache = get_keyvalproperty("OAUTH/USERGUILDS/"+make_user_cache_key())
     if cache:
         return cache
     req = discordrest_from_user("/users/@me/guilds")
