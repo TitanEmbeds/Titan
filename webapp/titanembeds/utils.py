@@ -32,7 +32,7 @@ def make_cache_key(*args, **kwargs):
     sess = generate_session_key()
     return (path + args + sess + ip).encode('utf-8')
 
-def make_user_cache_key(*args, **kwargs)
+def make_user_cache_key(*args, **kwargs):
     ip = get_client_ipaddr()
     sess = generate_session_key()
     return (sess + ip).encode('utf-8')
