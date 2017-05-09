@@ -102,14 +102,6 @@ class DiscordREST:
     # Channel
     #####################
 
-    def get_channel_messages(self, channel_id, after_snowflake=None):
-        _endpoint = "/channels/{channel_id}/messages".format(channel_id=channel_id)
-        params = {}
-        if after_snowflake is not None:
-            params = {'after': after_snowflake}
-        r = self.request("GET", _endpoint, params=params)
-        return r
-
     def create_message(self, channel_id, content):
         _endpoint = "/channels/{channel_id}/messages".format(channel_id=channel_id)
         payload = {'content': content}
@@ -119,38 +111,6 @@ class DiscordREST:
     #####################
     # Guild
     #####################
-
-    def get_guild(self, guild_id):
-        _endpoint = "/guilds/{guild_id}".format(guild_id=guild_id)
-        r = self.request("GET", _endpoint)
-        return r
-
-    @cache.cache('get_guild_channels', expire=200)
-    def get_guild_channels(self, guild_id):
-        _endpoint = "/guilds/{guild_id}/channels".format(guild_id=guild_id)
-        r = self.request("GET", _endpoint)
-        return r
-
-    def get_guild_roles(self, guild_id):
-        _endpoint = "/guilds/{guild_id}/roles".format(guild_id=guild_id)
-        r = self.request("GET", _endpoint)
-        return r
-
-    @cache.cache('get_guild_member', expire=200)
-    def get_guild_member(self, guild_id, user_id):
-        _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
-        r = self.request("GET", _endpoint)
-        return r
-
-    def get_guild_member_nocache(self, guild_id, user_id):
-        _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
-        r = self.request("GET", _endpoint)
-        return r
-
-    def modify_guild_member(self, guild_id, user_id, **kwargs):
-        _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
-        r = self.request("PATCH", _endpoint, data=kwargs, json=True)
-        return r
 
     def add_guild_member(self, guild_id, user_id, access_token, **kwargs):
         _endpoint = "/guilds/{guild_id}/members/{user_id}".format(user_id=user_id, guild_id=guild_id)
@@ -168,53 +128,6 @@ class DiscordREST:
         _endpoint = "/guilds/{guild_id}/embed".format(guild_id=guild_id)
         r = self.request("PATCH", _endpoint, data=kwargs, json=True)
         return r
-
-    def get_guild_bans(self, guild_id):
-        _endpoint = "/guilds/{guild_id}/bans".format(guild_id=guild_id)
-        r = self.request("GET", _endpoint)
-        return r
-
-    @cache.cache('list_all_guild_members', expire=200)
-    def list_all_guild_members(self, guild_id):
-        _endpoint = "/guilds/{guild_id}/members".format(guild_id=guild_id)
-        count = 1
-        last_usrid = ""
-        users = []
-        params = {"limit": 1000}
-        while count > 0:
-            r = self.request("GET", _endpoint, params=params)
-            if r["success"] == True:
-                content = r["content"]
-                count = len(content)
-                users.extend(content)
-                if count > 0:
-                    params["after"] = content[-1]["user"]["id"]
-            else:
-                count = 0
-        return users
-
-    #####################
-    # User
-    #####################
-
-    @cache.cache('get_all_guilds', expire=100)
-    def get_all_guilds(self):
-        _endpoint = "/users/@me/guilds"
-        params = {}
-        guilds = []
-        count = 1 #priming the loop
-        last_guild = ""
-        while count > 0:
-            r = self.request("GET", _endpoint, params=params)
-            if r['success'] == True:
-                content = r['content']
-                count = len(content)
-                guilds.extend(content)
-                if count > 0:
-                    params['after'] = content[-1]['id']
-            else:
-                count = 0
-        return guilds
 
     #####################
     # Widget Handler
