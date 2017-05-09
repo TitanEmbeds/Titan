@@ -521,6 +521,9 @@
             });
             funct.fail(function(data) {
                 Materialize.toast('Failed to send message.', 10000);
+                for (var i = 0; i < data.responseJSON.illegal_reasons.length; i++) {
+                  Materialize.toast(data.responseJSON.illegal_reasons[i], 10000);
+                }
             });
             funct.catch(function(data) {
                 if (data.status == 429) {

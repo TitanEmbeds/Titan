@@ -96,12 +96,30 @@ def check_user_in_guild(guild_id):
         dbUser = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
         return not checkUserRevoke(guild_id) and dbUser is not None
 
-def format_post_content(message):
+def format_post_content(guild_id, message):
+    illegal_post = False
+    illegal_reasons = []
     message = message.replace("<", "\<")
     message = message.replace(">", "\>")
 
-    pattern = re.compile(r'\[@[0-9]+\]')
-    for match in re.findall(pattern, message):
+    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+
+    links = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
+    print links
+    if not dbguild.chat_links and len(links) > 0:
+        illegal_post = True
+        illegal_reasons.append("Links is not allowed.")
+    elif dbguild.chat_links and not dbguild.bracket_links:
+        for link in links:
+            newlink = "<" + link + ">"
+            message = message.replace(link, newlink)
+
+    mention_pattern = re.compile(r'\[@[0-9]+\]')
+    all_mentions = re.findall(mention_pattern, message)
+    if dbguild.mentions_limit != -1 and len(all_mentions) > dbguild.mentions_limit:
+        illegal_post = True
+        illegal_reasons.append("Mentions is capped at the following limit: " + str(dbguild.mentions_limit))
+    for match in all_mentions:
         mention = "<@" + match[2: len(match) - 1] + ">"
         message = message.replace(match, mention, 1)
 
@@ -109,7 +127,7 @@ def format_post_content(message):
         message = "**[{}#{}]** {}".format(session['username'], session['user_id'], message)
     else:
         message = "**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
-    return message
+    return (message, illegal_post, illegal_reasons)
 
 def get_member_roles(guild_id, user_id):
     q = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == user_id).first()
@@ -282,23 +300,25 @@ def post():
     guild_id = request.form.get("guild_id")
     channel_id = request.form.get('channel_id')
     content = request.form.get('content')
-    content = format_post_content(content)
+    content, illegal_post, illegal_reasons = format_post_content(guild_id, content)
     if user_unauthenticated():
         key = session['user_keys'][guild_id]
     else:
         key = None
     status = update_user_status(guild_id, session['username'], key)
     message = {}
+    if illegal_post:
+        status_code = 417
     if status['banned'] or status['revoked']:
         status_code = 401
     else:
         chan = filter_guild_channel(guild_id, channel_id)
         if not chan.get("write"):
             status_code = 401
-        else:
+        elif not illegal_post:
             message = discord_api.create_message(channel_id, content)
             status_code = message['code']
-    response = jsonify(message=message.get('content', message), status=status)
+    response = jsonify(message=message.get('content', message), status=status, illegal_reasons=illegal_reasons)
     response.status_code = status_code
     return response
 
