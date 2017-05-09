@@ -147,7 +147,7 @@ def get_guild_channels(guild_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     guild_channels = json.loads(dbguild.channels)
     guild_roles = json.loads(dbguild.roles)
-    guild_owner = json.loads(dbguild.owner_id)
+    guild_owner = str(dbguild.owner_id)
     result_channels = []
     for channel in guild_channels:
         if channel['type'] == "text":
