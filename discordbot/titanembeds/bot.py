@@ -84,6 +84,9 @@ class Titan(discord.Client):
 
     async def on_server_join(self, guild):
         await self.database.update_guild(guild)
+        for channel in guild.channels:
+            async for message in self.logs_from(channel, limit=50, reverse=True):
+                await self.database.push_message(message)
 
     async def on_server_remove(self, guild):
         await self.database.remove_guild(guild)

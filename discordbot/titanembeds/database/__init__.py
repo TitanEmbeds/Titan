@@ -188,6 +188,9 @@ class DatabaseInterface(object):
                     disguild = discord.utils.get(guilds, id=guild.guild_id)
                     if not disguild:
                         changed = True
+                        dbmsgs = session.query(Messages).filter(Messages.guild_id == guild.guild_id).all()
+                        for msg in dbmsgs:
+                            session.delete(msg)
                         session.delete(guild)
                 if changed:
                     session.commit()
@@ -197,6 +200,9 @@ class DatabaseInterface(object):
             with self.get_session() as session:
                 gui = session.query(Guilds).filter(Guilds.guild_id == guild.id).first()
                 if gui:
+                    dbmsgs = session.query(Messages).filter(Messages.guild_id == guild.id).all()
+                    for msg in dbmsgs:
+                        session.delete(msg)
                     session.delete(gui)
                     session.commit()
 
