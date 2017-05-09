@@ -2,7 +2,6 @@ import requests
 import sys
 import time
 import json
-from titanembeds.utils import cache
 from titanembeds.database import db, KeyValueProperties, get_keyvalproperty, set_keyvalproperty, ifexists_keyvalproperty
 from flask import request
 
@@ -133,7 +132,6 @@ class DiscordREST:
     # Widget Handler
     #####################
 
-    @cache.cache('get_widget', expire=200)
     def get_widget(self, guild_id):
         _endpoint = _DISCORD_API_BASE + "/servers/{guild_id}/widget.json".format(guild_id=guild_id)
         embed = self.get_guild_embed(guild_id)

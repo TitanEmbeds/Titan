@@ -1,5 +1,3 @@
-from beaker.cache import CacheManager
-from beaker.util import parse_cache_config_options
 from titanembeds.database import db, Guilds, KeyValueProperties
 from flask import request, session
 from flask_limiter import Limiter
@@ -7,14 +5,6 @@ from config import config
 import random
 import string
 import hashlib
-
-cache_opts = {
-    'cache.type': 'ext:database',
-    'cache.lock_dir': 'tmp/cachelock',
-    'cache.url': config["database-uri"],
-    'cache.sa.pool_recycle': 250,
-}
-cache = CacheManager(**parse_cache_config_options(cache_opts))
 
 from titanembeds.discordrest import DiscordREST
 

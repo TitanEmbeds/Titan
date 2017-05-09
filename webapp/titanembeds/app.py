@@ -2,7 +2,7 @@ from config import config
 from database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, cache, discord_api
+from titanembeds.utils import rate_limiter, discord_api
 import blueprints.api
 import blueprints.user
 import blueprints.embed

@@ -1,6 +1,5 @@
 from config import config
 from requests_oauthlib import OAuth2Session
-from titanembeds.utils import cache, make_guilds_cache_key
 from flask import session, abort, url_for
 
 authorize_url = "https://discordapp.com/api/oauth2/authorize"
@@ -42,7 +41,6 @@ def get_current_authenticated_user():
 def user_has_permission(permission, index):
     return bool((int(permission) >> index) & 1)
 
-@cache.cache(make_guilds_cache_key, expire=120)
 def get_user_guilds():
     req = discordrest_from_user("/users/@me/guilds")
     return req
