@@ -87,6 +87,11 @@ class Titan(discord.Client):
         for channel in guild.channels:
             async for message in self.logs_from(channel, limit=50, reverse=True):
                 await self.database.push_message(message)
+        for member in guild.members:
+            update_guild_member(member, True, False)
+        banned = self.get_bans(guild)
+        for ban in banned:
+            update_guild_member(ban, False, True)
 
     async def on_server_remove(self, guild):
         await self.database.remove_guild(guild)
