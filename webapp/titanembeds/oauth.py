@@ -3,7 +3,7 @@ import json
 from requests_oauthlib import OAuth2Session
 from flask import session, abort, url_for
 from titanembeds.database import get_keyvalproperty, set_keyvalproperty
-from titanembeds.utils import make_cache_key
+from titanembeds.utils import make_user_cache_key
 
 authorize_url = "https://discordapp.com/api/oauth2/authorize"
 token_url = "https://discordapp.com/api/oauth2/token"
@@ -52,7 +52,7 @@ def get_user_guilds():
     if req.status_code != 200:
         abort(req.status_code)
     req = json.dumps(req.json())
-    set_keyvalproperty("OAUTH/USERGUILDS/"+make_cache_key(), req, 100)
+    set_keyvalproperty("OAUTH/USERGUILDS/"+make_user_cache_key(), req, 250)
     return req
 
 def get_user_managed_servers():
