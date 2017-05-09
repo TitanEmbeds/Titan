@@ -7,6 +7,35 @@ $('#unauth_users').change(function() {
     });
 });
 
+$('#chat_links').change(function() {
+    var pathname = window.location.pathname;
+    var checked = $(this).is(':checked')
+    var payload = {"chat_links": checked}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated chat links setting!', 2000)
+    });
+});
+
+$('#bracket_links').change(function() {
+    var pathname = window.location.pathname;
+    var checked = $(this).is(':checked')
+    var payload = {"bracket_links": checked}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated embed links setting!', 2000)
+    });
+});
+
+$("#mentions_limit").keyup(function(event){
+    if(event.keyCode == 13){
+      var pathname = window.location.pathname;
+      var value = $("#mentions_limit").val()
+      var payload = {"mentions_limit": value}
+      $.post(pathname, payload, function(data) {
+        Materialize.toast('Updated mentions limit setting!', 2000)
+      });
+    }
+});
+
 function initiate_ban(guild_id, user_id) {
   var reason = prompt("Please enter your reason for ban");
   var payload = {

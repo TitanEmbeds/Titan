@@ -38,6 +38,7 @@
       <div class="card horizontal black-text indigo lighten-5 z-depth-3 hoverable">
         <div class="card-stacked">
           <div class="card-content">
+
             <p class="flow-text">Unauthenticated (Guest) Users</p>
             <div class="switch">
               <label>
@@ -47,6 +48,37 @@
                 Enable
               </label>
             </div>
+
+            <br>
+
+            <p class="flow-text">Chat Links</p>
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="chat_links" name="chat_links" {% if guild['chat_links'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
+
+            <br>
+
+            <p class="flow-text">Render Links as an Embed</p>
+            <p>(if possible)</p>
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="bracket_links" name="bracket_links" {% if guild['bracket_links'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
+
+            <br>
+
+            <p class="flow-text">Message mentions limit</p>
+            <p>(-1 to have no limit - enter to submit)</p>
+            <input id="mentions_limit" type="number" value="{{ guild['mentions_limit'] }}">
           </div>
         </div>
       </div>

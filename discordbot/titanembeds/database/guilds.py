@@ -6,6 +6,9 @@ class Guilds(Base):
     guild_id = db.Column(db.String(255))            # Discord guild id
     name = db.Column(db.String(255))                # Name
     unauth_users = db.Column(db.Boolean())          # If allowed unauth users
+    chat_links = db.Column(db.Boolean())            # If users can post links
+    bracket_links = db.Column(db.Boolean())         # If appending brackets to links to prevent embed
+    mentions_limit = db.Column(db.Integer)          # If there is a limit on the number of mentions in a msg
     roles = db.Column(db.Text())                    # Guild Roles
     channels = db.Column(db.Text())                 # Guild channels
     owner_id = db.Column(db.String(255))            # Snowflake of the owner
@@ -15,6 +18,9 @@ class Guilds(Base):
         self.guild_id = guild_id
         self.name = name
         self.unauth_users = True # defaults to true
+        self.chat_links = True
+        self.bracket_links = True
+        self.mentions_limit = -1 # -1 = unlimited mentions
         self.roles = roles
         self.channels = channels
         self.owner_id = owner_id
