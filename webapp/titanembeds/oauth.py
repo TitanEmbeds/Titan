@@ -1,6 +1,9 @@
 from config import config
+import json
 from requests_oauthlib import OAuth2Session
 from flask import session, abort, url_for
+from titanembeds.database import get_keyvalproperty, set_keyvalproperty
+from titanembeds.utils import make_cache_key
 
 authorize_url = "https://discordapp.com/api/oauth2/authorize"
 token_url = "https://discordapp.com/api/oauth2/token"
@@ -42,14 +45,18 @@ def user_has_permission(permission, index):
     return bool((int(permission) >> index) & 1)
 
 def get_user_guilds():
+    cache = get_keyvalproperty("OAUTH/USERGUILDS/"+make_cache_key())
+    if cache:
+        return cache
     req = discordrest_from_user("/users/@me/guilds")
+    if req.status_code != 200:
+        abort(req.status_code)
+    req = json.dumps(req.json())
+    set_keyvalproperty("OAUTH/USERGUILDS/"+make_cache_key(), req, 100)
     return req
 
 def get_user_managed_servers():
-    guilds = get_user_guilds()
-    if guilds.status_code != 200:
-        abort(guilds.status_code)
-    guilds = guilds.json()
+    guilds = json.loads(get_user_guilds())
     filtered = []
     for guild in guilds:
         permission = guild['permissions'] # Manage Server, Ban Members, Kick Members
