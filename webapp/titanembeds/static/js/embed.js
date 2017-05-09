@@ -14,6 +14,7 @@
     var guild_channels = {}; // all server channels used to highlight channels in messages
     var times_fetched = 0; // kept track of how many times that it has fetched
     var fetch_error_count = 0; // Number of errors fetch has encountered
+    var priority_query_guild = false; // So you have selected a channel? Let's populate it.
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -291,6 +292,7 @@
             last_message_id = null;
             $("#channels-list > li.active").removeClass("active");
             $("#channel-"+selected_channel).parent().addClass("active");
+            priority_query_guild = true;
             clearTimeout(fetchtimeout);
             run_fetch_routine();
         }
@@ -426,9 +428,10 @@
             } else {
                 $("#administrate_link").hide();
             }
-            if (times_fetched % 10 == 0) {
+            if (times_fetched % 10 == 0 || priority_query_guild) {
               var guild = query_guild();
               guild.done(function(guildobj) {
+                  priority_query_guild = false;
                   fill_channels(guildobj.channels);
                   fill_discord_members(guildobj.discordmembers);
                   fill_authenticated_users(guildobj.embedmembers.authenticated);
