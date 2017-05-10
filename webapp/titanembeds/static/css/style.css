@@ -25,7 +25,7 @@ nav {
 
 @media only screen and (max-width: 992px) {
   nav .brand-logo {
-    left: 10%;
+    left: 5%;
   }
 }
 
@@ -65,8 +65,7 @@ nav {
 
 .betatag {
   font-variant: small-caps;
-  font-size: 25px;
+  font-size: 20px;
   border-radius: 50px;
-  border: 2px solid #37474f;
   color: #eceff1;
 }
