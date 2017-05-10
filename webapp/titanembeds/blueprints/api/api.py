@@ -129,6 +129,11 @@ def format_post_content(guild_id, message):
         message = "**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
     return (message, illegal_post, illegal_reasons)
 
+def format_everyone_mention(channel, content):
+    if not channel["mention_everyone"] and "@everyone" in content:
+        content = content.replace("@everyone", u"@\u200Beveryone")
+    return content
+
 def get_member_roles(guild_id, user_id):
     q = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == user_id).first()
     return json.loads(q.roles)
@@ -151,10 +156,11 @@ def get_guild_channels(guild_id):
     result_channels = []
     for channel in guild_channels:
         if channel['type'] == "text":
-            result = {"channel": channel, "read": False, "write": False}
+            result = {"channel": channel, "read": False, "write": False, "mention_everyone": False}
             if guild_owner == session['user_id']:
                 result["read"] = True
                 result["write"] = True
+                result["mention_everyone"] = True
                 result_channels.append(result)
                 continue
             channel_perm = 0
@@ -176,6 +182,7 @@ def get_guild_channels(guild_id):
             if user_has_permission(channel_perm, 3):
                 result["read"] = True
                 result["write"] = True
+                result["mention_everyone"] = True
                 result_channels.append(result)
                 continue
 
@@ -198,6 +205,7 @@ def get_guild_channels(guild_id):
 
             result["read"] = user_has_permission(channel_perm, 10)
             result["write"] = user_has_permission(channel_perm, 11)
+            result["mention_everyone"] = user_has_permission(channel_perm, 17)
 
             # If default channel, you can read
             if channel["id"] == guild_id:
@@ -207,8 +215,8 @@ def get_guild_channels(guild_id):
             if not user_has_permission(channel_perm, 10):
                 result["read"] = False
                 result["write"] = False
+                result["mention_everyone"] = False
 
-            #if result["read"]:
             result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
 
@@ -316,6 +324,7 @@ def post():
         if not chan.get("write"):
             status_code = 401
         elif not illegal_post:
+            content = format_everyone_mention(chan, content)
             message = discord_api.create_message(channel_id, content)
             status_code = message['code']
     response = jsonify(message=message.get('content', message), status=status, illegal_reasons=illegal_reasons)
