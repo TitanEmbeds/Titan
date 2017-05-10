@@ -130,8 +130,11 @@ def format_post_content(guild_id, message):
     return (message, illegal_post, illegal_reasons)
 
 def format_everyone_mention(channel, content):
-    if not channel["mention_everyone"] and "@everyone" in content:
-        content = content.replace("@everyone", u"@\u200Beveryone")
+    if not channel["mention_everyone"]:
+        if "@everyone" in content:
+            content = content.replace("@everyone", u"@\u200Beveryone")
+        if "@here" in content:
+            content = content.replace("@here", u"@\u200Bhere")
     return content
 
 def get_member_roles(guild_id, user_id):
