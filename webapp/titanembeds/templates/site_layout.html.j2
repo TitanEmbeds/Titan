@@ -28,7 +28,7 @@
 
       <nav>
         <div class="nav-wrapper container">
-          <a href="/" class="brand-logo"><b>Titan</b>Embeds <span class="betatag">BETA</span></a>
+          <a href="/" class="brand-logo"><img src="{{ url_for('static', filename='img/titanembeds_shield.png') }}" /><span class="hide-on-med-and-down"><b class="align-top">Titan</b><span class="align-top">Embeds</span> <span class="betatag align-top">BETA</span></span></a>
           <ul id="nav-mobile" class="right">
             <li><a href="{{url_for("embed.guild_embed", guild_id="295085744249110529")}}" class="waves-effect btn z-depth-3">Visit Us!</a></li>
             {% if session['unauthenticated'] is defined and not session['unauthenticated'] %}

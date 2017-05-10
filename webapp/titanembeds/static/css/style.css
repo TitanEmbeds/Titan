@@ -29,6 +29,18 @@ nav {
   }
 }
 
+.align-top {
+  vertical-align: top;
+}
+
+.brand-logo img {
+  width: 30px;
+  margin-right: 10px;
+  margin-top: 4px;
+  -webkit-filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
+}
+
 .btn {
   background-color: #303f9f;
 }
