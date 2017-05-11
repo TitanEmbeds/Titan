@@ -1,0 +1,110 @@
+{% extends 'site_layout.html.j2' %}
+{% block title %}About Titan{% endblock %}
+
+{% block content %}
+<p class="flow-text center-align">In the beginning, there was <strong>silence</strong>.</p>
+<p class="center-align">
+    <a class="white-text" href="https://www.reddit.com/r/discordapp/comments/3tucod/embedding_discord_via_iframe_disabled/" target="_blank">People</a>
+    <a class="white-text" href="https://feedback.discordapp.com/forums/326712-discord-dream-land/suggestions/10821381-please-turn-back-on-iframe-embed-for-discord-chat" target="_blank">like</a>
+    <a class="white-text" href="https://feedback.discordapp.com/forums/326712-discord-dream-land/suggestions/18454222-embed-in-forum-chat-option" target="_blank">you</a>,
+    would <strong>LOVE</strong> to embed their Discord server on webpages... but simply, there was no other options to do such thing!
+
+<br><br><br>
+
+<p class="flow-text center-align">Well, say no more!</p>
+<!-- Say no more! :) http://vignette3.wikia.nocookie.net/mlp/images/7/70/Rainbow_Dash_%22say_no_more%21%22_S03E13.png/revision/latest?cb=20130217125130 -->
+
+<h1 class="center-align">Introducing</h1>
+<img class="center-align hide-on-med-and-down" style="width: 50%;" src="{{ url_for('static', filename='img/titanembeds.png') }}">
+<img class="center-align hide-on-large-only" style="width: 100%;" src="{{ url_for('static', filename='img/titanembeds.png') }}">
+<p class="flow-text center-align">A unique, stripped down version of your Discord server, embeddable on any webpages alike!</p>
+<br>
+<hr>
+<br>
+<h3>About</h3>
+<p>There was a time when Discord doesn't support embedding the chat on a webpage. One must go into
+extreme measures to ensure that they do not break the Cross Origin policy that Discord client is
+enforcing, which resulted in many very sad outcomes. Many users have also complained that the Discord's
+built in widget does not include the chat itself. What is the point of embedding Discord without
+chat?!</p>
+<p>This is where <strong>Titan</strong> steps in. By inviting Titan bot into your server,
+it acts like a proxy where it relays chat from your website embed to the Discord server. As
+soon as you invite Titan to your server, you will be given a unique URL/iframe code to paste
+directly onto your website.</p>
+<p>It just doesn't ends here! Titan is jam packed with many features, such as guest users
+as well as allowing Discord users to participate. Guest users will be treated similar to users without a role.
+Discord users however will inherit their own permission abilities. The client itself is designed 
+with flexibility. It looks good in websites of all taste!</p>
+<p>Please note that Titan is just a mere piece of code that runs alongside of Discord. <strong style="text-decoration: underline;">It is never
+used to replace Discord itself</strong>. (that's what the mobile apps are for!)
+It is used in conjunction for a quick and dirty Discord embed for websites. Some uses include forum shoutboxes,
+etc.</p>
+
+<h3>Cool People</h3>
+<p class="flow-text">Keep in mind, this project is not complete without these awesome people!</p>
+<div class="row">
+    <div class="col s12 m6">
+        <div class="card-panel indigo lighten-5 z-depth-1 no-height-padding">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="https://cdn.discordapp.com/avatars/138881969185357825/c6c277ba50605957ac8f28a35c17314c.webp?size=64" alt="" class="circle responsive-img">
+            </div>
+            <div class="col s10">
+                <h5 class="black-text card-title">EndenDragon</h5>
+                <p class="black-text flow-text">Project Lead</p>
+                <!--<p class="black-text">The one who started this project. How was Titan born? No one is for sure. But the legends say that the place he worked at (BronyTV) decided to ditch IRC for Discord, and Titan was the product of this chaos.</p>-->
+            </div>
+          </div>
+        </div>
+    </div>
+    
+    <div class="col s12 m6">
+        <div class="card-panel indigo lighten-5 z-depth-1 no-height-padding">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="https://cdn.discordapp.com/avatars/164165196569378816/aa7236ec32d53cc9285a5f1fea604d80.webp?size=64" alt="" class="circle responsive-img">
+            </div>
+            <div class="col s10">
+                <h5 class="black-text card-title">Riva</h5>
+                <p class="black-text flow-text">Bot Hosting</p>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+    <div class="col s12 m6">
+        <div class="card-panel indigo lighten-5 z-depth-1 no-height-padding">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="https://cdn.discordapp.com/avatars/266286316772130816/a_16ff5d3a7536b29bfaa55d037b84ebfa.webp?size=64" alt="" class="circle responsive-img">
+            </div>
+            <div class="col s10">
+                <h5 class="black-text card-title">Semic</h5>
+                <p class="black-text flow-text">Logo/Asset Designer</p>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<h3>Partners</h3>
+<p class="flow-text">These are awesome communities that offers amazing tools to enhance your Discord experience and are willing to promote us! So do we!! #TitanThoughtOfTheDay</p>
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel indigo lighten-5 z-depth-1">
+          <div class="row">
+            <div class="col s12 l2">
+              <img src="https://cdn.discordapp.com/icons/232335047170981890/4b819f4c7c73c838c36e92803dfedbd9.webp" alt="" class="circle responsive-img">
+            </div>
+            <div class="col s12 l10">
+                <h5 class="black-text card-title">Discord.io</h5>
+                <p class="black-text flow-text">Personalized Discord Invites</p>
+                <p class="black-text">Are you tired of having random Discord.gg invite links? Wouldn't it be better if you could customize the letters in your link? Well look no further, we have the perfect solution for you! Discord.io is an unofficial project, which focuses around giving companies and communities on Discord, the option to create their very own personal invitation links.</p>
+                <a href="https://discord.io/" class="waves-effect btn" target="_blank">Website</a>
+                <a href="https://discord.io/dio" class="waves-effect btn" target="_blank">Discord Server</a>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -30,8 +30,8 @@
         <div class="nav-wrapper container">
           <a href="/" class="brand-logo"><img src="{{ url_for('static', filename='img/titanembeds_shield.png') }}" /><span class="hide-on-med-and-down"><strong class="align-top">Titan</strong><span class="align-top">Embeds</span> <span class="betatag align-top">BETA</span></span></a>
           <ul id="nav-mobile" class="right">
-            <li><a href="#" class="waves-effect hide-on-large-only">About</a></li>
-            <li><a href="#" class="waves-effect btn z-depth-3 hide-on-med-and-down">About</a></li>
+            <li><a href="{{url_for("about")}}" class="waves-effect hide-on-large-only">About</a></li>
+            <li><a href="{{url_for("about")}}" class="waves-effect btn z-depth-3 hide-on-med-and-down">About</a></li>
             
             <li><a href="{{url_for("embed.guild_embed", guild_id="295085744249110529")}}" class="waves-effect hide-on-large-only">Visit Us!</a></li>
             <li><a href="{{url_for("embed.guild_embed", guild_id="295085744249110529")}}" class="waves-effect btn z-depth-3 hide-on-med-and-down">Visit Us!</a></li>

@@ -30,6 +30,10 @@ app.register_blueprint(blueprints.embed.embed, url_prefix="/embed", template_fol
 def index():
     return render_template("index.html.j2")
 
+@app.route("/about")
+def about():
+    return render_template("about.html.j2")
+
 @app.before_request
 def before_request():
     db.create_all()
