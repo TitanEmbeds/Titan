@@ -44,7 +44,10 @@ def checkUserBanned(guild_id, ip_address=None):
     else:
         banned = False
         dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == session["user_id"]).first()
-        banned = dbUser.banned
+        if not dbUser:
+            banned = False
+        else:
+            banned = dbUser.banned
     return banned
 
 def update_user_status(guild_id, username, user_key=None):
@@ -94,7 +97,7 @@ def check_user_in_guild(guild_id):
         return guild_id in session['user_keys']
     else:
         dbUser = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
-        return not checkUserRevoke(guild_id) and dbUser is not None
+        return dbUser is not None and not checkUserRevoke(guild_id)
 
 def format_post_content(guild_id, message):
     illegal_post = False
