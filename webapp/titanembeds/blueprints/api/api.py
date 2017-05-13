@@ -398,13 +398,13 @@ def create_authenticated_user():
         if not check_guild_existance(guild_id):
             abort(404)
         if not checkUserBanned(guild_id):
+            if not check_user_in_guild(guild_id):
+                discord_api.add_guild_member(guild_id, session['user_id'], session['user_keys']['access_token'])
             db_user = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
             if not db_user:
                 db_user = AuthenticatedUsers(guild_id, session['user_id'])
                 db.session.add(db_user)
                 db.session.commit()
-            if not check_user_in_guild(guild_id):
-                discord_api.add_guild_member(guild_id, session['user_id'], session['user_keys']['access_token'])
             status = update_user_status(guild_id, session['username'])
             return jsonify(status=status)
         else:
