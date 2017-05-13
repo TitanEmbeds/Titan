@@ -185,3 +185,15 @@ a {
   width: 25px;
   height: 25px;
 }
+
+.brand-logo img {
+  width: 25px;
+  margin-right: 10px;
+  margin-top: 6px;
+  -webkit-filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
+}
+
+.align-top {
+  vertical-align: top;
+}
