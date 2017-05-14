@@ -275,8 +275,21 @@ class DatabaseInterface(object):
                         .filter(GuildMembers.guild_id == guild_id) \
                         .filter(GuildMembers.user_id == usr.id) \
                         .filter(GuildMembers.active == False).first()
+                    changed = True
                     if dbusr:
-                        changed = True
                         dbusr.banned = True
+                    else:
+                        dbusr = GuildMembers(
+                            guild_id,
+                            usr.id,
+                            usr.name,
+                            usr.discriminator,
+                            None,
+                            usr.avatar,
+                            False,
+                            True,
+                            "[]"
+                        )
+                        db.session.add(dbusr)
                 if changed:
                     session.commit()
