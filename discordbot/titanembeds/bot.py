@@ -4,6 +4,10 @@ import discord
 import aiohttp
 import asyncio
 import sys
+import logging
+logging.basicConfig(filename='titanbot.log',level=logging.DEBUG,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.getLogger('TitanBot')
+logging.getLogger('sqlalchemy')
 
 class Titan(discord.Client):
     def __init__(self):
