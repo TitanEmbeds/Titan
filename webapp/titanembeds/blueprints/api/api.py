@@ -108,7 +108,6 @@ def format_post_content(guild_id, message):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
 
     links = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
-    print links
     if not dbguild.chat_links and len(links) > 0:
         illegal_post = True
         illegal_reasons.append("Links is not allowed.")
@@ -127,9 +126,9 @@ def format_post_content(guild_id, message):
         message = message.replace(match, mention, 1)
 
     if (session['unauthenticated']):
-        message = "**[{}#{}]** {}".format(session['username'], session['user_id'], message)
+        message = u"**[{}#{}]** {}".format(session['username'], session['user_id'], message)
     else:
-        message = "**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
+        message = u"**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
     return (message, illegal_post, illegal_reasons)
 
 def format_everyone_mention(channel, content):
@@ -303,8 +302,9 @@ def fetch():
             status_code = 401
         else:
             messages = get_channel_messages(channel_id, after_snowflake)
+            status_code = 200
     response = jsonify(messages=messages, status=status)
-    response.status_code = 200
+    response.status_code = status_code
     return response
 
 @api.route("/post", methods=["POST"])
