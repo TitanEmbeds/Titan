@@ -235,6 +235,16 @@ class DatabaseInterface(object):
                     dbmember.roles = json.dumps(self.list_role_ids(member.roles))
                 session.commit()
 
+    async def unban_server_user(self, user, server):
+        async with threadpool():
+            with self.get_session() as session:
+                dbmember = session.query(GuildMembers) \
+                    .filter(GuildMembers.guild_id == server.id) \
+                    .filter(GuildMembers.user_id == user.id).first()
+                if dbmember:
+                    dbmember.banned = False
+                    session.commit()
+
     async def flag_unactive_guild_members(self, guild_id, guild_members):
         async with threadpool():
             with self.get_session() as session:

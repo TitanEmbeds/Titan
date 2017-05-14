@@ -3,6 +3,7 @@ from titanembeds.database import DatabaseInterface
 import discord
 import aiohttp
 import asyncio
+import sys
 
 class Titan(discord.Client):
     def __init__(self):
@@ -55,22 +56,25 @@ class Titan(discord.Client):
             traceback.print_exc()
             await self.logout()
             return
-
-        for server in self.servers:
-            await self.database.update_guild(server)
-            if server.large:
-                await request_offline_members(server)
-            server_bans = await self.get_bans(server)
-            for member in server.members:
-                banned = member.id in [u.id for u in server_bans]
-                await self.database.update_guild_member(
-                    member,
-                    True,
-                    banned
-                )
-            await self.database.flag_unactive_guild_members(server.id, server.members)
-            await self.database.flag_unactive_bans(server.id, server_bans)
-        await self.database.remove_unused_guilds(self.servers)
+        
+        if "no-init" not in sys.argv:
+            for server in self.servers:
+                await self.database.update_guild(server)
+                if server.large:
+                    await request_offline_members(server)
+                server_bans = await self.get_bans(server)
+                for member in server.members:
+                    banned = member.id in [u.id for u in server_bans]
+                    await self.database.update_guild_member(
+                        member,
+                        True,
+                        banned
+                    )
+                await self.database.flag_unactive_guild_members(server.id, server.members)
+                await self.database.flag_unactive_bans(server.id, server_bans)
+            await self.database.remove_unused_guilds(self.servers)
+        else:
+            print("Skipping indexing server due to no-init flag")
 
     async def on_message(self, message):
         await self.database.push_message(message)
@@ -131,9 +135,9 @@ class Titan(discord.Client):
         await self.database.update_guild_member(memberafter)
 
     async def on_member_ban(self, member):
-        if role.server.me not in role.server.members:
+        if self.user.id == member.id:
             return
         await self.database.update_guild_member(member, active=False, banned=True)
 
-    async def on_member_unban(self, member):
-        await self.database.update_guild_member(member, active=False, banned=False)
+    async def on_member_unban(self, server, user):
+        await self.database.unban_server_user(user, server)
