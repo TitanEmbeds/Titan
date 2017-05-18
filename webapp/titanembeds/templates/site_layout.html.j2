@@ -11,7 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <title>{% block title %}{% endblock %} - Titan Embeds for Discord</title>
-
+    
+    {% include 'seo_meta.html.j2' %}
+    
     {% block additional_head_elements %}{% endblock %}
 
     {% include 'google_analytics.html.j2' %}
