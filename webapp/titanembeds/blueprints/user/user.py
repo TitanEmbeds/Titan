@@ -121,11 +121,6 @@ def update_administrate_guild(guild_id):
         mentions_limit=db_guild.mentions_limit,
     )
 
-@user.route('/me')
-@discord_users_only()
-def me():
-    return jsonify(user=get_current_authenticated_user())
-
 def prepare_guild_members_list(members, bans):
     all_users = []
     ip_pool = []
