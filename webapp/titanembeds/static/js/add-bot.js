@@ -13,10 +13,6 @@
     }
     
     $(function(){
-        $("#invite-waiting").hide();
-        $("#invite-waiting-fail").hide();
-        $("#invite-done").hide();
-        
         $("#invite-btn").click(startInviteProcess);
     });
     
