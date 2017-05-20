@@ -1,5 +1,6 @@
 from config import config
 from titanembeds.database import DatabaseInterface
+from titanembeds.commands import Commands
 import discord
 import aiohttp
 import asyncio
@@ -15,6 +16,7 @@ class Titan(discord.Client):
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
+        self.command = Commands(self, self.database)
 
     def _cleanup(self):
         try:
@@ -82,7 +84,15 @@ class Titan(discord.Client):
 
     async def on_message(self, message):
         await self.database.push_message(message)
-        # TODO: Will add command handler + ban/kick command
+        
+        msg_arr = message.content.split() # split the message
+        if len(message.content.split()) > 1 and message.server: #making sure there is actually stuff in the message and have arguments and check if it is sent in server (not PM)
+            if msg_arr[0] == "<@{}>".format(self.user.id): #make sure it is mention
+                msg_cmd = msg_arr[1].lower() # get command
+                cmd = getattr(self.command, msg_cmd, None) #check if cmd exist, if not its none
+                if cmd: # if cmd is not none...
+                    await self.send_typing(message.channel) #this looks nice
+                    await getattr(self.command, msg_cmd)(message) #actually run cmd, passing in msg obj
 
     async def on_message_edit(self, message_before, message_after):
         await self.database.update_message(message_after)

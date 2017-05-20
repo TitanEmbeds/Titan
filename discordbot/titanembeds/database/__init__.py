@@ -293,3 +293,9 @@ class DatabaseInterface(object):
                         db.session.add(dbusr)
                 if changed:
                     session.commit()
+
+    async def ban_unauth_user_by_query(self, query):
+        async with threadpool():
+            with self.get_session() as session:
+                pass
+                #dbusr = session.query()
