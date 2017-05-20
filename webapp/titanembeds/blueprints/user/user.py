@@ -76,7 +76,7 @@ def administrate_guild(guild_id):
     db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     if not db_guild:
         session["redirect"] = url_for("user.administrate_guild", guild_id=guild_id, _external=True)
-        return redirect(generate_bot_invite_url(guild_id))
+        return redirect(url_for("user.add_bot", guild_id=guild_id))
     session["redirect"] = None
     permissions=[]
     if check_user_permission(guild_id, 5):
@@ -120,6 +120,11 @@ def update_administrate_guild(guild_id):
         bracket_links=db_guild.bracket_links,
         mentions_limit=db_guild.mentions_limit,
     )
+
+@user.route("/add-bot/<guild_id>")
+@discord_users_only()
+def add_bot(guild_id):
+    return render_template("add_bot.html.j2", guild_id=guild_id, guild_invite_url=generate_bot_invite_url(guild_id))
 
 def prepare_guild_members_list(members, bans):
     all_users = []

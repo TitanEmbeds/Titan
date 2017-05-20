@@ -96,5 +96,5 @@ def generate_guild_icon_url(id, hash):
     return guild_icon_url + str(id) + "/" + str(hash) + ".jpg"
 
 def generate_bot_invite_url(guild_id):
-    url = "https://discordapp.com/oauth2/authorize?&client_id={}&scope=bot&permissions={}&guild_id={}&response_type=code&redirect_uri={}".format(config['client-id'], '536083583', guild_id, url_for("user.dashboard", _external=True))
+    url = "https://discordapp.com/oauth2/authorize?&client_id={}&scope=bot&permissions={}&guild_id={}".format(config['client-id'], '536083583', guild_id)
     return url
