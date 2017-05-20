@@ -91,6 +91,9 @@ class Titan(discord.Client):
         await self.database.delete_message(message)
 
     async def on_server_join(self, guild):
+        if not guild.me.server_permissions.administrator:
+            self.leave_server(guild)
+        
         await self.database.update_guild(guild)
         for channel in guild.channels:
             async for message in self.logs_from(channel, limit=50, reverse=True):
