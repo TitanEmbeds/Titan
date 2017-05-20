@@ -50,7 +50,7 @@ class Titan(discord.Client):
         print('------')
 
         await self.change_presence(
-            game=discord.Game(name="iFrame your server! Visit https://TitanEmbeds.tk/ today!"), status=discord.Status.online
+            game=discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.tk/"), status=discord.Status.online
         )
 
         try:
