@@ -91,18 +91,20 @@ class Titan(discord.Client):
         await self.database.delete_message(message)
 
     async def on_server_join(self, guild):
+        await asyncio.sleep(1)
         if not guild.me.server_permissions.administrator:
-            self.leave_server(guild)
+            await self.leave_server(guild)
+            return
         
         await self.database.update_guild(guild)
         for channel in guild.channels:
             async for message in self.logs_from(channel, limit=50, reverse=True):
                 await self.database.push_message(message)
         for member in guild.members:
-            update_guild_member(member, True, False)
+            await self.database.update_guild_member(member, True, False)
         banned = self.get_bans(guild)
         for ban in banned:
-            update_guild_member(ban, False, True)
+            await self.database.update_guild_member(ban, False, True)
 
     async def on_server_remove(self, guild):
         await self.database.remove_guild(guild)

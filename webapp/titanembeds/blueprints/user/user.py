@@ -124,6 +124,7 @@ def update_administrate_guild(guild_id):
 @user.route("/add-bot/<guild_id>")
 @discord_users_only()
 def add_bot(guild_id):
+    session["redirect"] = None
     return render_template("add_bot.html.j2", guild_id=guild_id, guild_invite_url=generate_bot_invite_url(guild_id))
 
 def prepare_guild_members_list(members, bans):
