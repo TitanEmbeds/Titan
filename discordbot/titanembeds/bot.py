@@ -103,6 +103,7 @@ class Titan(discord.Client):
     async def on_server_join(self, guild):
         await asyncio.sleep(1)
         if not guild.me.server_permissions.administrator:
+            await asyncio.sleep(1)
             await self.leave_server(guild)
             return
         
@@ -112,7 +113,7 @@ class Titan(discord.Client):
                 await self.database.push_message(message)
         for member in guild.members:
             await self.database.update_guild_member(member, True, False)
-        banned = self.get_bans(guild)
+        banned = await self.get_bans(guild)
         for ban in banned:
             await self.database.update_guild_member(ban, False, True)
 
