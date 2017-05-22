@@ -1,7 +1,7 @@
 from flask import Blueprint, request, redirect, jsonify, abort, session, url_for, render_template
 from config import config
 from titanembeds.decorators import discord_users_only
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS
 from titanembeds.oauth import authorize_url, token_url, make_authenticated_session, get_current_authenticated_user, get_user_managed_servers, check_user_can_administrate_guild, check_user_permission, generate_avatar_url, generate_guild_icon_url, generate_bot_invite_url
 import time
 import datetime
@@ -66,7 +66,90 @@ def dashboard():
         redir = session['redirect']
         session['redirect'] = None
         return redirect(redir)
-    return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url)
+    cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
+    css_list = None
+    if cosmetics and cosmetics.css:
+        css_list = db.session.query(UserCSS).filter(UserCSS.user_id == session['user_id']).all()
+    return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url, cosmetics=cosmetics, css_list=css_list)
+
+@user.route("/custom_css/new", methods=["GET"])
+@discord_users_only()
+def new_custom_css_get():
+    cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
+    if not cosmetics or not cosmetics.css:
+        abort(403)
+    return render_template("usercss.html.j2", new=True)
+
+@user.route("/custom_css/new", methods=["POST"])
+@discord_users_only()
+def new_custom_css_post():
+    cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
+    if not cosmetics or not cosmetics.css:
+        abort(403)
+    
+    name = request.form.get("name", None)
+    user_id = session["user_id"]
+    css = request.form.get("css","")
+    if not name:
+        abort(400)
+    else:
+        name = name.strip()
+        css = css.strip()
+    css = UserCSS(name, user_id, css)
+    db.session.add(css)
+    db.session.commit()
+    return jsonify({"id": css.id})
+
+@user.route("/custom_css/edit/<css_id>", methods=["GET"])
+@discord_users_only()
+def edit_custom_css_get(css_id):
+    cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
+    if not cosmetics or not cosmetics.css:
+        abort(403)
+    css = db.session.query(UserCSS).filter(UserCSS.id == css_id).first()
+    if not css:
+        abort(404)
+    if css.user_id != session['user_id']:
+        abort(403)
+    return render_template("usercss.html.j2", new=False, css=css)
+
+@user.route("/custom_css/edit/<css_id>", methods=["POST"])
+@discord_users_only()
+def edit_custom_css_post(css_id):
+    cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
+    if not cosmetics or not cosmetics.css:
+        abort(403)
+    dbcss = db.session.query(UserCSS).filter(UserCSS.id == css_id).first()
+    if not dbcss:
+        abort(404)
+    if dbcss.user_id != session['user_id']:
+        abort(403)
+    name = request.form.get("name", None)
+    css = request.form.get("css", "")
+    if not name:
+        abort(400)
+    else:
+        name = name.strip()
+        css = css.strip()
+    dbcss.name = name
+    dbcss.css = css
+    db.session.commit()
+    return jsonify({"id": dbcss.id})
+
+@user.route("/custom_css/edit/<css_id>", methods=["DELETE"])
+@discord_users_only()
+def edit_custom_css_delete(css_id):
+    cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
+    if not cosmetics or not cosmetics.css:
+        abort(403)
+    dbcss = db.session.query(UserCSS).filter(UserCSS.id == css_id).first()
+    if not dbcss:
+        abort(404)
+    if dbcss.user_id != session['user_id']:
+        abort(403)
+    db.session.delete(dbcss)
+    db.session.commit()
+    return jsonify({})
 
 @user.route("/administrate_guild/<guild_id>", methods=["GET"])
 @discord_users_only()

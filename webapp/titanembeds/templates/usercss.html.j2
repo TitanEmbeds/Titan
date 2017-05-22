@@ -1,0 +1,65 @@
+{% extends 'site_layout.html.j2' %}
+{% block title %}{% if new %}New{% else %}Editing {{ css.name }} -{% endif %} User CSS{% endblock %}
+
+{% block content %}
+<h1>{% if new %}New{% else %}Editing {{ css.name }}{% endif %} - User Defined CSS</h1>
+<p><strong>Note:</strong> This feature is only used for CSS. Any attempts to enter HTML or malicious CSS code
+will have CSS cosmetic privilages removed, if caught. Please don't, we check the databases often. Thanks!</p>
+
+{% if not new %}
+<div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+  <div class="row">
+    <div class="col s12">
+        <p class="flow-text">Using your custom CSS</p>
+        <p><strong>This user defined CSS has a unique ID of <em style="font-size: 130%;">{{ css.id }}</em>.</strong></p>
+        <p>To use this CSS in the embed, you must apped a <code>?css={{ css.id }}</code> to the embed URL.</p>
+        <p>Something like this will work:</p>
+        <input readonly value="https://titanembeds.tk/embed/1234567890987654321?css={{ css.id }}" id="disabled" type="text" onClick="this.setSelectionRange(48, this.value.length)">
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+  <div class="row">
+    <div class="col s12">
+        <p class="flow-text">Give your CSS a name</p>
+        <input placeholder="Some Lit CSS" id="css_name" type="text" {% if not new %}value="{{ css.name }}"{% endif %}>
+        <label for="css_name">Name</label>
+    </div>
+    <div class="col s12">
+        <p class="flow-text">Edit your CSS code here</p>
+        <div style="position: relative; height: 40vh;">
+            <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{{ css.css }}{% endif %}</div>
+        </div>
+        <br>
+    </div>
+    <div class="col s12">
+        <a id="submit-btn" class="waves-effect waves-light btn">Submit</a>
+        {% if not new %}<a id="delete-btn" class="waves-effect waves-light btn red">Delete</a>{% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" integrity="sha256-xrr4HH5eSY+cFz4SH7ja/LaAi9qcEdjMpeMP49/iOLs=" crossorigin="anonymous"></script>
+<script>
+    const newCSS = {% if new %}true{% else %}false{% endif %};
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/usercss.js') }}"></script>
+{% endblock %}
+
+
+{% block additional_head_elements %}
+<style>
+    #css_editor { 
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+{% endblock %}

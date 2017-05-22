@@ -14,6 +14,10 @@
 
     <title>{{ guild['name'] }} - Embed - Titan Embeds for Discord</title>
     {% include 'google_analytics.html.j2' %}
+    
+    {% if css is not none %}
+    <style>{{ css.css }}</style>
+    {% endif %}
   </head>
   <body>
     <div class="navbar-fixed">

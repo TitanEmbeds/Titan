@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, abort, redirect, url_for, session
+from flask import Blueprint, render_template, abort, redirect, url_for, session, request
 from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
-from titanembeds.database import db, Guilds
+from titanembeds.database import db, Guilds, UserCSS
 from config import config
 import random
 
@@ -20,6 +20,12 @@ def get_logingreeting():
     ]
     return random.choice(greetings)
 
+def get_custom_css():
+    css = request.args.get("css", None)
+    if css:
+        css = db.session.query(UserCSS).filter(UserCSS.id == css).first()
+    return css
+
 @embed.route("/<string:guild_id>")
 def guild_embed(guild_id):
     if check_guild_existance(guild_id):
@@ -35,7 +41,8 @@ def guild_embed(guild_id):
             guild_id=guild_id, guild=guild_dict,
             generate_guild_icon=generate_guild_icon_url,
             unauth_enabled=guild_query_unauth_users_bool(guild_id),
-            client_id=config['client-id']
+            client_id=config['client-id'],
+            css=get_custom_css()
         )
     abort(404)
 
