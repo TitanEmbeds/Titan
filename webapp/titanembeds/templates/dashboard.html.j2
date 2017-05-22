@@ -29,4 +29,35 @@
   </div>
   {% endfor %}
 </div>
+
+<hr>
+
+{% if cosmetics is none %}
+<div class="row">
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <h4>Cosmetics!</h4>
+      <p class="flow-text">Would you like to have <strong>cosmetics</strong> such as <em>custom CSS</em> for your embed?</p>
+      <a class="waves-effect waves-light btn" href="https://discord.io/Titan">Talk to us!</a>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if css_list is not none %}
+<p class="flow-text">
+  Create or modify your custom CSS.
+  <a class="waves-effect waves-light btn" href="{{ url_for("user.new_custom_css_get") }}">New</a>
+</p>
+<div class="row">
+  {% for css in css_list %}
+  <div class="col l4 m6 s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <p class="flow-text truncate"><code>#{{ css.id }}</code> {{ css.name }}</p>
+      <a class="waves-effect waves-light btn" href="{{ url_for("user.edit_custom_css_get", css_id=css.id) }}">Modify</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
 {% endblock %}
