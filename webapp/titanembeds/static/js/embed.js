@@ -6,6 +6,7 @@
 /* global moment */
 
 (function () {
+    var has_already_been_focused = false; // keep track of if the embed has initially been focused.
     var logintimer; // timer to keep track of user inactivity after hitting login
     var fetchtimeout; // fetch routine timer
     var currently_fetching; // fetch lock- if true, do not fetch
@@ -77,8 +78,8 @@
         });
         return funct.promise();
     }
-
-    $(function(){
+    
+    $(function() {
         $("#loginmodal").modal({
             dismissible: false, // Modal can be dismissed by clicking outside of the modal
             opacity: .5, // Opacity of modal background
@@ -88,8 +89,22 @@
             endingTop: '10%', // Ending top style attribute
           }
         );
-
         $('#loginmodal').modal('open');
+        
+        if (document.hasFocus()) {
+            has_already_been_focused = true;
+            primeEmbed();
+        }
+        
+        $(window).focus(function() {
+            if (!has_already_been_focused) {
+                has_already_been_focused = true;
+                primeEmbed();
+            }
+        });
+    });
+
+    function primeEmbed() {
         lock_login_fields();
 
         var guild = query_guild();
@@ -100,7 +115,7 @@
         guild.done(function(data) {
             initialize_embed(data);
         });
-    });
+    }
 
     function lock_login_fields() {
         $("#loginProgress").show();
