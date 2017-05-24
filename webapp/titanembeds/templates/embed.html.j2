@@ -76,10 +76,10 @@
       <div id="loginmodal" class="modal">
         <div class="modal-content">
           <h4>{{ login_greeting }}</h4>
-          <div class="row valign-wrapper">
-            <div class="col m3 s12" style="background-color: #455a64; padding-top: 10px; padding-bottom: 10px;">
+          <div id="loginmodal-maincontent" class="row valign-wrap">
+            <div id="modal_guildinfobox" class="col m3 s12">
               {% if guild['icon'] %}
-              <img class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
+              <img id="modal_guildiconcircle" class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
               {% endif %}
               <p id="modal_guildname"><strong>{{ guild['name'] }}</strong></p>
               <a id="modal_invite_btn" class="waves-effect waves-light btn" target="_blank">discord.gg</a>

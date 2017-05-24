@@ -197,3 +197,29 @@ a {
 .align-top {
   vertical-align: top;
 }
+
+#modal_guildinfobox {
+  background-color: #455a64;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#modal_guildiconcircle {
+  width: 100%;
+  max-width: 200px;
+}
+
+.btn {
+  max-width: 100%;
+}
+
+@media only screen and (min-width: 800px) {
+  .valign-wrap {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+}
