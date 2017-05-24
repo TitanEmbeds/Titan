@@ -76,22 +76,33 @@
       <div id="loginmodal" class="modal">
         <div class="modal-content">
           <h4>{{ login_greeting }}</h4>
-          <p class="flow-text">Please choose one of the following methods to authenticate!</p>
-          <div class="progress" id="loginProgress" style="display: none;">
-              <div class="indeterminate"></div>
-          </div>
-          <div class="row">
-            <div class="col s12 m4">
-              <a id="discordlogin_btn" href="{{ url_for("embed.login_discord", _external=True) }}" class="waves-effect waves-light btn-large" target="_blank">Discord Login</a>
-              <p>*You will be invited into this server.</p>
+          <div class="row valign-wrapper">
+            <div class="col m3 s12" style="background-color: #455a64; padding-top: 10px; padding-bottom: 10px;">
+              {% if guild['icon'] %}
+              <img class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
+              {% endif %}
+              <p id="modal_guildname"><strong>{{ guild['name'] }}</strong></p>
+              <a id="modal_invite_btn" class="waves-effect waves-light btn" target="_blank">discord.gg</a>
             </div>
-            {% if unauth_enabled %}
-            <div class="col s12 m8">
-              <p>Of course, you also have the option to login by picking a temporary username for your current browsing session.</p>
-              <input id="custom_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% endif %}>
-              <label class="active" for="custom_username_field">Username (Hit ENTER/RETURN key to confirm)</label>
+            <div class="col m9 s12">
+              <p class="flow-text">Please choose one of the following methods to authenticate!</p>
+              <div class="progress" id="loginProgress" style="display: none;">
+                  <div class="indeterminate"></div>
+              </div>
+              <div class="row">
+                <div class="col s12 m4">
+                  <a id="discordlogin_btn" href="{{ url_for("embed.login_discord", _external=True) }}" class="waves-effect waves-light btn-large" target="_blank">Discord Login</a>
+                  <p>*You will be invited into this server.</p>
+                </div>
+                {% if unauth_enabled %}
+                <div class="col s12 m8">
+                  <p>Of course, you also have the option to login by picking a temporary username for your current browsing session.</p>
+                  <input id="custom_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% endif %}>
+                  <label class="active" for="custom_username_field">Username (Hit ENTER/RETURN key to confirm)</label>
+                </div>
+                {% endif %}
+              </div>
             </div>
-            {% endif %}
           </div>
         </div>
       </div>

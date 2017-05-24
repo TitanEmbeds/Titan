@@ -80,6 +80,14 @@
         return funct.promise();
     }
     
+    function discord_embed() {
+        var funct = $.ajax({
+            dataType: "json",
+            url: "https://discordapp.com/api/guilds/" + guild_id + "/widget.json",
+        });
+        return funct.promise();
+    }
+    
     $(function() {
         $("#focusmodal").modal({
             dismissible: true,
@@ -105,6 +113,11 @@
     function primeEmbed() {
         $("#focusmodal").modal("close");
         has_already_been_focused = true;
+        
+        var dembed = discord_embed();
+        dembed.done(function (data) {
+            $("#modal_invite_btn").attr("href", data.instant_invite);
+        });
         
         $("#loginmodal").modal({
             dismissible: false, // Modal can be dismissed by clicking outside of the modal
