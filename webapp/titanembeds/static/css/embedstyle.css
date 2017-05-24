@@ -209,8 +209,14 @@ a {
   max-width: 200px;
 }
 
-.btn {
+.btn, #discordlogin_btn {
   max-width: 100%;
+}
+
+@media only screen and (max-width: 800px) {
+  #modal_guildiconcircle {
+    max-width: 75px;
+  }
 }
 
 @media only screen and (min-width: 800px) {

@@ -77,7 +77,7 @@
         <div class="modal-content">
           <h4>{{ login_greeting }}</h4>
           <div id="loginmodal-maincontent" class="row valign-wrap">
-            <div id="modal_guildinfobox" class="col m3 s12">
+            <div id="modal_guildinfobox" class="col m3 s12 center-align">
               {% if guild['icon'] %}
               <img id="modal_guildiconcircle" class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
               {% endif %}
@@ -90,12 +90,12 @@
                   <div class="indeterminate"></div>
               </div>
               <div class="row">
-                <div class="col s12 m4">
+                <div class="col s12 l4">
                   <a id="discordlogin_btn" href="{{ url_for("embed.login_discord", _external=True) }}" class="waves-effect waves-light btn-large" target="_blank">Discord Login</a>
                   <p>*You will be invited into this server.</p>
                 </div>
                 {% if unauth_enabled %}
-                <div class="col s12 m8">
+                <div class="col s12 l8">
                   <p>Of course, you also have the option to login by picking a temporary username for your current browsing session.</p>
                   <input id="custom_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% endif %}>
                   <label class="active" for="custom_username_field">Username (Hit ENTER/RETURN key to confirm)</label>
@@ -157,7 +157,7 @@
     </script>
 
     <script id="mustache_usermessage" type="text/template">
-      <p><span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatusername">{{username}}#{{discriminator}}</span> <span class="chatmessage">{{{content}}}</span></p>
+      <p><span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatusername">{{username}}#{{discriminator}}</span> <span class="chatmessag">{{{content}}}</span></p>
     </script>
 
     <script id="mustache_memberrole" type="text/template">
