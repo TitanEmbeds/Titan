@@ -232,8 +232,7 @@ def filter_guild_channel(guild_id, channel_id):
             return chan
     return None
 
-def get_online_discord_users(guild_id):
-    embed = discord_api.get_widget(guild_id)
+def get_online_discord_users(guild_id, embed):
     apimembers = list_all_guild_members(guild_id)
     apimembers_filtered = {}
     for member in apimembers:
@@ -379,10 +378,11 @@ def query_guild():
     guild_id = request.args.get('guild_id')
     if check_guild_existance(guild_id):
         if check_user_in_guild(guild_id):
+            widget = discord_api.get_widget(guild_id)
             channels = get_guild_channels(guild_id)
-            discordmembers = get_online_discord_users(guild_id)
+            discordmembers = get_online_discord_users(guild_id, widget)
             embedmembers = get_online_embed_users(guild_id)
-            return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers)
+            return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, instant_invite=widget.get("instant_invite"))
         abort(403)
     abort(404)
 

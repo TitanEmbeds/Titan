@@ -163,6 +163,7 @@
         fill_discord_members(guildobj.discordmembers);
         fill_authenticated_users(guildobj.embedmembers.authenticated);
         fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
+        $("#instant-inv").attr("href", guildobj.instant_invite);
         run_fetch_routine();
     }
 
@@ -461,6 +462,7 @@
                   fill_discord_members(guildobj.discordmembers);
                   fill_authenticated_users(guildobj.embedmembers.authenticated);
                   fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
+                  $("#instant-inv").attr("href", guildobj.instant_invite);
                   fetchtimeout = setTimeout(run_fetch_routine, 5000);
               });
             } else {
