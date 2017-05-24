@@ -16,6 +16,7 @@
     var times_fetched = 0; // kept track of how many times that it has fetched
     var fetch_error_count = 0; // Number of errors fetch has encountered
     var priority_query_guild = false; // So you have selected a channel? Let's populate it.
+    var current_username_discrim; // Current username/discrim pair, eg EndenDraogn#4151
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -371,7 +372,7 @@
     function handle_last_message_mention() {
         var lastmsg = $("#chatcontent p:last-child");
         var content = lastmsg.text().toLowerCase();
-        var username_discrim = $("#currentusername").text().toLowerCase();
+        var username_discrim = current_username_discrim.toLowerCase();
         if (content.includes("@everyone") || content.includes("@" + username_discrim)) {
             lastmsg.css( "color", "#ff5252" );
             lastmsg.css( "font-weight", "bold" );
@@ -497,10 +498,14 @@
         if (authenticated) {
             $("#currentuserimage").show();
             $("#currentuserimage").attr("src", avatar);
-            $("#currentusername").text(username + "#" + discrim);
+            $("#curuser_name").text(username);
+            $("#curuser_discrim").text("#" + discrim);
+            current_username_discrim = username + "#" + discrim;
         } else {
             $("#currentuserimage").hide();
-            $("#currentusername").text(username + "#" + userid);
+            $("#curuser_name").text(username);
+            $("#curuser_discrim").text("#" + userid);
+            current_username_discrim = username + "#" + userid;
         }
     }
 
