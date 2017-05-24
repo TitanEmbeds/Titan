@@ -80,6 +80,31 @@
     }
     
     $(function() {
+        $("#focusmodal").modal({
+            dismissible: true,
+            opacity: .5,
+            inDuration: 400,
+            outDuration: 400,
+            startingTop: "4%",
+            endingTop: "10%",
+        });
+        $("#focusmodal").modal("open");
+        
+        if (document.hasFocus()) {
+            primeEmbed();
+        }
+        
+        $(window).focus(function() {
+            if (!has_already_been_focused) {
+                primeEmbed();
+            }
+        });
+    });
+
+    function primeEmbed() {
+        $("#focusmodal").modal("close");
+        has_already_been_focused = true;
+        
         $("#loginmodal").modal({
             dismissible: false, // Modal can be dismissed by clicking outside of the modal
             opacity: .5, // Opacity of modal background
@@ -90,21 +115,6 @@
           }
         );
         $('#loginmodal').modal('open');
-        
-        if (document.hasFocus()) {
-            has_already_been_focused = true;
-            primeEmbed();
-        }
-        
-        $(window).focus(function() {
-            if (!has_already_been_focused) {
-                has_already_been_focused = true;
-                primeEmbed();
-            }
-        });
-    });
-
-    function primeEmbed() {
         lock_login_fields();
 
         var guild = query_guild();
@@ -204,7 +214,7 @@
                 guild_members[member["hoist-role"]["id"]] = {};
                 guild_members[member["hoist-role"]["id"]]["name"] = member["hoist-role"]["name"];
                 guild_members[member["hoist-role"]["id"]]["members"] = [];
-                guild_members[member["hoist-role"]["id"]]["position"] = member["hoist-role"]["position"]
+                guild_members[member["hoist-role"]["id"]]["position"] = member["hoist-role"]["position"];
               }
               guild_members[member["hoist-role"]["id"]]["members"].push(member);
             } else {
@@ -218,7 +228,7 @@
             }
         }
         var guild_members_arr = [];
-        for (key in guild_members) {
+        for (var key in guild_members) {
           guild_members_arr.push(guild_members[key]);
         }
         guild_members_arr.sort(function(a, b) {
