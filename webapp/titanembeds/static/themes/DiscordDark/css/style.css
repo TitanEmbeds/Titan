@@ -1,0 +1,134 @@
+/* DiscordDark Theme by .JS#2125 */
+
+@font-face {
+    font-family: Whitney;
+    font-style: light;
+    font-weight: 300;
+    src: url("../font/whitney_light.woff") format("woff")
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: normal;
+    font-weight: 500;
+    src: url("../font/whitney_normal.woff") format("woff")
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: medium;
+    font-weight: 600;
+    src: url("../font/whitney_medium.woff") format("woff")
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: bold;
+    font-weight: 700;
+    src: url("../font/whitney_bold.woff") format("woff")
+}
+
+* {
+font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+/*background-color: var(--dark-highlight);*/
+:root {
+  /*--: */
+  --dark-primary: #2e3136;
+  --dark-secondary: #36393e;
+  --dark-highlight: #2e3136;
+  --dark-highlight-guildlist: #1e2124;
+  --dark-highlight-channellist: #2e3136;
+  --dark-highlight-channelheader: #36393e;
+}
+#footer {
+background-color: rgb(60,60,60);
+}
+#footercontainer {
+border-radius:20px;
+border: 1px solid rgb(99,99,99);
+margin-left:-0px!important;
+padding-left:-4px!important;
+background-color: rgb(60,60,60);
+}
+#nameplate {
+background:transparent!important;
+margin-left:10px
+}
+#chatcontent > p > span.chatusername,
+#curuser_discrim,
+#curuser_name {
+display:block
+}
+#curuser_discrim {
+font-size:50%;
+color:rgb(125,131,134);
+}
+#curuser_discrim,
+#curuser_name {
+margin-top:-2px
+}
+#currentuserimage {
+margin-top:4px;
+margin-right:4px
+}
+#chatcontent > p { display: table; }
+#chatcontent > p > span { display: table-row }
+#chatcontent > p > span:nth-child(1):before { content:"Today at " }
+#chatcontent > p > span.chatusername { display: table-header-group }
+#chatcontent > p > span.chatmessage { display: table-footer-group;display:inline-block!important;color:rgb(195,196,197) }
+#chatcontent {
+background:rgb(54,57,62)
+}
+::-webkit-input-placeholder { color:rgb(99,99,99) }
+:-moz-placeholder { color:rgb(99,99,99) }
+::-moz-placeholder { color:rgb(99,99,99) }
+:-ms-input-placeholder { color:rgb(99,99,99) }
+::-ms-input-placeholder { color:rgb(99,99,99) }
+body > div.navbar-fixed > nav > div,
+#members-nav {
+background:rgb(46,49,54)
+}
+#guild-nav {
+background: rgb(30,33,36)
+}
+div.divider {
+background:rgb(46,49,54);
+margin-left:10px;
+margin-right:10px;
+/*height:150%*/
+}
+#discord-members > li > a.subheader,
+#members-nav > li:nth-child(1) > a,
+#discord-members-count,
+#embed-discord-members-count,
+#members-nav > li:nth-child(4) > a,
+#guest-members-count,
+#members-nav > li:nth-child(6) > a {
+text-transform: uppercase;
+color:rgb(130,131,134)
+}
+body > main,
+body {
+background:rgb(54,57,62)
+}
+#members-btn > i { visibility:hidden }
+#members-btn {
+visibility:visible;
+background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik0xIDFoMjR2MjRIMVYxeiIvPgogICAgPHBhdGggZmlsbD0iI0ZGRiIgZD0iTTE2Ljc3MjA3NTQgMTQuNjc5MTc3OGMtLjIyNDkwOTctLjIyNTY4ODYtLjQ3NDE1NzMtLjQzNTE2ODEtLjc0MjA3NTQtLjYyOTE3NzguMzUtLjAzLjY4LS4wNS45Ny0uMDUgMi4zMyAwIDcgMS4xNyA3IDMuNVYyMGgtNHYtMWMwLTEuODgxNjkxNC0xLjQwNzcwNTYtMy4zMjMwMTQzLTMuMjI3OTI0Ni00LjMyMDgyMjJ6bS0xLjQzODU3MzUtOC4xNzU4NTM0QzE1LjgwOTgwODIgNi4xODUyNTE3MyAxNi4zODI3ODQ1IDYgMTcgNmMxLjY2IDAgMi45OSAxLjM0IDIuOTkgM3MtMS4zMyAzLTIuOTkgM2MtLjYxNzE5MTQgMC0xLjE5MDE0NzEtLjE4NTIzNzMtMS42NjY0NDIzLS41MDMyODcyQzE1Ljc1NzQ4MzIgMTAuNzYyMTQwOTUgMTYgOS45MDk1NTYgMTYgOS4wMDAwNjY5M2MwLS45MDk1Mjg5Ni0uMjQyNTM4MS0xLjc2MjE0ODgtLjY2NjQ5ODEtMi40OTY3NDI1M3pNMTAgMTNjMi4yMSAwIDQtMS43OSA0LTRzLTEuNzktNC00LTQtNCAxLjc5LTQgNCAxLjc5IDQgNCA0em0wIDJjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+CiAgPC9nPgo8L3N2Zz4=);
+background-repeat:no-repeat;
+margin-top:18px
+}
+.circle:hover {
+border-radius:20px;
+background: linear-gradient(to right, #f9f9f9 90%, #fff);
+}
+#channels-list > li:hover {
+-webkit-filter: brightness(150%);
+}
+#discord-members > li > a,
+#embed-discord-members > li > a,
+#embed-unauth-users > li > a {
+color:rgb(171,173,175)
+}

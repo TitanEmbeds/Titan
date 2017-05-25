@@ -229,3 +229,7 @@ a {
             align-items: center;
   }
 }
+
+#nameplate {
+  cursor: pointer;
+}

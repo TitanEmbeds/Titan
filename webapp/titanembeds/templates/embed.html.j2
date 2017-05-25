@@ -6,6 +6,7 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" integrity="sha256-6DQKO56c9MZL0LAc7QNtxqJyqSa3rS9Gq5FVcIhtA+w=" crossorigin="anonymous" media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/embedstyle.css') }}">
+    <link id="css-theme" type="text/css" rel="stylesheet" href="">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -16,7 +17,7 @@
     {% include 'google_analytics.html.j2' %}
     
     {% if css is not none %}
-    <style>{{ css.css }}</style>
+    <style id="user-defined-css">{{ css.css }}</style>
     {% endif %}
   </head>
   <body>
@@ -111,6 +112,20 @@
       <div class="modal-content">
         <h4>This embed is currently unfocused.</h4>
         <p class="flow-text">Please click this part of the page to initialize the embed.</p>
+      </div>
+    </div>
+    
+    <div id="userembedmodal" class="modal">
+      <div class="modal-content">
+        <h4>Theme</h4>
+        <div class="row">
+          <div class="input-field col s12">
+            <select id="theme-selector">
+              <option value="" selected>Default</option>
+              <option value="DiscordDark">DiscordDark</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
 

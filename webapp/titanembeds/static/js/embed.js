@@ -89,6 +89,7 @@
     }
     
     $(function() {
+        $('select').material_select();
         $("#focusmodal").modal({
             dismissible: true,
             opacity: .5,
@@ -98,6 +99,12 @@
             endingTop: "10%",
         });
         $("#focusmodal").modal("open");
+        $("#userembedmodal").modal({
+            dismissible: true,
+            opacity: .5,
+            inDuration: 400,
+            outDuration: 400,
+        });
         
         if (document.hasFocus()) {
             primeEmbed();
@@ -108,7 +115,36 @@
                 primeEmbed();
             }
         });
+        
+        $("#nameplate").click(function () {
+            $("#userembedmodal").modal("open");
+        });
+        
+        $( "#theme-selector" ).change(function() {
+            const theme_options = ["DiscordDark"];
+            var theme = $("#theme-selector option:selected").val();
+            if (theme == "") {
+              $("#css-theme").attr("href", "");
+              disable_userdef_css(false);
+            } else if ($.inArray(theme, theme_options) != -1) {
+                disable_userdef_css(true);
+                $("#css-theme").attr("href", "/static/themes/" + theme + "/css/style.css");
+            }
+        });
     });
+    
+    function disable_userdef_css(boolean) {
+        var usrcss = $("#user-defined-css").text();
+        const disable_header = "/* DISABLED_USER_CSS===";
+        if (usrcss.length > 0) {
+            if (boolean && usrcss.substring(0, disable_header.length) != disable_header) {
+                usrcss = disable_header + usrcss + "*/";
+            } else if (!boolean && usrcss.substring(0, disable_header.length) == disable_header) {
+                usrcss = usrcss.substring(disable_header.length, usrcss.length - 2);
+            }
+            $("#user-defined-css").text(usrcss);
+        }
+    }
 
     function primeEmbed() {
         $("#focusmodal").modal("close");
