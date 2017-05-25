@@ -6,6 +6,8 @@
 /* global moment */
 
 (function () {
+    const theme_options = ["DiscordDark"]; // All the avaliable theming names
+    
     var has_already_been_focused = false; // keep track of if the embed has initially been focused.
     var logintimer; // timer to keep track of user inactivity after hitting login
     var fetchtimeout; // fetch routine timer
@@ -121,17 +123,38 @@
         });
         
         $( "#theme-selector" ).change(function() {
-            const theme_options = ["DiscordDark"];
             var theme = $("#theme-selector option:selected").val();
-            if (theme == "") {
-              $("#css-theme").attr("href", "");
-              disable_userdef_css(false);
-            } else if ($.inArray(theme, theme_options) != -1) {
-                disable_userdef_css(true);
-                $("#css-theme").attr("href", "/static/themes/" + theme + "/css/style.css");
-            }
+            changeTheme(theme);
         });
+        
+        var themeparam = getParameterByName('theme');
+        if (themeparam && $.inArray(themeparam, theme_options) != -1) {
+            changeTheme(themeparam);
+            $("#theme-selector option").removeAttr('selected');
+            $("#theme-selector option[value=" + themeparam + "]").attr('selected', 'selected');
+        }
     });
+    
+    function changeTheme(theme) {
+        if (theme == "") {
+          $("#css-theme").attr("href", "");
+          disable_userdef_css(false);
+        } else if ($.inArray(theme, theme_options) != -1) {
+            disable_userdef_css(true);
+            $("#css-theme").attr("href", "/static/themes/" + theme + "/css/style.css");
+        }
+    }
+    
+    /* https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript */
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
     
     function disable_userdef_css(boolean) {
         var usrcss = $("#user-defined-css").text();
