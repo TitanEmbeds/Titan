@@ -9,6 +9,7 @@
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
     
+    var user_def_css; // Saves the user defined css
     var has_already_been_focused = false; // keep track of if the embed has initially been focused.
     var logintimer; // timer to keep track of user inactivity after hitting login
     var fetchtimeout; // fetch routine timer
@@ -92,6 +93,10 @@
     }
     
     $(function() {
+        if ($("#user-defined-css").length > 0) {
+            user_def_css = $("#user-defined-css").text();
+        }
+        
         $('select').material_select();
         $("#focusmodal").modal({
             dismissible: true,
@@ -109,16 +114,6 @@
             outDuration: 400,
         });
         
-        if (document.hasFocus()) {
-            primeEmbed();
-        }
-        
-        $(window).focus(function() {
-            if (!has_already_been_focused) {
-                primeEmbed();
-            }
-        });
-        
         $("#nameplate").click(function () {
             $("#userembedmodal").modal("open");
         });
@@ -130,7 +125,7 @@
         
         var themeparam = getParameterByName('theme');
         var localstore_theme = localStorage.getItem("theme");
-        if ((themeparam && $.inArray(themeparam, theme_options) != -1) || (localstore_theme)) {
+        if ((getParameterByName("css") == null) && ((themeparam && $.inArray(themeparam, theme_options) != -1) || (localstore_theme))) {
             var theme;
             if (themeparam) {
                 theme = themeparam;
@@ -142,15 +137,25 @@
             $("#theme-selector option[value=" + theme + "]").attr('selected', 'selected');
             $('select').material_select();
         }
+
+        if (document.hasFocus()) {
+            primeEmbed();
+        }
+        
+        $(window).focus(function() {
+            if (!has_already_been_focused) {
+                primeEmbed();
+            }
+        });
     });
     
     function changeTheme(theme) {
         if (theme == "") {
           $("#css-theme").attr("href", "");
-          disable_userdef_css(false);
+          $("#user-defined-css").text(user_def_css);
           localStorage.removeItem("theme");
         } else if ($.inArray(theme, theme_options) != -1) {
-            disable_userdef_css(true);
+            $("#user-defined-css").text("");
             $("#css-theme").attr("href", "/static/themes/" + theme + "/css/style.css");
             localStorage.setItem("theme", theme);
         }
@@ -165,19 +170,6 @@
         if (!results) return null;
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
-    
-    function disable_userdef_css(boolean) {
-        var usrcss = $("#user-defined-css").text();
-        const disable_header = "/* DISABLED_USER_CSS===";
-        if (usrcss.length > 0) {
-            if (boolean && usrcss.substring(0, disable_header.length) != disable_header) {
-                usrcss = disable_header + usrcss + "*/";
-            } else if (!boolean && usrcss.substring(0, disable_header.length) == disable_header) {
-                usrcss = usrcss.substring(disable_header.length, usrcss.length - 2);
-            }
-            $("#user-defined-css").text(usrcss);
-        }
     }
 
     function primeEmbed() {
