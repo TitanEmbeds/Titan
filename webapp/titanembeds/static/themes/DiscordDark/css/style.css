@@ -132,3 +132,6 @@ background: linear-gradient(to right, #f9f9f9 90%, #fff);
 #embed-unauth-users > li > a {
 color:rgb(171,173,175)
 }
+#loginmodal {
+    background: rgb(54, 57, 62)
+}
