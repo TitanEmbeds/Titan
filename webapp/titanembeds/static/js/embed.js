@@ -4,6 +4,7 @@
 /* global guild_id */
 /* global bot_client_id */
 /* global moment */
+/* global localStorage */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -128,10 +129,18 @@
         });
         
         var themeparam = getParameterByName('theme');
-        if (themeparam && $.inArray(themeparam, theme_options) != -1) {
-            changeTheme(themeparam);
+        var localstore_theme = localStorage.getItem("theme");
+        if ((themeparam && $.inArray(themeparam, theme_options) != -1) || (localstore_theme)) {
+            var theme;
+            if (themeparam) {
+                theme = themeparam;
+            } else {
+                theme = localstore_theme;
+            }
+            changeTheme(theme);
             $("#theme-selector option").removeAttr('selected');
-            $("#theme-selector option[value=" + themeparam + "]").attr('selected', 'selected');
+            $("#theme-selector option[value=" + theme + "]").attr('selected', 'selected');
+            $('select').material_select();
         }
     });
     
@@ -139,9 +148,11 @@
         if (theme == "") {
           $("#css-theme").attr("href", "");
           disable_userdef_css(false);
+          localStorage.removeItem("theme");
         } else if ($.inArray(theme, theme_options) != -1) {
             disable_userdef_css(true);
             $("#css-theme").attr("href", "/static/themes/" + theme + "/css/style.css");
+            localStorage.setItem("theme", theme);
         }
     }
     
