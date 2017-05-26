@@ -6,7 +6,7 @@
 /* global moment */
 
 (function () {
-    const theme_options = ["DiscordDark"]; // All the avaliable theming names
+    const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
     
     var has_already_been_focused = false; // keep track of if the embed has initially been focused.
     var logintimer; // timer to keep track of user inactivity after hitting login
