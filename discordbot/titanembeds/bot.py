@@ -39,6 +39,7 @@ async def on_ready():
     )
     try:
         database = DatabaseInterface(bot, config["database-uri"] + "?charset=utf8mb4")
+        global database
     except Exception:
         logger.error("Unable to connect to specified database!")
         traceback.print_exc()
