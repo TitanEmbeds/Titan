@@ -4,6 +4,9 @@ class Commands():
         self.database = database
 
     async def ban(self, message):
+        if not message.author.server_permissions.ban_members:
+            await self.client.send_message(message.channel, message.author.mention + " I'm sorry, but you do not have permissions to ban guest members.")
+            return
         serverid = message.server.id
         content = message.content.strip()
         if len(content.split()) == 2:
@@ -16,6 +19,9 @@ class Commands():
         await self.client.send_message(message.channel, message.author.mention + " " + reason)
 
     async def kick(self, message):
+        if not message.author.server_permissions.kick_members:
+            await self.client.send_message(message.channel, message.author.mention + " I'm sorry, but you do not have permissions to kick guest members.")
+            return
         serverid = message.server.id
         content = message.content.strip()
         if len(content.split()) == 2:
