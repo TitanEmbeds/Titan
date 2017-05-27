@@ -15,8 +15,6 @@ aiosession = aiohttp.ClientSession(loop=bot.loop)
 bot.http.user_agent += ' TitanEmbeds-Bot'
 database = DatabaseInterface(bot)
 
-initFirst()
-
 def run(self):
     try:
         bot.loop.run_until_complete(self.start(config["bot-token"]))
