@@ -295,6 +295,8 @@ def fetch():
     messages = {}
     if status['banned'] or status['revoked']:
         status_code = 403
+        if user_unauthenticated():
+            session['user_keys'].pop(guild_id, None)
     else:
         chan = filter_guild_channel(guild_id, channel_id)
         if not chan.get("read"):
