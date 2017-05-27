@@ -13,18 +13,6 @@ logging.getLogger('sqlalchemy')
 bot = commands.Bot(command_prefix=config['command-prefix'])
 database = DatabaseInterface(bot)
 
-def run(self):
-    try:
-        bot.loop.run_until_complete(self.start(config["bot-token"]))
-    except discord.errors.LoginFailure:
-        print("Invalid bot token in config!")
-    finally:
-        try:
-            self._cleanup()
-        except Exception as e:
-            print("Error in cleanup:", e)
-        bot.loop.close()
-
 def _cleanup(self):
     try:
         bot.loop.run_until_complete(self.logout())
@@ -199,3 +187,14 @@ async def kick(ctx, self):
     discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
     reason = await self.database.revoke_unauth_user_by_query(message.server.id, username, discriminator)
     await self.send_message(message.channel, message.author.mention + " " + reason)
+
+try:
+    bot.loop.run_until_complete(bot.run(config["bot-token"]))
+except discord.errors.LoginFailure:
+    print("Invalid bot token in config!")
+finally:
+    try:
+        self._cleanup()
+    except Exception as e:
+        print("Error in cleanup:", e)
+    bot.loop.close()
