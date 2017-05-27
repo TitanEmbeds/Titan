@@ -28,7 +28,7 @@ def _cleanup():
 
 
 @bot.event
-async def on_ready(self):
+async def on_ready():
     print('Titan [DiscordBot]')
     print('Logged in as the following user:')
     print(bot.user.name)
@@ -40,26 +40,26 @@ async def on_ready(self):
     try:
         await database = DatabaseInterface(bot, config["database-uri"] + "?charset=utf8mb4")
     except Exception:
-        self.logger.error("Unable to connect to specified database!")
+        logger.error("Unable to connect to specified database!")
         traceback.print_exc()
         await bot.logout()
         return
     if "no-init" not in sys.argv:
         for server in bot.servers:
-            await self.database.update_guild(server)
+            await database.update_guild(server)
             if server.large:
                 await bot.request_offline_members(server)
             server_bans = await bot.get_bans(server)
             for member in server.members:
                 banned = member.id in [u.id for u in server_bans]
-                await self.database.update_guild_member(
+                await database.update_guild_member(
                     member,
                     True,
                     banned
                 )
-            await self.database.flag_unactive_guild_members(server.id, server.members)
-            await self.database.flag_unactive_bans(server.id, server_bans)
-        await self.database.remove_unused_guilds(bot.servers)
+            await database.flag_unactive_guild_members(server.id, server.members)
+            await database.flag_unactive_bans(server.id, server_bans)
+        await database.remove_unused_guilds(bot.servers)
     else:
         print("Skipping indexing server due to no-init flag")
 
@@ -70,87 +70,87 @@ async def on_message(message):
         await bot.process_commands(message)
 
 @bot.event
-async def on_message_edit(self, message_before, message_after):
-    await self.database.update_message(message_after)
+async def on_message_edit(message_before, message_after):
+    await database.update_message(message_after)
 
 @bot.event
-async def on_message_delete(self, message):
-    await self.database.delete_message(message)
+async def on_message_delete(message):
+    await database.delete_message(message)
 
 @bot.event
-async def on_server_join(self, guild):
+async def on_server_join(guild):
     await asyncio.sleep(1)
     if not guild.me.server_permissions.administrator:
         await asyncio.sleep(1)
         await bot.leave_server(guild)
         return
-    await self.database.update_guild(guild)
+    await database.update_guild(guild)
     for channel in guild.channels:
         async for message in bot.logs_from(channel, limit=50, reverse=True):
-            await self.database.push_message(message)
+            await database.push_message(message)
     for member in guild.members:
-        await self.database.update_guild_member(member, True, False)
+        await database.update_guild_member(member, True, False)
     banned = await bot.get_bans(guild)
     for ban in banned:
-        await self.database.update_guild_member(ban, False, True)
+        await database.update_guild_member(ban, False, True)
 
 @bot.event
-async def on_server_remove(self, guild):
-    await self.database.remove_guild(guild)
+async def on_server_remove(guild):
+    await database.remove_guild(guild)
 
 @bot.event
-async def on_server_update(self, guildbefore, guildafter):
-    await self.database.update_guild(guildafter)
+async def on_server_update(guildbefore, guildafter):
+    await database.update_guild(guildafter)
 
 @bot.event
-async def on_server_role_create(self, role):
+async def on_server_role_create(role):
     if role.name == bot.user.name and role.managed:
         await asyncio.sleep(2)
-    await self.database.update_guild(role.server)
+    await database.update_guild(role.server)
 
 @bot.event
-async def on_server_role_delete(self, role):
+async def on_server_role_delete(role):
     if role.server.me not in role.server.members:
         return
-    await self.database.update_guild(role.server)
+    await database.update_guild(role.server)
 
 @bot.event
-async def on_server_role_update(self, rolebefore, roleafter):
-    await self.database.update_guild(roleafter.server)
+async def on_server_role_update(rolebefore, roleafter):
+    await database.update_guild(roleafter.server)
 
 @bot.event
-async def on_channel_delete(self, channel):
-    await self.database.update_guild(channel.server)
+async def on_channel_delete(channel):
+    await database.update_guild(channel.server)
 
 @bot.event
-async def on_channel_create(self, channel):
-    await self.database.update_guild(channel.server)
+async def on_channel_create(channel):
+    await database.update_guild(channel.server)
 
 @bot.event
-async def on_channel_update(self, channelbefore, channelafter):
-    await self.database.update_guild(channelafter.server)
+async def on_channel_update(channelbefore, channelafter):
+    await database.update_guild(channelafter.server)
 
 @bot.event
-async def on_member_join(self, member):
-    await self.database.update_guild_member(member, active=True, banned=False)
+async def on_member_join(member):
+    await database.update_guild_member(member, active=True, banned=False)
 
 @bot.event
-async def on_member_remove(self, member):
-    await self.database.update_guild_member(member, active=False, banned=False)
+async def on_member_remove(member):
+    await database.update_guild_member(member, active=False, banned=False)
 
 @bot.event
-async def on_member_update(self, memberbefore, memberafter):
-    await self.database.update_guild_member(memberafter)
+async def on_member_update(memberbefore, memberafter):
+    await database.update_guild_member(memberafter)
 
 @bot.event
-async def on_member_ban(self, member):
+async def on_member_ban(member):
     if bot.user.id == member.id:
         return
-    await self.database.update_guild_member(member, active=False, banned=True)
+    await database.update_guild_member(member, active=False, banned=True)
 
 @bot.event
-async def on_member_unban(self, server, user):
-    await self.database.unban_server_user(user, server)
+async def on_member_unban(server, user):
+    await database.unban_server_user(user, server)
 
 
 @commands.command(pass_context=True)
@@ -167,7 +167,7 @@ async def ban(ctx, self):
     content = content.split()
     username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
     discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
-    reason = await self.database.ban_unauth_user_by_query(message.server.id, message.author.id, username, discriminator)
+    reason = await database.ban_unauth_user_by_query(message.server.id, message.author.id, username, discriminator)
     await bot.send_message(message.channel, message.author.mention + " " + reason)
 
 @commands.command(pass_context=True)
@@ -184,7 +184,7 @@ async def kick(ctx, self):
     content = content.split()
     username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
     discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
-    reason = await self.database.revoke_unauth_user_by_query(message.server.id, username, discriminator)
+    reason = await database.revoke_unauth_user_by_query(message.server.id, username, discriminator)
     await bot.send_message(message.channel, message.author.mention + " " + reason)
 
 try:
