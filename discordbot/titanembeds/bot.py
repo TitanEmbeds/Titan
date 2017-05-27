@@ -67,7 +67,7 @@ class Titan(discord.Client):
             for server in self.servers:
                 await self.database.update_guild(server)
                 if server.large:
-                    await request_offline_members(server)
+                    await self.request_offline_members(server)
                 server_bans = await self.get_bans(server)
                 for member in server.members:
                     banned = member.id in [u.id for u in server_bans]
