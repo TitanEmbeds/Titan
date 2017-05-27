@@ -1,7 +1,7 @@
 from config import config
 from titanembeds.database import DatabaseInterface
-from titanembeds.commands import Commands
 import discord
+from discord.ext import commands
 import aiohttp
 import asyncio
 import sys
@@ -17,7 +17,6 @@ class Titan(commands.Bot):
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
-        self.command = Commands(self, self.database)
 
     def _cleanup(self):
         try:
@@ -86,14 +85,8 @@ class Titan(commands.Bot):
     async def on_message(self, message):
         await self.database.push_message(message)
 
-        msg_arr = message.content.split() # split the message
-        if len(message.content.split()) > 1 and message.server: #making sure there is actually stuff in the message and have arguments and check if it is sent in server (not PM)
-            if msg_arr[0] == "<@{}>".format(self.user.id): #make sure it is mention
-                msg_cmd = msg_arr[1].lower() # get command
-                cmd = getattr(self.command, msg_cmd, None) #check if cmd exist, if not its none
-                if cmd: # if cmd is not none...
-                    await self.send_typing(message.channel) #this looks nice
-                    await getattr(self.command, msg_cmd)(message) #actually run cmd, passing in msg obj
+        if message.server:
+            await self.process_commands(msg)
 
     async def on_message_edit(self, message_before, message_after):
         await self.database.update_message(message_after)
@@ -162,3 +155,38 @@ class Titan(commands.Bot):
 
     async def on_member_unban(self, server, user):
         await self.database.unban_server_user(user, server)
+
+
+    @bot.command(pass_context=True)
+    async def ban(ctx, self):
+        message = ctx.message
+        if not message.author.server_permissions.ban_members:
+            await self.client.send_message(message.channel, message.author.mention + " I'm sorry, but you do not have permissions to ban guest members.")
+            return
+        serverid = message.server.id
+        content = message.content.strip()
+        if len(content.split()) == 2:
+            await self.client.send_message(message.channel, message.author.mention + " Please provide a username-query (or optionally a discriminator) to ban a guest user.\nExample: `ban Titan#0001`")
+            return
+        content = content.split()
+        username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
+        discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
+        reason = await self.database.ban_unauth_user_by_query(message.server.id, message.author.id, username, discriminator)
+        await self.client.send_message(message.channel, message.author.mention + " " + reason)
+
+    @bot.command(pass_context=True)
+    async def kick(ctx, self):
+        message = ctx.message
+        if not message.author.server_permissions.kick_members:
+            await self.client.send_message(message.channel, message.author.mention + " I'm sorry, but you do not have permissions to kick guest members.")
+            return
+        serverid = message.server.id
+        content = message.content.strip()
+        if len(content.split()) == 2:
+            await self.client.send_message(message.channel, message.author.mention + " Please provide a username-query (or optionally a discriminator) to kick a guest user.\nExample: `kick Titan#0001`")
+            return
+        content = content.split()
+        username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
+        discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
+        reason = await self.database.revoke_unauth_user_by_query(message.server.id, username, discriminator)
+        await self.client.send_message(message.channel, message.author.mention + " " + reason)
