@@ -11,7 +11,6 @@ logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
 bot = commands.Bot(command_prefix=config['command-prefix'])
-bot.http.user_agent += ' TitanEmbeds-Bot'   
 database = DatabaseInterface(bot)
 
 def run(self):
