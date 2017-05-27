@@ -11,7 +11,7 @@ logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
 bot = commands.Bot(command_prefix=config['command-prefix'])
-aiosession = aiohttp.ClientSession(loop=loop)
+aiosession = aiohttp.ClientSession(loop=bot.loop)
 http.user_agent += ' TitanEmbeds-Bot'
 database = DatabaseInterface()
 
@@ -19,7 +19,7 @@ initFirst()
 
 def run(self):
     try:
-        self.loop.run_until_complete(self.start(config["bot-token"]))
+        bot.loop.run_until_complete(self.start(config["bot-token"]))
     except discord.errors.LoginFailure:
         print("Invalid bot token in config!")
     finally:
@@ -27,18 +27,18 @@ def run(self):
             self._cleanup()
         except Exception as e:
             print("Error in cleanup:", e)
-        self.loop.close()
+        bot.loop.close()
 
 def _cleanup(self):
     try:
-        self.loop.run_until_complete(self.logout())
+        bot.loop.run_until_complete(self.logout())
     except: # Can be ignored
         pass
     pending = asyncio.Task.all_tasks()
     gathered = asyncio.gather(*pending)
     try:
         gathered.cancel()
-        self.loop.run_until_complete(gathered)
+        bot.loop.run_until_complete(gathered)
         gathered.exception()
     except: # Can be ignored
         pass
