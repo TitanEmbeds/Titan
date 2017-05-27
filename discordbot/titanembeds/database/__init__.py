@@ -16,7 +16,7 @@ from titanembeds.database.guild_members import GuildMembers
 from titanembeds.database.unauthenticated_users import UnauthenticatedUsers
 from titanembeds.database.unauthenticated_bans import UnauthenticatedBans
 
-class DatabaseInterface(object):
+class DatabaseInterface():
     # Courtesy of https://github.com/SunDwarf/Jokusoramame
     def __init__(self, bot):
         self.bot = bot
