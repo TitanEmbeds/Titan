@@ -86,7 +86,7 @@ class Titan(commands.Bot):
         await self.database.push_message(message)
 
         if message.server:
-            await self.process_commands(msg)
+            await self.process_commands(message)
 
     async def on_message_edit(self, message_before, message_after):
         await self.database.update_message(message_after)
