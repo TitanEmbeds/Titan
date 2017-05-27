@@ -32,10 +32,10 @@ def _cleanup():
 async def on_ready(self):
     print('Titan [DiscordBot]')
     print('Logged in as the following user:')
-    print(self.user.name)
-    print(self.user.id)
+    print(bot.user.name)
+    print(bot.user.id)
     print('------')
-    await self.change_presence(
+    await bot.change_presence(
         game=discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.tk/"), status=discord.Status.online
     )
     try:
@@ -46,11 +46,11 @@ async def on_ready(self):
         await self.logout()
         return
     if "no-init" not in sys.argv:
-        for server in self.servers:
+        for server in bot.servers:
             await self.database.update_guild(server)
             if server.large:
-                await self.request_offline_members(server)
-            server_bans = await self.get_bans(server)
+                await bot.request_offline_members(server)
+            server_bans = await bot.get_bans(server)
             for member in server.members:
                 banned = member.id in [u.id for u in server_bans]
                 await self.database.update_guild_member(
@@ -60,7 +60,7 @@ async def on_ready(self):
                 )
             await self.database.flag_unactive_guild_members(server.id, server.members)
             await self.database.flag_unactive_bans(server.id, server_bans)
-        await self.database.remove_unused_guilds(self.servers)
+        await self.database.remove_unused_guilds(bot.servers)
     else:
         print("Skipping indexing server due to no-init flag")
 
@@ -68,7 +68,7 @@ async def on_ready(self):
 async def on_message(self, message):
     await self.database.push_message(message)
     if message.server:
-        await self.process_commands(message)
+        await bot.process_commands(message)
 
 @bot.event
 async def on_message_edit(self, message_before, message_after):
@@ -83,15 +83,15 @@ async def on_server_join(self, guild):
     await asyncio.sleep(1)
     if not guild.me.server_permissions.administrator:
         await asyncio.sleep(1)
-        await self.leave_server(guild)
+        await bot.leave_server(guild)
         return
     await self.database.update_guild(guild)
     for channel in guild.channels:
-        async for message in self.logs_from(channel, limit=50, reverse=True):
+        async for message in bot.logs_from(channel, limit=50, reverse=True):
             await self.database.push_message(message)
     for member in guild.members:
         await self.database.update_guild_member(member, True, False)
-    banned = await self.get_bans(guild)
+    banned = await bot.get_bans(guild)
     for ban in banned:
         await self.database.update_guild_member(ban, False, True)
 
@@ -105,7 +105,7 @@ async def on_server_update(self, guildbefore, guildafter):
 
 @bot.event
 async def on_server_role_create(self, role):
-    if role.name == self.user.name and role.managed:
+    if role.name == bot.user.name and role.managed:
         await asyncio.sleep(2)
     await self.database.update_guild(role.server)
 
@@ -145,7 +145,7 @@ async def on_member_update(self, memberbefore, memberafter):
 
 @bot.event
 async def on_member_ban(self, member):
-    if self.user.id == member.id:
+    if bot.user.id == member.id:
         return
     await self.database.update_guild_member(member, active=False, banned=True)
 
@@ -158,35 +158,35 @@ async def on_member_unban(self, server, user):
 async def ban(ctx, self):
     message = ctx.message
     if not message.author.server_permissions.ban_members:
-        await self.send_message(message.channel, message.author.mention + " I'm sorry, but you do not have permissions to ban guest members.")
+        await bot.send_message(message.channel, message.author.mention + " I'm sorry, but you do not have permissions to ban guest members.")
         return
     serverid = message.server.id
     content = message.content.strip()
     if len(content.split()) == 2:
-        await self.send_message(message.channel, message.author.mention + " Please provide a username-query (or optionally a discriminator) to ban a guest user.\nExample: `ban Titan#0001`")
+        await bot.send_message(message.channel, message.author.mention + " Please provide a username-query (or optionally a discriminator) to ban a guest user.\nExample: `ban Titan#0001`")
         return
     content = content.split()
     username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
     discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
     reason = await self.database.ban_unauth_user_by_query(message.server.id, message.author.id, username, discriminator)
-    await self.send_message(message.channel, message.author.mention + " " + reason)
+    await bot.send_message(message.channel, message.author.mention + " " + reason)
 
 @commands.command(pass_context=True)
 async def kick(ctx, self):
     message = ctx.message
     if not message.author.server_permissions.kick_members:
-        await self.send_message(message.channel, message.author.mention + " I'm sorry, but you do not have permissions to kick guest members.")
+        await bot.send_message(message.channel, message.author.mention + " I'm sorry, but you do not have permissions to kick guest members.")
         return
     serverid = message.server.id
     content = message.content.strip()
     if len(content.split()) == 2:
-        await self.send_message(message.channel, message.author.mention + " Please provide a username-query (or optionally a discriminator) to kick a guest user.\nExample: `kick Titan#0001`")
+        await bot.send_message(message.channel, message.author.mention + " Please provide a username-query (or optionally a discriminator) to kick a guest user.\nExample: `kick Titan#0001`")
         return
     content = content.split()
     username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
     discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
     reason = await self.database.revoke_unauth_user_by_query(message.server.id, username, discriminator)
-    await self.send_message(message.channel, message.author.mention + " " + reason)
+    await bot.send_message(message.channel, message.author.mention + " " + reason)
 
 try:
     bot.loop.run_until_complete(bot.run(config["bot-token"]))
