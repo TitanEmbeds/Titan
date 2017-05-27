@@ -12,7 +12,7 @@ logging.getLogger('sqlalchemy')
 
 bot = commands.Bot(command_prefix=config['command-prefix'])
 aiosession = aiohttp.ClientSession(loop=bot.loop)
-http.user_agent += ' TitanEmbeds-Bot'
+bot.http.user_agent += ' TitanEmbeds-Bot'
 database = DatabaseInterface()
 
 initFirst()
