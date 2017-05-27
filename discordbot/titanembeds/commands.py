@@ -19,7 +19,7 @@ class Commands():
         serverid = message.server.id
         content = message.content.strip()
         if len(content.split()) == 2:
-            await self.client.send_message(message.channel, message.author.mention + " Please provide a username-query (or optionally a discriminator) to ban a guest user.\nExample: `ban Titan#0001`")
+            await self.client.send_message(message.channel, message.author.mention + " Please provide a username-query (or optionally a discriminator) to kick a guest user.\nExample: `kick Titan#0001`")
             return
         content = content.split()
         username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
