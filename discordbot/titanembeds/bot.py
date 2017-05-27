@@ -56,13 +56,13 @@ class Titan(discord.Client):
         )
 
         try:
-            await self.database.connect(config["database-uri"] + "?charset=utf8")
+            await self.database.connect(config["database-uri"] + "?charset=utf8mb4")
         except Exception:
             self.logger.error("Unable to connect to specified database!")
             traceback.print_exc()
             await self.logout()
             return
-        
+
         if "no-init" not in sys.argv:
             for server in self.servers:
                 await self.database.update_guild(server)
@@ -84,7 +84,7 @@ class Titan(discord.Client):
 
     async def on_message(self, message):
         await self.database.push_message(message)
-        
+
         msg_arr = message.content.split() # split the message
         if len(message.content.split()) > 1 and message.server: #making sure there is actually stuff in the message and have arguments and check if it is sent in server (not PM)
             if msg_arr[0] == "<@{}>".format(self.user.id): #make sure it is mention
@@ -106,7 +106,7 @@ class Titan(discord.Client):
             await asyncio.sleep(1)
             await self.leave_server(guild)
             return
-        
+
         await self.database.update_guild(guild)
         for channel in guild.channels:
             async for message in self.logs_from(channel, limit=50, reverse=True):
