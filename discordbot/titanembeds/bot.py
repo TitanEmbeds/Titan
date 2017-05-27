@@ -10,10 +10,11 @@ logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime
 logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
-bot = commands.Bot(command_prefix=config['command-prefix'])
-self.aiosession = aiohttp.ClientSession(loop=self.loop)
-self.http.user_agent += ' TitanEmbeds-Bot'
-self.database = DatabaseInterface(self)
+def initFirst(self):
+    self.bot = commands.Bot(command_prefix=config['command-prefix'])
+    self.aiosession = aiohttp.ClientSession(loop=self.loop)
+    self.http.user_agent += ' TitanEmbeds-Bot'
+    self.database = DatabaseInterface(self)
 
 def run(self):
     try:
