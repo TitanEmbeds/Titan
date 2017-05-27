@@ -11,8 +11,7 @@ logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
 bot = commands.Bot(command_prefix=config['command-prefix'])
-database = DatabaseInterface(bot)
-
+database = none
 def _cleanup():
     try:
         bot.loop.run_until_complete(logout())
@@ -39,11 +38,11 @@ async def on_ready(self):
         game=discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.tk/"), status=discord.Status.online
     )
     try:
-        await self.database.connect(config["database-uri"] + "?charset=utf8mb4")
+        database = DatabaseInterface(bot, config["database-uri"] + "?charset=utf8mb4")
     except Exception:
         self.logger.error("Unable to connect to specified database!")
         traceback.print_exc()
-        await self.logout()
+        await bot.logout()
         return
     if "no-init" not in sys.argv:
         for server in bot.servers:

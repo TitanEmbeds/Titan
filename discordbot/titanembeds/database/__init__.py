@@ -18,13 +18,9 @@ from titanembeds.database.unauthenticated_bans import UnauthenticatedBans
 
 class DatabaseInterface(object):
     # Courtesy of https://github.com/SunDwarf/Jokusoramame
-    def __init__(self, bot):
+    async def __init__(self, bot, dburi):
         self.bot = bot
 
-        self.engine = None  # type: Engine
-        self._sessionmaker = None  # type: sessionmaker
-
-    async def connect(self, dburi):
         async with threadpool():
             self.engine = create_engine(dburi, pool_recycle=10)
             self._sessionmaker = sessionmaker(bind=self.engine, expire_on_commit=False)
