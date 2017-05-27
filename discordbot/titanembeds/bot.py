@@ -65,8 +65,8 @@ async def on_ready(self):
         print("Skipping indexing server due to no-init flag")
 
 @bot.event
-async def on_message(self, message):
-    await self.database.push_message(message)
+async def on_message(message):
+    await database.push_message(message)
     if message.server:
         await bot.process_commands(message)
 
