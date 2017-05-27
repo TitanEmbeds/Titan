@@ -16,6 +16,8 @@ def initFirst(self):
     self.http.user_agent += ' TitanEmbeds-Bot'
     self.database = DatabaseInterface(self)
 
+initFirst()
+
 def run(self):
     try:
         self.loop.run_until_complete(self.start(config["bot-token"]))
