@@ -13,6 +13,8 @@ Base = declarative_base()
 from titanembeds.database.guilds import Guilds
 from titanembeds.database.messages import Messages
 from titanembeds.database.guild_members import GuildMembers
+from titanembeds.database.unauthenticated_users import UnauthenticatedUsers
+from titanembeds.database.unauthenticated_bans import UnauthenticatedBans
 
 class DatabaseInterface(object):
     # Courtesy of https://github.com/SunDwarf/Jokusoramame
@@ -290,12 +292,59 @@ class DatabaseInterface(object):
                             True,
                             "[]"
                         )
-                        db.session.add(dbusr)
+                        session.add(dbusr)
                 if changed:
                     session.commit()
 
-    async def ban_unauth_user_by_query(self, query):
+    async def ban_unauth_user_by_query(self, guild_id, placer_id, username, discriminator):
         async with threadpool():
             with self.get_session() as session:
-                pass
-                #dbusr = session.query()
+                dbuser = None
+                if discriminator:
+                    dbuser = session.query(UnauthenticatedUsers) \
+                        .filter(UnauthenticatedUsers.guild_id == guild_id) \
+                        .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+                        .filter(UnauthenticatedUsers.discriminator == discriminator) \
+                        .order_by(UnauthenticatedUsers.id.desc()).first()
+                else:
+                    dbuser = session.query(UnauthenticatedUsers) \
+                        .filter(UnauthenticatedUsers.guild_id == guild_id) \
+                        .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+                        .order_by(UnauthenticatedUsers.id.desc()).first()
+                if not dbuser:
+                    return "Ban error! Guest user cannot be found."
+                dbban = session.query(UnauthenticatedBans) \
+                    .filter(UnauthenticatedBans.guild_id == guild_id) \
+                    .filter(UnauthenticatedBans.last_username == dbuser.username) \
+                    .filter(UnauthenticatedBans.last_discriminator == dbuser.discriminator).first()
+                if dbban is not None:
+                    if dbban.lifter_id is None:
+                        return "Ban error! Guest user, **{}#{}**, has already been banned.".format(dbban.last_username, dbban.last_discriminator)
+                    session.delete(dbban)
+                dbban = UnauthenticatedBans(guild_id, dbuser.ip_address, dbuser.username, dbuser.discriminator, "", placer_id)
+                session.add(dbban)
+                session.commit()
+                return "Guest user, **{}#{}**, has successfully been added to the ban list!".format(dbban.last_username, dbban.last_discriminator)
+
+    async def revoke_unauth_user_by_query(self, guild_id, username, discriminator):
+        async with threadpool():
+            with self.get_session() as session:
+                dbuser = None
+                if discriminator:
+                    dbuser = session.query(UnauthenticatedUsers) \
+                        .filter(UnauthenticatedUsers.guild_id == guild_id) \
+                        .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+                        .filter(UnauthenticatedUsers.discriminator == discriminator) \
+                        .order_by(UnauthenticatedUsers.id.desc()).first()
+                else:
+                    dbuser = session.query(UnauthenticatedUsers) \
+                        .filter(UnauthenticatedUsers.guild_id == guild_id) \
+                        .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+                        .order_by(UnauthenticatedUsers.id.desc()).first()
+                if not dbuser:
+                    return "Kick error! Guest user cannot be found."
+                elif dbuser.revoked:
+                    return "Kick error! Guest user **{}#{}** has already been kicked!".format(dbuser.username, dbuser.discriminator)
+                dbuser.revoked = True
+                session.commit()
+                return "Successfully kicked **{}#{}**!".format(dbuser.username, dbuser.discriminator)
