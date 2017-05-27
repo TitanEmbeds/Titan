@@ -13,9 +13,9 @@ logging.getLogger('sqlalchemy')
 bot = commands.Bot(command_prefix=config['command-prefix'])
 database = DatabaseInterface(bot)
 
-def _cleanup(self):
+def _cleanup():
     try:
-        bot.loop.run_until_complete(self.logout())
+        bot.loop.run_until_complete(logout())
     except: # Can be ignored
         pass
     pending = asyncio.Task.all_tasks()
@@ -194,7 +194,7 @@ except discord.errors.LoginFailure:
     print("Invalid bot token in config!")
 finally:
     try:
-        self._cleanup()
+        _cleanup()
     except Exception as e:
         print("Error in cleanup:", e)
     bot.loop.close()
