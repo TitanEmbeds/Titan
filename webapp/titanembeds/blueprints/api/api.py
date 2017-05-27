@@ -374,10 +374,11 @@ def create_unauthenticated_user():
         response.status_code = 403
         return response
     
-@api.route("/update_unauthenticated_user", methods=["POST"])
-@rate_limiter.limit("1 per 15 minute", key_func=guild_ratelimit_key)
-def update_unauthenticated_user():
-    # todo: update user
+# @api.route("/update_unauthenticated_user", methods=["POST"])
+# @rate_limiter.limit("1 per 15 minute", key_func=guild_ratelimit_key)
+# def update_unauthenticated_user():
+#     # todo: update user
+#     new_name = request.form.get('new_username')
 
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)

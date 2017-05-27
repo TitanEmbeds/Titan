@@ -10,9 +10,10 @@ logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime
 logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
-class Titan(discord.Client):
-    def __init__(self):
-        super().__init__()
+
+class Titan(commands.Bot):
+    def __init__(self, *args, **kwargs):
+        super().__init__(command_prefix = config['command-prefix'])
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
