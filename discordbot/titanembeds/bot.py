@@ -11,7 +11,7 @@ logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
 bot = commands.Bot(command_prefix=config['command-prefix'])
-database = none
+database = None
 def _cleanup():
     try:
         bot.loop.run_until_complete(logout())
