@@ -157,7 +157,7 @@ class Titan(commands.Bot):
         await self.database.unban_server_user(user, server)
 
 
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def ban(ctx, self):
         message = ctx.message
         if not message.author.server_permissions.ban_members:
@@ -174,7 +174,7 @@ class Titan(commands.Bot):
         reason = await self.database.ban_unauth_user_by_query(message.server.id, message.author.id, username, discriminator)
         await self.send_message(message.channel, message.author.mention + " " + reason)
 
-    @bot.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def kick(ctx, self):
         message = ctx.message
         if not message.author.server_permissions.kick_members:
