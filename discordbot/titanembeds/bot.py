@@ -38,7 +38,7 @@ async def on_ready():
         game=discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.tk/"), status=discord.Status.online
     )
     try:
-        await database = DatabaseInterface(bot, config["database-uri"] + "?charset=utf8mb4")
+        database = DatabaseInterface(bot, config["database-uri"] + "?charset=utf8mb4")
     except Exception:
         logger.error("Unable to connect to specified database!")
         traceback.print_exc()
