@@ -1,5 +1,7 @@
-from titanembeds.utils import discord_api+
+from titanembeds.utils import discord_api
 
-def parseEmoji(textToParse, emojiName, guildId):
-    # TODO parse emoji
+def parseEmoji(textToParse, guild_id):
+    _endpoint = "/guilds/{guild_id}".format(guild_id=guild_id)
+    _method = "GET"
+    
     return ""
