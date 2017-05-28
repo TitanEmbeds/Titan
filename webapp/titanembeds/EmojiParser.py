@@ -1,7 +1,26 @@
 from titanembeds.utils import discord_api
+import re
 
 def parseEmoji(textToParse, guild_id):
     _endpoint = "/guilds/{guild_id}".format(guild_id=guild_id)
     _method = "GET"
-    
-    return ""
+    response = discord_api.request(_method, _endpoint)
+    emojis = []
+    emojis = re.findall(":(.*?):", textToParse)
+    newText = textToParse
+    for emoji in response['emojis']:
+    	name = emoji['name']
+    	emojiId = emoji['id']
+    	for emoji2 in emojis:
+    		if name.lower is emoji2.replace(":", "").lower():
+    			newText = newText.replace(":{}:".format(name), "<img src='https://cdn.discordapp.com/emojis/{}.png'></img>".format(id))
+    return newText
+
+#Default emoji object here
+#{
+#"require_colons": true,
+#"managed": false,
+#"name": "sh",
+#"roles": [],
+#"id": "318499652175396866"
+#}
