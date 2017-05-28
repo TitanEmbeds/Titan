@@ -15,12 +15,3 @@ def parseEmoji(textToParse, guild_id):
     		if name.lower is emoji2.replace(":", "").lower():
     			newText = newText.replace(":{}:".format(name), "<img src='https://cdn.discordapp.com/emojis/{}.png'></img>".format(id))
     return newText
-
-#Default emoji object here
-#{
-#"require_colons": true,
-#"managed": false,
-#"name": "sh",
-#"roles": [],
-#"id": "318499652175396866"
-#}
