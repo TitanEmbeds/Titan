@@ -1,6 +1,5 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties, GuildMembers, Messages, get_channel_messages, list_all_guild_members
 from titanembeds.decorators import valid_session_required, discord_users_only
-from titanembeds.EmojiParser import parseEmoji
 from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 from flask import Blueprint, abort, jsonify, session, request
@@ -100,10 +99,28 @@ def check_user_in_guild(guild_id):
         dbUser = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
         return dbUser is not None and not checkUserRevoke(guild_id)
 
+def parse_emoji(textToParse, guild_id):
+    _endpoint = "/guilds/{guild_id}".format(guild_id=guild_id)
+    _method = "GET"
+    response = discord_api.request(_method, _endpoint)
+    if not response.get("success", False):
+        return textToParse
+    emojis = []
+    emojis = re.findall("<:(.*?):(.*)?>", textToParse)
+    newText = textToParse
+    for emoji in response['content']['emojis']:
+    	name = emoji['name']
+    	emojiId = emoji['id']
+    	for emoji2 in emojis:
+    		if name.lower() == emoji2[0].lower():
+    			newText = newText.replace("<:{}:{}>".format(name, emojiId), "<img src='https://cdn.discordapp.com/emojis/{}.png'></img>".format(emojiId))
+    return newText
+
+
 def format_post_content(guild_id, message):
     illegal_post = False
     illegal_reasons = []
-    message = parseEmoji(message, guild_id)
+    message = parse_emoji(message, guild_id)
     message = message.replace("<", "\<")
     message = message.replace(">", "\>")
 
