@@ -5,9 +5,8 @@ def parseEmoji(textToParse, guild_id):
     _endpoint = "/guilds/{guild_id}".format(guild_id=guild_id)
     _method = "GET"
     response = discord_api.request(_method, _endpoint)
-    if response['code'] is None:
+    if response['content']['code'] is None:
         return textToParse
-    print(response)
     emojis = []
     emojis = re.findall("<:(.*?):(.*)?>", textToParse)
     newText = textToParse
