@@ -11,10 +11,11 @@ class Guilds(Base):
     mentions_limit = db.Column(db.Integer)          # If there is a limit on the number of mentions in a msg
     roles = db.Column(db.Text())                    # Guild Roles
     channels = db.Column(db.Text())                 # Guild channels
+    emojis = db.Column(db.Text())                   # Guild Emojis
     owner_id = db.Column(db.String(255))            # Snowflake of the owner
     icon = db.Column(db.String(255))                # The icon string, null if none
 
-    def __init__(self, guild_id, name, roles, channels, owner_id, icon):
+    def __init__(self, guild_id, name, roles, channels, emojis, owner_id, icon):
         self.guild_id = guild_id
         self.name = name
         self.unauth_users = True # defaults to true
@@ -23,6 +24,7 @@ class Guilds(Base):
         self.mentions_limit = -1 # -1 = unlimited mentions
         self.roles = roles
         self.channels = channels
+        self.emojis = emojis
         self.owner_id = owner_id
         self.icon = icon
 

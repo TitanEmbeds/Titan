@@ -126,6 +126,7 @@ class DatabaseInterface(object):
                         guild.name,
                         json.dumps(self.get_roles_list(guild.roles)),
                         json.dumps(self.get_channels_list(guild.channels)),
+                        json.dumps(self.get_emojis_list(guild.emojis)),
                         guild.owner_id,
                         guild.icon
                     )
@@ -134,9 +135,23 @@ class DatabaseInterface(object):
                     gui.name = guild.name
                     gui.roles = json.dumps(self.get_roles_list(guild.roles))
                     gui.channels = json.dumps(self.get_channels_list(guild.channels))
+                    gui.emojis = json.dumps(self.get_emojis_list(guild.emojis))
                     gui.owner_id = guild.owner_id
                     gui.icon = guild.icon
                 session.commit()
+    
+    def get_emojis_list(self, guildemojis):
+        emojis = []
+        for emote in guildemojis:
+            emojis.append({
+                "id": emote.id,
+                "name": emote.name,
+                "require_colons": emote.require_colons,
+                "managed": emote.managed,
+                "roles": self.list_role_ids(emote.roles),
+                "url": emote.url
+            })
+        return emojis
 
     def get_roles_list(self, guildroles):
         roles = []

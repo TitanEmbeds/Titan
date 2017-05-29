@@ -161,3 +161,9 @@ class Titan(discord.Client):
 
     async def on_member_unban(self, server, user):
         await self.database.unban_server_user(user, server)
+    
+    async def on_server_emojis_update(self, before, after):
+        if len(after) == 0:
+            await self.database.update_guild(before[0].server)
+        else:
+            await self.database.update_guild(after[0].server)
