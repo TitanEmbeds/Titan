@@ -234,46 +234,32 @@ a {
   cursor: pointer;
 }
 @font-face {
-            font-family: Whitney;
-            font-style: light;
-            font-weight: 300;
-            src: url(https://discordapp.com/assets/16801bfdf51ed88e69bc90626a3ea436.woff) format('woff')
-        }
-        
-        @font-face {
-            font-family: Whitney;
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://discordapp.com/assets/d153359b5d87601d2b9c708b7ae2db02.woff) format('woff')
-        }
-        
-        @font-face {
-            font-family: Whitney;
-            font-style: medium;
-            font-weight: 600;
-            src: url(https://discordapp.com/assets/a934ab008c7f6a2274ec441f6be0696a.woff) format('woff')
-        }
-        
-        @font-face {
-            font-family: Whitney;
-            font-style: semibold;
-            font-weight: 650;
-            src: url(/assets/877ef48bf9fcfee590f0ba64de101b59.woff) format('woff')
-        }
-        
-        @font-face {
-            font-family: Whitney;
-            font-style: bold;
-            font-weight: 700;
-            src: url(https://discordapp.com/assets/2e004dd717cdc58b9ccb361d286ebbce.woff) format('woff')
-        }
-        
-        @font-face {
-            font-family: SourceCodePro;
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://discordapp.com/assets/748ac49ebe4bf0ddfe85c005be7c64c4.woff) format('woff')
-        }
+    font-family: Whitney;
+    font-style: light;
+    font-weight: 300;
+    src: url("/fonts/whitney_light.woff") format("woff")
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: normal;
+    font-weight: 500;
+    src: url("/fonts/whitney_normal.woff") format("woff")
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: medium;
+    font-weight: 600;
+    src: url("/fonts/whitney_medium.woff") format("woff")
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: bold;
+    font-weight: 700;
+    src: url("/fonts/whitney_bold.woff") format("woff")
+}
 * {
 font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
@@ -347,6 +333,5 @@ background: linear-gradient(to right, #f9f9f9 90%, #fff);
 #channels-list > li:hover {
 -webkit-filter: brightness(150%);
 }
-#455a64
 #loginmodal {
 }
