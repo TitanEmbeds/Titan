@@ -5,7 +5,7 @@ def parseEmoji(textToParse, guild_id):
     _endpoint = "/guilds/{guild_id}".format(guild_id=guild_id)
     _method = "GET"
     response = discord_api.request(_method, _endpoint)
-    if 'code' not in response['content']:
+    if not response.get("success", False):
         return textToParse
     emojis = []
     emojis = re.findall("<:(.*?):(.*)?>", textToParse)
@@ -14,6 +14,6 @@ def parseEmoji(textToParse, guild_id):
     	name = emoji['name']
     	emojiId = emoji['id']
     	for emoji2 in emojis:
-    		if name.lower is emoji2.replace(":", "").lower():
-    			newText = newText.replace("<:{}}:{}>".format(name, emojiId), "<img src='https://cdn.discordapp.com/emojis/{}.png'></img>".format(emojiId))
+    		if name.lower() == emoji2[0].lower():
+    			newText = newText.replace("<:{}:{}>".format(name, emojiId), "<img src='https://cdn.discordapp.com/emojis/{}.png'></img>".format(emojiId))
     return newText
