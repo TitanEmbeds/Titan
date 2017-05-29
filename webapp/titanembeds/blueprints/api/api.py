@@ -100,29 +100,25 @@ def check_user_in_guild(guild_id):
         return dbUser is not None and not checkUserRevoke(guild_id)
 
 def parse_emoji(textToParse, guild_id):
-    _endpoint = "/guilds/{guild_id}".format(guild_id=guild_id)
-    _method = "GET"
-    response = discord_api.request(_method, _endpoint)
-    if not response.get("success", False):
-        return textToParse
     emojis = []
-    emojis = re.findall("<:(.*?):(.*)?>", textToParse)
+    emojis = re.findall(":(.*?):", textToParse)
+    guild_emojis = get_guild_emojis(guild_id)
     newText = textToParse
-    for emoji in response['content']['emojis']:
-    	name = emoji['name']
-    	emojiId = emoji['id']
-    	for emoji2 in emojis:
-    		if name.lower() == emoji2[0].lower():
-    			newText = newText.replace("<:{}:{}>".format(name, emojiId), "<img src='https://cdn.discordapp.com/emojis/{}.png'></img>".format(emojiId))
+    for gemoji in guild_emojis:
+        emoji_name = gemoji["name"]
+        emoji_id = gemoji["id"]
+    	for usremote in emojis:
+    	    if usremote == emoji_name:
+    	        newText = newText.replace(":{}:".format(emoji_name), "<:{}:{}>".format(emoji_name, emoji_id))
     return newText
 
 
 def format_post_content(guild_id, message):
     illegal_post = False
     illegal_reasons = []
-    message = parse_emoji(message, guild_id)
     message = message.replace("<", "\<")
     message = message.replace(">", "\>")
+    message = parse_emoji(message, guild_id)
 
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
 
@@ -299,6 +295,10 @@ def get_online_embed_users(guild_id):
         users['authenticated'].append(meta)
     return users
 
+def get_guild_emojis(guild_id):
+    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    return json.loads(dbguild.emojis)
+
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
 @rate_limiter.limit("2 per 2 second", key_func = channel_ratelimit_key)
@@ -403,7 +403,8 @@ def query_guild():
             channels = get_guild_channels(guild_id)
             discordmembers = get_online_discord_users(guild_id, widget)
             embedmembers = get_online_embed_users(guild_id)
-            return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, instant_invite=widget.get("instant_invite"))
+            emojis = get_guild_emojis(guild_id)
+            return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, instant_invite=widget.get("instant_invite"))
         abort(403)
     abort(404)
 
