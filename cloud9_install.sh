@@ -28,8 +28,10 @@ echo "[C9Setup] Setting database uri for discordbot/config.py"
 #'database-uri': "mysql+pymysql://root@localhost/titan",
 sed -i "4s/.*/\'database-uri\': \"mysql+pymysql:\/\/root@localhost\/titan\",/" ~/workspace/discordbot/config.py
 
-echo "[C9Setup] Setting database uri for webapp/config.py"
+echo "[C9Setup] Setting database uri and app location for webapp/config.py"
 sed -i "11s/.*/\'database-uri\': \"mysql+pymysql:\/\/root@localhost\/titan\",/" ~/workspace/webapp/config.py
+#'app-location': "/home/ubuntu/workspace/webapp/",
+sed -i "8s/.*/\'app-location\': \"\/home\/ubuntu\/workspace\/webapp\/\",/" ~/workspace/webapp/config.py
 
 echo "[C9Setup] Making sure everything can be runned"
 sudo chmod -R 777 *
