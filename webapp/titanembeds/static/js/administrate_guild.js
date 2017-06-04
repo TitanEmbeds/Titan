@@ -36,6 +36,17 @@ $("#mentions_limit").keyup(function(event){
     }
 });
 
+$("#discordio").keyup(function(event){
+    if(event.keyCode == 13){
+      var pathname = window.location.pathname;
+      var value = $("#discordio").val()
+      var payload = {"discordio": value}
+      $.post(pathname, payload, function(data) {
+        Materialize.toast('Updated Discord.io setting!', 2000)
+      });
+    }
+});
+
 function initiate_ban(guild_id, user_id) {
   var reason = prompt("Please enter your reason for ban");
   var payload = {

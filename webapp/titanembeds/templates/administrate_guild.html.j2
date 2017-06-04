@@ -79,6 +79,13 @@
             <p class="flow-text">Message mentions limit</p>
             <p>(-1 to have no limit - enter to submit)</p>
             <input id="mentions_limit" type="number" value="{{ guild['mentions_limit'] }}">
+            
+            <br>
+            
+            <p class="flow-text">Custom Discord.io Link</p>
+            <p>Because we are a partner with <a href="https://discord.io" target="_blank">Discord.io</a>, we enable you to enter your custom discord.io link and replace the discord.gg link on the embed!</p>
+            <p>(Leave blank if none - enter to submit)</p>
+            <input id="discordio" value="{{ guild['discordio'] }}">
           </div>
         </div>
       </div>

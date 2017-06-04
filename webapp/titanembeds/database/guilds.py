@@ -14,6 +14,7 @@ class Guilds(db.Model):
     emojis = db.Column(db.Text(), nullable=False)                               # Guild Emojis
     owner_id = db.Column(db.String(255), nullable=False)                        # Snowflake of the owner
     icon = db.Column(db.String(255))                                            # The icon string, null if none
+    discordio = db.Column(db.String(255))                                       # Custom Discord.io Invite Link
 
     def __init__(self, guild_id, name, roles, channels, emojis, owner_id, icon):
         self.guild_id = guild_id

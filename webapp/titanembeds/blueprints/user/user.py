@@ -178,7 +178,8 @@ def administrate_guild(guild_id):
         "chat_links": db_guild.chat_links,
         "bracket_links": db_guild.bracket_links,
         "mentions_limit": db_guild.mentions_limit,
-        "icon": db_guild.icon
+        "icon": db_guild.icon,
+        "discordio": db_guild.discordio if db_guild.discordio != None else ""
     }
     return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions)
 
@@ -194,6 +195,11 @@ def update_administrate_guild(guild_id):
     db_guild.chat_links = request.form.get("chat_links", db_guild.chat_links) in ["true", True]
     db_guild.bracket_links = request.form.get("bracket_links", db_guild.bracket_links) in ["true", True]
     db_guild.mentions_limit = request.form.get("mentions_limit", db_guild.mentions_limit)
+    
+    discordio = request.form.get("discordio", db_guild.discordio)
+    if discordio.strip() == "":
+        discordio = None
+    db_guild.discordio = discordio
     db.session.commit()
     return jsonify(
         id=db_guild.id,
@@ -202,6 +208,7 @@ def update_administrate_guild(guild_id):
         chat_links=db_guild.chat_links,
         bracket_links=db_guild.bracket_links,
         mentions_limit=db_guild.mentions_limit,
+        discordio=db_guild.discordio,
     )
 
 @user.route("/add-bot/<guild_id>")
