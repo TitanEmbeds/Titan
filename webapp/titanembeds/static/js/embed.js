@@ -428,7 +428,8 @@
     function parse_message_time(message) {
         var mome = moment(message.timestamp);
         message.formatted_timestamp = mome.toDate().toString();
-        message.formatted_time = mome.format("h:mm A");
+        message.formatted_time = mome.calendar();
+        /*message.formatted_time = mome.format("h:mm A");*/
         return message;
     }
 

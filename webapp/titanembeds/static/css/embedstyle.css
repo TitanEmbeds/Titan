@@ -291,7 +291,6 @@ margin-right:4px
 }
 #chatcontent > p { display: table; }
 #chatcontent > p > span { display: table-row }
-#chatcontent > p > span:nth-child(1):before { content:"Today at " }
 #chatcontent > p > span.chatusername { display: table-header-group }
 #chatcontent > p > span.chatmessage { display: table-footer-group;display:inline-block!important;color:rgb(195,196,197) }
 ::-webkit-input-placeholder { color:rgb(99,99,99) }
