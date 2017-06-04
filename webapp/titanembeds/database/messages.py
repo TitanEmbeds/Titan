@@ -4,16 +4,16 @@ import json
 
 class Messages(db.Model):
     __tablename__ = "messages"
-    id = db.Column(db.Integer, primary_key=True)    # Auto incremented id
-    guild_id = db.Column(db.String(255))            # Discord guild id
-    channel_id = db.Column(db.String(255))          # Channel id
-    message_id = db.Column(db.String(255))          # Message snowflake
-    content = db.Column(db.Text())                  # Message contents
-    author = db.Column(db.Text())                   # Author
-    timestamp = db.Column(db.TIMESTAMP)             # Timestamp of when content is created
-    edited_timestamp = db.Column(db.TIMESTAMP)      # Timestamp of when content is edited
-    mentions = db.Column(db.Text())                 # Mentions serialized
-    attachments = db.Column(db.Text())              # serialized attachments
+    id = db.Column(db.Integer, primary_key=True)                    # Auto incremented id
+    guild_id = db.Column(db.String(255), nullable=False)            # Discord guild id
+    channel_id = db.Column(db.String(255), nullable=False)          # Channel id
+    message_id = db.Column(db.String(255), nullable=False)          # Message snowflake
+    content = db.Column(db.Text(), nullable=False)                  # Message contents
+    author = db.Column(db.Text(), nullable=False)                   # Author
+    timestamp = db.Column(db.TIMESTAMP, nullable=False)             # Timestamp of when content is created
+    edited_timestamp = db.Column(db.TIMESTAMP)                      # Timestamp of when content is edited
+    mentions = db.Column(db.Text())                                 # Mentions serialized
+    attachments = db.Column(db.Text())                              # serialized attachments
 
     def __init__(self, guild_id, channel_id, message_id, content, author, timestamp, edited_timestamp, mentions, attachments):
         self.guild_id = guild_id

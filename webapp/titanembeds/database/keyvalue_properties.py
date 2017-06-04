@@ -52,10 +52,10 @@ def delete_keyvalproperty(key):
 
 class KeyValueProperties(db.Model):
     __tablename__ = "keyvalue_properties"
-    id = db.Column(db.Integer, primary_key=True)    # Auto incremented id
-    key = db.Column(db.String(255))                 # Property Key
-    value = db.Column(db.Text())                    # Property value
-    expiration = db.Column(db.TIMESTAMP)            # Suggested Expiration for value (None = no expire) in secs
+    id = db.Column(db.Integer, primary_key=True)                    # Auto incremented id
+    key = db.Column(db.String(255), nullable=False)                 # Property Key
+    value = db.Column(db.Text())                                    # Property value
+    expiration = db.Column(db.TIMESTAMP)                            # Suggested Expiration for value (None = no expire) in secs
 
     def __init__(self, key, value, expiration=None):
         self.key = key

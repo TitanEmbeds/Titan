@@ -3,16 +3,16 @@ import json
 
 class GuildMembers(db.Model):
     __tablename__ = "guild_members"
-    id = db.Column(db.Integer, primary_key=True)    # Auto incremented id
-    guild_id = db.Column(db.String(255))            # Discord guild id
-    user_id = db.Column(db.String(255))             # Discord user id
-    username = db.Column(db.String(255))            # Name
-    discriminator = db.Column(db.Integer)           # User discriminator
-    nickname = db.Column(db.String(255))            # User nickname
-    avatar = db.Column(db.String(255))              # The avatar str of the user
-    active = db.Column(db.Boolean())                # If the user is a member of the guild
-    banned = db.Column(db.Boolean())                # If the user is banned in the guild
-    roles = db.Column(db.Text())                    # Member roles
+    id = db.Column(db.Integer, primary_key=True)                    # Auto incremented id
+    guild_id = db.Column(db.String(255), nullable=False)            # Discord guild id
+    user_id = db.Column(db.String(255), nullable=False)             # Discord user id
+    username = db.Column(db.String(255), nullable=False)            # Name
+    discriminator = db.Column(db.Integer, nullable=False)           # User discriminator
+    nickname = db.Column(db.String(255))                            # User nickname
+    avatar = db.Column(db.String(255))                              # The avatar str of the user
+    active = db.Column(db.Boolean(), nullable=False)                # If the user is a member of the guild
+    banned = db.Column(db.Boolean(), nullable=False)                # If the user is banned in the guild
+    roles = db.Column(db.Text(), nullable=False)                    # Member roles
 
     def __init__(self, guild_id, user_id, username, discriminator, nickname, avatar, active, banned, roles):
         self.guild_id = guild_id
