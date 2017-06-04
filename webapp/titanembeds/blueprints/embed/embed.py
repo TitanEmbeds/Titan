@@ -34,7 +34,8 @@ def guild_embed(guild_id):
             "id": guild.guild_id,
             "name": guild.name,
             "unauth_users": guild.unauth_users,
-            "icon": guild.icon
+            "icon": guild.icon,
+            "discordio": guild.discordio,
         }
         return render_template("embed.html.j2",
             login_greeting=get_logingreeting(),

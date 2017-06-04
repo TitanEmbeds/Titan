@@ -42,7 +42,7 @@
             {% if guild['icon'] %}
             <img class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
             {% endif %}
-            <span class="name">{{ guild['name'] }}</span>
+            <span class="name">{{ guild['name']|e }}</span>
           </div>
         </li>
 
@@ -82,8 +82,12 @@
               {% if guild['icon'] %}
               <img id="modal_guildiconcircle" class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
               {% endif %}
-              <p id="modal_guildname"><strong>{{ guild['name'] }}</strong></p>
+              <p id="modal_guildname"><strong>{{ guild['name']|e }}</strong></p>
+              {% if guild["discordio"] %}
+              <a id="modal_invite_btn_discordio" class="waves-effect waves-light btn" target="_blank" href="http://discord.io/{{ guild["discordio"]|e }}">discord.io/{{ guild["discordio"]|e }}</a>
+              {% else %}
               <a id="modal_invite_btn" class="waves-effect waves-light btn" target="_blank">discord.gg</a>
+              {% endif %}
             </div>
             <div class="col m9 s12">
               <p class="flow-text">Please choose one of the following methods to authenticate!</p>
