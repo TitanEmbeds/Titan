@@ -4,11 +4,12 @@
     
     function postForm() {
         var name = $('#css_name').val();
+        var variables = JSON.stringify(formatCSSVars());
         var css = editor.getValue();
         var funct = $.ajax({
             dataType: "json",
             method: "POST",
-            data: {"name": name, "css": css}
+            data: {"name": name, "variables": variables, "css": css}
         });
         return funct.promise();
     }
@@ -22,6 +23,22 @@
             $("#delete-btn").click(delete_css);
         }
     });
+    
+    function formatCSSVars() {
+        return {
+            "modal": $("#css_var_modal").val(),
+            "noroleusers": $("#css_var_noroleusers").val(),
+            "main": $("#css_var_main").val(),
+            "placeholder": $("#css_var_placeholder").val(),
+            "sidebardivider": $("#css_var_sidebardivider").val(),
+            "leftsidebar": $("#css_var_leftsidebar").val(),
+            "rightsidebar": $("#css_var_rightsidebar").val(),
+            "header": $("#css_var_header").val(),
+            "chatmessage": $("#css_var_chatmessage").val(),
+            "discrim": $("#css_var_discrim").val(),
+            "chatbox": $("#css_var_chatbox").val(),
+        };
+    }
     
     function submitForm() {
         var formPost = postForm();

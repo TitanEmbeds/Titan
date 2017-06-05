@@ -4,6 +4,7 @@ from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
 from titanembeds.database import db, Guilds, UserCSS
 from config import config
 import random
+import json
 
 embed = Blueprint("embed", __name__)
 
@@ -26,6 +27,28 @@ def get_custom_css():
         css = db.session.query(UserCSS).filter(UserCSS.id == css).first()
     return css
 
+def parse_css_variable(css):
+    CSS_VARIABLES_TEMPLATE = """:root {
+      /*--<var>: <value>*/
+      --modal: %(modal)s;
+      --noroleusers: %(noroleusers)s;
+      --main: %(main)s;
+      --placeholder: %(placeholder)s;
+      --sidebardivider: %(sidebardivider)s;
+      --leftsidebar: %(leftsidebar)s;
+      --rightsidebar: %(rightsidebar)s;
+      --header: %(header)s;
+      --chatmessage: %(chatmessage)s;
+      --discrim: %(discrim)s;
+      --chatbox: %(chatbox)s;
+    }"""
+    if not css:
+        return None
+    else:
+        variables = css.css_variables
+    variables = json.loads(variables)
+    return CSS_VARIABLES_TEMPLATE % variables
+
 @embed.route("/<string:guild_id>")
 def guild_embed(guild_id):
     if check_guild_existance(guild_id):
@@ -37,13 +60,15 @@ def guild_embed(guild_id):
             "icon": guild.icon,
             "discordio": guild.discordio,
         }
+        customcss = get_custom_css()
         return render_template("embed.html.j2",
             login_greeting=get_logingreeting(),
             guild_id=guild_id, guild=guild_dict,
             generate_guild_icon=generate_guild_icon_url,
             unauth_enabled=guild_query_unauth_users_bool(guild_id),
             client_id=config['client-id'],
-            css=get_custom_css()
+            css=customcss,
+            cssvariables=parse_css_variable(customcss)
         )
     abort(404)
 

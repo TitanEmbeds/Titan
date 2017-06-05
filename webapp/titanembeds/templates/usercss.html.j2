@@ -28,6 +28,56 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         <label for="css_name">Name</label>
     </div>
     <div class="col s12">
+        <p class="flow-text">Propose Predefined CSS variables here</p>
+        <div class="row">
+            <div class="col m6 s12">
+                <span>Modal Background Color (<code>--modal</code>):<span>
+                <input id="css_var_modal" class="jscolor {hash:true}" value="{% if new or variables is none %}#546e7a{% else %}{{ variables.modal }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Uncategorized Discord Users (<code>--noroleusers</code>):<span>
+                <input id="css_var_noroleusers" class="jscolor {hash:true}" value="{% if new or variables is none %}#eceff1{% else %}{{ variables.noroleusers }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Main Background Color (<code>--main</code>):<span>
+                <input id="css_var_main" class="jscolor {hash:true}" value="{% if new or variables is none %}#455a64{% else %}{{ variables.main }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Text input placeholder (<code>--placeholder</code>):<span>
+                <input id="css_var_placeholder" class="jscolor {hash:true}" value="{% if new or variables is none %}#636363{% else %}{{ variables.placeholder }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Sidebar Dividers (<code>--sidebardivider</code>):<span>
+                <input id="css_var_sidebardivider" class="jscolor {hash:true}" value="{% if new or variables is none %}#90a4ae{% else %}{{ variables.sidebardivider }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Left Sidebar/Guild Navigation Background (<code>--leftsidebar</code>):<span>
+                <input id="css_var_leftsidebar" class="jscolor {hash:true}" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.leftsidebar }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Right Sidebar/Member List Background (<code>--rightsidebar</code>):<span>
+                <input id="css_var_rightsidebar" class="jscolor {hash:true}" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.rightsidebar }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Header Background (<code>--header</code>):<span>
+                <input id="css_var_header" class="jscolor {hash:true}" value="{% if new or variables is none %}#263238{% else %}{{ variables.header }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Chat Message (<code>--chatmessage</code>):<span>
+                <input id="css_var_chatmessage" class="jscolor {hash:true}" value="{% if new or variables is none %}#c3c4c5{% else %}{{ variables.chatmessage }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Discriminator Text (<code>--discrim</code>):<span>
+                <input id="css_var_discrim" class="jscolor {hash:true}" value="{% if new or variables is none %}#FFFFFF{% else %}{{ variables.discrim }}{% endif %}">
+            </div>
+            <div class="col m6 s12">
+                <span>Message Box Background (<code>--chatbox</code>):<span>
+                <input id="css_var_chatbox" class="jscolor {hash:true}" value="{% if new or variables is none %}#37474f{% else %}{{ variables.chatbox }}{% endif %}">
+            </div>
+        </div>
+        <p><strong>TIP!</strong> You can use the variables in your CSS below! Something like <code>color: var(--leftsidebar);</code> would work!</p>
+    </div>
+    <div class="col s12">
         <p class="flow-text">Edit your CSS code here</p>
         <div style="position: relative; height: 40vh;">
             <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{{ css.css }}{% endif %}</div>
@@ -45,6 +95,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
 
 {% block script %}
 <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" integrity="sha256-xrr4HH5eSY+cFz4SH7ja/LaAi9qcEdjMpeMP49/iOLs=" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.js" integrity="sha256-y1h79SSb3icyBC/BrLCzoexQZAOGwlvoAr85biY4QGw=" crossorigin="anonymous"></script>
 <script>
     const newCSS = {% if new %}true{% else %}false{% endif %};
 </script>
