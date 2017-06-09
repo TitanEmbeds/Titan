@@ -199,7 +199,7 @@ def update_administrate_guild(guild_id):
     db_guild.mentions_limit = request.form.get("mentions_limit", db_guild.mentions_limit)
     
     discordio = request.form.get("discordio", db_guild.discordio)
-    if discordio.strip() == "":
+    if discordio and discordio.strip() == "":
         discordio = None
     db_guild.discordio = discordio
     db.session.commit()
