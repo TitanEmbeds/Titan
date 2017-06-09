@@ -18,6 +18,7 @@
     var last_message_id; // last message tracked
     var selected_channel = guild_id; // user selected channel, defaults to #general channel
     var guild_channels = {}; // all server channels used to highlight channels in messages
+    var emoji_store = {}; // all server emojis
     var times_fetched = 0; // kept track of how many times that it has fetched
     var fetch_error_count = 0; // Number of errors fetch has encountered
     var priority_query_guild = false; // So you have selected a channel? Let's populate it.
@@ -275,6 +276,7 @@
     }
 
     function prepare_guild(guildobj) {
+        emoji_store = guildobj.emojis;
         fill_channels(guildobj.channels);
         fill_discord_members(guildobj.discordmembers);
         fill_authenticated_users(guildobj.embedmembers.authenticated);
@@ -519,6 +521,18 @@
         }
         return message;
     }
+    
+    function parse_emoji_in_message(message) {
+        var template = $('#mustache_message_emoji').html();
+        Mustache.parse(template);
+        for (var i = 0; i < emoji_store.length; i++) {
+            var emoji = emoji_store[i];
+            var emoji_format = "&lt;:" + emoji.name + ":" + emoji.id + "&gt;";
+            var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name}).trim();
+            message.content = message.content.replace(emoji_format, rendered);
+        }
+        return message;
+    }
 
     function fill_discord_messages(messages, jumpscroll) {
         if (messages.length == 0) {
@@ -534,7 +548,9 @@
             message = parse_message_time(message);
             message = parse_message_attachments(message);
             message = parse_channels_in_message(message);
-            var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": nl2br(escapeHtml(message.content))});
+            message.content = escapeHtml(message.content);
+            message = parse_emoji_in_message(message);
+            var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": nl2br(message.content)});
             $("#chatcontent").append(rendered);
             last = message.id;
             handle_last_message_mention();

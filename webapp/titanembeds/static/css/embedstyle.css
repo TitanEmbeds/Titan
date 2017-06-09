@@ -241,6 +241,14 @@ a {
   width: 305px;
 }
 
+.message_emoji {
+  height: 20px;
+}
+
+.message_emoji:hover {
+  height: 30px;
+}
+
 @font-face {
     font-family: Whitney;
     font-style: light;
