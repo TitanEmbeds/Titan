@@ -151,7 +151,10 @@
           <div class="left"><img id="currentuserimage" src="" class="circle left currentuserimage" style="display: none;"></div>
           <div id="currentusername" class="currentusername left"><span id="curuser_name">Titan</span><span id="curuser_discrim">#0001</span></div>
         </div>
-        <div id="messageboxouter" class="input-field inline"><textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea" rows="1"></textarea></div>
+        <div id="messageboxouter" class="input-field inline">
+          <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea" rows="1"></textarea>
+          <span id="visitor_mode_message" style="display:none;">Please login to post a message. <a id="visitor_login_btn" class="waves-effect waves-light btn">Login</a></span>
+        </div>
       </div>
     </footer>
 
@@ -188,6 +191,7 @@
     <script>
         const guild_id = "{{ guild_id }}";
         const bot_client_id = "{{ client_id }}";
+        const visitors_enabled = {% if visitors_enabled %}true{% else %}false{% endif %};
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>

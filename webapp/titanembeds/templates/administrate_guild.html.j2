@@ -48,6 +48,19 @@
                 Enable
               </label>
             </div>
+            
+            <br>
+
+            <p class="flow-text">Toggle Visitor Mode</p>
+            <p>Visitors are able to view the channels that @everyone has access to. However, they are not able to send messages until they login using the usual methods.</p>
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="visitor_view" name="visitor_view" {% if guild['visitor_view'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
 
             <br>
 
