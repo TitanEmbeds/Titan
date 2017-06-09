@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, abort, redirect, url_for, session, request
-from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool
+from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
 from titanembeds.database import db, Guilds, UserCSS
 from config import config
@@ -42,6 +42,7 @@ def guild_embed(guild_id):
             guild_id=guild_id, guild=guild_dict,
             generate_guild_icon=generate_guild_icon_url,
             unauth_enabled=guild_query_unauth_users_bool(guild_id),
+            visitors_enabled=guild_accepts_visitors(guild_id),
             client_id=config['client-id'],
             css=get_custom_css()
         )

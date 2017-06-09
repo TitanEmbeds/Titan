@@ -1,6 +1,6 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties, GuildMembers, Messages, get_channel_messages, list_all_guild_members
 from titanembeds.decorators import valid_session_required, discord_users_only
-from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
+from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 from flask import Blueprint, abort, jsonify, session, request
 from sqlalchemy import and_
@@ -162,8 +162,8 @@ def get_dbguild_channels(guild_id):
     q = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     return json.loads(q.channels)
 
-def get_guild_channels(guild_id):
-    if user_unauthenticated():
+def get_guild_channels(guild_id, force_everyone=False):
+    if user_unauthenticated() or force_everyone:
         member_roles = [guild_id] #equivilant to @everyone role
     else:
         member_roles = get_member_roles(guild_id, session['user_id'])
@@ -177,7 +177,7 @@ def get_guild_channels(guild_id):
     for channel in guild_channels:
         if channel['type'] == "text":
             result = {"channel": channel, "read": False, "write": False, "mention_everyone": False}
-            if guild_owner == session['user_id']:
+            if guild_owner == session.get("user_id"):
                 result["read"] = True
                 result["write"] = True
                 result["mention_everyone"] = True
@@ -219,7 +219,7 @@ def get_guild_channels(guild_id):
 
             # member specific
             for overwrite in channel["permission_overwrites"]:
-                if overwrite["type"] == "member" and overwrite["id"] == session["user_id"]:
+                if overwrite["type"] == "member" and overwrite["id"] == session.get("user_id"):
                     channel_perm = (channel_perm & ~overwrite['deny']) | overwrite['allow']
                     break
 
@@ -240,8 +240,8 @@ def get_guild_channels(guild_id):
             result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
 
-def filter_guild_channel(guild_id, channel_id):
-    channels = get_guild_channels(guild_id)
+def filter_guild_channel(guild_id, channel_id, force_everyone=False):
+    channels = get_guild_channels(guild_id, force_everyone)
     for chan in channels:
         if chan["channel"]["id"] == channel_id:
             return chan
@@ -327,6 +327,25 @@ def fetch():
     response.status_code = status_code
     return response
 
+@api.route("/fetch_visitor", methods=["GET"])
+@rate_limiter.limit("2 per 2 second", key_func = channel_ratelimit_key)
+def fetch_visitor():
+    guild_id = request.args.get("guild_id")
+    channel_id = request.args.get('channel_id')
+    after_snowflake = request.args.get('after', None, type=int)
+    if not guild_accepts_visitors(guild_id):
+        abort(403)
+    messages = {}
+    chan = filter_guild_channel(guild_id, channel_id, True)
+    if not chan.get("read"):
+        status_code = 401
+    else:
+        messages = get_channel_messages(channel_id, after_snowflake)
+        status_code = 200
+    response = jsonify(messages=messages)
+    response.status_code = status_code
+    return response
+
 @api.route("/post", methods=["POST"])
 @valid_session_required(api=True)
 @rate_limiter.limit("1 per 10 second", key_func = channel_ratelimit_key)
@@ -393,19 +412,34 @@ def create_unauthenticated_user():
         response.status_code = 403
         return response
 
+def process_query_guild(guild_id, visitor=False):
+    widget = discord_api.get_widget(guild_id)
+    channels = get_guild_channels(guild_id, visitor)
+    discordmembers = get_online_discord_users(guild_id, widget)
+    embedmembers = get_online_embed_users(guild_id)
+    emojis = get_guild_emojis(guild_id)
+    if visitor:
+        for channel in channels:
+            channel["write"] = False
+    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, instant_invite=widget.get("instant_invite"))
+
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)
 def query_guild():
     guild_id = request.args.get('guild_id')
     if check_guild_existance(guild_id):
         if check_user_in_guild(guild_id):
-            widget = discord_api.get_widget(guild_id)
-            channels = get_guild_channels(guild_id)
-            discordmembers = get_online_discord_users(guild_id, widget)
-            embedmembers = get_online_embed_users(guild_id)
-            emojis = get_guild_emojis(guild_id)
-            return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, instant_invite=widget.get("instant_invite"))
+            return process_query_guild(guild_id)
         abort(403)
+    abort(404)
+
+@api.route("/query_guild_visitor", methods=["GET"])
+def query_guild_visitor():
+    guild_id = request.args.get('guild_id')
+    if check_guild_existance(guild_id):
+        if not guild_accepts_visitors(guild_id):
+            abort(403)
+        return process_query_guild(guild_id, True)
     abort(404)
 
 @api.route("/create_authenticated_user", methods=["POST"])

@@ -5,6 +5,7 @@
 /* global bot_client_id */
 /* global moment */
 /* global localStorage */
+/* global visitors_enabled */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -21,6 +22,7 @@
     var fetch_error_count = 0; // Number of errors fetch has encountered
     var priority_query_guild = false; // So you have selected a channel? Let's populate it.
     var current_username_discrim; // Current username/discrim pair, eg EndenDraogn#4151
+    var visitor_mode = false; // Keep track of if using the visitor mode or authenticate mode
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -36,9 +38,13 @@
     }
 
     function query_guild() {
+        var url = "/api/query_guild";
+        if (visitor_mode) {
+            url = url += "_visitor";
+        }
         var funct = $.ajax({
             dataType: "json",
-            url: "/api/query_guild",
+            url: url,
             data: {"guild_id": guild_id}
         });
         return funct.promise();
@@ -65,10 +71,14 @@
     }
 
     function fetch(channel_id, after=null) {
+        var url = "/api/fetch";
+        if (visitor_mode) {
+            url += "_visitor";
+        }
         var funct = $.ajax({
             method: "GET",
             dataType: "json",
-            url: "/api/fetch",
+            url: url,
             data: {"guild_id": guild_id,"channel_id": channel_id, "after": after}
         });
         return funct.promise();
@@ -116,6 +126,10 @@
         
         $("#nameplate").click(function () {
             $("#userembedmodal").modal("open");
+        });
+        
+        $("#visitor_login_btn").click(function () {
+            $("#loginmodal").modal("open");
         });
         
         $( "#theme-selector" ).change(function() {
@@ -171,6 +185,20 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
+    
+    function setVisitorMode(enabled) {
+        if (!visitors_enabled) {
+            return;
+        }
+        visitor_mode = enabled;
+        if (visitor_mode) {
+            $("#visitor_mode_message").show();
+            $("#messagebox").hide();
+        } else {
+            $("#visitor_mode_message").hide();
+            $("#messagebox").show();
+        }
+    }
 
     function primeEmbed() {
         $("#focusmodal").modal("close");
@@ -181,8 +209,10 @@
             $("#modal_invite_btn").attr("href", data.instant_invite);
         });
         
+        var login_modal_dismissible = visitors_enabled;
+        
         $("#loginmodal").modal({
-            dismissible: false, // Modal can be dismissed by clicking outside of the modal
+            dismissible: login_modal_dismissible, // Modal can be dismissed by clicking outside of the modal
             opacity: .5, // Opacity of modal background
             inDuration: 300, // Transition in duration
             outDuration: 200, // Transition out duration
@@ -196,6 +226,16 @@
         var guild = query_guild();
         guild.fail(function() {
             unlock_login_fields();
+            if (visitors_enabled) {
+                setVisitorMode(true);
+                var guild2 = query_guild();
+                guild2.done(function(data) {
+                    initialize_embed(data);
+                });
+                guild2.fail(function() {
+                    setVisitorMode(false);
+                });
+            }
         });
 
         guild.done(function(data) {
@@ -375,12 +415,14 @@
         setTimeout(function() {
             var usr = create_authenticated_user();
             usr.done(function(data) {
+                setVisitorMode(false);
                 initialize_embed();
                 return;
             });
             usr.fail(function(data) {
                 if (data.status == 403) {
                     Materialize.toast('Authentication error! You have been banned.', 10000);
+                    setVisitorMode(true);
                 } else if (index < 10) {
                     _wait_for_discord_login(index + 1);
                 }
@@ -524,9 +566,13 @@
         }
         fet.done(function(data) {
             var status = data.status;
-            update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id, status.discriminator);
+            if (visitor_mode) {
+                update_embed_userchip(false, null, "Titan", "0001", null);
+            } else {
+                update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id, status.discriminator);
+            }
             last_message_id = fill_discord_messages(data.messages, jumpscroll);
-            if (status.manage_embed) {
+            if (!visitor_mode && status.manage_embed) {
                 $("#administrate_link").show();
             } else {
                 $("#administrate_link").hide();
@@ -553,6 +599,10 @@
             } else if (data.status == 401) {
                 $('#loginmodal').modal('open');
                 Materialize.toast('Session expired! You have been logged out.', 10000);
+            }
+            setVisitorMode(true);
+            if (visitor_mode) {
+                fetchtimeout = setTimeout(run_fetch_routine, 5000);
             }
         });
         fet.catch(function(data) {
@@ -600,6 +650,7 @@
                 lock_login_fields();
                 var usr = create_unauthenticated_user($(this).val());
                 usr.done(function(data) {
+                    setVisitorMode(false);
                     initialize_embed();
                 });
                 usr.fail(function(data) {
@@ -611,6 +662,7 @@
                         Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
                     }
                     unlock_login_fields();
+                    setVisitorMode(true);
                 });
             }
         }

@@ -175,6 +175,7 @@ def administrate_guild(guild_id):
         "id": db_guild.guild_id,
         "name": db_guild.name,
         "unauth_users": db_guild.unauth_users,
+        "visitor_view": db_guild.visitor_view,
         "chat_links": db_guild.chat_links,
         "bracket_links": db_guild.bracket_links,
         "mentions_limit": db_guild.mentions_limit,
@@ -192,6 +193,7 @@ def update_administrate_guild(guild_id):
     if not db_guild:
         abort(400)
     db_guild.unauth_users = request.form.get("unauth_users", db_guild.unauth_users) in ["true", True]
+    db_guild.visitor_view = request.form.get("visitor_view", db_guild.visitor_view) in ["true", True]
     db_guild.chat_links = request.form.get("chat_links", db_guild.chat_links) in ["true", True]
     db_guild.bracket_links = request.form.get("bracket_links", db_guild.bracket_links) in ["true", True]
     db_guild.mentions_limit = request.form.get("mentions_limit", db_guild.mentions_limit)
