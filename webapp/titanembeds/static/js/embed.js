@@ -563,6 +563,7 @@
         $('#chatcontent').linkify({
             target: "_blank"
         });
+        $('.tooltipped').tooltip();
         return last;
     }
 
