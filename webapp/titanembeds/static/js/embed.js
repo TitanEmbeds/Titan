@@ -127,7 +127,7 @@
             inDuration: 400,
             outDuration: 400,
             startingTop: "4%",
-            endingTop: "30%",
+            endingTop: "10%",
         });
         $("#focusmodal").modal("open");
         $("#userembedmodal").modal({

@@ -241,6 +241,11 @@ a {
   width: 305px;
 }
 
+#focusmodal {
+  background-color: rgba(84, 110, 122, 0.58);
+  text-shadow: 1px 1px 2px black, 0 0 1em #607d8b, 0 0 0.2em #b0bec5;
+}
+
 .message_emoji {
   height: 20px;
 }
