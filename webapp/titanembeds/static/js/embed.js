@@ -109,6 +109,18 @@
         }
         
         $('select').material_select();
+        
+        $("#loginmodal").modal({
+            dismissible: visitors_enabled, // Modal can be dismissed by clicking outside of the modal
+            opacity: .5, // Opacity of modal background
+            inDuration: 300, // Transition in duration
+            outDuration: 200, // Transition out duration
+            startingTop: '4%', // Starting top style attribute
+            endingTop: '10%', // Ending top style attribute
+          }
+        );
+        $('#loginmodal').modal('open');
+        
         $("#focusmodal").modal({
             dismissible: true,
             opacity: .5,
@@ -152,6 +164,11 @@
             $("#theme-selector option[value=" + theme + "]").attr('selected', 'selected');
             $('select').material_select();
         }
+        
+        var dembed = discord_embed();
+        dembed.done(function (data) {
+            $("#modal_invite_btn").attr("href", data.instant_invite);
+        });
         
         if (getParameterByName("forcefocus") == "1") {
             if (document.hasFocus()) {
@@ -209,23 +226,6 @@
         $("#focusmodal").modal("close");
         has_already_been_focused = true;
         
-        var dembed = discord_embed();
-        dembed.done(function (data) {
-            $("#modal_invite_btn").attr("href", data.instant_invite);
-        });
-        
-        var login_modal_dismissible = visitors_enabled;
-        
-        $("#loginmodal").modal({
-            dismissible: login_modal_dismissible, // Modal can be dismissed by clicking outside of the modal
-            opacity: .5, // Opacity of modal background
-            inDuration: 300, // Transition in duration
-            outDuration: 200, // Transition out duration
-            startingTop: '4%', // Starting top style attribute
-            endingTop: '10%', // Ending top style attribute
-          }
-        );
-        $('#loginmodal').modal('open');
         lock_login_fields();
 
         var guild = query_guild();
