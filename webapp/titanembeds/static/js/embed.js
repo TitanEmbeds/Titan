@@ -37,6 +37,10 @@
             return ((elementTop <= pageBottom) && (elementBottom >= pageTop));
         }
     }
+    
+    String.prototype.replaceAll = function(target, replacement) {
+        return this.split(target).join(replacement);
+    };
 
     function query_guild() {
         var url = "/api/query_guild";
@@ -533,7 +537,7 @@
             var emoji = emoji_store[i];
             var emoji_format = "&lt;:" + emoji.name + ":" + emoji.id + "&gt;";
             var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name}).trim();
-            message.content = message.content.replace(emoji_format, rendered);
+            message.content = message.content.replaceAll(emoji_format, rendered);
         }
         return message;
     }
@@ -621,9 +625,12 @@
                 $('#loginmodal').modal('open');
                 Materialize.toast('Session expired! You have been logged out.', 10000);
             }
-            setVisitorMode(true);
-            if (visitor_mode) {
-                fetchtimeout = setTimeout(run_fetch_routine, 5000);
+            
+            if (data.status != 429) {
+                setVisitorMode(true);
+                if (visitor_mode) {
+                    fetchtimeout = setTimeout(run_fetch_routine, 5000);
+                }
             }
         });
         fet.catch(function(data) {

@@ -100,17 +100,12 @@ def check_user_in_guild(guild_id):
         return dbUser is not None and not checkUserRevoke(guild_id)
 
 def parse_emoji(textToParse, guild_id):
-    emojis = []
-    emojis = re.findall(":(.*?):", textToParse)
     guild_emojis = get_guild_emojis(guild_id)
-    newText = textToParse
     for gemoji in guild_emojis:
         emoji_name = gemoji["name"]
         emoji_id = gemoji["id"]
-    	for usremote in emojis:
-    	    if usremote == emoji_name:
-    	        newText = newText.replace(":{}:".format(emoji_name), "<:{}:{}>".format(emoji_name, emoji_id))
-    return newText
+        textToParse = textToParse.replace(":{}:".format(emoji_name), "<:{}:{}>".format(emoji_name, emoji_id))
+    return textToParse
 
 
 def format_post_content(guild_id, message):
