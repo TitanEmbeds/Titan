@@ -152,16 +152,20 @@
             $("#theme-selector option[value=" + theme + "]").attr('selected', 'selected');
             $('select').material_select();
         }
-
-        if (document.hasFocus()) {
-            primeEmbed();
-        }
         
-        $(window).focus(function() {
-            if (!has_already_been_focused) {
+        if (getParameterByName("forcefocus") == "1") {
+            if (document.hasFocus()) {
                 primeEmbed();
             }
-        });
+            
+            $(window).focus(function() {
+                if (!has_already_been_focused) {
+                    primeEmbed();
+                }
+            });
+        } else {
+            primeEmbed();
+        }
     });
     
     function changeTheme(theme) {
