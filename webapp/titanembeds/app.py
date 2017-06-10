@@ -11,7 +11,7 @@ import os
 
 os.chdir(config['app-location'])
 app = Flask(__name__, static_folder="static")
-app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
+app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri'] + "?charset=utf8mb4"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no need this on for now.
 app.config['RATELIMIT_HEADERS_ENABLED'] = True
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 250
