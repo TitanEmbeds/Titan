@@ -501,9 +501,8 @@
         var lastmsg = $("#chatcontent p:last-child");
         var content = lastmsg.text().toLowerCase();
         var username_discrim = current_username_discrim.toLowerCase();
-        if (content.includes("@everyone") || content.includes("@" + username_discrim)) {
-            lastmsg.css( "color", "#ff5252" );
-            lastmsg.css( "font-weight", "bold" );
+        if (content.includes("@everyone") || content.includes("@here") || content.includes("@" + username_discrim)) {
+            lastmsg.addClass( "mentioned" );
         }
     }
 

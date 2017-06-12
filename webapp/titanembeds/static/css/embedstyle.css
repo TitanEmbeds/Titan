@@ -1,54 +1,120 @@
+@font-face {
+    font-family: Whitney;
+    font-style: light;
+    font-weight: 300;
+    src: url("/static/fonts/whitney_light.woff") format("woff");
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: normal;
+    font-weight: 500;
+    src: url("/static/fonts/whitney_normal.woff") format("woff");
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: medium;
+    font-weight: 600;
+    src: url("/static/fonts/whitney_medium.woff") format("woff");
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: bold;
+    font-weight: 700;
+    src: url("/static/fonts/whitney_bold.woff") format("woff");
+}
+
 html {
-background-color: #455a64;
-color: white;
+  background-color: #455a64;
+  color: white;
+  font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 main {
-min-height: calc(100vh - 80px);
-overflow-x: hidden;
+  min-height: calc(100vh - 80px);
+  overflow-x: hidden;
 }
 
 footer {
-position: fixed;
-bottom: 0;
-left: 0;
-right: 0;
-height: 50px;
-background-color: #37474f;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background-color: #37474f;
 }
 
 nav {
-background-color: #263238;
-background: linear-gradient(rgba(38, 50, 56, 1), rgba(255,0,0,0));
-box-shadow: none;
+  background-color: #263238;
+  background: linear-gradient(rgba(38, 50, 56, 1), rgba(255,0,0,0));
+  box-shadow: none;
 }
 
 nav .brand-logo {
-font-size: 1.5rem;
+  font-size: 1.5rem;
+}
+
+@media only screen and (min-width: 601px) {
+  nav a.button-collapse {
+    display: block;
+  }
+}
+
+body > div.navbar-fixed > nav > div {
+  background: #263238 background: -webkit-linear-gradient(#263238, #37474f, #455a64);
+  /* For Safari 5.1 to 6.0 */
+  
+  background: -o-linear-gradient(#263238, #37474f, #455a64);
+  /* For Opera 11.1 to 12.0 */
+  
+  background: -moz-linear-gradient(#263238, #37474f, #455a64);
+  /* For Firefox 3.6 to 15 */
+  
+  background: linear-gradient(#263238, #37474f, #455a64);
+  /* Standard syntax */
 }
 
 @media only screen and (min-width: 993px) {
-.container {
-  width: 85%;
-}
+  .container {
+    width: 85%;
+  }
 }
 
 .side-nav {
-color: white;
-background-color: #607d8b;
+  color: white;
+  background-color: #607d8b;
 }
 
 .side-nav .userView .name {
-font-size: 20px;
+  font-size: 20px;
 }
 
 .side-nav li>a {
-color: #eceff1;
+  color: #eceff1;
 }
 
 .side-nav .subheader {
-color: #cfd8dc;
-font-variant: small-caps;
+  color: #cfd8dc;
+  font-variant: small-caps;
+}
+
+.side-nav div.divider {
+  background-color: #90a4ae;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#members-btn > i {
+    visibility: hidden;
+}
+
+#members-btn {
+    visibility: visible;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik0xIDFoMjR2MjRIMVYxeiIvPgogICAgPHBhdGggZmlsbD0iI0ZGRiIgZD0iTTE2Ljc3MjA3NTQgMTQuNjc5MTc3OGMtLjIyNDkwOTctLjIyNTY4ODYtLjQ3NDE1NzMtLjQzNTE2ODEtLjc0MjA3NTQtLjYyOTE3NzguMzUtLjAzLjY4LS4wNS45Ny0uMDUgMi4zMyAwIDcgMS4xNyA3IDMuNVYyMGgtNHYtMWMwLTEuODgxNjkxNC0xLjQwNzcwNTYtMy4zMjMwMTQzLTMuMjI3OTI0Ni00LjMyMDgyMjJ6bS0xLjQzODU3MzUtOC4xNzU4NTM0QzE1LjgwOTgwODIgNi4xODUyNTE3MyAxNi4zODI3ODQ1IDYgMTcgNmMxLjY2IDAgMi45OSAxLjM0IDIuOTkgM3MtMS4zMyAzLTIuOTkgM2MtLjYxNzE5MTQgMC0xLjE5MDE0NzEtLjE4NTIzNzMtMS42NjY0NDIzLS41MDMyODcyQzE1Ljc1NzQ4MzIgMTAuNzYyMTQwOTUgMTYgOS45MDk1NTYgMTYgOS4wMDAwNjY5M2MwLS45MDk1Mjg5Ni0uMjQyNTM4MS0xLjc2MjE0ODgtLjY2NjQ5ODEtMi40OTY3NDI1M3pNMTAgMTNjMi4yMSAwIDQtMS43OSA0LTRzLTEuNzktNC00LTQtNCAxLjc5LTQgNCAxLjc5IDQgNCA0em0wIDJjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+CiAgPC9nPgo8L3N2Zz4=);
+    background-repeat: no-repeat;
+    margin-top: 18px
 }
 
 .role-title {
@@ -57,71 +123,117 @@ font-variant: small-caps;
   font-size: 80% !important;
 }
 
-.divider {
-background-color: #90a4ae;
-}
-
 .channel-hash {
-font-size: 95%;
-color: #b0bec5;
+  font-size: 95%;
+  color: #b0bec5;
 }
 
 .membercircle {
-margin-top: 5px;
-height: 40px;
+  margin-top: 5px;
+  height: 40px;
 }
 
 .membername {
-position: absolute;
-padding-left: 10px;
+  position: absolute;
+  padding-left: 10px;
 }
 
-.chatcontent {
-padding-left: 1%;
-padding-top: 1%;
-padding-bottom: 40px;
-
-/* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
-/* These are technically the same, but use both */
-overflow-wrap: break-word;
-word-wrap: break-word;
-
--ms-word-break: break-all;
-/* This is the dangerous one in WebKit, as it breaks things wherever */
-word-break: break-all;
-/* Instead use this non-standard one: */
-word-break: break-word;
-
-/* Adds a hyphen where the word breaks, if supported (No Blink) */
--ms-hyphens: auto;
--moz-hyphens: auto;
--webkit-hyphens: auto;
-hyphens: auto;
+#chatcontent {
+  padding-left: 1%;
+  padding-top: 1%;
+  padding-bottom: 40px;
+  
+  /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+  
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
-@media only screen and (min-width: 601px) {
-nav a.button-collapse {
+#curuser_discrim,
+#curuser_name {
   display: block;
 }
+
+#chatcontent > p {
+  display: table;
+}
+
+#chatcontent > p > span {
+  display: table-row
+}
+
+::-webkit-input-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+:-moz-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+::-moz-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+:-ms-input-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+::-ms-input-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+#discord-members > li > a.subheader,
+#members-nav > li:nth-child(1) > a,
+#discord-members-count,
+#embed-discord-members-count,
+#members-nav > li:nth-child(4) > a,
+#guest-members-count,
+#members-nav > li:nth-child(6) > a {
+  text-transform: uppercase;
+}
+
+.circle:hover {
+  border-radius: 20px;
+  background: linear-gradient(to right, #f9f9f9 90%, #fff);
+}
+
+#channels-list > li:hover {
+  -webkit-filter: brightness(150%);
 }
 
 .chatusername {
-font-weight: bold;
-color: #eceff1;
+  font-weight: bold;
+  color: #eceff1;
 }
 
 .chattimestamp {
-font-size: 10px;
-color: #90a4ae;
-margin-right: 3px;
+  font-size: 10px;
+  color: #90a4ae;
+  margin-right: 3px;
 }
 
 .footercontainer {
-width: 100%;
-position: relative;
-margin: 10px;
-white-space: nowrap;
-overflow: hidden;
+  width: 100%;
+  position: relative;
+  margin: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgb(99, 99, 99);
+  margin-left: -0px;
+  padding-left: -4px;
 }
 
 #messageboxouter {
@@ -130,35 +242,49 @@ overflow: hidden;
 }
 
 .currentuserchip {
-display: inline-block;
-position: relative;
-top: -6px;
-padding: 6px;
-padding-right: 9px;
-background-color: #455a64;
+  display: inline-block;
+  position: relative;
+  top: -6px;
+  padding: 6px;
+  padding-right: 9px;
+  background-color: #455a64;
 }
 
 .currentuserimage {
-width: 30px;
+  width: 30px;
 }
 
 .currentusername {
-position: relative;
-top: 7px;
-left: 5px;
+  position: relative;
+  top: 7px;
+  left: 5px;
+}
+
+#curuser_discrim {
+  font-size: 50%;
+}
+
+#curuser_discrim,
+#curuser_name {
+  margin-top: -2px;
+}
+
+#currentuserimage {
+  margin-top: 4px;
+  margin-right: 4px;
 }
 
 .input-field {
-position: relative;
-top: -19px;
+  position: relative;
+  top: -19px;
 }
 
 .left {
-float: left;
+  float: left;
 }
 
 .modal {
-background-color: #546e7a;
+  background-color: #546e7a;
 }
 
 .betatag {
@@ -225,13 +351,15 @@ a {
     display: -ms-flexbox;
     display: flex;
     -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
   }
 }
 
 #nameplate {
   cursor: pointer;
+  background: transparent;
+  margin-left: 10px;
 }
 
 #visitor_mode_message {
@@ -254,130 +382,20 @@ a {
   height: 30px;
 }
 
-@font-face {
-    font-family: Whitney;
-    font-style: light;
-    font-weight: 300;
-    src: url("../fonts/whitney_light.woff") format("woff")
+.chatusername {
+  display: table-header-group;
+}
+.chatmessage {
+  display: table-footer-group;
+  display: inline-block;
+  color: rgb(195, 196, 197);
 }
 
-@font-face {
-    font-family: Whitney;
-    font-style: normal;
-    font-weight: 500;
-    src: url("../fonts/whitney_normal.woff") format("woff")
+p.mentioned {
+  font-weight: bold;
+  font-style: italic;
 }
 
-@font-face {
-    font-family: Whitney;
-    font-style: medium;
-    font-weight: 600;
-    src: url("../fonts/whitney_medium.woff") format("woff")
-}
-
-@font-face {
-    font-family: Whitney;
-    font-style: bold;
-    font-weight: 700;
-    src: url("../fonts/whitney_bold.woff") format("woff")
-}
-* {
-    font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
-}
-#footercontainer {
-    border-radius: 20px;
-    border: 1px solid rgb(99, 99, 99);
-    margin-left: -0px!important;
-    padding-left: -4px!important;
-}
-#nameplate {
-    background: transparent!important;
-    margin-left: 10px
-}
-#chatcontent > p > span.chatusername,
-#curuser_discrim,
-#curuser_name {
-    display: block
-}
-#curuser_discrim {
-    font-size: 50%;
-}
-#curuser_discrim,
-#curuser_name {
-    margin-top: -2px
-}
-#currentuserimage {
-    margin-top: 4px;
-    margin-right: 4px
-}
-#chatcontent > p {
-    display: table;
-}
-#chatcontent > p > span {
-    display: table-row
-}
-#chatcontent > p > span.chatusername {
-    display: table-header-group
-}
-#chatcontent > p > span.chatmessage {
-    display: table-footer-group;
-    display: inline-block!important;
-    color: rgb(195, 196, 197)
-}
-::-webkit-input-placeholder {
-    color: rgb(99, 99, 99)
-}
-:-moz-placeholder {
-    color: rgb(99, 99, 99)
-}
-::-moz-placeholder {
-    color: rgb(99, 99, 99)
-}
-:-ms-input-placeholder {
-    color: rgb(99, 99, 99)
-}
-::-ms-input-placeholder {
-    color: rgb(99, 99, 99)
-}
-body > div.navbar-fixed > nav > div {
-    background: #263238 background: -webkit-linear-gradient(#263238, #37474f, #455a64);
-    /* For Safari 5.1 to 6.0 */
-    
-    background: -o-linear-gradient(#263238, #37474f, #455a64);
-    /* For Opera 11.1 to 12.0 */
-    
-    background: -moz-linear-gradient(#263238, #37474f, #455a64);
-    /* For Firefox 3.6 to 15 */
-    
-    background: linear-gradient(#263238, #37474f, #455a64);
-    /* Standard syntax */
-}
-div.divider {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-#discord-members > li > a.subheader,
-#members-nav > li:nth-child(1) > a,
-#discord-members-count,
-#embed-discord-members-count,
-#members-nav > li:nth-child(4) > a,
-#guest-members-count,
-#members-nav > li:nth-child(6) > a {
-    text-transform: uppercase;
-}
-#members-btn > i {
-    visibility: hidden
-}
-#members-btn {
-    visibility: visible;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik0xIDFoMjR2MjRIMVYxeiIvPgogICAgPHBhdGggZmlsbD0iI0ZGRiIgZD0iTTE2Ljc3MjA3NTQgMTQuNjc5MTc3OGMtLjIyNDkwOTctLjIyNTY4ODYtLjQ3NDE1NzMtLjQzNTE2ODEtLjc0MjA3NTQtLjYyOTE3NzguMzUtLjAzLjY4LS4wNS45Ny0uMDUgMi4zMyAwIDcgMS4xNyA3IDMuNVYyMGgtNHYtMWMwLTEuODgxNjkxNC0xLjQwNzcwNTYtMy4zMjMwMTQzLTMuMjI3OTI0Ni00LjMyMDgyMjJ6bS0xLjQzODU3MzUtOC4xNzU4NTM0QzE1LjgwOTgwODIgNi4xODUyNTE3MyAxNi4zODI3ODQ1IDYgMTcgNmMxLjY2IDAgMi45OSAxLjM0IDIuOTkgM3MtMS4zMyAzLTIuOTkgM2MtLjYxNzE5MTQgMC0xLjE5MDE0NzEtLjE4NTIzNzMtMS42NjY0NDIzLS41MDMyODcyQzE1Ljc1NzQ4MzIgMTAuNzYyMTQwOTUgMTYgOS45MDk1NTYgMTYgOS4wMDAwNjY5M2MwLS45MDk1Mjg5Ni0uMjQyNTM4MS0xLjc2MjE0ODgtLjY2NjQ5ODEtMi40OTY3NDI1M3pNMTAgMTNjMi4yMSAwIDQtMS43OSA0LTRzLTEuNzktNC00LTQtNCAxLjc5LTQgNCAxLjc5IDQgNCA0em0wIDJjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+CiAgPC9nPgo8L3N2Zz4=);
-    background-repeat: no-repeat;
-    margin-top: 18px
-}
-.circle:hover {
-    border-radius: 20px;
-    background: linear-gradient(to right, #f9f9f9 90%, #fff);
-}
-#channels-list > li:hover {
-    -webkit-filter: brightness(150%);
+p.mentioned span.chatmessage {
+  color: #ff5252;
 }
