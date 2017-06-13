@@ -39,9 +39,21 @@ class Titan(discord.Client):
         await self.wait_until_ready()
         while not self.database_connected:
             await asyncio.sleep(1) # Wait until db is connected
+        last_db_conn_status = False
         while not self.is_closed:
-            await self.database.send_webserver_heartbeat()
-            await asyncio.sleep(60)
+            try:
+                await self.database.send_webserver_heartbeat()
+                self.database_connected = True
+            except:
+                self.database_connected = False
+            if last_db_conn_status != self.database_connected and config.get("errorreporting-channelid"):
+                error_channel = self.get_channel(config["errorreporting-channelid"])
+                if self.database_connected:
+                    await self.send_message(error_channel, "Titan has obtained connection to the database!")
+                else:
+                    await self.send_message(error_channel, "Titan has lost connection to the database! Don't panic!! We'll sort this out... hopefully soon.")
+                last_db_conn_status = self.database_connected
+            await asyncio.sleep(4)
 
     def run(self):
         try:
