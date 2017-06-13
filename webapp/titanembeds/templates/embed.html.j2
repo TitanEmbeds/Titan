@@ -21,6 +21,7 @@
     {% endif %}
   </head>
   <body>
+    {% include 'nobot_header.html.j2' %}
     <div class="navbar-fixed">
       <nav>
         <div class="nav-wrapper">
@@ -76,6 +77,7 @@
 
       <div id="loginmodal" class="modal">
         <div class="modal-content">
+          {% include 'nobot_header.html.j2' %}
           <h4>{{ login_greeting }}</h4>
           <div id="loginmodal-maincontent" class="row valign-wrap">
             <div id="modal_guildinfobox" class="col m3 s12 center-align">

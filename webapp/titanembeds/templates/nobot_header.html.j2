@@ -1,0 +1,10 @@
+{% if not bot_status["status"] %}
+<div style="border: solid 3px red; background-color: yellow; color: black;">
+    <p>
+        <strong>NOTICE!</strong>
+        The bot is <strong>currently not online</strong> or has <strong>lost the connection</strong> to the webserver.
+        If you see this header, please <a href="https://discord.io/titan" target="_blank" style="background-color: orange; color: blue;">notify us</a> as soon as possible for us to fix this issue.
+        Down since approximately <code>{{ bot_status["formatted_utc"] }}</code> UTC (<code>{{ bot_status["epoch_seconds"] }} epoch seconds</code>).
+    </p>
+</div>
+{% endif %}

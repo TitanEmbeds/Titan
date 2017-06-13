@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 import json
 import discord
+import time
 
 Base = declarative_base()
 
@@ -15,6 +16,7 @@ from titanembeds.database.messages import Messages
 from titanembeds.database.guild_members import GuildMembers
 from titanembeds.database.unauthenticated_users import UnauthenticatedUsers
 from titanembeds.database.unauthenticated_bans import UnauthenticatedBans
+from titanembeds.database.keyvalue_properties import KeyValueProperties
 
 class DatabaseInterface(object):
     # Courtesy of https://github.com/SunDwarf/Jokusoramame
@@ -363,3 +365,15 @@ class DatabaseInterface(object):
                 dbuser.revoked = True
                 session.commit()
                 return "Successfully kicked **{}#{}**!".format(dbuser.username, dbuser.discriminator)
+                
+    async def send_webserver_heartbeat(self):
+        async with threadpool():
+            with self.get_session() as session:
+                key = "bot_heartbeat"
+                q = session.query(KeyValueProperties).filter(KeyValueProperties.key == key)
+                if q.count() == 0:
+                    session.add(KeyValueProperties(key=key, value=time.time()))
+                else:
+                    firstobj = q.first()
+                    firstobj.value = time.time()
+                session.commit()

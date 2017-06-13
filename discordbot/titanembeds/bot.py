@@ -17,6 +17,9 @@ class Titan(discord.Client):
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
         self.command = Commands(self, self.database)
+        
+        self.database_connected = False
+        self.loop.create_task(self.send_webserver_heartbeat())
 
     def _cleanup(self):
         try:
@@ -31,6 +34,14 @@ class Titan(discord.Client):
             gathered.exception()
         except: # Can be ignored
             pass
+    
+    async def send_webserver_heartbeat(self):
+        await self.wait_until_ready()
+        while not self.database_connected:
+            await asyncio.sleep(1) # Wait until db is connected
+        while not self.is_closed:
+            await self.database.send_webserver_heartbeat()
+            await asyncio.sleep(60)
 
     def run(self):
         try:
@@ -57,6 +68,7 @@ class Titan(discord.Client):
 
         try:
             await self.database.connect(config["database-uri"] + "?charset=utf8mb4")
+            self.database_connected = True
         except Exception:
             self.logger.error("Unable to connect to specified database!")
             traceback.print_exc()

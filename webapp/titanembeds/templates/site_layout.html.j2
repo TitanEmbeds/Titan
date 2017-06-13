@@ -19,6 +19,7 @@
     {% include 'google_analytics.html.j2' %}
   </head>
   <body>
+    {% include 'nobot_header.html.j2' %}
     <main>
       {% if session['unauthenticated'] is defined and not session['unauthenticated'] %}
       <ul id="menu_dropdown" class="dropdown-content">

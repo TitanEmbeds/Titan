@@ -2,7 +2,7 @@ from config import config
 from database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, discord_api
+from titanembeds.utils import rate_limiter, discord_api, bot_alive
 import blueprints.api
 import blueprints.user
 import blueprints.embed
@@ -38,3 +38,8 @@ def about():
 def before_request():
     db.create_all()
     discord_api.init_discordrest()
+
+@app.context_processor
+def context_processor():
+    bot_status = bot_alive()
+    return {"bot_status": bot_status}
