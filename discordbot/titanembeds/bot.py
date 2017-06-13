@@ -35,10 +35,13 @@ class Titan(discord.Client):
         except: # Can be ignored
             pass
     
-    async def send_webserver_heartbeat(self):
-        await self.wait_until_ready()
+    async def wait_until_dbonline(self):
         while not self.database_connected:
             await asyncio.sleep(1) # Wait until db is connected
+    
+    async def send_webserver_heartbeat(self):
+        await self.wait_until_ready()
+        await self.wait_until_dbonline()
         last_db_conn_status = False
         while not self.is_closed:
             try:
@@ -107,6 +110,7 @@ class Titan(discord.Client):
             print("Skipping indexing server due to no-init flag")
 
     async def on_message(self, message):
+        await self.wait_until_dbonline()
         await self.database.push_message(message)
 
         msg_arr = message.content.split() # split the message
@@ -119,12 +123,15 @@ class Titan(discord.Client):
                     await getattr(self.command, msg_cmd)(message) #actually run cmd, passing in msg obj
 
     async def on_message_edit(self, message_before, message_after):
+        await self.wait_until_dbonline()
         await self.database.update_message(message_after)
 
     async def on_message_delete(self, message):
+        await self.wait_until_dbonline()
         await self.database.delete_message(message)
 
     async def on_server_join(self, guild):
+        await self.wait_until_dbonline()
         await asyncio.sleep(1)
         if not guild.me.server_permissions.administrator:
             await asyncio.sleep(1)
@@ -142,51 +149,65 @@ class Titan(discord.Client):
             await self.database.update_guild_member(ban, False, True)
 
     async def on_server_remove(self, guild):
+        await self.wait_until_dbonline()
         await self.database.remove_guild(guild)
 
     async def on_server_update(self, guildbefore, guildafter):
+        await self.wait_until_dbonline()
         await self.database.update_guild(guildafter)
 
     async def on_server_role_create(self, role):
+        await self.wait_until_dbonline()
         if role.name == self.user.name and role.managed:
             await asyncio.sleep(2)
         await self.database.update_guild(role.server)
 
     async def on_server_role_delete(self, role):
+        await self.wait_until_dbonline()
         if role.server.me not in role.server.members:
             return
         await self.database.update_guild(role.server)
 
     async def on_server_role_update(self, rolebefore, roleafter):
+        await self.wait_until_dbonline()
         await self.database.update_guild(roleafter.server)
 
     async def on_channel_delete(self, channel):
+        await self.wait_until_dbonline()
         await self.database.update_guild(channel.server)
 
     async def on_channel_create(self, channel):
+        await self.wait_until_dbonline()
         await self.database.update_guild(channel.server)
 
     async def on_channel_update(self, channelbefore, channelafter):
+        await self.wait_until_dbonline()
         await self.database.update_guild(channelafter.server)
 
     async def on_member_join(self, member):
+        await self.wait_until_dbonline()
         await self.database.update_guild_member(member, active=True, banned=False)
 
     async def on_member_remove(self, member):
+        await self.wait_until_dbonline()
         await self.database.update_guild_member(member, active=False, banned=False)
 
     async def on_member_update(self, memberbefore, memberafter):
+        await self.wait_until_dbonline()
         await self.database.update_guild_member(memberafter)
 
     async def on_member_ban(self, member):
+        await self.wait_until_dbonline()
         if self.user.id == member.id:
             return
         await self.database.update_guild_member(member, active=False, banned=True)
 
     async def on_member_unban(self, server, user):
+        await self.wait_until_dbonline()
         await self.database.unban_server_user(user, server)
     
     async def on_server_emojis_update(self, before, after):
+        await self.wait_until_dbonline()
         if len(after) == 0:
             await self.database.update_guild(before[0].server)
         else:
