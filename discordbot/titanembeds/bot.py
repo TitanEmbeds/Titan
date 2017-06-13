@@ -56,7 +56,7 @@ class Titan(discord.Client):
                 else:
                     await self.send_message(error_channel, "Titan has lost connection to the database! Don't panic!! We'll sort this out... hopefully soon.")
                 last_db_conn_status = self.database_connected
-            await asyncio.sleep(4)
+            await asyncio.sleep(60)
 
     def run(self):
         try:
