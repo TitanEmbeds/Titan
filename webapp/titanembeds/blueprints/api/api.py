@@ -478,7 +478,9 @@ def cleanup_keyval_db():
                 continue
             for channel in channelsjson:
                 chanid = channel["id"]
-                db.session.query(Messages).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).offset(50).delete()
+                msgs = db.session.query(Messages).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).offset(50).all()
+                for msg in msgs:
+                    db.session.delete(msg)
             db.session.commit()
                 
         return ('', 204)
