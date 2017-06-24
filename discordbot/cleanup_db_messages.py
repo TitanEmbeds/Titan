@@ -1,21 +1,22 @@
 from config import config
-from titanembeds.database import DatabaseInterface
+from titanembeds.database import DatabaseInterface, Guilds, Messages
 from titanembeds.commands import Commands
 import discord
 import aiohttp
 import asyncio
 import sys
 import logging
+import json
+from asyncio_extras import threadpool
 logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
 ###########################
-#   Fetch Last Messages   #
+#   Cleanup DB Messages   #
 #                         #
-# Fills the database with #
-# the last 50 messages of #
-# each channel.           #
+# Cleans the database     #
+# messages store          #
 ###########################
 
 class Titan(discord.Client):
@@ -53,7 +54,7 @@ class Titan(discord.Client):
             self.loop.close()
 
     async def on_ready(self):
-        print('Titan [DiscordBot] [UTILITY: Fetch last messages]')
+        print('Titan [DiscordBot] [UTILITY: Cleanup database messages]')
         print('Logged in as the following user:')
         print(self.user.name)
         print(self.user.id)
@@ -68,11 +69,21 @@ class Titan(discord.Client):
             return
 
         print("working on this...")
-        for channel in self.get_all_channels():
-            if str(channel.type) == "text":
-                print("Processing channel: ID-{} Name-'{}' ServerID-{} Server-'{}'".format(channel.id, channel.name, channel.server.id, channel.server.name))
-                async for message in self.logs_from(channel, limit=50, reverse=True):
-                    await self.database.push_message(message)
+        async with threadpool():
+            with self.database.get_session() as session:
+                guilds = session.query(Guilds).all()
+                for guild in guilds:
+                    print("id-{} snowflake-{} name-{}".format(guild.id, guild.guild_id, guild.name))
+                    try:
+                        channelsjson = json.loads(guild.channels)
+                    except:
+                        continue
+                    for channel in channelsjson:
+                        chanid = channel["id"]
+                        msgs = session.query(Messages).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).offset(50).all()
+                        for msg in msgs:
+                            session.delete(msg)
+                    session.commit()
         print("done!")
         await self.logout()
 
