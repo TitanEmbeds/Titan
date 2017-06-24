@@ -467,22 +467,19 @@ def create_authenticated_user():
 @api.route("/cleanup-db", methods=["DELETE"])
 def cleanup_keyval_db():
     if request.form.get("secret", None) == config["app-secret"]:
-        q = KeyValueProperties.query.filter(KeyValueProperties.expiration < datetime.datetime.now()).all()
-        for m in q:
-            db.session.delete(m)
-            db.session.commit()
+        db.session.query(KeyValueProperties).filter(KeyValueProperties.expiration < datetime.datetime.now()).delete()
+        db.session.commit()
 
         guilds = Guilds.query.all()
         for guild in guilds:
-            channelsjson = json.loads(guild.channels)
+            try:
+                channelsjson = json.loads(guild.channels)
+            except:
+                continue
             for channel in channelsjson:
                 chanid = channel["id"]
-                dbmsg = Messages.query.filter(Messages.channel_id == chanid).all()
-                for idx, val in enumerate(dbmsg):
-                    if len(dbmsg) - idx > 50:
-                        db.session.delete(val)
-                        db.session.commit()
-                    else:
-                        continue
+                db.session.query(Messages).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).offset(50).delete()
+            db.session.commit()
+                
         return ('', 204)
     abort(401)
