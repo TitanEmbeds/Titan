@@ -470,6 +470,7 @@ def cleanup_keyval_db():
         q = KeyValueProperties.query.filter(KeyValueProperties.expiration < datetime.datetime.now()).all()
         for m in q:
             db.session.delete(m)
+            db.session.commit()
 
         guilds = Guilds.query.all()
         for guild in guilds:
@@ -480,8 +481,8 @@ def cleanup_keyval_db():
                 for idx, val in enumerate(dbmsg):
                     if len(dbmsg) - idx > 50:
                         db.session.delete(val)
+                        db.session.commit()
                     else:
                         continue
-        db.session.commit()
         return ('', 204)
     abort(401)
