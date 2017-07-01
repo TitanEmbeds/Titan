@@ -212,3 +212,7 @@ class Titan(discord.Client):
             await self.database.update_guild(before[0].server)
         else:
             await self.database.update_guild(after[0].server)
+            
+    async def on_webhooks_update(self, server):
+        await self.wait_until_dbonline()
+        await self.database.update_guild(server)

@@ -139,3 +139,20 @@ class DiscordREST:
             self.modify_guild_embed(guild_id, enabled=True, channel_id=guild_id)
         widget = requests.get(_endpoint).json()
         return widget
+    
+    
+    #####################
+    # Webhook
+    #####################
+    
+    def execute_webhook(self, webhook_id, webhook_token, username, avatar, content, wait=True):
+        _endpoint = "/webhooks/{id}/{token}".format(id=webhook_id, token=webhook_token)
+        if wait:
+            _endpoint += "?wait=true"
+        payload = {
+            'content': content,
+            'avatar_url': avatar,
+            'username': username
+        }
+        r = self.request("POST", _endpoint, data=payload)
+        return r

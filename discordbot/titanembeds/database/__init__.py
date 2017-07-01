@@ -119,6 +119,7 @@ class DatabaseInterface(object):
                         session.commit()
 
     async def update_guild(self, guild):
+        server_webhooks = await self.bot.get_server_webhooks(guild)
         async with threadpool():
             with self.get_session() as session:
                 gui = session.query(Guilds).filter(Guilds.guild_id == guild.id).first()
@@ -128,6 +129,7 @@ class DatabaseInterface(object):
                         guild.name,
                         json.dumps(self.get_roles_list(guild.roles)),
                         json.dumps(self.get_channels_list(guild.channels)),
+                        json.dumps(self.get_webhooks_list(server_webhooks)),
                         json.dumps(self.get_emojis_list(guild.emojis)),
                         guild.owner_id,
                         guild.icon
@@ -137,10 +139,23 @@ class DatabaseInterface(object):
                     gui.name = guild.name
                     gui.roles = json.dumps(self.get_roles_list(guild.roles))
                     gui.channels = json.dumps(self.get_channels_list(guild.channels))
+                    gui.webhooks = json.dumps(self.get_webhooks_list(server_webhooks))
                     gui.emojis = json.dumps(self.get_emojis_list(guild.emojis))
                     gui.owner_id = guild.owner_id
                     gui.icon = guild.icon
                 session.commit()
+    
+    def get_webhooks_list(self, guild_webhooks):
+        webhooks = []
+        for webhook in guild_webhooks:
+            webhooks.append({
+                "id": webhook.id,
+                "guild_id": webhook.server.id,
+                "channel_id": webhook.channel.id,
+                "name": webhook.name,
+                "token": webhook.token,
+            })
+        return webhooks
     
     def get_emojis_list(self, guildemojis):
         emojis = []

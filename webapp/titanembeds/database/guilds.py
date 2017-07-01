@@ -12,12 +12,13 @@ class Guilds(db.Model):
     mentions_limit = db.Column(db.Integer, nullable=False, default=11)          # If there is a limit on the number of mentions in a msg
     roles = db.Column(db.Text(), nullable=False)                                # Guild Roles
     channels = db.Column(db.Text(), nullable=False)                             # Guild channels
+    webhooks = db.Column(db.Text(), nullable=False)                             # Guild webhooks
     emojis = db.Column(db.Text(), nullable=False)                               # Guild Emojis
     owner_id = db.Column(db.String(255), nullable=False)                        # Snowflake of the owner
     icon = db.Column(db.String(255))                                            # The icon string, null if none
     discordio = db.Column(db.String(255))                                       # Custom Discord.io Invite Link
 
-    def __init__(self, guild_id, name, roles, channels, emojis, owner_id, icon):
+    def __init__(self, guild_id, name, roles, channels, webhooks, emojis, owner_id, icon):
         self.guild_id = guild_id
         self.name = name
         self.unauth_users = True # defaults to true
@@ -27,6 +28,7 @@ class Guilds(db.Model):
         self.mentions_limit = -1 # -1 = unlimited mentions
         self.roles = roles
         self.channels = channels
+        self.webhooks = webhooks
         self.emojis = emojis
         self.owner_id = owner_id
         self.icon = icon

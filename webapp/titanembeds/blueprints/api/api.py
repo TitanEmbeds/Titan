@@ -2,7 +2,7 @@ from titanembeds.database import db, Guilds, UnauthenticatedUsers, Unauthenticat
 from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
-from flask import Blueprint, abort, jsonify, session, request
+from flask import Blueprint, abort, jsonify, session, request, url_for
 from sqlalchemy import and_
 import random
 import requests
@@ -108,7 +108,7 @@ def parse_emoji(textToParse, guild_id):
     return textToParse
 
 
-def format_post_content(guild_id, message):
+def format_post_content(guild_id, channel_id, message):
     illegal_post = False
     illegal_reasons = []
     message = message.replace("<", "\<")
@@ -134,11 +134,12 @@ def format_post_content(guild_id, message):
     for match in all_mentions:
         mention = "<@" + match[2: len(match) - 1] + ">"
         message = message.replace(match, mention, 1)
-
-    if (session['unauthenticated']):
-        message = u"**[{}#{}]** {}".format(session['username'], session['user_id'], message)
-    else:
-        message = u"**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
+    
+    if not get_channel_webhook_url(guild_id, channel_id):
+        if (session['unauthenticated']):
+            message = u"**[{}#{}]** {}".format(session['username'], session['user_id'], message)
+        else:
+            message = u"**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
     return (message, illegal_post, illegal_reasons)
 
 def format_everyone_mention(channel, content):
@@ -294,6 +295,18 @@ def get_guild_emojis(guild_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     return json.loads(dbguild.emojis)
 
+# Returns webhook url if exists and can post w/webhooks, otherwise None
+def get_channel_webhook_url(guild_id, channel_id):
+    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    guild_webhooks = json.loads(dbguild.webhooks)
+    for webhook in guild_webhooks:
+        if channel_id == webhook["channel_id"] and (webhook["name"].lower().startswith("titan") or webhook["name"].lower().startswith("[titan]")):
+            return {
+                "id": webhook["id"],
+                "token": webhook["token"]
+            }
+    return None
+
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
 @rate_limiter.limit("2 per 2 second", key_func = channel_ratelimit_key)
@@ -348,7 +361,7 @@ def post():
     guild_id = request.form.get("guild_id")
     channel_id = request.form.get('channel_id')
     content = request.form.get('content')
-    content, illegal_post, illegal_reasons = format_post_content(guild_id, content)
+    content, illegal_post, illegal_reasons = format_post_content(guild_id, channel_id, content)
     if user_unauthenticated():
         key = session['user_keys'][guild_id]
     else:
@@ -365,7 +378,17 @@ def post():
             status_code = 401
         elif not illegal_post:
             content = format_everyone_mention(chan, content)
-            message = discord_api.create_message(channel_id, content)
+            webhook = get_channel_webhook_url(guild_id, channel_id)
+            if webhook:
+                if (session['unauthenticated']):
+                    username = session["username"] + "#" + str(session["user_id"])
+                    avatar = url_for('static', filename='img/titanembeds_round.png', _external=True)
+                else:
+                    username = session["username"] + "#" + str(session["discriminator"])
+                    avatar = session['avatar']
+                message = discord_api.execute_webhook(webhook.get("id"), webhook.get("token"), username, avatar, content)
+            else:
+                message = discord_api.create_message(channel_id, content)
             status_code = message['code']
     response = jsonify(message=message.get('content', message), status=status, illegal_reasons=illegal_reasons)
     response.status_code = status_code
