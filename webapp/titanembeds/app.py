@@ -8,6 +8,7 @@ import blueprints.user
 import blueprints.admin
 import blueprints.embed
 import os
+from titanembeds import devs
 
 
 os.chdir(config['app-location'])
@@ -44,4 +45,4 @@ def before_request():
 @app.context_processor
 def context_processor():
     bot_status = bot_alive()
-    return {"bot_status": bot_status, "devs": [ "138881969185357825" , "197322731115642880" ]}
+    return {"bot_status": bot_status, "devs": devs}

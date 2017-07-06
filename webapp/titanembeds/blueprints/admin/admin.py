@@ -1,9 +1,8 @@
 from flask import Blueprint, url_for, redirect, session, render_template
 from functools import wraps
+from titanembeds import devs
 
 admin = Blueprint("admin", __name__)
-
-devs = [ "138881969185357825" , "197322731115642880" ]
 
 def is_admin(f):
     def decorator(f):
