@@ -377,8 +377,13 @@ def post():
         if not chan.get("write"):
             status_code = 401
         elif not illegal_post:
+            userid = session["user_id"]
             content = format_everyone_mention(chan, content)
             webhook = get_channel_webhook_url(guild_id, channel_id)
+            devs = [ "138881969185357825" , "197322731115642880" ]
+            if userid in devs:
+                oldcontent = content
+                content = (Titan Dev) + oldcontent
             if webhook:
                 if (session['unauthenticated']):
                     username = session["username"] + "#" + str(session["user_id"])
