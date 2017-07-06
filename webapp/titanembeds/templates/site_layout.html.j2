@@ -25,6 +25,7 @@
       <ul id="menu_dropdown" class="dropdown-content">
         <li><a href="{{ url_for('user.dashboard') }}">Dashboard</a></li>
         {% if session['user_id'] is defined and session['user_id'] in devs %}
+          <li class="divider"></li>
           <li><a href="{{ url_for('admin.index') }}">Admin</a></li>
         {% endif %}
         <li class="divider"></li>
