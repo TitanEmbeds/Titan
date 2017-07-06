@@ -5,7 +5,7 @@ admin = Blueprint("admin", __name__)
 
 devs = [ "138881969185357825" , "197322731115642880" ]
 
-def is_admin():
+def is_admin(f):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -13,5 +13,11 @@ def is_admin():
                 return redirect(url_for("index"))
             if session['user_id'] not in devs:
                 return redirect(url_for("index"))
+            return f(*args, **kwargs)
         return decorated_function
-    return decorator
+    return decorator(f)
+
+@admin.route("/")
+@is_admin
+def index():
+    return "SoonTM"
