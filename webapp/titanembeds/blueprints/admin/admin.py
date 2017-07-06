@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, redirect, session
+from flask import Blueprint, url_for, redirect, session, render_template
 from functools import wraps
 
 admin = Blueprint("admin", __name__)
@@ -20,4 +20,4 @@ def is_admin(f):
 @admin.route("/")
 @is_admin
 def index():
-    return "SoonTM"
+    return render_template("site_layout.html.j2")
