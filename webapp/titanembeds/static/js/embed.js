@@ -480,6 +480,10 @@
             message.author.discriminator = usernamefield.split("#")[1];
         } else if (message.author.bot && message.author.discriminator == "0000" && message.author.username.substring(message.author.username.length-5, message.author.username.length-4) == "#") {
             var namestr = message.author.username;
+            if (message.content.startsWith("(Titan Dev) ")) {
+                namestr = "(Titan Dev)" + namestr;
+                message.content = message.content.substring(11);
+            }
             message.author.username = namestr.substring(0,namestr.length-5);
             message.author.discriminator = namestr.substring(namestr.length-4);
         }
