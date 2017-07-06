@@ -5,8 +5,10 @@ from flask_sslify import SSLify
 from titanembeds.utils import rate_limiter, discord_api, bot_alive
 import blueprints.api
 import blueprints.user
+import blueprints.admin
 import blueprints.embed
 import os
+from titanembeds import devs
 
 
 os.chdir(config['app-location'])
@@ -23,6 +25,7 @@ rate_limiter.init_app(app)
 sslify = SSLify(app, permanent=True)
 
 app.register_blueprint(blueprints.api.api, url_prefix="/api", template_folder="/templates")
+app.register_blueprint(blueprints.admin.admin, url_prefix="/admin", template_folder="/templates")
 app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
 app.register_blueprint(blueprints.embed.embed, url_prefix="/embed", template_folder="/templates")
 
@@ -42,4 +45,4 @@ def before_request():
 @app.context_processor
 def context_processor():
     bot_status = bot_alive()
-    return {"bot_status": bot_status}
+    return {"bot_status": bot_status, "devs": devs}
