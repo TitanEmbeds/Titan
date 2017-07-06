@@ -389,7 +389,12 @@ def post():
                     username = session["username"] + "#" + str(session["user_id"])
                     avatar = url_for('static', filename='img/titanembeds_round.png', _external=True)
                 else:
-                    username = session["username"] + "#" + str(session["discriminator"])
+                    username = session["username"]
+                    if content.startswith("(Titan Dev) "):
+                        content = content[12:]
+                        username = "(Titan Dev) " + username
+                    else:
+                        username = username + "#" + str(session['discriminator'])
                     avatar = session['avatar']
                 message = discord_api.execute_webhook(webhook.get("id"), webhook.get("token"), username, avatar, content)
             else:
