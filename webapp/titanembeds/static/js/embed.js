@@ -471,7 +471,13 @@
     function format_bot_message(message) {
         if (message.author.id == bot_client_id && (message.content.includes("**") && ( (message.content.includes("<")&&message.content.includes(">")) || (message.content.includes("[") && message.content.includes("]")) ))) {
             var usernamefield = message.content.substring(getPosition(message.content, "**", 1)+3, getPosition(message.content, "**", 2)-1);
-            message.content = message.content.substring(usernamefield.length+17);
+            if usernamefield.startsWith("(Titan Dev) "){
+                message.content = message.content.substring(usernamefield.length+17);
+            }
+            else
+            {
+                message.content = message.content.substring(usernamefield.length+7);
+            }
             message.author.username = usernamefield.split("#")[0];
             message.author.discriminator = usernamefield.split("#")[1];
         } else if (message.author.bot && message.author.discriminator == "0000" && message.author.username.substring(message.author.username.length-5, message.author.username.length-4) == "#") {
