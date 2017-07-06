@@ -383,7 +383,7 @@ def post():
             devs = [ "138881969185357825" , "197322731115642880" ]
             if userid in devs:
                 oldcontent = content
-                content = (Titan Dev) + oldcontent
+                content = "(Titan Dev)" + oldcontent
             if webhook:
                 if (session['unauthenticated']):
                     username = session["username"] + "#" + str(session["user_id"])
