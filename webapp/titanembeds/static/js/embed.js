@@ -471,11 +471,9 @@
     function format_bot_message(message) {
         if (message.author.id == bot_client_id && (message.content.includes("**") && ( (message.content.includes("<")&&message.content.includes(">")) || (message.content.includes("[") && message.content.includes("]")) ))) {
             var usernamefield = message.content.substring(getPosition(message.content, "**", 1)+3, getPosition(message.content, "**", 2)-1);
-            if (usernamefield.startsWith("(Titan Dev) ")){
+            if (message.content.startsWith("(Titan Dev) ")){
                 message.content = message.content.substring(usernamefield.length+17);
-            }
-            else
-            {
+            } else {
                 message.content = message.content.substring(usernamefield.length+7);
             }
             message.author.username = usernamefield.split("#")[0];
