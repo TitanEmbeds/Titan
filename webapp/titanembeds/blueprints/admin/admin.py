@@ -20,4 +20,4 @@ def is_admin(f):
 @admin.route("/")
 @is_admin
 def index():
-    return render_template("site_layout.html.j2")
+    return render_template("admin_index.html.j2")
