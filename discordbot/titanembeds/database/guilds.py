@@ -10,10 +10,10 @@ class Guilds(Base):
     chat_links = db.Column(db.Boolean())            # If users can post links
     bracket_links = db.Column(db.Boolean())         # If appending brackets to links to prevent embed
     mentions_limit = db.Column(db.Integer)          # If there is a limit on the number of mentions in a msg
-    roles = db.Column(db.Text())                    # Guild Roles
-    channels = db.Column(db.Text())                 # Guild channels
-    webhooks = db.Column(db.Text())                 # Guild webhooks
-    emojis = db.Column(db.Text())                   # Guild Emojis
+    roles = db.Column(db.Text(length=4294967295))   # Guild Roles
+    channels = db.Column(db.Text(length=4294967295))# Guild channels
+    webhooks = db.Column(db.Text(length=4294967295))# Guild webhooks
+    emojis = db.Column(db.Text(length=4294967295))  # Guild Emojis
     owner_id = db.Column(db.String(255))            # Snowflake of the owner
     icon = db.Column(db.String(255))                # The icon string, null if none
     discordio = db.Column(db.String(255))           # Custom Discord.io Invite Link
