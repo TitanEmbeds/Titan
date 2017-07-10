@@ -5,7 +5,7 @@ class UserCSS(db.Model):
     id = db.Column(db.Integer, primary_key=True)                    # Auto increment id
     name = db.Column(db.String(255), nullable=False)                # CSS Name
     user_id = db.Column(db.String(255), nullable=False)             # Discord client ID of the owner of the css (can edit)
-    css = db.Column(db.Text())                                      # CSS contents
+    css = db.Column(db.Text(4294967295))                            # CSS contents
 
     def __init__(self, name, user_id, css=None):
         self.name = name
