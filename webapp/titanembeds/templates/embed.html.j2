@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html prefix="og: http://ogp.me/ns#">
   <head>
     <!--Import Google Icon Font-->
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -12,6 +12,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     
     {% include 'seo_meta.html.j2' %}
+    {% with title="Visit " + guild['name'] + " embed", description="Visit " + guild['name'] + " on Titan Embeds and chat with your friends from the comfort of your own website. This page is 100% embeddable, iFrameable and looks good on any webpages. Titan is hassle free and designed as easy to setup!", image=generate_guild_icon( guild['id'], guild['icon']) %}
+      {% include "opengraph_tags.html.j2" %}
+    {% endwith %}
 
     <title>{{ guild['name'] }} - Embed - Titan Embeds for Discord</title>
     {% include 'google_analytics.html.j2' %}

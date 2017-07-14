@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html prefix="og: http://ogp.me/ns#">
   <head>
     <!--Import Google Icon Font-->
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -10,9 +10,13 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>{% block title %}{% endblock %} - Titan Embeds for Discord</title>
+    <title>{{ title }} - Titan Embeds for Discord</title>
     
     {% include 'seo_meta.html.j2' %}
+    
+    {% with title=title, description="Embed your Discord server in any website. Titan is hassle free and designed as easy to setup." %}
+      {% include "opengraph_tags.html.j2" %}
+    {% endwith %}
     
     {% block additional_head_elements %}{% endblock %}
 

@@ -1,5 +1,9 @@
 {% extends 'site_layout.html.j2' %}
-{% block title %}{% if new %}New{% else %}Editing {{ css.name }} -{% endif %} User CSS{% endblock %}
+{% if new %}
+    {% set title="New - User CSS" %}
+{% else %}
+    {% set title="Editing " + css.name + " - User CSS" %}
+{% endif %}
 
 {% block content %}
 <h1>{% if new %}New{% else %}Editing {{ css.name }}{% endif %} - User Defined CSS</h1>

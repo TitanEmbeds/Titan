@@ -1,5 +1,5 @@
 {% extends 'site_layout.html.j2' %}
-{% block title %}Administrate Guild: {{ guild['name'] }}{% endblock %}
+{% set title="Administrate Guild: " + guild['name'] %}
 
 {% block additional_head_elements %}
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/administrate_guild.css') }}">
