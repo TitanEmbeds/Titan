@@ -273,14 +273,30 @@
         if (guildobj === undefined) {
             var guild = query_guild();
             guild.done(function(data) {
+                switch_to_default_channel(data.channels);
                 prepare_guild(data);
                 $('#loginmodal').modal('close');
                 unlock_login_fields();
             });
         } else {
+            switch_to_default_channel(guildobj.channels);
             prepare_guild(guildobj);
             $('#loginmodal').modal('close');
             unlock_login_fields();
+        }
+    }
+    
+    function switch_to_default_channel(guildchannels) {
+        var defaultChannel = getParameterByName("defaultchannel");
+        if (!defaultChannel) {
+            return;
+        }
+        for (var i = 0; i < guildchannels.length; i++) {
+            if (guildchannels[i].channel.id == defaultChannel) {
+                selected_channel = defaultChannel;
+                debugger;
+                return;
+            }
         }
     }
 
