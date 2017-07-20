@@ -9,12 +9,12 @@ cp ~/workspace/webapp/config.example.py ~/workspace/webapp/config.py
 cp ~/workspace/discordbot/config.example.py ~/workspace/discordbot/config.py
 cp ~/workspace/webapp/alembic.example.ini ~/workspace/webapp/alembic.ini
 
-echo "[C9Setup] Installing dependancies for discordbot"
+echo "[C9Setup] Installing discordbot dependencies"
 cd ~/workspace/discordbot/
 sudo python3.5 -m pip install -r requirements.txt
 sudo python3.5 -m pip install pymysql
 
-echo "[C9Setup] Installing webapp dependancies"
+echo "[C9Setup] Installing webapp dependencies"
 cd ~/workspace/webapp
 sudo pip install -r requirements.txt
 sudo pip install alembic pymysql
@@ -33,7 +33,7 @@ sed -i "11s/.*/\'database-uri\': \"mysql+pymysql:\/\/root@localhost\/titan\",/" 
 #'app-location': "/home/ubuntu/workspace/webapp/",
 sed -i "8s/.*/\'app-location\': \"\/home\/ubuntu\/workspace\/webapp\/\",/" ~/workspace/webapp/config.py
 
-echo "[C9Setup] Making sure everything can be runned"
+echo "[C9Setup] Making sure everything can be ran"
 sudo chmod -R 777 *
 
 echo "------------------------------"
