@@ -13,6 +13,7 @@
     
     var user_def_css; // Saves the user defined css
     var has_already_been_focused = false; // keep track of if the embed has initially been focused.
+    var has_already_been_initially_resized = false; // keep track if the embed initially been resized
     var logintimer; // timer to keep track of user inactivity after hitting login
     var fetchtimeout; // fetch routine timer
     var currently_fetching; // fetch lock- if true, do not fetch
@@ -173,6 +174,14 @@
         var dembed = discord_embed();
         dembed.done(function (data) {
             $("#modal_invite_btn").attr("href", data.instant_invite);
+        });
+        
+        $(window).resize(function(){
+            // For those who decides to hide the embed at first load (display: none), resulting in the messages being not scrolled down.
+            if (!has_already_been_initially_resized) {
+                has_already_been_initially_resized = true;
+                $("html, body").animate({ scrollTop: $(document).height() }, "fast");
+            }
         });
         
         if (getParameterByName("forcefocus") == "1") {
