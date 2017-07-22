@@ -173,6 +173,11 @@
     {% endif %}
 
     </div>
+<br><hr>
+{% include 'card_commands.html.j2' %}
+
+{% include 'card_queryparams.html.j2' %}
+
 {% endblock %}
 {% block script %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/administrate_guild.js') }}"></script>
