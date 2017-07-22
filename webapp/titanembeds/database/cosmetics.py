@@ -5,3 +5,10 @@ class Cosmetics(db.Model):
     id = db.Column(db.Integer, primary_key=True)                    # Auto increment id
     user_id = db.Column(db.String(255), nullable=False)             # Discord user id of user of cosmetics
     css = db.Column(db.Boolean(), nullable=False)                   # If they can create/edit custom CSS
+    
+    def __init__(self, user_id, **kwargs):
+        self.name = name
+        self.user_id = user_id
+        
+        if "css" in kwargs:
+            self.css = kwargs["css"]

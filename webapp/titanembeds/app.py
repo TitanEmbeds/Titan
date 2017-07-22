@@ -8,7 +8,7 @@ import blueprints.user
 import blueprints.admin
 import blueprints.embed
 import os
-from titanembeds import devs
+from titanembeds.database import get_administrators_list
 
 
 os.chdir(config['app-location'])
@@ -39,10 +39,9 @@ def about():
 
 @app.before_request
 def before_request():
-    db.create_all()
     discord_api.init_discordrest()
 
 @app.context_processor
 def context_processor():
     bot_status = bot_alive()
-    return {"bot_status": bot_status, "devs": devs}
+    return {"bot_status": bot_status, "devs": get_administrators_list()}

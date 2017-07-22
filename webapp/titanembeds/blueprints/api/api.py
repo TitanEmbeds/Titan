@@ -2,7 +2,7 @@ from titanembeds.database import db, Guilds, UnauthenticatedUsers, Unauthenticat
 from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
-from titanembeds import devs
+from titanembeds.database import get_administrators_list
 from flask import Blueprint, abort, jsonify, session, request, url_for
 from sqlalchemy import and_
 import random
@@ -381,7 +381,7 @@ def post():
             userid = session["user_id"]
             content = format_everyone_mention(chan, content)
             webhook = get_channel_webhook_url(guild_id, channel_id)
-            if userid in devs:
+            if userid in get_administrators_list():
                 oldcontent = content
                 content = "(Titan Dev) " + oldcontent
             if webhook:
