@@ -7,8 +7,9 @@ class Cosmetics(db.Model):
     css = db.Column(db.Boolean(), nullable=False)                   # If they can create/edit custom CSS
     
     def __init__(self, user_id, **kwargs):
-        self.name = name
         self.user_id = user_id
         
         if "css" in kwargs:
             self.css = kwargs["css"]
+        else:
+            self.css = False
