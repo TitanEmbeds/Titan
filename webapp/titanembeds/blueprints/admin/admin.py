@@ -1,7 +1,8 @@
 from flask import Blueprint, url_for, redirect, session, render_template, abort, request
 from functools import wraps
-from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds
+from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans
 from titanembeds.oauth import generate_guild_icon_url
+import datetime
 
 admin = Blueprint("admin", __name__)
 
@@ -74,11 +75,53 @@ def cosmetics_patch():
         entry.css = css
     db.session.commit()
     return ('', 204)
+def prepare_guild_members_list(members, bans):
+    all_users = []
+    ip_pool = []
+    members = sorted(members, key=lambda k: datetime.datetime.strptime(str(k.last_timestamp), "%Y-%m-%d %H:%M:%S"), reverse=True)
+    for member in members:
+        user = {
+            "id": member.id,
+            "username": member.username,
+            "discrim": member.discriminator,
+            "ip": member.ip_address,
+            "last_visit": member.last_timestamp,
+            "kicked": member.revoked,
+            "banned": False,
+            "banned_timestamp": None,
+            "banned_by": None,
+            "banned_reason": None,
+            "ban_lifted_by": None,
+            "aliases": [],
+        }
+        for banned in bans:
+            if banned.ip_address == member.ip_address:
+                if banned.lifter_id is None:
+                    user['banned'] = True
+                user["banned_timestamp"] = banned.timestamp
+                user['banned_by'] = banned.placer_id
+                user['banned_reason'] = banned.reason
+                user['ban_lifted_by'] = banned.lifter_id
+            continue
+        if user["ip"] not in ip_pool:
+            all_users.append(user)
+            ip_pool.append(user["ip"])
+        else:
+            for usr in all_users:
+                if user["ip"] == usr["ip"]:
+                    alias = user["username"]+"#"+str(user["discrim"])
+                    if len(usr["aliases"]) < 5 and alias not in usr["aliases"]:
+                        usr["aliases"].append(alias)
+                    continue
+    return all_users
 
 @admin.route("/administrate_guild/<guild_id>", methods=["GET"])
 @is_admin
 def administrate_guild(guild_id):
     db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    if not db_guild:
+        abort(500)
+        return
     session["redirect"] = None
     permissions=[]
     permissions.append("Manage Embed Settings")
@@ -109,7 +152,6 @@ def update_administrate_guild(guild_id):
     db_guild.chat_links = request.form.get("chat_links", db_guild.chat_links) in ["true", True]
     db_guild.bracket_links = request.form.get("bracket_links", db_guild.bracket_links) in ["true", True]
     db_guild.mentions_limit = request.form.get("mentions_limit", db_guild.mentions_limit)
-    
     discordio = request.form.get("discordio", db_guild.discordio)
     if discordio and discordio.strip() == "":
         discordio = None
@@ -125,7 +167,7 @@ def update_administrate_guild(guild_id):
         discordio=db_guild.discordio,
     )
 
-@user.route("/guilds")
+@admin.route("/guilds")
 @is_admin
 def guilds():
     guilds = db.session.query(Guilds).all()

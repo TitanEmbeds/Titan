@@ -11,7 +11,7 @@
       <div class="row valign-wrapper">
         <div class="col s3">
           {% if server.icon %}
-          <img src="{{ icon_generate(server.id, server.icon) }}" alt="" class="circle responsive-img">
+          <img src="{{ icon_generate(server.guild_id, server.icon) }}" alt="" class="circle responsive-img">
           {% else %}
           <span class="black-text">No icon :(</span>
           {% endif %}
@@ -20,7 +20,7 @@
           <span class="black-text">
             <p class="flow-text truncate">{{ server.name }}</p>
             <br>
-            <a class="waves-effect waves-light btn" href="{{url_for('admin.administrate_guild', guild_id=server['id'])}}">Modify</a>
+            <a class="waves-effect waves-light btn" href="{{url_for('admin.administrate_guild', guild_id=server['guild_id'])}}">Modify</a>
           </span>
         </div>
       </div>
