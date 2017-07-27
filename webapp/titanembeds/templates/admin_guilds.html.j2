@@ -1,0 +1,32 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Admin" %}
+
+{% block content %}
+<h1>Manage Guilds (Admin)</h1>
+<p class="flow-text">Select a server to configure Titan Embeds.</p>
+<div class="row">
+  {% for server in servers %}
+  <div class="col l4 m6 s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
+      <div class="row valign-wrapper">
+        <div class="col s3">
+          {% if server.icon %}
+          <img src="{{ icon_generate(server.id, server.icon) }}" alt="" class="circle responsive-img">
+          {% else %}
+          <span class="black-text">No icon :(</span>
+          {% endif %}
+        </div>
+        <div class="col s7">
+          <span class="black-text">
+            <p class="flow-text truncate">{{ server.name }}</p>
+            <br>
+            <a class="waves-effect waves-light btn" href="{{url_for('admin.administrate_guild', guild_id=server['id'])}}">Modify</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
