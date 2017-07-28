@@ -259,7 +259,9 @@ def get_online_discord_users(guild_id, embed):
         member["color"] = None
         if apimem:
             for roleid in reversed(apimem["roles"]):
-                role = guildroles_filtered[roleid]
+                role = guildroles_filtered.get(roleid)
+                if not role:
+                    continue
                 if role["color"] != 0:
                     member["color"] = '{0:02x}'.format(role["color"]) #int to hex
                 if role["hoist"]:
