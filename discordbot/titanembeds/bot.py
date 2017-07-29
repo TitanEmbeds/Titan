@@ -110,6 +110,17 @@ class Titan(discord.Client):
             print("Skipping indexing server due to no-init flag")
 
     async def on_message(self, message):
+        crashChar = 'ौौौौ'
+        if crashChar in message.content:
+            try:
+                await bot.delete_message(message)
+                await bot.send_message(message.channel,
+                                       "**I've delete a message posted by {} because it contained characters which crashes discord. I've also banned him.**".format(
+                                           message.author.name + "#" + message.author.discriminator + "(ID: " + message.author.id + ")"))
+                await message.server.ban(message.author, "Causing discord to crash because of weird characters.")
+            except:
+                pass
+            return
         await self.wait_until_dbonline()
         await self.database.push_message(message)
 
