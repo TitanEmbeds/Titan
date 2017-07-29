@@ -112,10 +112,6 @@ def parse_emoji(textToParse, guild_id):
 def format_post_content(guild_id, channel_id, message):
     illegal_post = False
     illegal_reasons = []
-    crashChar = 'ौौौौ'
-    if crashChar in message:
-        illegal_post = True
-        illegal_reasons.append("This message contains a character that crashes a users discord client.")
     message = message.replace("<", "\<")
     message = message.replace(">", "\>")
     message = parse_emoji(message, guild_id)
