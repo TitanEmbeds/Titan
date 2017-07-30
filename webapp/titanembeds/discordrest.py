@@ -17,7 +17,7 @@ class DiscordREST:
     def __init__(self, bot_token):
         self.global_redis_prefix = "discordapiratelimit/"
         self.bot_token = bot_token
-        self.user_agent = "TitanEmbeds (https://github.com/EndenDragon/Titan) Python/{} requests/{}".format(sys.version_info, requests.__version__)
+        self.user_agent = "TitanEmbeds (https://github.com/TitanEmbeds/Titan) Python/{} requests/{}".format(sys.version_info, requests.__version__)
 
     def init_discordrest(self):
         if not self._bucket_contains("global_limited"):

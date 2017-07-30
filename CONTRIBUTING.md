@@ -12,7 +12,7 @@ For those who would like to run the codebase yourself, you may follow the instru
 4. Add your SSH key from this link <https://cs50.io/account/ssh> to github <https://github.com/settings/keys>
 5. At the top right corner, click on New Workspace (To create one for Titan) <http://i.imgur.com/em8N1TX.png>
 6. Fill in the details, click on Python as the template environment
-7. Set the `Clone from Git or Mercurial url` to `git@github.com:EndenDragon/Titan.git` This should pull titan to your workspace.
+7. Set the `Clone from Git or Mercurial url` to `git@github.com:TitanEmbeds/Titan.git` This should pull titan to your workspace.
 8. Right click `cloud9_install.sh` file at the left sidebar and click run. This will set everything up.
 9. Afterwards, just edit the respective config.py files in the webapp/discordbot directories and you are ready to go!
 10. Now you're ready to run Titan... webapp! To make the webapp to work, rightclick `run_c9.py` file and click run. Congratz! It will tell you the exact url where your stuff is running at.
