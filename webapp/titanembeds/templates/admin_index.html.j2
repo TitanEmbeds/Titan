@@ -20,5 +20,14 @@
       <a class="waves-effect waves-light btn" href="{{ url_for('admin.guilds') }}">Manage</a>
     </div>
   </div>
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <h4>Cleanup DB</h4>
+      <p class="flow-text">Clean up the database</p>
+      <form method="DELETE" action="{{ url_for('api.cleanup_keyval_db') }}"
+        <button class="btn waves-effect waves-light" type="submit" name="action">Cleanup Database</button>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}
