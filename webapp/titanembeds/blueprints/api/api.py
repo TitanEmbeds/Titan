@@ -506,7 +506,7 @@ def canCleanupDB():
     if 'user_id' in session:
         if session['user_id'] in get_administrators_list():
             canclean = True
-     return canclean
+    return canclean
 @api.route("/cleanup-db", methods=["DELETE"])
 def cleanup_keyval_db():
     if canCleanupDB():
