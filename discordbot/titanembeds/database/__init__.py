@@ -69,6 +69,8 @@ class DatabaseInterface(object):
 
     def get_message_author(self, message):
         author = message.author
+        if author.nick is not None:
+            author.name = author.nick
         obj = {
             "username": author.name,
             "discriminator": author.discriminator,
@@ -81,6 +83,8 @@ class DatabaseInterface(object):
     def get_message_mentions(self, mentions):
         ments = []
         for author in mentions:
+            if author.nick:
+                author.name = author.nick
             ments.append({
                 "username": author.name,
                 "discriminator": author.discriminator,
@@ -264,7 +268,7 @@ class DatabaseInterface(object):
                     dbmember.active = active
                     dbmember.username = member.name
                     dbmember.discriminator = member.discriminator
-                    dbmember.nick = member.nick
+                    dbmember.nickname = member.nick
                     dbmember.avatar = member.avatar
                     dbmember.roles = json.dumps(self.list_role_ids(member.roles))
                 session.commit()

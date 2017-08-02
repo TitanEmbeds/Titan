@@ -109,7 +109,7 @@ def parse_emoji(textToParse, guild_id):
     return textToParse
 
 
-def format_post_content(guild_id, channel_id, message):
+def format_post_content(guild_id, channel_id, message, dbUser):
     illegal_post = False
     illegal_reasons = []
     message = message.replace("<", "\<")
@@ -140,7 +140,11 @@ def format_post_content(guild_id, channel_id, message):
         if (session['unauthenticated']):
             message = u"**[{}#{}]** {}".format(session['username'], session['user_id'], message)
         else:
-            message = u"**<{}#{}>** {}".format(session['username'], session['discriminator'], message) # I would like to do a @ mention, but i am worried about notif spam
+            username = session['username']
+            if dbUser:
+                if dbUser.nickname:
+                    username = dbUser.nickname
+            message = u"**<{}#{}>** {}".format(username, session['discriminator'], message) # I would like to do a @ mention, but i am worried about notify spam
     return (message, illegal_post, illegal_reasons)
 
 def format_everyone_mention(channel, content):
@@ -364,11 +368,15 @@ def post():
     guild_id = request.form.get("guild_id")
     channel_id = request.form.get('channel_id')
     content = request.form.get('content')
-    content, illegal_post, illegal_reasons = format_post_content(guild_id, channel_id, content)
+    if "user_id" in session:
+        dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == session['user_id']).first()
+    else:
+        dbUser = None
     if user_unauthenticated():
         key = session['user_keys'][guild_id]
     else:
         key = None
+    content, illegal_post, illegal_reasons = format_post_content(guild_id, channel_id, content, dbUser)
     status = update_user_status(guild_id, session['username'], key)
     message = {}
     if illegal_post:
@@ -392,6 +400,9 @@ def post():
                     avatar = url_for('static', filename='img/titanembeds_round.png', _external=True)
                 else:
                     username = session["username"]
+                    if dbUser:
+                        if dbUser.nickname:
+                            username = dbUser.nickname
                     if content.startswith("(Titan Dev) "):
                         content = content[12:]
                         username = "(Titan Dev) " + username
