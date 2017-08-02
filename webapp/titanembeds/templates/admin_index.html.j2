@@ -22,10 +22,13 @@
   </div>
   <div class="col s12">
     <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
-      <h4>Cleanup DB</h4>
-      <p class="flow-text">Clean up the database</p>
-      SoonTM
+      <h4>Run a Database Cleanup</h4>
+      <p class="flow-text">Clears the keyval caches and purges the old messages. (Hit once, and wait a minute)</p>
+      <a class="waves-effect waves-light btn" id="db_cleanup_btn">Run DB Cleanup Task</a>
     </div>
   </div>
 </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/admin_index.js') }}"></script>
 {% endblock %}
