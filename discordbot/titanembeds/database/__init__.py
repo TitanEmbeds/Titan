@@ -69,7 +69,7 @@ class DatabaseInterface(object):
 
     def get_message_author(self, message):
         author = message.author
-        if author.nick is not None:
+        if hasattr(author, 'nick') and author.nick:
             author.name = author.nick
         obj = {
             "username": author.name,
