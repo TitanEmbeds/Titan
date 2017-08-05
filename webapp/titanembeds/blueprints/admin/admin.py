@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, redirect, session, render_template, abort, request
+from flask import Blueprint, url_for, redirect, session, render_template, abort, request, jsonify
 from functools import wraps
 from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans
 from titanembeds.oauth import generate_guild_icon_url
