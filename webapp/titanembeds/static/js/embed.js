@@ -763,6 +763,7 @@
             });
             funct.always(function() {
                 $("#messagebox").attr('readonly', false);
+                $("#messagebox").focus();
             });
         }
     });
