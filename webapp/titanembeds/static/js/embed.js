@@ -403,7 +403,11 @@
           $("#discord-members").append(rendered_role);
           for (var j = 0; j < roleobj.members.length; j++) {
             var member = roleobj.members[j];
-            var rendered_user = Mustache.render(template_user, {"id": member.id.toString() + "d", "username": member.username, "avatar": member.avatar_url});
+            var member_name = member.nick;
+            if (!member_name) {
+                member_name = member.username;
+            }
+            var rendered_user = Mustache.render(template_user, {"id": member.id.toString() + "d", "username": member_name, "avatar": member.avatar_url});
             $("#discord-members").append(rendered_user);
             $( "#discorduser-" + member.id.toString() + "d").click({"member_id": member.id.toString()}, function(event) {
               mention_member(event.data.member_id);
