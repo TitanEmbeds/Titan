@@ -85,6 +85,7 @@ body > div.navbar-fixed > nav > div {
 .side-nav {
   color: white;
   background-color: #607d8b;
+  max-width: 95%;
 }
 
 .side-nav .userView .name {
