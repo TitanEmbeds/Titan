@@ -151,14 +151,20 @@
             $("#loginmodal").modal("open");
         });
         
-        $( "#theme-selector" ).change(function() {
+        $( "#theme-selector" ).change(function () {
             var theme = $("#theme-selector option:selected").val();
-            changeTheme(theme);
+            var keep_custom_css = $("#overwrite_theme_custom_css_checkbox").is(':checked');
+            changeTheme(theme, keep_custom_css);
+        });
+        
+        $("#overwrite_theme_custom_css_checkbox").change(function () {
+            var keep_custom_css = $("#overwrite_theme_custom_css_checkbox").is(':checked');
+            changeTheme(null, keep_custom_css);
         });
         
         var themeparam = getParameterByName('theme');
         var localstore_theme = localStorage.getItem("theme");
-        if ((getParameterByName("css") == null) && ((themeparam && $.inArray(themeparam, theme_options) != -1) || (localstore_theme))) {
+        if ((themeparam && $.inArray(themeparam, theme_options) != -1) || (localstore_theme)) {
             var theme;
             if (themeparam) {
                 theme = themeparam;
@@ -199,15 +205,21 @@
         }
     });
     
-    function changeTheme(theme) {
+    function changeTheme(theme=null, keep_custom_css=true) {
         if (theme == "") {
           $("#css-theme").attr("href", "");
           $("#user-defined-css").text(user_def_css);
           localStorage.removeItem("theme");
-        } else if ($.inArray(theme, theme_options) != -1) {
-            $("#user-defined-css").text("");
-            $("#css-theme").attr("href", "/static/themes/" + theme + "/css/style.css");
-            localStorage.setItem("theme", theme);
+        } else if ($.inArray(theme, theme_options) != -1 || theme == null) {
+            if (!keep_custom_css) {
+                $("#user-defined-css").text("");
+            } else {
+                $("#user-defined-css").text(user_def_css);
+            }
+            if (theme) {
+                $("#css-theme").attr("href", "/static/themes/" + theme + "/css/style.css");
+                localStorage.setItem("theme", theme);
+            }
         }
     }
     

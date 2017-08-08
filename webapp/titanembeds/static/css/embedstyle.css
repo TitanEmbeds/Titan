@@ -301,6 +301,10 @@ body > div.navbar-fixed > nav > div {
   font-size: 85%;
 }
 
+.input-field label {
+  color: white;
+}
+
 a {
   color: #82b1ff;
 }
