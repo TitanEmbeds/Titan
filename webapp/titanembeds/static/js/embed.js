@@ -18,7 +18,7 @@
     var fetchtimeout; // fetch routine timer
     var currently_fetching; // fetch lock- if true, do not fetch
     var last_message_id; // last message tracked
-    var selected_channel = guild_id; // user selected channel, defaults to #general channel
+    var selected_channel = null; // user selected channel
     var guild_channels = {}; // all server channels used to highlight channels in messages
     var emoji_store = {}; // all server emojis
     var times_fetched = 0; // kept track of how many times that it has fetched
@@ -315,7 +315,6 @@
         for (var i = 0; i < guildchannels.length; i++) {
             if (guildchannels[i].channel.id == defaultChannel) {
                 selected_channel = defaultChannel;
-                debugger;
                 return;
             }
         }
@@ -335,6 +334,7 @@
         var template = $('#mustache_channellistings').html();
         Mustache.parse(template);
         $("#channels-list").empty();
+        var curr_default_channel = selected_channel;
         for (var i = 0; i < channels.length; i++) {
             var chan = channels[i];
             guild_channels[chan.channel.id] = chan;
@@ -344,18 +344,23 @@
               $("#channel-" + chan.channel.id.toString()).click({"channel_id": chan.channel.id.toString()}, function(event) {
                   select_channel(event.data.channel_id);
               });
-              if (chan.channel.id == selected_channel) {
-                if (chan.write) {
-                  $("#messagebox").prop('disabled', false);
-                  $("#messagebox").prop('placeholder', "Enter message");
-                } else {
-                  $("#messagebox").prop('disabled', true);
-                  $("#messagebox").prop('placeholder', "Messages is disabled in this channel.");
-                }
-                $("#channeltopic").text(chan.channel.topic);
+              if (!selected_channel && (!curr_default_channel || chan.channel.position < curr_default_channel.channel.position)) {
+                  curr_default_channel = chan;
               }
             }
         }
+        if (typeof curr_default_channel == "object") {
+            selected_channel = curr_default_channel.channel.id;
+        }
+        var this_channel = guild_channels[selected_channel];
+        if (this_channel.write) {
+            $("#messagebox").prop('disabled', false);
+            $("#messagebox").prop('placeholder', "Enter message");
+        } else {
+            $("#messagebox").prop('disabled', true);
+            $("#messagebox").prop('placeholder', "Messages is disabled in this channel.");
+        }
+        $("#channeltopic").text(this_channel.channel.topic);
         $("#channel-"+selected_channel).parent().addClass("active");
     }
 
