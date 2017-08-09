@@ -314,6 +314,9 @@
         }
         for (var i = 0; i < guildchannels.length; i++) {
             if (guildchannels[i].channel.id == defaultChannel) {
+                if (!guildchannels[i].read) {
+                    return;
+                }
                 selected_channel = defaultChannel;
                 return;
             }
