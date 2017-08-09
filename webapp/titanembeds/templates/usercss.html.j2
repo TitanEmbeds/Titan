@@ -34,7 +34,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
     <div class="col s12">
         <p class="flow-text">Edit your CSS code here</p>
         <div style="position: relative; height: 40vh;">
-            <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{{ css.css }}{% endif %}</div>
+            <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{{ css.css|e }}{% endif %}</div>
         </div>
         <br>
     </div>
