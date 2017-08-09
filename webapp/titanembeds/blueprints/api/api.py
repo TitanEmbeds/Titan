@@ -333,6 +333,8 @@ def fetch():
             session['user_keys'].pop(guild_id, None)
     else:
         chan = filter_guild_channel(guild_id, channel_id)
+        if not chan:
+            abort(404)
         if not chan.get("read"):
             status_code = 401
         else:
@@ -352,6 +354,8 @@ def fetch_visitor():
         abort(403)
     messages = {}
     chan = filter_guild_channel(guild_id, channel_id, True)
+    if not chan:
+        abort(404)
     if not chan.get("read"):
         status_code = 401
     else:
