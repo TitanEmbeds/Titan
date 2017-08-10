@@ -825,7 +825,9 @@
                 var usr = change_unauthenticated_username($(this).val());
                 usr.done(function(data) {
                     Materialize.toast('Username changed successfully!', 10000);
-                    initialize_embed();
+                    priority_query_guild = true;
+                    clearTimeout(fetchtimeout);
+                    run_fetch_routine();
                 });
                 usr.fail(function(data) {
                     if (data.status == 429) {
