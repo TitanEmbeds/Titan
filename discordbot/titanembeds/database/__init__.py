@@ -81,8 +81,6 @@ class DatabaseInterface(object):
     def get_message_mentions(self, mentions):
         ments = []
         for author in mentions:
-            if author.nick:
-                author.name = author.nick
             ments.append({
                 "username": author.name,
                 "discriminator": author.discriminator,

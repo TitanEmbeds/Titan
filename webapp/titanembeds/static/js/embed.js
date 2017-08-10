@@ -510,8 +510,12 @@
         var mentions = message.mentions;
         for (var i = 0; i < mentions.length; i++) {
             var mention = mentions[i];
-            message.content = message.content.replace(new RegExp("<@" + mention.id + ">", 'g'), "@" + mention.username + "#" + mention.discriminator);
-            message.content = message.content.replace(new RegExp("<@!" + mention.id + ">", 'g'), "@" + mention.username + "#" + mention.discriminator);
+            var username = mention.username;
+            if (mention.nickname) {
+                username = mention.nickname;
+            }
+            message.content = message.content.replace(new RegExp("<@" + mention.id + ">", 'g'), "@" + username + "#" + mention.discriminator);
+            message.content = message.content.replace(new RegExp("<@!" + mention.id + ">", 'g'), "@" + username + "#" + mention.discriminator);
             message.content = message.content.replace("<@&" + guild_id + ">", "@everyone");
         }
         return message;

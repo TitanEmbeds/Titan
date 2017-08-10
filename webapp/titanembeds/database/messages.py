@@ -54,5 +54,10 @@ def get_channel_messages(guild_id, channel_id, after_snowflake=None):
         message["author"]["nickname"] = None
         if member:
             message["author"]["nickname"] = member.nickname
+        for mention in message["mentions"]:
+            author = get_guild_member(guild_id, mention["id"])
+            mention["nickname"] = None
+            if author:
+                mention["nickname"] = author.nickname
         msgs.append(message)
     return msgs
