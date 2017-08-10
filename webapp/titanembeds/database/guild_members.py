@@ -43,3 +43,6 @@ def list_all_guild_members(guild_id):
             "nickname": member.nickname,
         })
     return memlist
+
+def get_guild_member(guild_id, member_id):
+    return db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == member_id).first()

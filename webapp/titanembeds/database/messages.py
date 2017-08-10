@@ -1,4 +1,4 @@
-from titanembeds.database import db
+from titanembeds.database import db, get_guild_member
 from sqlalchemy import cast
 import json
 
@@ -29,7 +29,7 @@ class Messages(db.Model):
     def __repr__(self):
         return '<Messages {0} {1} {2} {3} {4}>'.format(self.id, self.guild_id, self.guild_id, self.channel_id, self.message_id)
 
-def get_channel_messages(channel_id, after_snowflake=None):
+def get_channel_messages(guild_id, channel_id, after_snowflake=None):
     if not after_snowflake:
         q = db.session.query(Messages).filter(Messages.channel_id == channel_id).order_by(Messages.timestamp.desc()).limit(50)
     else:
@@ -40,7 +40,7 @@ def get_channel_messages(channel_id, after_snowflake=None):
         if x.message_id in snowflakes:
             continue
         snowflakes.append(x.message_id)
-        msgs.append({
+        message = {
             "attachments": json.loads(x.attachments),
             "timestamp": x.timestamp,
             "id": x.message_id,
@@ -49,5 +49,10 @@ def get_channel_messages(channel_id, after_snowflake=None):
             "content": x.content,
             "channel_id": x.channel_id,
             "mentions": json.loads(x.mentions)
-        })
+        }
+        member = get_guild_member(guild_id, message["author"]["id"])
+        message["author"]["nickname"] = None
+        if member:
+            message["author"]["nickname"] = member.nickname
+        msgs.append(message)
     return msgs

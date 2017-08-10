@@ -1,4 +1,4 @@
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties, GuildMembers, Messages, get_channel_messages, list_all_guild_members, get_administrators_list
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties, GuildMembers, Messages, get_channel_messages, list_all_guild_members, get_guild_member, get_administrators_list
 from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
@@ -60,6 +60,7 @@ def update_user_status(guild_id, username, user_key=None):
             'manage_embed': False,
             'ip_address': ip_address,
             'username': username,
+            'nickname': None,
             'user_key': user_key,
             'guild_id': guild_id,
             'user_id': session['user_id'],
@@ -81,6 +82,7 @@ def update_user_status(guild_id, username, user_key=None):
             'avatar': session["avatar"],
             'manage_embed': check_user_can_administrate_guild(guild_id),
             'username': username,
+            'nickname': None,
             'discriminator': session['discriminator'],
             'guild_id': guild_id,
             'user_id': session['user_id'],
@@ -89,6 +91,9 @@ def update_user_status(guild_id, username, user_key=None):
         }
         if status['banned'] or status['revoked']:
             return status
+        dbMember = get_guild_member(guild_id, status["user_id"])
+        if dbMember:
+            status["nickname"] = dbMember.nickname
         dbUser = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == status['user_id'])).first()
         dbUser.bumpTimestamp()
     return status
@@ -296,6 +301,7 @@ def get_online_embed_users(guild_id):
         meta = {
             'id': usrdb.user_id,
             'username': usrdb.username,
+            'nickname': usrdb.nickname,
             'discriminator': usrdb.discriminator,
             'avatar_url': generate_avatar_url(usrdb.user_id, usrdb.avatar),
         }
@@ -342,7 +348,7 @@ def fetch():
         if not chan.get("read"):
             status_code = 401
         else:
-            messages = get_channel_messages(channel_id, after_snowflake)
+            messages = get_channel_messages(guild_id, channel_id, after_snowflake)
             status_code = 200
     response = jsonify(messages=messages, status=status)
     response.status_code = status_code
@@ -363,7 +369,7 @@ def fetch_visitor():
     if not chan.get("read"):
         status_code = 401
     else:
-        messages = get_channel_messages(channel_id, after_snowflake)
+        messages = get_channel_messages(guild_id, channel_id, after_snowflake)
         status_code = 200
     response = jsonify(messages=messages)
     response.status_code = status_code

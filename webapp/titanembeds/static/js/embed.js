@@ -447,7 +447,11 @@
         $("#embed-discord-members-count").html(users.length);
         for (var i = 0; i < users.length; i++) {
             var member = users[i];
-            var rendered = Mustache.render(template, {"id": member.id.toString() + "a", "username": member.username, "avatar": member.avatar_url});
+            var username = member.username;
+            if (member.nickname) {
+                username = member.nickname;
+            }
+            var rendered = Mustache.render(template, {"id": member.id.toString() + "a", "username": username, "avatar": member.avatar_url});
             $("#embed-discord-members").append(rendered);
             $( "#discorduser-" + member.id.toString() + "a").click({"member_id": member.id.toString()}, function(event) {
               mention_member(event.data.member_id);
@@ -632,7 +636,11 @@
             message.content = escapeHtml(message.content);
             message.content = parse_message_markdown(message.content);
             message = parse_emoji_in_message(message);
-            var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": nl2br(message.content)});
+            var username = message.author.username;
+            if (message.author.nickname) {
+                username = message.author.nickname;
+            }
+            var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": username, "discriminator": message.author.discriminator, "content": nl2br(message.content)});
             $("#chatcontent").append(rendered);
             last = message.id;
             handle_last_message_mention();
@@ -667,9 +675,9 @@
         fet.done(function(data) {
             var status = data.status;
             if (visitor_mode) {
-                update_embed_userchip(false, null, "Titan", "0001", null);
+                update_embed_userchip(false, null, "Titan", null, "0001", null);
             } else {
-                update_embed_userchip(status.authenticated, status.avatar, status.username, status.user_id, status.discriminator);
+                update_embed_userchip(status.authenticated, status.avatar, status.username, status.nickname, status.user_id, status.discriminator);
             }
             last_message_id = fill_discord_messages(data.messages, jumpscroll);
             if (!visitor_mode && status.manage_embed) {
@@ -723,18 +731,24 @@
         });
     }
 
-    function update_embed_userchip(authenticated, avatar, username, userid, discrim=null) {
+    function update_embed_userchip(authenticated, avatar, username, nickname, userid, discrim=null) {
         if (authenticated) {
             $("#currentuserimage").show();
             $("#currentuserimage").attr("src", avatar);
             $("#curuser_name").text(username);
             $("#curuser_discrim").text("#" + discrim);
-            current_username_discrim = username + "#" + discrim;
+            current_username_discrim = "#" + discrim;
         } else {
             $("#currentuserimage").hide();
             $("#curuser_name").text(username);
             $("#curuser_discrim").text("#" + userid);
-            current_username_discrim = username + "#" + userid;
+            current_username_discrim = "#" + userid;
+        }
+        if (nickname) {
+            $("#curuser_name").text(nickname);
+            current_username_discrim = nickname + current_username_discrim;
+        } else {
+            current_username_discrim = username + current_username_discrim;
         }
     }
 
