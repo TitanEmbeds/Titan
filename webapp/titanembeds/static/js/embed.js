@@ -76,6 +76,16 @@
         });
         return funct.promise();
     }
+    
+    function change_unauthenticated_username(username) {
+        var funct = $.ajax({
+            method: "POST",
+            dataType: "json",
+            url: "/api/change_unauthenticated_username",
+            data: {"username": username, "guild_id": guild_id}
+        });
+        return funct.promise();
+    }
 
     function fetch(channel_id, after=null) {
         var url = "/api/fetch";
@@ -680,8 +690,10 @@
             var status = data.status;
             if (visitor_mode) {
                 update_embed_userchip(false, null, "Titan", null, "0001", null);
+                update_change_username_modal();
             } else {
                 update_embed_userchip(status.authenticated, status.avatar, status.username, status.nickname, status.user_id, status.discriminator);
+                update_change_username_modal(status.authenticated, status.username);
             }
             last_message_id = fill_discord_messages(data.messages, jumpscroll);
             if (!visitor_mode && status.manage_embed) {
@@ -755,6 +767,19 @@
             current_username_discrim = username + current_username_discrim;
         }
     }
+    
+    function update_change_username_modal(authenticated=false, username=null) {
+        if (!$("#change_username_field") || $("#change_username_field").is(":focus")) {
+            return;
+        }
+        if (authenticated || visitor_mode) {
+            $("#change_username_field").attr("disabled", true);
+            $("#change_username_field").val("");
+        } else {
+            $("#change_username_field").attr("disabled", false);
+            $("#change_username_field").val(username);
+        }
+    }
 
     $("#discordlogin_btn").click(function() {
         lock_login_fields();
@@ -784,6 +809,34 @@
                     }
                     unlock_login_fields();
                     setVisitorMode(true);
+                });
+            }
+        }
+    });
+    
+    $("#change_username_field").keyup(function(event){
+        if (event.keyCode == 13) {
+            $(this).blur();
+            if (!(new RegExp(/^[a-z\d\-_\s]+$/i).test($(this).val()))) {
+                Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
+                return;
+            }
+            if(($(this).val().length >= 2 && $(this).val().length <= 32) && $("#curuser_name").text() != $(this).val()) {
+                var usr = change_unauthenticated_username($(this).val());
+                usr.done(function(data) {
+                    Materialize.toast('Username changed successfully!', 10000);
+                    initialize_embed();
+                });
+                usr.fail(function(data) {
+                    if (data.status == 429) {
+                        Materialize.toast('Sorry! You are allowed to change your username once every 15 minutes.', 10000);
+                    } else if (data.status == 403) {
+                        Materialize.toast('Authentication error! You have been banned.', 10000);
+                    } else if (data.status == 406) {
+                        Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
+                    } else {
+                        Materialize.toast('Something unexpected happened! Error code of ' + data.status, 10000);
+                    }
                 });
             }
         }

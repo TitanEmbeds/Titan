@@ -467,6 +467,40 @@ def create_unauthenticated_user():
         response.status_code = 403
         return response
 
+@api.route("/change_unauthenticated_username", methods=["POST"])
+@rate_limiter.limit("1 per 15 minute", key_func=guild_ratelimit_key)
+def change_unauthenticated_username():
+    username = request.form['username']
+    guild_id = request.form['guild_id']
+    ip_address = get_client_ipaddr()
+    username = username.strip()
+    if len(username) < 2 or len(username) > 32:
+        abort(406)
+    if not all(x.isalnum() or x.isspace() or "-" == x or "_" == x for x in username):
+        abort(406)
+    if not check_guild_existance(guild_id):
+        abort(404)
+    if not guild_query_unauth_users_bool(guild_id):
+        abort(401)
+    if not checkUserBanned(guild_id, ip_address):
+        if 'user_keys' not in session or guild_id not in session['user_keys'] or not session['unauthenticated']:
+            abort(424)
+        session['username'] = username
+        if 'user_id' not in session or len(str(session["user_id"])) > 4:
+            session['user_id'] = random.randint(0,9999)
+        user = UnauthenticatedUsers(guild_id, username, session['user_id'], ip_address)
+        db.session.add(user)
+        db.session.commit()
+        key = user.user_key
+        session['user_keys'][guild_id] = key
+        status = update_user_status(guild_id, username, key)
+        return jsonify(status=status)
+    else:
+        status = {'banned': True}
+        response = jsonify(status=status)
+        response.status_code = 403
+        return response
+
 def process_query_guild(guild_id, visitor=False):
     widget = discord_api.get_widget(guild_id)
     channels = get_guild_channels(guild_id, visitor)

@@ -126,6 +126,16 @@
     
     <div id="userembedmodal" class="modal">
       <div class="modal-content">
+        {% if unauth_enabled %}
+        <h4>Change Username</h4>
+        <div class="row">
+            <div>
+              <p>(Guests Accounts Only)</p>
+              <input id="change_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% else %}disabled{% endif %}>
+              <label class="active" for="change_username_field">Change your username (Hit ENTER/RETURN key to confirm)</label>
+            </div>
+        </div>
+        {% endif %}
         <h4>Theme</h4>
         <div class="row">
           <div class="input-field col s12">
