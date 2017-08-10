@@ -169,6 +169,7 @@ body > div.navbar-fixed > nav > div {
 
 #chatcontent > p {
   display: table;
+  width: 90%;
 }
 
 #chatcontent > p > span {
@@ -391,8 +392,7 @@ a {
   display: table-header-group;
 }
 .chatmessage {
-  display: table-footer-group;
-  display: inline-block;
+  display: inline;
   color: rgb(195, 196, 197);
 }
 
@@ -403,4 +403,19 @@ p.mentioned {
 
 p.mentioned span.chatmessage {
   color: #ff5252;
+}
+
+.chatmessage code {
+  background-color: gray;
+  color: lightgray;
+  border-radius: 5px;
+  padding: 2px;
+}
+
+.chatmessage code.blockcode {
+  width: 100%;
+  display: inline-block;
+  white-space: pre-wrap;
+  line-height: 15px;
+  padding: 5px;
 }

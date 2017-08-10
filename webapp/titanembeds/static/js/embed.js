@@ -603,6 +603,16 @@
         }
         return message;
     }
+    
+    function parse_message_markdown(text) {
+        text = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+        text = text.replace(/\*(.*?)\*/g, "<i>$1</i>");
+        text = text.replace(/__(.*?)__/g, "<u>$1</u>");
+        text = text.replace(/~~(.*?)~~/g, "<del>$1</del>");
+        text = text.replace(/\`\`\`([^]+)\`\`\`/g, "<code class=\"blockcode\">$1</code>");
+        text = text.replace(/\`(.*?)\`/g, "<code>$1</code>");
+        return text;
+    }
 
     function fill_discord_messages(messages, jumpscroll) {
         if (messages.length == 0) {
@@ -619,11 +629,13 @@
             message = parse_message_attachments(message);
             message = parse_channels_in_message(message);
             message.content = escapeHtml(message.content);
+            message.content = parse_message_markdown(message.content);
             message = parse_emoji_in_message(message);
             var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": message.author.username, "discriminator": message.author.discriminator, "content": nl2br(message.content)});
             $("#chatcontent").append(rendered);
             last = message.id;
             handle_last_message_mention();
+            $("#chatcontent p:last-child").find(".blockcode").find("br").remove(); // Remove excessive breaks in codeblocks
         }
         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
         $('#chatcontent').linkify({
