@@ -2,7 +2,6 @@
 {% set title="Dashboard" %}
 
 {% block content %}
-{% include 'patreon_banner.html.j2' %}
 <h1>User Dashboard</h1>
 <p class="flow-text">Select a server to configure Titan Embeds.</p>
 <p>*List missing some servers? It's because you must have either <strong>Manage Server</strong>, <strong>Kick Members</strong>, or <strong>Ban Members</strong> permissions to modify embed settings.</p>
@@ -61,4 +60,16 @@
   {% endfor %}
 </div>
 {% endif %}
+
+<hr>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <h4>Donations!</h4>
+      <p class="flow-text">Would you like to support the Titan Embeds project?</p>
+      <a class="waves-effect waves-light btn" href="{{ url_for('user.donate_get') }}">Donate!!</a>
+    </div>
+  </div>
+</div>
 {% endblock %}
