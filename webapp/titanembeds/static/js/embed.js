@@ -161,6 +161,40 @@
             $("#loginmodal").modal("open");
         });
         
+        $("#emoji-tray-toggle").click(function () {
+            $("#emoji-picker").fadeToggle();
+            var offset = $("#emoji-tray-toggle").offset().top;
+            $("#emoji-picker").offset({"top": offset-120});
+            $("#emoji-picker-emojis").html("");
+            var template = $('#mustache_message_emoji').html();
+            Mustache.parse(template);
+            for (var i = 0; i < emoji_store.length; i++) {
+                var emoji = emoji_store[i];
+                var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name}).trim();
+                var jqueryed = $(rendered);
+                jqueryed.click(function () {
+                    var emote_name = $(this).attr("data-tooltip");
+                    place_emoji(emote_name);
+                });
+                $("#emoji-picker-emojis").append(jqueryed);
+            }
+            $('.tooltipped').tooltip();
+        });
+        
+        $("#chatcontent").click(function () {
+            var emojipck_display = $('#emoji-picker').css('display');
+            if (emojipck_display != "none") {
+                $("#emoji-picker").fadeToggle();
+            }
+        });
+
+        $("#messagebox").click(function () {
+            var emojipck_display = $('#emoji-picker').css('display');
+            if (emojipck_display != "none") {
+                $("#emoji-picker").fadeToggle();
+            }
+        });
+        
         $( "#theme-selector" ).change(function () {
             var theme = $("#theme-selector option:selected").val();
             var keep_custom_css = $("#overwrite_theme_custom_css_checkbox").is(':checked');
@@ -252,9 +286,11 @@
         if (visitor_mode) {
             $("#visitor_mode_message").show();
             $("#messagebox").hide();
+            $("#emoji-tray-toggle").hide();
         } else {
             $("#visitor_mode_message").hide();
             $("#messagebox").show();
+            $("#emoji-tray-toggle").show();
         }
     }
 
@@ -383,6 +419,17 @@
         $('.button-collapse').sideNav('hide');
         $("#messagebox").focus();
       }
+    }
+    
+    function place_emoji(emoji_name) {
+        if (!$('#messagebox').prop('disabled')) {
+            $('#messagebox').val( $('#messagebox').val() + emoji_name + " " );
+            $("#messagebox").focus();
+        }
+        var emojipck_display = $('#emoji-picker').css('display');
+        if (emojipck_display != "none") {
+            $("#emoji-picker").fadeToggle();
+        }
     }
 
     function fill_discord_members(discordmembers) {
