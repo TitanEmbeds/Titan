@@ -3,3 +3,4 @@ flask-sqlalchemy
 flask_limiter
 requests_oauthlib
 Flask-SSLify
+paypalrestsdk
