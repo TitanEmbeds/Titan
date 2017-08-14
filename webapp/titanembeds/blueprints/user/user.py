@@ -41,6 +41,9 @@ def callback():
     session['username'] = user['username']
     session['discriminator'] = user['discriminator']
     session['avatar'] = generate_avatar_url(user['id'], user['avatar'])
+    session["tokens"] = get_titan_token(session["user_id"])
+    if session["tokens"] == -1:
+        session["tokens"] = 0
     if session["redirect"]:
         redir = session["redirect"]
         session['redirect'] = None
@@ -72,10 +75,7 @@ def dashboard():
     css_list = None
     if cosmetics and cosmetics.css:
         css_list = db.session.query(UserCSS).filter(UserCSS.user_id == session['user_id']).all()
-    tokens = get_titan_token(session["user_id"])
-    if tokens == -1:
-        tokens = 0
-    return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url, cosmetics=cosmetics, css_list=css_list, tokens=tokens)
+    return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url, cosmetics=cosmetics, css_list=css_list)
 
 @user.route("/custom_css/new", methods=["GET"])
 @discord_users_only()
@@ -383,6 +383,7 @@ def donate_confirm():
         tokens = int(amount * 100)
         action = "PAYPAL {}".format(trans_id)
         set_titan_token(session["user_id"], tokens, action)
+        session["tokens"] = get_titan_token(session["user_id"])
         return redirect(url_for('user.donate_thanks', transaction=trans_id))
     else:
         return redirect(url_for('index'))

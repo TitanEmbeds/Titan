@@ -68,7 +68,7 @@
     <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
       <h4>Donations!</h4>
       <p class="flow-text">Would you like to support the Titan Embeds project?</p>
-      <p>You currently have <strong>{{ tokens }}</strong> Titan Tokens.</p>
+      <p>You currently have <strong>{{ session["tokens"] }}</strong> Titan Tokens.</p>
       <a class="waves-effect waves-light btn" href="{{ url_for('user.donate_get') }}">Donate!!</a>
     </div>
   </div>
