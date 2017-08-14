@@ -72,7 +72,10 @@ def dashboard():
     css_list = None
     if cosmetics and cosmetics.css:
         css_list = db.session.query(UserCSS).filter(UserCSS.user_id == session['user_id']).all()
-    return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url, cosmetics=cosmetics, css_list=css_list)
+    tokens = get_titan_token(session["user_id"])
+    if tokens == -1:
+        tokens = 0
+    return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url, cosmetics=cosmetics, css_list=css_list, tokens=tokens)
 
 @user.route("/custom_css/new", methods=["GET"])
 @discord_users_only()

@@ -1,6 +1,6 @@
 from flask import Blueprint, url_for, redirect, session, render_template, abort, request, jsonify
 from functools import wraps
-from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans
+from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token
 from titanembeds.oauth import generate_guild_icon_url
 import datetime
 
@@ -172,3 +172,52 @@ def update_administrate_guild(guild_id):
 def guilds():
     guilds = db.session.query(Guilds).all()
     return render_template("admin_guilds.html.j2", servers=guilds, icon_generate=generate_guild_icon_url)
+
+@admin.route("/tokens", methods=["GET"])
+@is_admin
+def manage_titan_tokens():
+    tokeners = db.session.query(TitanTokens).all()
+    donators = []
+    for usr in tokeners:
+        row = {
+            "user_id": usr.user_id,
+            "tokens": usr.tokens,
+            "transactions": []
+        }
+        transact = db.session.query(TokenTransactions).filter(TokenTransactions.user_id == usr.user_id).all()
+        for tr in transact:
+            row["transactions"].append({
+                "id": tr.id,
+                "user_id": tr.user_id,
+                "timestamp": tr.timestamp,
+                "action": tr.action,
+                "net_tokens": tr.net_tokens,
+                "start_tokens": tr.start_tokens,
+                "end_tokens": tr.end_tokens
+            })
+        donators.append(row)
+    return render_template("admin_token_transactions.html.j2", donators=donators)
+
+@admin.route("/tokens", methods=["POST"])
+@is_admin
+def post_titan_tokens():
+    user_id = request.form.get("user_id", None)
+    amount = request.form.get("amount", None, type=int)
+    if not user_id or not amount:
+        abort(400)
+    if get_titan_token(user_id) != -1:
+        abort(409)
+    set_titan_token(user_id, amount, "NEW VIA ADMIN")
+    return ('', 204)
+
+@admin.route("/tokens", methods=["PATCH"])
+@is_admin
+def patch_titan_tokens():
+    user_id = request.form.get("user_id", None)
+    amount = request.form.get("amount", None, type=int)
+    if not user_id or not amount:
+        abort(400)
+    if get_titan_token(user_id) == -1:
+        abort(409)
+    set_titan_token(user_id, amount, "MODIFY VIA ADMIN")
+    return ('', 204)
