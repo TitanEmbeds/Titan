@@ -1,0 +1,18 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Thanks for Donating" %}
+
+{% block content %}
+<h1>Thank you for Donating and Supporting the Titan Embeds project!</h1>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+            <h4>You're officially one step closer to becoming a True Titan!</h4>
+            <p class="flow-text">You now have <strong>{{ tokens }}</strong> tokens!</p>
+            <p>Please visit our support server and contact a True Titan (Administrators Role) to claim your Supporter role, if you haven't done so already. Mention the transaction ID of <strong>{{ transaction }}</strong>.</p>
+            <a class="waves-effect waves-light btn" href="https://discord.io/Titan" target="_blank">Support Server</a>
+            <p><em>Have a nice day!</em></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

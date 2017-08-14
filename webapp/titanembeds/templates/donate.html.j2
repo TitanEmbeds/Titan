@@ -1,0 +1,51 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Donate" %}
+
+{% block content %}
+<h1>Donate and Support Titan Embeds</h1>
+<p class="flow-text">Contributing to the Titan project has never been so easy! Donate to support our project development and hosting.</p>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+            <h4>The Name-Your-Price Tool</h4>
+            <p class="flow-text">Currently if you donate, we cannot give much back in return, yet. However, we do have some donatator features up our sleeves and will be implemented.</p>
+            <p class="flow-text">For now, you will receive <strong>Titan Tokens&trade;</strong> (to be spent on donator features) and a <strong>supporter role</strong> on our support server.</p>
+            <p class="range-field">
+              <input type="range" id="token-slider" min="1" max="100" value="5" />
+            </p>
+            <p class="flow-text">$<span id="money-display">5</span> for <strong><span id="token-display">500</span> tokens</strong>!</p>
+            <a class="waves-effect waves-light btn" id="donate-btn">Donate</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/donate.js') }}"></script>
+{% endblock %}
+
+{% block additional_head_elements %}
+<style>
+    input[type=range]::-webkit-slider-thumb {
+        background-color: #303f9f;
+    }
+    input[type=range]::-moz-range-thumb {
+        background-color: #303f9f;
+    }
+    input[type=range]::-ms-thumb {
+        background-color: #303f9f;
+    }
+    
+    /***** These are to edit the thumb and the text inside the thumb *****/
+    input[type=range] + .thumb {
+        background-color: #dedede;
+    }
+    input[type=range] + .thumb.active .value {
+        font-size: 12pt;
+        color: #303f9f;
+    }
+    input[type=range] + .thumb.active .value::before {
+        content: "$";
+    }
+</style>
+{% endblock %}
