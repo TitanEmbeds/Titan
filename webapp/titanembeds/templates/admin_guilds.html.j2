@@ -3,7 +3,7 @@
 
 {% block content %}
 <h1>Manage Guilds (Admin)</h1>
-<p class="flow-text">Select a server to configure Titan Embeds.</p>
+<p class="flow-text">Select a server to configure Titan Embeds. <strong>(Total server count: {{ servers|length }})</strong></p>
 <div class="row">
   {% for server in servers %}
   <div class="col l4 m6 s12">
