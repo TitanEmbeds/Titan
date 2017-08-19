@@ -1,3 +1,8 @@
+flask
+flask-sqlalchemy
+flask_limiter
+requests_oauthlib
+Flask-SSLify
+paypalrestsdk
 https://github.com/TitanEmbeds/discord.py/archive/async.zip#egg=discord.py[voice]
-sqlalchemy
 asyncio_extras
