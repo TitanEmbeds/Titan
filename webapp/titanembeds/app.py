@@ -3,7 +3,7 @@ from .database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
 from titanembeds.utils import rate_limiter, discord_api, bot_alive, socketio
-from .blueprints import api, user, admin, embed
+from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
 
@@ -26,6 +26,7 @@ app.register_blueprint(api.api, url_prefix="/api", template_folder="/templates")
 app.register_blueprint(admin.admin, url_prefix="/admin", template_folder="/templates")
 app.register_blueprint(user.user, url_prefix="/user", template_folder="/templates")
 app.register_blueprint(embed.embed, url_prefix="/embed", template_folder="/templates")
+socketio.on_namespace(gateway.Gateway('/gateway'))
 
 @app.route("/")
 def index():

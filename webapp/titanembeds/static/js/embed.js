@@ -7,6 +7,8 @@
 /* global localStorage */
 /* global visitors_enabled */
 /* global cheet */
+/* global location */
+/* global io */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -247,6 +249,12 @@
         } else {
             primeEmbed();
         }
+        
+        /* SocketIO Test */
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway");
+        socket.on('connect', function() {
+            console.log("Socket.IO Connected!");
+        });
     });
     
     function changeTheme(theme=null, keep_custom_css=true) {
