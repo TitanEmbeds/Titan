@@ -1,6 +1,7 @@
 from titanembeds.database import db, Guilds, KeyValueProperties, get_keyvalproperty
 from flask import request, session
 from flask_limiter import Limiter
+from flask_socketio import SocketIO
 from config import config
 import random
 import string
@@ -89,3 +90,4 @@ def bot_alive():
     return results
 
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
+socketio = SocketIO()

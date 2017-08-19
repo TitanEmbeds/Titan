@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-from titanembeds.app import app
+from titanembeds.app import app, socketio
 import subprocess
 
 def init_debug():
@@ -41,4 +41,4 @@ def init_debug():
         return "OK"
 if __name__ == "__main__":
     init_debug()
-    app.run(host="0.0.0.0",port=3000,debug=True,processes=3)
+    socketio.run(app, host="0.0.0.0",port=3000,debug=True)
