@@ -251,7 +251,7 @@
         }
         
         /* SocketIO Test */
-        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway");
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway", {path: '/gateway'});
         socket.on('connect', function() {
             console.log("Socket.IO Connected!");
         });
