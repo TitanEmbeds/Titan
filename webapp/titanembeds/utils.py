@@ -90,4 +90,4 @@ def bot_alive():
     return results
 
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
-socketio = SocketIO(path='gateway')
+socketio = SocketIO()

@@ -12,7 +12,7 @@ cp ~/workspace/webapp/alembic.example.ini ~/workspace/webapp/alembic.ini
 echo "[C9Setup] Installing Titan dependencies"
 cd ~/workspace/
 sudo python3.5 -m pip install -r requirements.txt
-sudo python3.5 -m pip install alembic pymysql gevent uwsgi
+sudo python3.5 -m pip install alembic pymysql eventlet uwsgi
 
 echo "[C9Setup] Auto populating alembic.ini database url and titan database table"
 cd ~/workspace/webapp

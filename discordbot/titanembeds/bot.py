@@ -1,6 +1,7 @@
 from config import config
 from titanembeds.database import DatabaseInterface
 from titanembeds.commands import Commands
+from titanembeds.socketio import SocketIOInterface
 import discord
 import aiohttp
 import asyncio
@@ -17,6 +18,7 @@ class Titan(discord.Client):
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
         self.command = Commands(self, self.database)
+        self.socketio = SocketIOInterface(self, config["redis-uri"])
         
         self.database_connected = False
         self.loop.create_task(self.send_webserver_heartbeat())
@@ -123,6 +125,7 @@ class Titan(discord.Client):
             return
         await self.wait_until_dbonline()
         await self.database.push_message(message)
+        await self.socketio.on_message(message)
 
         msg_arr = message.content.split() # split the message
         if len(message.content.split()) > 1 and message.server: #making sure there is actually stuff in the message and have arguments and check if it is sent in server (not PM)

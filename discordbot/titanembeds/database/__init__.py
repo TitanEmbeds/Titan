@@ -18,6 +18,8 @@ from titanembeds.database.unauthenticated_users import UnauthenticatedUsers
 from titanembeds.database.unauthenticated_bans import UnauthenticatedBans
 from titanembeds.database.keyvalue_properties import KeyValueProperties
 
+from titanembeds.utils import get_message_author, get_message_mentions, get_webhooks_list, get_emojis_list, get_roles_list, get_channels_list
+
 class DatabaseInterface(object):
     # Courtesy of https://github.com/SunDwarf/Jokusoramame
     def __init__(self, bot):
@@ -58,37 +60,14 @@ class DatabaseInterface(object):
                         message.channel.id,
                         message.id,
                         message.content,
-                        json.dumps(self.get_message_author(message)),
+                        json.dumps(get_message_author(message)),
                         str(message.timestamp),
                         edit_ts,
-                        json.dumps(self.get_message_mentions(message.mentions)),
+                        json.dumps(get_message_mentions(message.mentions)),
                         json.dumps(message.attachments)
                     )
                     session.add(msg)
                     session.commit()
-
-    def get_message_author(self, message):
-        author = message.author
-        obj = {
-            "username": author.name,
-            "discriminator": author.discriminator,
-            "bot": author.bot,
-            "id": author.id,
-            "avatar": author.avatar
-        }
-        return obj
-
-    def get_message_mentions(self, mentions):
-        ments = []
-        for author in mentions:
-            ments.append({
-                "username": author.name,
-                "discriminator": author.discriminator,
-                "bot": author.bot,
-                "id": author.id,
-                "avatar": author.avatar
-            })
-        return ments
 
     async def update_message(self, message):
         if message.server:
@@ -101,9 +80,9 @@ class DatabaseInterface(object):
                     if msg:
                         msg.content = message.content
                         msg.edited_timestamp = message.edited_timestamp
-                        msg.mentions = json.dumps(self.get_message_mentions(message.mentions))
+                        msg.mentions = json.dumps(get_message_mentions(message.mentions))
                         msg.attachments = json.dumps(message.attachments)
-                        msg.author = json.dumps(self.get_message_author(message))
+                        msg.author = json.dumps(get_message_author(message))
                         session.commit()
 
     async def delete_message(self, message):
@@ -127,91 +106,23 @@ class DatabaseInterface(object):
                     gui = Guilds(
                         guild.id,
                         guild.name,
-                        json.dumps(self.get_roles_list(guild.roles)),
-                        json.dumps(self.get_channels_list(guild.channels)),
-                        json.dumps(self.get_webhooks_list(server_webhooks)),
-                        json.dumps(self.get_emojis_list(guild.emojis)),
+                        json.dumps(get_roles_list(guild.roles)),
+                        json.dumps(get_channels_list(guild.channels)),
+                        json.dumps(get_webhooks_list(server_webhooks)),
+                        json.dumps(get_emojis_list(guild.emojis)),
                         guild.owner_id,
                         guild.icon
                     )
                     session.add(gui)
                 else:
                     gui.name = guild.name
-                    gui.roles = json.dumps(self.get_roles_list(guild.roles))
-                    gui.channels = json.dumps(self.get_channels_list(guild.channels))
-                    gui.webhooks = json.dumps(self.get_webhooks_list(server_webhooks))
-                    gui.emojis = json.dumps(self.get_emojis_list(guild.emojis))
+                    gui.roles = json.dumps(get_roles_list(guild.roles))
+                    gui.channels = json.dumps(get_channels_list(guild.channels))
+                    gui.webhooks = json.dumps(get_webhooks_list(server_webhooks))
+                    gui.emojis = json.dumps(get_emojis_list(guild.emojis))
                     gui.owner_id = guild.owner_id
                     gui.icon = guild.icon
                 session.commit()
-    
-    def get_webhooks_list(self, guild_webhooks):
-        webhooks = []
-        for webhook in guild_webhooks:
-            webhooks.append({
-                "id": webhook.id,
-                "guild_id": webhook.server.id,
-                "channel_id": webhook.channel.id,
-                "name": webhook.name,
-                "token": webhook.token,
-            })
-        return webhooks
-    
-    def get_emojis_list(self, guildemojis):
-        emojis = []
-        for emote in guildemojis:
-            emojis.append({
-                "id": emote.id,
-                "name": emote.name,
-                "require_colons": emote.require_colons,
-                "managed": emote.managed,
-                "roles": self.list_role_ids(emote.roles),
-                "url": emote.url
-            })
-        return emojis
-
-    def get_roles_list(self, guildroles):
-        roles = []
-        for role in guildroles:
-            roles.append({
-                "id": role.id,
-                "name": role.name,
-                "color": role.color.value,
-                "hoist": role.hoist,
-                "position": role.position,
-                "permissions": role.permissions.value
-            })
-        return roles
-
-    def get_channels_list(self, guildchannels):
-        channels = []
-        for channel in guildchannels:
-            if str(channel.type) == "text":
-                overwrites = []
-                for target, overwrite in channel.overwrites:
-                    if isinstance(target, discord.Role):
-                        type = "role"
-                    else:
-                        type = "member"
-                    allow, deny = overwrite.pair()
-                    allow = allow.value
-                    deny = deny.value
-                    overwrites.append({
-                        "id": target.id,
-                        "type": type,
-                        "allow": allow,
-                        "deny": deny,
-                    })
-
-                channels.append({
-                    "id": channel.id,
-                    "name": channel.name,
-                    "topic": channel.topic,
-                    "position": channel.position,
-                    "type": str(channel.type),
-                    "permission_overwrites": overwrites
-                })
-        return channels
 
     async def remove_unused_guilds(self, guilds):
         async with threadpool():

@@ -7,6 +7,12 @@ from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
 
+if config.get("websockets-mode", None) == "eventlet":
+    import eventlet
+    eventlet.monkey_patch()
+elif config.get("websockets-mode", None) == "gevent":
+    from gevent import monkey
+    monkey.patch_all()
 
 os.chdir(config['app-location'])
 app = Flask(__name__, static_folder="static")
@@ -20,7 +26,7 @@ app.secret_key = config['app-secret']
 db.init_app(app)
 rate_limiter.init_app(app)
 sslify = SSLify(app, permanent=True)
-socketio.init_app(app)
+socketio.init_app(app, message_queue=config["redis-uri"], path='gateway', async_mode=config.get("websockets-mode", None))
 
 app.register_blueprint(api.api, url_prefix="/api", template_folder="/templates")
 app.register_blueprint(admin.admin, url_prefix="/admin", template_folder="/templates")
