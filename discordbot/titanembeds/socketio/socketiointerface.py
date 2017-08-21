@@ -23,4 +23,13 @@ class SocketIOInterface:
                 "mentions": get_message_mentions(message.mentions),
                 "attachments": message.attachments,
             }
-            await self.io.emit('MESSAGE_CREATE', data=msg, room=message.server.id, namespace='/gateway')
+            nickname = None
+            if hasattr(message.author, 'nick') and message.author.nick:
+                nickname = message.author.nick
+            msg["author"]["nickname"] = nickname
+            for mention in msg["mentions"]:
+                mention["nickname"] = None
+                member = message.server.get_member(mention["id"])
+                if member:
+                    mention["nickname"] = member.nick
+            await self.io.emit('MESSAGE_CREATE', data=msg, room=str("CHANNEL_"+message.channel.id), namespace='/gateway')

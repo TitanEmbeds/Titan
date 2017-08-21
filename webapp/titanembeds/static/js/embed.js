@@ -17,17 +17,13 @@
     var has_already_been_focused = false; // keep track of if the embed has initially been focused.
     var has_already_been_initially_resized = false; // keep track if the embed initially been resized
     var logintimer; // timer to keep track of user inactivity after hitting login
-    var fetchtimeout; // fetch routine timer
-    var currently_fetching; // fetch lock- if true, do not fetch
     var last_message_id; // last message tracked
     var selected_channel = null; // user selected channel
     var guild_channels = {}; // all server channels used to highlight channels in messages
     var emoji_store = {}; // all server emojis
-    var times_fetched = 0; // kept track of how many times that it has fetched
-    var fetch_error_count = 0; // Number of errors fetch has encountered
-    var priority_query_guild = false; // So you have selected a channel? Let's populate it.
     var current_username_discrim; // Current username/discrim pair, eg EndenDraogn#4151
     var visitor_mode = false; // Keep track of if using the visitor mode or authenticate mode
+    var socket = null; // Socket.io object
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -249,6 +245,8 @@
         } else {
             primeEmbed();
         }
+        
+        setInterval(send_socket_heartbeat, 5000);
     });
     
     function changeTheme(theme=null, keep_custom_css=true) {
@@ -339,6 +337,9 @@
     }
 
     function initialize_embed(guildobj) {
+        if (socket) {
+            socket.disconnect();
+        }
         if (guildobj === undefined) {
             var guild = query_guild();
             guild.done(function(data) {
@@ -379,6 +380,7 @@
         fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
         $("#instant-inv").attr("href", guildobj.instant_invite);
         run_fetch_routine();
+        initiate_websockets();
     }
 
     function fill_channels(channels) {
@@ -559,8 +561,6 @@
             last_message_id = null;
             $("#channels-list > li.active").removeClass("active");
             $("#channel-"+selected_channel).parent().addClass("active");
-            priority_query_guild = true;
-            clearTimeout(fetchtimeout);
             run_fetch_routine();
         }
     }
@@ -718,11 +718,6 @@
     }
 
     function run_fetch_routine() {
-        if (currently_fetching) {
-            return;
-        }
-        currently_fetching = true;
-        times_fetched += 1;
         var channel_id = selected_channel;
         var fet;
         var jumpscroll;
@@ -752,13 +747,11 @@
             }
             var guild = query_guild();
             guild.done(function(guildobj) {
-                priority_query_guild = false;
                 fill_channels(guildobj.channels);
                 fill_discord_members(guildobj.discordmembers);
                 fill_authenticated_users(guildobj.embedmembers.authenticated);
                 fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
                 $("#instant-inv").attr("href", guildobj.instant_invite);
-                initiate_websockets();
             });
         });
         fet.fail(function(data) {
@@ -769,25 +762,9 @@
                 $('#loginmodal').modal('open');
                 Materialize.toast('Session expired! You have been logged out.', 10000);
             }
-            
-            if (data.status != 429) {
-                setVisitorMode(true);
-                if (visitor_mode) {
-                    fetchtimeout = setTimeout(run_fetch_routine, 5000);
-                }
-            }
-        });
-        fet.catch(function(data) {
-          if (500 <= data.status && data.status < 600) {
-              if (fetch_error_count % 5 == 0) {
-                  Materialize.toast('Fetching messages error! EndenDragon probably broke something. Sorry =(', 10000);
-              }
-              fetch_error_count += 1;
-              fetchtimeout = setTimeout(run_fetch_routine, 10000);
-          }
+            setVisitorMode(true);
         });
         fet.always(function() {
-            currently_fetching = false;
             $("#fetching-indicator").fadeOut(800);
         });
     }
@@ -870,8 +847,6 @@
                 var usr = change_unauthenticated_username($(this).val());
                 usr.done(function(data) {
                     Materialize.toast('Username changed successfully!', 10000);
-                    priority_query_guild = true;
-                    clearTimeout(fetchtimeout);
                     run_fetch_routine();
                 });
                 usr.fail(function(data) {
@@ -900,8 +875,6 @@
             var funct = post(selected_channel, $(this).val());
             funct.done(function(data) {
                 $("#messagebox").val("");
-                clearTimeout(fetchtimeout);
-                run_fetch_routine();
             });
             funct.fail(function(data) {
                 Materialize.toast('Failed to send message.', 10000);
@@ -945,13 +918,40 @@
     });
     
     function initiate_websockets() {
-        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway", {path: '/gateway', transports: ['websocket']});
-        socket.on('connect', function() {
+        if (socket) {
+            return;
+        }
+        
+        socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway", {path: '/gateway', transports: ['websocket']});
+        socket.on('connect', function () {
             socket.emit('identify', {"guild_id": guild_id});
         });
         
-        socket.on('MESSAGE_CREATE', function(msg) {
-            console.log(msg);
+        socket.on("disconnect", function () {
+            socket = null;
         });
+        
+        socket.on("revoke", function () {
+            $('#loginmodal').modal('open');
+            setVisitorMode(true);
+            primeEmbed();
+            Materialize.toast('Authentication error! You have been disconnected by the server.', 10000);
+        });
+        
+        socket.on("MESSAGE_CREATE", function (msg) {
+            var thismsgchan = msg.channel_id;
+            if (selected_channel != thismsgchan) {
+                return;
+            }
+            var jumpscroll = element_in_view($('#discordmessage_'+last_message_id), true);
+            last_message_id = fill_discord_messages([msg], jumpscroll);
+        });
+    }
+    
+    function send_socket_heartbeat() {
+        if (!socket) {
+            return;
+        }
+        socket.emit("heartbeat", {"guild_id": guild_id, "visitor_mode": visitor_mode});
     }
 })();
