@@ -1,5 +1,6 @@
 from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr
 from titanembeds.userbookkeeping import check_user_in_guild, get_guild_channels, update_user_status
+from titanembeds.database import db, GuildMembers
 from flask_socketio import Namespace, emit, disconnect, join_room
 import functools
 from flask import request, session
@@ -14,6 +15,7 @@ class Gateway(Namespace):
         if not guild_accepts_visitors(guild_id) and not check_user_in_guild(guild_id):
             disconnect()
             return
+        session["socket_guild_id"] = guild_id
         channels = []
         if guild_accepts_visitors(guild_id) and not check_user_in_guild(guild_id):
             channels = get_guild_channels(guild_id, force_everyone=True)
@@ -27,13 +29,34 @@ class Gateway(Namespace):
             join_room("IP_"+get_client_ipaddr())
         elif not session.get("unauthenticated", True):
             join_room("USER_"+session["user_id"])
+        visitor_mode = data["visitor_mode"]
+        if not visitor_mode:
+            if session["unauthenticated"]:
+                emit("embed_user_connect", {"unauthenticated": True, "username": session["username"], "discriminator": session["user_id"]}, room="GUILD_"+guild_id)
+            else:
+                nickname = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == session["user_id"]).first().nickname
+                emit("embed_user_connect", {"unauthenticated": False, "id": session["user_id"], "nickname": nickname, "discriminator": session["discriminator"], "avatar_url": session["avatar"]}, room="GUILD_"+guild_id)
         emit("identified")
+    
+    def on_disconnect(self):
+        if "user_keys" not in session:
+            return
+        guild_id = session["socket_guild_id"]
+        msg = {}
+        if session["unauthenticated"]:
+            msg = {"unauthenticated": True, "username": session["username"], "discriminator": session["user_id"]}
+        else:
+            msg = {"unauthenticated": False, "id": session["user_id"]}
+        emit("embed_user_disconnect", msg, room="GUILD_"+guild_id)
     
     def on_heartbeat(self, data):
         guild_id = data["guild_id"]
         visitor_mode = data["visitor_mode"]
         if not visitor_mode:
-            status = update_user_status(guild_id, session["username"], session["user_keys"][guild_id])
+            key = None
+            if session["unauthenticated"]:
+                key = session["user_keys"][guild_id]
+            status = update_user_status(guild_id, session["username"], key)
             if status["revoked"] or status["banned"]:
                 emit("revoke")
                 time.sleep(1000)

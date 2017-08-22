@@ -139,10 +139,12 @@ class Titan(discord.Client):
     async def on_message_edit(self, message_before, message_after):
         await self.wait_until_dbonline()
         await self.database.update_message(message_after)
+        await self.socketio.on_message_update(message_after)
 
     async def on_message_delete(self, message):
         await self.wait_until_dbonline()
         await self.database.delete_message(message)
+        await self.socketio.on_message_delete(message)
 
     async def on_server_join(self, guild):
         await self.wait_until_dbonline()
@@ -201,14 +203,17 @@ class Titan(discord.Client):
     async def on_member_join(self, member):
         await self.wait_until_dbonline()
         await self.database.update_guild_member(member, active=True, banned=False)
+        await self.socketio.on_guild_member_add(member)
 
     async def on_member_remove(self, member):
         await self.wait_until_dbonline()
         await self.database.update_guild_member(member, active=False, banned=False)
+        await self.socketio.on_guild_member_remove(member)
 
     async def on_member_update(self, memberbefore, memberafter):
         await self.wait_until_dbonline()
         await self.database.update_guild_member(memberafter)
+        await self.socketio.on_guild_member_update(memberafter)
 
     async def on_member_ban(self, member):
         await self.wait_until_dbonline()

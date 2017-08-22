@@ -18,7 +18,7 @@ from titanembeds.database.unauthenticated_users import UnauthenticatedUsers
 from titanembeds.database.unauthenticated_bans import UnauthenticatedBans
 from titanembeds.database.keyvalue_properties import KeyValueProperties
 
-from titanembeds.utils import get_message_author, get_message_mentions, get_webhooks_list, get_emojis_list, get_roles_list, get_channels_list
+from titanembeds.utils import get_message_author, get_message_mentions, get_webhooks_list, get_emojis_list, get_roles_list, get_channels_list, list_role_ids
 
 class DatabaseInterface(object):
     # Courtesy of https://github.com/SunDwarf/Jokusoramame
@@ -167,7 +167,7 @@ class DatabaseInterface(object):
                         member.avatar,
                         active,
                         banned,
-                        json.dumps(self.list_role_ids(member.roles))
+                        json.dumps(list_role_ids(member.roles))
                     )
                     session.add(dbmember)
                 else:
@@ -177,7 +177,7 @@ class DatabaseInterface(object):
                     dbmember.discriminator = member.discriminator
                     dbmember.nickname = member.nick
                     dbmember.avatar = member.avatar
-                    dbmember.roles = json.dumps(self.list_role_ids(member.roles))
+                    dbmember.roles = json.dumps(list_role_ids(member.roles))
                 session.commit()
 
     async def unban_server_user(self, user, server):
@@ -204,12 +204,6 @@ class DatabaseInterface(object):
                         member.active = False
                 if changed:
                     session.commit()
-
-    def list_role_ids(self, usr_roles):
-        ids = []
-        for role in usr_roles:
-            ids.append(role.id)
-        return ids
 
     async def flag_unactive_bans(self, guild_id, guildbans):
         async with threadpool():

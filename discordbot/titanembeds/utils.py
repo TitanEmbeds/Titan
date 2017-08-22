@@ -90,3 +90,9 @@ def get_channels_list(guildchannels):
                 "permission_overwrites": overwrites
             })
     return channels
+    
+def list_role_ids(usr_roles):
+    ids = []
+    for role in usr_roles:
+        ids.append(role.id)
+    return ids

@@ -24,6 +24,9 @@
     var current_username_discrim; // Current username/discrim pair, eg EndenDraogn#4151
     var visitor_mode = false; // Keep track of if using the visitor mode or authenticate mode
     var socket = null; // Socket.io object
+    var authenticated_users_list = []; // List of all authenticated users
+    var unauthenticated_users_list = []; // List of all guest users
+    var discord_users_list = []; // List of all discord users that are probably online
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -437,6 +440,7 @@
     }
 
     function fill_discord_members(discordmembers) {
+        discord_users_list = discordmembers;
         var template = $('#mustache_authedusers').html();
         Mustache.parse(template);
         $("#discord-members").empty();
@@ -518,6 +522,7 @@
               mention_member(event.data.member_id);
             });
         }
+        authenticated_users_list = users;
     }
 
     function fill_unauthenticated_users(users) {
@@ -530,6 +535,7 @@
             var rendered = Mustache.render(template, {"username": member.username, "discriminator": member.discriminator});
             $("#embed-unauth-users").append(rendered);
         }
+        unauthenticated_users_list = users;
     }
 
     function wait_for_discord_login() {
@@ -682,7 +688,7 @@
         return text;
     }
 
-    function fill_discord_messages(messages, jumpscroll) {
+    function fill_discord_messages(messages, jumpscroll, replace=null) {
         if (messages.length == 0) {
             return last_message_id;
         }
@@ -704,12 +710,19 @@
                 username = message.author.nickname;
             }
             var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": username, "discriminator": message.author.discriminator, "content": nl2br(message.content)});
-            $("#chatcontent").append(rendered);
+            if (replace == null) {
+                $("#chatcontent").append(rendered);
+                handle_last_message_mention();
+                $("#chatcontent p:last-child").find(".blockcode").find("br").remove(); // Remove excessive breaks in codeblocks
+            } else {
+                replace.html($(rendered).html());
+                replace.find(".blockcode").find("br").remove();
+            }
             last = message.id;
-            handle_last_message_mention();
-            $("#chatcontent p:last-child").find(".blockcode").find("br").remove(); // Remove excessive breaks in codeblocks
         }
-        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+        if (replace == null) {
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+        }
         $('#chatcontent').linkify({
             target: "_blank"
         });
@@ -924,7 +937,7 @@
         
         socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway", {path: '/gateway', transports: ['websocket']});
         socket.on('connect', function () {
-            socket.emit('identify', {"guild_id": guild_id});
+            socket.emit('identify', {"guild_id": guild_id, "visitor_mode": visitor_mode});
         });
         
         socket.on("disconnect", function () {
@@ -938,6 +951,50 @@
             Materialize.toast('Authentication error! You have been disconnected by the server.', 10000);
         });
         
+        socket.on("embed_user_connect", function (msg) {
+            if (msg.unauthenticated) {
+                for (var i = 0; i < unauthenticated_users_list.length; i++) {
+                    var item = unauthenticated_users_list[i];
+                    if (item.username == msg.username && item.discriminator == msg.discriminator) {
+                        return;
+                    }
+                }
+                unauthenticated_users_list.push(msg);
+                fill_unauthenticated_users(unauthenticated_users_list);
+            } else {
+                for (var i = 0; i < authenticated_users_list.length; i++) {
+                    var item = authenticated_users_list[i];
+                    if (item.id == msg.id) {
+                        return;
+                    }
+                }
+                authenticated_users_list.push(msg);
+                fill_authenticated_users(authenticated_users_list);
+            }
+        });
+        
+        socket.on("embed_user_disconnect", function (msg) {
+            if (msg.unauthenticated) {
+                for (var i = 0; i < unauthenticated_users_list.length; i++) {
+                    var item = unauthenticated_users_list[i];
+                    if (item.username == msg.username && item.discriminator == msg.discriminator) {
+                        unauthenticated_users_list.splice(i, 1);
+                        fill_unauthenticated_users(unauthenticated_users_list);
+                        return;
+                    }
+                }
+            } else {
+                for (var i = 0; i < authenticated_users_list.length; i++) {
+                    var item = authenticated_users_list[i];
+                    if (item.id == msg.id) {
+                        authenticated_users_list.splice(i, 1);
+                        fill_authenticated_users(authenticated_users_list);
+                        return;
+                    }
+                }
+            }
+        });
+        
         socket.on("MESSAGE_CREATE", function (msg) {
             var thismsgchan = msg.channel_id;
             if (selected_channel != thismsgchan) {
@@ -945,6 +1002,57 @@
             }
             var jumpscroll = element_in_view($('#discordmessage_'+last_message_id), true);
             last_message_id = fill_discord_messages([msg], jumpscroll);
+        });
+        
+        socket.on("MESSAGE_DELETE", function (msg) {
+            var msgchan = msg.channel_id;
+            if (selected_channel != msgchan) {
+                return;
+            }
+            $("#discordmessage_"+msg.id).parent().remove();
+            last_message_id = $("#chatcontent").find("[id^=discordmessage_]").last().attr('id').substring(15);
+        });
+        
+        socket.on("MESSAGE_UPDATE", function (msg) {
+            var msgelem = $("#discordmessage_"+msg.id);
+            if (msgelem.length == 0) {
+                return;
+            }
+            var msgelem_parent = msgelem.parent();
+            fill_discord_messages([msg], false, msgelem_parent);
+        });
+        
+        socket.on("GUILD_MEMBER_ADD", function (usr) {
+            if (usr.status != "offline") {
+                discord_users_list.push(usr);
+                fill_discord_members(discord_users_list);
+            }
+        });
+        
+        socket.on("GUILD_MEMBER_UPDATE", function (usr) {
+            for (var i = 0; i < discord_users_list.length; i++) {
+                if (usr.id == discord_users_list[i].id) {
+                    if (usr.status == "offline") {
+                        discord_users_list.splice(i, 1);
+                        fill_discord_members(discord_users_list);
+                        return;
+                    } else {
+                        return;
+                    }
+                }
+            }
+            discord_users_list.push(usr);
+            fill_discord_members(discord_users_list);
+        });
+
+        socket.on("GUILD_MEMBER_REMOVE", function (usr) {
+            for (var i = 0; i < discord_users_list.length; i++) {
+                if (usr.id == discord_users_list[i].id) {
+                    discord_users_list.splice(i, 1);
+                    fill_discord_members(discord_users_list);
+                    return;
+                }
+            }
         });
     }
     
