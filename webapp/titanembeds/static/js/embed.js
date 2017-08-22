@@ -20,7 +20,7 @@
     var last_message_id; // last message tracked
     var selected_channel = null; // user selected channel
     var guild_channels = {}; // all server channels used to highlight channels in messages
-    var emoji_store = {}; // all server emojis
+    var emoji_store = []; // all server emojis
     var current_username_discrim; // Current username/discrim pair, eg EndenDraogn#4151
     var visitor_mode = false; // Keep track of if using the visitor mode or authenticate mode
     var socket = null; // Socket.io object
@@ -486,6 +486,21 @@
           var rendered_role = Mustache.render(template_role, {"name": roleobj["name"] + " - " + roleobj["members"].length});
           discordmembercnt += roleobj["members"].length;
           $("#discord-members").append(rendered_role);
+          roleobj.members.sort(function(a, b){
+              var name_a = a.username;
+              var name_b = b.username;
+              if (a.nick) {
+                  name_a = a.nick;
+              }
+              if (b.nick) {
+                  name_b = b.nick;
+              }
+              name_a = name_a.toUpperCase();
+              name_b = name_b.toUpperCase();
+              if(name_a < name_b) return -1;
+              if(name_a > name_b) return 1;
+              return 0;
+            });
           for (var j = 0; j < roleobj.members.length; j++) {
             var member = roleobj.members[j];
             var member_name = member.nick;
@@ -1032,13 +1047,12 @@
         socket.on("GUILD_MEMBER_UPDATE", function (usr) {
             for (var i = 0; i < discord_users_list.length; i++) {
                 if (usr.id == discord_users_list[i].id) {
-                    if (usr.status == "offline") {
-                        discord_users_list.splice(i, 1);
-                        fill_discord_members(discord_users_list);
-                        return;
-                    } else {
-                        return;
+                    discord_users_list.splice(i, 1);
+                    if (usr.status != "offline") {
+                        discord_users_list.push(usr);
                     }
+                    fill_discord_members(discord_users_list);
+                    return;
                 }
             }
             discord_users_list.push(usr);
@@ -1053,6 +1067,10 @@
                     return;
                 }
             }
+        });
+
+        socket.on("GUILD_EMOJIS_UPDATE", function (emo) {
+            emoji_store = emo;
         });
     }
     

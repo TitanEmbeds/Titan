@@ -229,8 +229,10 @@ class Titan(discord.Client):
         await self.wait_until_dbonline()
         if len(after) == 0:
             await self.database.update_guild(before[0].server)
+            await self.socketio.on_guild_emojis_update(before)
         else:
             await self.database.update_guild(after[0].server)
+            await self.socketio.on_guild_emojis_update(after)
             
     async def on_webhooks_update(self, server):
         await self.wait_until_dbonline()

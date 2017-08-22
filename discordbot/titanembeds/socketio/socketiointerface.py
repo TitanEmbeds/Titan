@@ -1,5 +1,5 @@
 import socketio
-from titanembeds.utils import get_message_author, get_message_mentions
+from titanembeds.utils import get_message_author, get_message_mentions, get_roles_list
 import time
 from email import utils as emailutils
 
@@ -64,7 +64,10 @@ class SocketIOInterface:
             "id": user.id,
             "status": str(user.status),
             "username": user.name,
+            "nick": None,
         }
+        if user.nick:
+            userobj["nick"] = user.nick
         if user.game:
             userobj["game"] = {
                 "name": user.game.name
@@ -91,3 +94,20 @@ class SocketIOInterface:
     async def on_guild_member_update(self, member):
         user = self.get_formatted_user(member)
         await self.io.emit('GUILD_MEMBER_UPDATE', data=user, room=str("GUILD_"+member.server.id), namespace='/gateway')
+    
+    def get_formatted_emojis(self, emojis):
+        emotes = []
+        for emo in emojis:
+            emotes.append({
+                "id": emo.id,
+                "managed": emo.managed,
+                "name": emo.name,
+                "require_colons": emo.require_colons,
+                "roles": get_roles_list(emo.roles),
+                "url": emo.url,
+            })
+        return emotes
+    
+    async def on_guild_emojis_update(self, emojis):
+        emotes = self.get_formatted_emojis(emojis)
+        await self.io.emit('GUILD_EMOJIS_UPDATE', data=emotes, room=str("GUILD_"+emojis[0].server.id), namespace='/gateway')
