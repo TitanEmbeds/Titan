@@ -27,6 +27,7 @@
     var authenticated_users_list = []; // List of all authenticated users
     var unauthenticated_users_list = []; // List of all guest users
     var discord_users_list = []; // List of all discord users that are probably online
+    var guild_channels_list = []; // guild channels, but as a list of them
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -387,6 +388,7 @@
     }
 
     function fill_channels(channels) {
+        guild_channels_list = channels;
         var template = $('#mustache_channellistings').html();
         Mustache.parse(template);
         $("#channels-list").empty();
@@ -1045,6 +1047,7 @@
         });
         
         socket.on("GUILD_MEMBER_UPDATE", function (usr) {
+            update_socket_channels();
             for (var i = 0; i < discord_users_list.length; i++) {
                 if (usr.id == discord_users_list[i].id) {
                     discord_users_list.splice(i, 1);
@@ -1072,12 +1075,55 @@
         socket.on("GUILD_EMOJIS_UPDATE", function (emo) {
             emoji_store = emo;
         });
+        
+        socket.on("CHANNEL_DELETE", function (chan) {
+            for (var i = 0; i < guild_channels_list.length; i++) {
+                var thatchannel = guild_channels_list[i];
+                if (thatchannel.channel.id == chan.id) {
+                    guild_channels_list.splice(i, 1);
+                    fill_channels(guild_channels_list);
+                    return;
+                }
+            }
+        });
+        
+        socket.on("CHANNEL_UPDATE", function (chan) {
+            update_socket_channels();
+        });
+        
+        socket.on("CHANNEL_CREATE", function (chan) {
+            update_socket_channels();
+        });
+        
+        socket.on("GUILD_ROLE_UPDATE", function (chan) {
+            update_socket_channels();
+        });
+        
+        socket.on("GUILD_ROLE_DELETE", function (chan) {
+            update_socket_channels();
+        });
+        
+        socket.on("channel_list", function (chans) {
+            fill_channels(chans);
+            for (var i = 0; i < chans.length; i++) {
+                var thischan = chans[i];
+                if (thischan.channel.id == selected_channel) {
+                    $("#channeltopic").text(thischan.channel.topic);
+                }
+            }
+        });
     }
     
-    function send_socket_heartbeat() {
+    function update_socket_channels() {
         if (!socket) {
             return;
         }
-        socket.emit("heartbeat", {"guild_id": guild_id, "visitor_mode": visitor_mode});
+        socket.emit("channel_list", {"guild_id": guild_id, "visitor_mode": visitor_mode});
+    }
+    
+    function send_socket_heartbeat() {
+        if (socket) {
+            socket.emit("heartbeat", {"guild_id": guild_id, "visitor_mode": visitor_mode});
+        }
     }
 })();

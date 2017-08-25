@@ -111,3 +111,60 @@ class SocketIOInterface:
     async def on_guild_emojis_update(self, emojis):
         emotes = self.get_formatted_emojis(emojis)
         await self.io.emit('GUILD_EMOJIS_UPDATE', data=emotes, room=str("GUILD_"+emojis[0].server.id), namespace='/gateway')
+    
+    def get_formatted_guild(self, guild):
+        guil = {
+            "id": guild.id,
+            "name": guild.name,
+            "icon": guild.icon,
+            "icon_url": guild.icon_url,
+        }
+        return guil
+    
+    async def on_guild_update(self, guild):
+        guildobj = self.get_formatted_guild(guild)
+        await self.io.emit('GUILD_UPDATE', data=guildobj, room=str("GUILD_"+guild.id), namespace='/gateway')
+    
+    def get_formatted_channel(self, channel):
+        chan = {
+            "id": channel.id,
+            "guild_id": channel.server.id,
+        }
+        return chan
+    
+    async def on_channel_delete(self, channel):
+        if str(channel.type) != "text":
+            return
+        chan = self.get_formatted_channel(channel)
+        await self.io.emit('CHANNEL_DELETE', data=chan, room=str("GUILD_"+channel.server.id), namespace='/gateway')
+    
+    async def on_channel_create(self, channel):
+        if str(channel.type) != "text":
+            return
+        chan = self.get_formatted_channel(channel)
+        await self.io.emit('CHANNEL_CREATE', data=chan, room=str("GUILD_"+channel.server.id), namespace='/gateway')
+    
+    async def on_channel_update(self, channel):
+        if str(channel.type) != "text":
+            return
+        chan = self.get_formatted_channel(channel)
+        await self.io.emit('CHANNEL_UPDATE', data=chan, room=str("GUILD_"+channel.server.id), namespace='/gateway')
+    
+    def get_formatted_role(self, role):
+        rol = {
+            "id": role.id,
+            "guild_id": role.server.id,
+        }
+        return rol
+    
+    async def on_guild_role_create(self, role):
+        rol = self.get_formatted_role(role)
+        await self.io.emit('GUILD_ROLE_CREATE', data=rol, room=str("GUILD_"+role.server.id), namespace='/gateway')
+
+    async def on_guild_role_update(self, role):
+        rol = self.get_formatted_role(role)
+        await self.io.emit('GUILD_ROLE_UPDATE', data=rol, room=str("GUILD_"+role.server.id), namespace='/gateway')
+    
+    async def on_guild_role_delete(self, role):
+        rol = self.get_formatted_role(role)
+        await self.io.emit('GUILD_ROLE_DELETE', data=rol, room=str("GUILD_"+role.server.id), namespace='/gateway')

@@ -1,7 +1,7 @@
 from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr
 from titanembeds.userbookkeeping import check_user_in_guild, get_guild_channels, update_user_status
 from titanembeds.database import db, GuildMembers
-from flask_socketio import Namespace, emit, disconnect, join_room
+from flask_socketio import Namespace, emit, disconnect, join_room, leave_room
 import functools
 from flask import request, session
 import time
@@ -64,3 +64,18 @@ class Gateway(Namespace):
         else:
             if not guild_accepts_visitors(guild_id):
                 disconnect()
+    
+    def on_channel_list(self, data):
+        guild_id = data["guild_id"]
+        visitor_mode = data["visitor_mode"]
+        channels = None
+        if visitor_mode or session.get("unauthenticated", True):
+            channels = get_guild_channels(guild_id, True)
+        else:
+            channels = get_guild_channels(guild_id)
+        for chan in channels:
+            if chan["read"]:
+                join_room("CHANNEL_"+chan["channel"]["id"])
+            else:
+                leave_room("CHANNEL_"+chan["channel"]["id"])
+        emit("channel_list", channels)

@@ -171,34 +171,41 @@ class Titan(discord.Client):
     async def on_server_update(self, guildbefore, guildafter):
         await self.wait_until_dbonline()
         await self.database.update_guild(guildafter)
+        await self.socketio.on_guild_update(guildafter)
 
     async def on_server_role_create(self, role):
         await self.wait_until_dbonline()
         if role.name == self.user.name and role.managed:
             await asyncio.sleep(2)
         await self.database.update_guild(role.server)
+        await self.socketio.on_guild_role_create(role)
 
     async def on_server_role_delete(self, role):
         await self.wait_until_dbonline()
         if role.server.me not in role.server.members:
             return
         await self.database.update_guild(role.server)
+        await self.socketio.on_guild_role_delete(role)
 
     async def on_server_role_update(self, rolebefore, roleafter):
         await self.wait_until_dbonline()
         await self.database.update_guild(roleafter.server)
+        await self.socketio.on_guild_role_update(role)
 
     async def on_channel_delete(self, channel):
         await self.wait_until_dbonline()
         await self.database.update_guild(channel.server)
+        await self.socketio.on_channel_delete(channel)
 
     async def on_channel_create(self, channel):
         await self.wait_until_dbonline()
         await self.database.update_guild(channel.server)
+        await self.socketio.on_channel_create(channel)
 
     async def on_channel_update(self, channelbefore, channelafter):
         await self.wait_until_dbonline()
         await self.database.update_guild(channelafter.server)
+        await self.socketio.on_channel_update(channelafter)
 
     async def on_member_join(self, member):
         await self.wait_until_dbonline()
