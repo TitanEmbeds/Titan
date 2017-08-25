@@ -877,7 +877,11 @@
                 var usr = change_unauthenticated_username($(this).val());
                 usr.done(function(data) {
                     Materialize.toast('Username changed successfully!', 10000);
-                    run_fetch_routine();
+                    if (socket) {
+                        run_fetch_routine();
+                        socket.disconnect();
+                        initiate_websockets();
+                    }
                 });
                 usr.fail(function(data) {
                     if (data.status == 429) {

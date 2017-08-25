@@ -4,6 +4,7 @@ from titanembeds.utils import check_guild_existance, guild_accepts_visitors, gui
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 from titanembeds.userbookkeeping import user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels
 from flask import Blueprint, abort, jsonify, session, request, url_for
+from flask_socketio import emit
 from sqlalchemy import and_
 import random
 import json
@@ -107,7 +108,7 @@ def get_online_discord_users(guild_id, embed):
     return embed['members']
 
 def get_online_embed_users(guild_id):
-    time_past = (datetime.datetime.now() - datetime.timedelta(seconds = 60)).strftime('%Y-%m-%d %H:%M:%S')
+    time_past = (datetime.datetime.now() - datetime.timedelta(seconds = 15)).strftime('%Y-%m-%d %H:%M:%S')
     unauths = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.last_timestamp > time_past, UnauthenticatedUsers.revoked == False, UnauthenticatedUsers.guild_id == guild_id).all()
     auths = db.session.query(AuthenticatedUsers).filter(AuthenticatedUsers.last_timestamp > time_past, AuthenticatedUsers.guild_id == guild_id).all()
     users = {'unauthenticated':[], 'authenticated':[]}
@@ -308,6 +309,7 @@ def change_unauthenticated_username():
     if not checkUserBanned(guild_id, ip_address):
         if 'user_keys' not in session or guild_id not in session['user_keys'] or not session['unauthenticated']:
             abort(424)
+        emitmsg = {"unauthenticated": True, "username": session["username"], "discriminator": session["user_id"]}
         session['username'] = username
         if 'user_id' not in session or len(str(session["user_id"])) > 4:
             session['user_id'] = random.randint(0,9999)
@@ -317,6 +319,7 @@ def change_unauthenticated_username():
         key = user.user_key
         session['user_keys'][guild_id] = key
         status = update_user_status(guild_id, username, key)
+        emit("embed_user_disconnect", emitmsg, room="GUILD_"+guild_id, namespace="/gateway")
         return jsonify(status=status)
     else:
         status = {'banned': True}
