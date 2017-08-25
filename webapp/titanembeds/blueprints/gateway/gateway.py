@@ -1,6 +1,6 @@
 from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr
 from titanembeds.userbookkeeping import check_user_in_guild, get_guild_channels, update_user_status
-from titanembeds.database import db, GuildMembers
+from titanembeds.database import db, GuildMembers, get_guild_member
 from flask_socketio import Namespace, emit, disconnect, join_room, leave_room
 import functools
 from flask import request, session
@@ -79,3 +79,16 @@ class Gateway(Namespace):
             else:
                 leave_room("CHANNEL_"+chan["channel"]["id"])
         emit("channel_list", channels)
+    
+    def on_current_user_info(self, data):
+        guild_id = data["guild_id"]
+        if "user_keys" in session and not session["unauthenticated"]:
+            dbMember = get_guild_member(guild_id, session["user_id"])
+            usr = {
+                'avatar': session["avatar"],
+                'username': dbMember.username,
+                'nickname': dbMember.nickname,
+                'discriminator': dbMember.discriminator,
+                'user_id': session['user_id'],
+            }
+            emit("current_user_info", usr)

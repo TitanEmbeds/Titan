@@ -1052,6 +1052,7 @@
         
         socket.on("GUILD_MEMBER_UPDATE", function (usr) {
             update_socket_channels();
+            socket.emit("current_user_info", {"guild_id": guild_id});
             for (var i = 0; i < discord_users_list.length; i++) {
                 if (usr.id == discord_users_list[i].id) {
                     discord_users_list.splice(i, 1);
@@ -1115,6 +1116,10 @@
                     $("#channeltopic").text(thischan.channel.topic);
                 }
             }
+        });
+        
+        socket.on("current_user_info", function (usr) {
+            update_embed_userchip(true, usr.avatar, usr.username, usr.nickname, usr.userid, usr.discriminator);
         });
     }
     
