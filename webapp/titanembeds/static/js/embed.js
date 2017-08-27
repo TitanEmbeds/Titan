@@ -14,7 +14,6 @@
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
     
     var user_def_css; // Saves the user defined css
-    var has_already_been_focused = false; // keep track of if the embed has initially been focused.
     var has_already_been_initially_resized = false; // keep track if the embed initially been resized
     var logintimer; // timer to keep track of user inactivity after hitting login
     var last_message_id; // last message tracked
@@ -139,16 +138,6 @@
           }
         );
         $('#loginmodal').modal('open');
-        
-        $("#focusmodal").modal({
-            dismissible: true,
-            opacity: .5,
-            inDuration: 400,
-            outDuration: 400,
-            startingTop: "4%",
-            endingTop: "10%",
-        });
-        $("#focusmodal").modal("open");
         $("#userembedmodal").modal({
             dismissible: true,
             opacity: .5,
@@ -237,19 +226,7 @@
             }
         });
         
-        if (getParameterByName("forcefocus") == "1") {
-            if (document.hasFocus()) {
-                primeEmbed();
-            }
-            
-            $(window).focus(function() {
-                if (!has_already_been_focused) {
-                    primeEmbed();
-                }
-            });
-        } else {
-            primeEmbed();
-        }
+        primeEmbed();
         
         setInterval(send_socket_heartbeat, 5000);
     });
@@ -300,9 +277,6 @@
     }
 
     function primeEmbed() {
-        $("#focusmodal").modal("close");
-        has_already_been_focused = true;
-        
         lock_login_fields();
 
         var guild = query_guild();
