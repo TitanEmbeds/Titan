@@ -7,12 +7,17 @@ from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
 
-if config.get("websockets-mode", None) == "eventlet":
-    import eventlet
-    eventlet.monkey_patch()
-elif config.get("websockets-mode", None) == "gevent":
+try:
+    import uwsgi
     from gevent import monkey
     monkey.patch_all()
+except:
+    if config.get("websockets-mode", None) == "eventlet":
+        import eventlet
+        eventlet.monkey_patch()
+    elif config.get("websockets-mode", None) == "gevent":
+        from gevent import monkey
+        monkey.patch_all()
 
 os.chdir(config['app-location'])
 app = Flask(__name__, static_folder="static")

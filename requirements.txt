@@ -9,3 +9,4 @@ https://github.com/TitanEmbeds/discord.py/archive/async.zip#egg=discord.py[voice
 asyncio_extras
 kombu
 redis
+aioredis
