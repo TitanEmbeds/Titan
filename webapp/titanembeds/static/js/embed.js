@@ -22,6 +22,7 @@
     var guild_channels = {}; // all server channels used to highlight channels in messages
     var emoji_store = []; // all server emojis
     var current_username_discrim; // Current username/discrim pair, eg EndenDraogn#4151
+    var current_user_discord_id; // Current user discord snowflake id, eg mine is 140252024666062848
     var visitor_mode = false; // Keep track of if using the visitor mode or authenticate mode
     var socket = null; // Socket.io object
     var authenticated_users_list = []; // List of all authenticated users
@@ -768,6 +769,7 @@
             } else {
                 update_embed_userchip(status.authenticated, status.avatar, status.username, status.nickname, status.user_id, status.discriminator);
                 update_change_username_modal(status.authenticated, status.username);
+                current_user_discord_id = status.user_id;
             }
             last_message_id = fill_discord_messages(data.messages, jumpscroll);
             if (!visitor_mode && status.manage_embed) {
@@ -1051,8 +1053,10 @@
         });
         
         socket.on("GUILD_MEMBER_UPDATE", function (usr) {
-            update_socket_channels();
-            socket.emit("current_user_info", {"guild_id": guild_id});
+            if (usr.id == current_user_discord_id) {
+                update_socket_channels();
+                socket.emit("current_user_info", {"guild_id": guild_id});
+            }
             for (var i = 0; i < discord_users_list.length; i++) {
                 if (usr.id == discord_users_list[i].id) {
                     discord_users_list.splice(i, 1);
