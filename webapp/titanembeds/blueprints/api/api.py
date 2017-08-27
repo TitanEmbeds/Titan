@@ -2,7 +2,7 @@ from titanembeds.database import db, Guilds, UnauthenticatedUsers, Unauthenticat
 from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
-from titanembeds.userbookkeeping import user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels
+from titanembeds.userbookkeeping import user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled
 from flask import Blueprint, abort, jsonify, session, request, url_for
 from flask_socketio import emit
 from sqlalchemy import and_
@@ -50,7 +50,7 @@ def format_post_content(guild_id, channel_id, message, dbUser):
         mention = "<@" + match[2: len(match) - 1] + ">"
         message = message.replace(match, mention, 1)
     
-    if not get_channel_webhook_url(guild_id, channel_id):
+    if not guild_webhooks_enabled(guild_id):
         if (session['unauthenticated']):
             message = u"**[{}#{}]** {}".format(session['username'], session['user_id'], message)
         else:
@@ -137,15 +137,23 @@ def get_guild_emojis(guild_id):
 
 # Returns webhook url if exists and can post w/webhooks, otherwise None
 def get_channel_webhook_url(guild_id, channel_id):
+    if not guild_webhooks_enabled(guild_id):
+        return None
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     guild_webhooks = json.loads(dbguild.webhooks)
+    name = "[Titan] "
+    if user_unauthenticated():
+        name = name + session["username"] + "#" + str(session["user_id"])
+    else:
+        name = name + session["username"] + "#" + str(session["discriminator"])
     for webhook in guild_webhooks:
-        if channel_id == webhook["channel_id"] and (webhook["name"].lower().startswith("titan") or webhook["name"].lower().startswith("[titan]")):
+        if channel_id == webhook["channel_id"] and webhook["name"] == name:
             return {
                 "id": webhook["id"],
                 "token": webhook["token"]
             }
-    return None
+    webhook = discord_api.create_webhook(channel_id, name)
+    return webhook["content"]
 
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)

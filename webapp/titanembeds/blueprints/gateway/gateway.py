@@ -1,10 +1,11 @@
-from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr
-from titanembeds.userbookkeeping import check_user_in_guild, get_guild_channels, update_user_status
-from titanembeds.database import db, GuildMembers, get_guild_member
+from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api
+from titanembeds.userbookkeeping import check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled
+from titanembeds.database import db, GuildMembers, get_guild_member, Guilds
 from flask_socketio import Namespace, emit, disconnect, join_room, leave_room
 import functools
 from flask import request, session
 import time
+import json
 
 class Gateway(Namespace):
     def on_connect(self):
@@ -48,6 +49,17 @@ class Gateway(Namespace):
         else:
             msg = {"unauthenticated": False, "id": session["user_id"]}
         emit("embed_user_disconnect", msg, room="GUILD_"+guild_id)
+        if guild_webhooks_enabled(guild_id): # Delete webhooks
+            dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+            guild_webhooks = json.loads(dbguild.webhooks)
+            name = "[Titan] "
+            if session["unauthenticated"]:
+                name = name + session["username"] + "#" + str(session["user_id"])
+            else:
+                name = name + session["username"] + "#" + str(session["discriminator"])
+            for webhook in guild_webhooks:
+                if webhook["name"] == name:
+                    discord_api.delete_webhook(webhook["id"], webhook["token"])
     
     def on_heartbeat(self, data):
         guild_id = data["guild_id"]

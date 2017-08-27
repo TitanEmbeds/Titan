@@ -177,3 +177,7 @@ def get_guild_channels(guild_id, force_everyone=False):
 
             result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
+
+def guild_webhooks_enabled(guild_id):
+    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    return dbguild.webhook_messages
