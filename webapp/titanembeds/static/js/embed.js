@@ -896,7 +896,7 @@
             });
             funct.catch(function(data) {
                 if (data.status == 429) {
-                    Materialize.toast('You are sending messages too fast! 1 message per 10 seconds', 10000);
+                    Materialize.toast('You are sending messages too fast! 1 message per 5 seconds', 10000);
                 }
             });
             funct.always(function() {

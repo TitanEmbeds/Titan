@@ -209,7 +209,7 @@ def fetch_visitor():
 
 @api.route("/post", methods=["POST"])
 @valid_session_required(api=True)
-@rate_limiter.limit("1 per 10 second", key_func = channel_ratelimit_key)
+@rate_limiter.limit("1 per 5 second", key_func = channel_ratelimit_key)
 def post():
     guild_id = request.form.get("guild_id")
     channel_id = request.form.get('channel_id')
