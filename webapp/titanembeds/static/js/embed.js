@@ -1085,6 +1085,16 @@
             emoji_store = emo;
         });
         
+        socket.on("GUILD_UPDATE", function (guil) {
+            $("#guild_name").text(guil.name);
+            if (guil.icon) {
+                $("#guild_icon").attr("src", guil.icon_url);
+                $("#guild_icon").show();
+            } else {
+                $("#guild_icon").hide();
+            }
+        });
+        
         socket.on("CHANNEL_DELETE", function (chan) {
             for (var i = 0; i < guild_channels_list.length; i++) {
                 var thatchannel = guild_channels_list[i];

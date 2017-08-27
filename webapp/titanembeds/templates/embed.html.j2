@@ -43,10 +43,8 @@
       <ul id="guild-nav" class="side-nav">
         <li>
           <div class="userView">
-            {% if guild['icon'] %}
-            <img class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
-            {% endif %}
-            <span class="name">{{ guild['name']|e }}</span>
+            <img id="guild_icon" class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}" {% if not guild['icon'] %}style="display: none;"{% endif %}>
+            <span id="guild_name" class="name">{{ guild['name']|e }}</span>
           </div>
         </li>
 
