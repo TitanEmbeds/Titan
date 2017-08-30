@@ -234,6 +234,10 @@
             }
         });
         
+        if (getParameterByName("username")) {
+            $("#custom_username_field").val(getParameterByName("username"));
+        }
+        
         if (getParameterByName("forcefocus") == "1") {
             if (document.hasFocus()) {
                 primeEmbed();
