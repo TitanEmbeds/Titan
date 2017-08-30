@@ -68,8 +68,8 @@ class SocketIOInterface:
         }
         if userobj["color"] == "000000":
             userobj["color"] = None
-        if userobj["avatar_url"][len(userobj["avatar_url"])-15:] != ".jpg":
-            userobj["avatar_url"] = userobj["avatar_url"][:len(userobj["avatar_url"])-14] + ".jpg"
+        # if userobj["avatar_url"][len(userobj["avatar_url"])-15:] != ".jpg":
+        #     userobj["avatar_url"] = userobj["avatar_url"][:len(userobj["avatar_url"])-14] + ".jpg"
         if user.nick:
             userobj["nick"] = user.nick
         if user.game:
