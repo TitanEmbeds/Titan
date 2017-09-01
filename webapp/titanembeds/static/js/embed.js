@@ -26,6 +26,7 @@
     var priority_query_guild = false; // So you have selected a channel? Let's populate it.
     var current_username_discrim; // Current username/discrim pair, eg EndenDraogn#4151
     var visitor_mode = false; // Keep track of if using the visitor mode or authenticate mode
+    var shift_pressed = false; // Track down if shift pressed on messagebox
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -894,12 +895,21 @@
             }
         }
     });
+    
+    $("#messagebox").keyup(function (event) {
+        if (event.keyCode == 16) {
+            shift_pressed = false;
+        }
+    });
 
-    $("#messagebox").keyup(function(event){
+    $("#messagebox").keydown(function(event){
         if ($(this).val().length == 1) {
             $(this).val($.trim($(this).val()));
         }
-        if(event.keyCode == 13 && $(this).val().length >= 1 && $(this).val().length <= 350) {
+        if (event.keyCode == 16) {
+            shift_pressed = true;
+        }
+        if(event.keyCode == 13 && !shift_pressed && $(this).val().length >= 1 && $(this).val().length <= 350) {
             $(this).val($.trim($(this).val()));
             $(this).blur();
             $("#messagebox").attr('readonly', true);
