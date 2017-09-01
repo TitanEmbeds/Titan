@@ -1,5 +1,5 @@
 # Titan
-**Visit our website! [https://titanembeds.tk/](https://titanembeds.tk/) And get started *right away*!**
+**Visit our website! [https://titanembeds.com/](https://titanembeds.com/) And get started *right away*!**
 
 There was a time when Discord doesn't support embedding the chat on a webpage. But with Titan, you can! It is as simple as 1, 2, 3!
 1. Invite the bot to your server (You must have "Manage Server" permissions)
