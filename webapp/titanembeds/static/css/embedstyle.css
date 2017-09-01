@@ -289,6 +289,10 @@ body > div.navbar-fixed > nav > div {
   background-color: #546e7a;
 }
 
+.modal-overlay {
+  height: auto;
+}
+
 .betatag {
   font-variant: small-caps;
   font-size: 15px;
