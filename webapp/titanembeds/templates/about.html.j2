@@ -51,8 +51,8 @@ etc.</p>
 
 <h3>Cool People</h3>
 <p class="flow-text">Keep in mind, this project is not complete without these awesome people!</p>
-<div class="row">
-    <div class="col s12 m6">
+<div class="row" id="cool-people">
+    <div class="col s12 m6 person">
         <div class="card-panel indigo lighten-5 z-depth-1 no-height-padding">
           <div class="row valign-wrapper">
             <div class="col s2">
@@ -67,7 +67,7 @@ etc.</p>
         </div>
     </div>
 
-    <div class="col s12 m6">
+    <div class="col s12 m6 person">
         <div class="card-panel indigo lighten-5 z-depth-1 no-height-padding">
           <div class="row valign-wrapper">
             <div class="col s2">
@@ -82,7 +82,7 @@ etc.</p>
         </div>
     </div>
 
-    <div class="col s12 m6">
+    <div class="col s12 m6 person">
         <div class="card-panel indigo lighten-5 z-depth-1 no-height-padding">
           <div class="row valign-wrapper">
             <div class="col s2">
@@ -97,7 +97,7 @@ etc.</p>
         </div>
     </div>
     
-    <div class="col s12 m6">
+    <div class="col s12 m6 person">
         <div class="card-panel indigo lighten-5 z-depth-1 no-height-padding">
           <div class="row valign-wrapper">
             <div class="col s2">
@@ -112,7 +112,7 @@ etc.</p>
         </div>
     </div>
     
-    <div class="col s12 m6">
+    <div class="col s12 m6 person">
         <div class="card-panel indigo lighten-5 z-depth-1 no-height-padding">
           <div class="row valign-wrapper">
             <div class="col s2">
@@ -127,7 +127,7 @@ etc.</p>
         </div>
     </div>
     
-    <div class="col s12 m6">
+    <div class="col s12 m6 person">
         <div class="card-panel indigo lighten-5 z-depth-1 no-height-padding">
           <div class="row valign-wrapper">
             <div class="col s2">
@@ -236,4 +236,16 @@ We want to see all of our members rise to their potential and find success in th
         </div>
     </div>
 </div>
+{% endblock %}
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.0/masonry.pkgd.min.js" integrity="sha256-YFADoQJIYFj+isdXssMGUrmsVNbVDfN5m8jPgVN+9m4=" crossorigin="anonymous"></script>
+
+<script> 
+    $(function() {
+        var $container = $('#cool-people');
+        $container.masonry({
+            itemSelector: '.person'
+        });
+    });
+</script>
 {% endblock %}
