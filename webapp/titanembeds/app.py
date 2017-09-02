@@ -1,15 +1,23 @@
 from config import config
-from database import db
+from .database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, discord_api, bot_alive
-import blueprints.api
-import blueprints.user
-import blueprints.admin
-import blueprints.embed
+from titanembeds.utils import rate_limiter, discord_api, bot_alive, socketio
+from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
 
+try:
+    import uwsgi
+    from gevent import monkey
+    monkey.patch_all()
+except:
+    if config.get("websockets-mode", None) == "eventlet":
+        import eventlet
+        eventlet.monkey_patch()
+    elif config.get("websockets-mode", None) == "gevent":
+        from gevent import monkey
+        monkey.patch_all()
 
 os.chdir(config['app-location'])
 app = Flask(__name__, static_folder="static")
@@ -23,11 +31,13 @@ app.secret_key = config['app-secret']
 db.init_app(app)
 rate_limiter.init_app(app)
 sslify = SSLify(app, permanent=True)
+socketio.init_app(app, message_queue=config["redis-uri"], path='gateway', async_mode=config.get("websockets-mode", None))
 
-app.register_blueprint(blueprints.api.api, url_prefix="/api", template_folder="/templates")
-app.register_blueprint(blueprints.admin.admin, url_prefix="/admin", template_folder="/templates")
-app.register_blueprint(blueprints.user.user, url_prefix="/user", template_folder="/templates")
-app.register_blueprint(blueprints.embed.embed, url_prefix="/embed", template_folder="/templates")
+app.register_blueprint(api.api, url_prefix="/api", template_folder="/templates")
+app.register_blueprint(admin.admin, url_prefix="/admin", template_folder="/templates")
+app.register_blueprint(user.user, url_prefix="/user", template_folder="/templates")
+app.register_blueprint(embed.embed, url_prefix="/embed", template_folder="/templates")
+socketio.on_namespace(gateway.Gateway('/gateway'))
 
 @app.route("/")
 def index():

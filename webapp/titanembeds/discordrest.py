@@ -145,6 +145,16 @@ class DiscordREST:
     # Webhook
     #####################
     
+    def create_webhook(self, channel_id, name, avatar=None):
+        _endpoint = "/channels/{channel_id}/webhooks".format(channel_id=channel_id)
+        payload = {
+            "name": name,
+        }
+        if avatar:
+            payload["avatar"] = avatar
+        r = self.request("POST", _endpoint, data=payload, json=True)
+        return r
+    
     def execute_webhook(self, webhook_id, webhook_token, username, avatar, content, wait=True):
         _endpoint = "/webhooks/{id}/{token}".format(id=webhook_id, token=webhook_token)
         if wait:
@@ -155,4 +165,9 @@ class DiscordREST:
             'username': username
         }
         r = self.request("POST", _endpoint, data=payload)
+        return r
+    
+    def delete_webhook(self, webhook_id, webhook_token):
+        _endpoint = "/webhooks/{id}/{token}".format(id=webhook_id, token=webhook_token)
+        r = self.request("DELETE", _endpoint)
         return r

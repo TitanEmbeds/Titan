@@ -43,10 +43,8 @@
       <ul id="guild-nav" class="side-nav">
         <li>
           <div class="userView">
-            {% if guild['icon'] %}
-            <img class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
-            {% endif %}
-            <span class="name">{{ guild['name']|e }}</span>
+            <img id="guild_icon" class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}" {% if not guild['icon'] %}style="display: none;"{% endif %}>
+            <span id="guild_name" class="name">{{ guild['name']|e }}</span>
           </div>
         </li>
 
@@ -116,13 +114,6 @@
           </div>
         </div>
       </div>
-    
-    <div id="focusmodal" class="modal">
-      <div class="modal-content">
-        <h4>This embed is currently unfocused.</h4>
-        <p class="flow-text">Please click this part of the page to initialize the embed.</p>
-      </div>
-    </div>
     
     <div id="userembedmodal" class="modal">
       <div class="modal-content">
@@ -197,6 +188,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jQuery-linkify/2.1.4/linkify.min.js" integrity="sha256-/qh8j6L0/OTx+7iY8BAeLirxCDBsu3P15Ci5bo7BJaU=" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jQuery-linkify/2.1.4/linkify-jquery.min.js" integrity="sha256-BlSfVPlZijMLojgte2AtSget879chk1+8Z8bEH/L4Cs=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cheet.js/0.3.3/cheet.min.js" integrity="sha256-FxQrnIC3BX45JRzOyFUlKiM6dY3A/ZakV6w4WpYyfyA=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" integrity="sha256-sdmLD9jD1PIzq3KOQPNSGZYxjv76rds79Mnyk5JNp1M=" crossorigin="anonymous"></script>
 
     {% raw %}
     <script id="mustache_channellistings" type="text/template">

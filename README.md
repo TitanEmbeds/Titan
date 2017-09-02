@@ -1,5 +1,5 @@
 # Titan
-**Visit our website! [https://titanembeds.tk/](https://titanembeds.tk/) And get started *right away*!**
+**Visit our website! [https://titanembeds.com/](https://titanembeds.com/) And get started *right away*!**
 
 There was a time when Discord doesn't support embedding the chat on a webpage. But with Titan, you can! It is as simple as 1, 2, 3!
 1. Invite the bot to your server (You must have "Manage Server" permissions)
@@ -14,11 +14,11 @@ There was a time when Discord doesn't support embedding the chat on a webpage. B
 
 # Installation
 Would you like to run your own copy of Titan Embeds? There are two parts that integrate nicely together. The webapp (website) handles the frontend and communication with the database to retrieve server messages, etc. The discordbot (bot) handles the communcation
-between Discord's websockets and pushing out the data to the database for the webapp. Check out the respective folder for their installation (pay attention to the python versions!) instructions.
+between Discord's websockets and pushing out the data to the database for the webapp. Check out the respective folder for their installation instructions.
 
 # Database installation
 To set up the database for it to work with the webapp and the discordbot, one must use **alembic** to *migrate* their databases to the current database state. To do so, please follow these instructions.
-1. Install alembic with **Python 2.7's pip** `pip install alembic`
+1. Install alembic with **Python 3.5's pip** `pip install alembic`
 2. Change your directory to the webapp where the alembic files are located `cd webapp`
 3. Clone `alembic.example.ini` into your own `alembic.ini` file to find and edit the following line `sqlalchemy.url` to equal your database uri. [See here](http://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls) if you need help understanding how database uri works in SQLalchemy.
 4. In your terminal, run `alembic upgrade head` to upgrade your database tables to the current version on git. As long as there are only *INFO* messages and no errors, you should be fine.

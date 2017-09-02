@@ -9,17 +9,13 @@ cp ~/workspace/webapp/config.example.py ~/workspace/webapp/config.py
 cp ~/workspace/discordbot/config.example.py ~/workspace/discordbot/config.py
 cp ~/workspace/webapp/alembic.example.ini ~/workspace/webapp/alembic.ini
 
-echo "[C9Setup] Installing discordbot dependencies"
-cd ~/workspace/discordbot/
+echo "[C9Setup] Installing Titan dependencies"
+cd ~/workspace/
 sudo python3.5 -m pip install -r requirements.txt
-sudo python3.5 -m pip install pymysql
-
-echo "[C9Setup] Installing webapp dependencies"
-cd ~/workspace/webapp
-sudo pip install -r requirements.txt
-sudo pip install alembic pymysql
+sudo python3.5 -m pip install alembic pymysql eventlet uwsgi
 
 echo "[C9Setup] Auto populating alembic.ini database url and titan database table"
+cd ~/workspace/webapp
 #sqlalchemy.url =  mysql+pymysql://root@localhost/titan
 sed -i '32s/.*/sqlalchemy.url =  mysql+pymysql:\/\/root@localhost\/titan/' ~/workspace/webapp/alembic.ini
 alembic upgrade head
@@ -34,6 +30,7 @@ sed -i "11s/.*/\'database-uri\': \"mysql+pymysql:\/\/root@localhost\/titan\",/" 
 sed -i "8s/.*/\'app-location\': \"\/home\/ubuntu\/workspace\/webapp\/\",/" ~/workspace/webapp/config.py
 
 echo "[C9Setup] Making sure everything can be ran"
+cd ~/workspace/
 sudo chmod -R 777 *
 
 echo "------------------------------"

@@ -63,6 +63,19 @@
             </div>
 
             <br>
+            
+            <p class="flow-text">Toggle Webhooks Messages</p>
+            <p>Instead of sending user messages directly from the Titan bot, webhook messages allows Titan to take advantage of the built-in webhooks to create messages that looks more real. Reading messages in Discord can be <a href="{{ url_for('static', filename='img/webhook_comparison.png') }}" target="_blank" title="A quick comparison between having webhook messages enabled vs disabled for a text channel">20% more cooler</a>!</p>
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="webhook_messages" name="webhook_messages" {% if guild['webhook_messages'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
+
+            <br>
 
             <p class="flow-text">Chat Links</p>
             <div class="switch">
@@ -177,8 +190,6 @@
 {% include 'card_commands.html.j2' %}
 
 {% include 'card_queryparams.html.j2' %}
-
-{% include 'card_webhookmsgs.html.j2' %}
 
 {% endblock %}
 {% block script %}

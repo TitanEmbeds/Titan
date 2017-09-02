@@ -16,6 +16,15 @@ $('#visitor_view').change(function() {
     });
 });
 
+$('#webhook_messages').change(function() {
+    var pathname = window.location.pathname;
+    var checked = $(this).is(':checked')
+    var payload = {"webhook_messages": checked}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated webhook messages setting!', 2000)
+    });
+});
+
 $('#chat_links').change(function() {
     var pathname = window.location.pathname;
     var checked = $(this).is(':checked')
