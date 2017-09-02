@@ -100,6 +100,8 @@ def get_online_discord_users(guild_id, embed):
             for role in mem_roles:
                 if role["color"] != 0:
                     member["color"] = '{0:02x}'.format(role["color"]) #int to hex
+                    while len(member["color"]) < 6:
+                        member["color"] = "0" + member["color"]
                 if role["hoist"]:
                     member["hoist-role"] = {}
                     member["hoist-role"]["name"] = role["name"]

@@ -28,6 +28,7 @@
     var unauthenticated_users_list = []; // List of all guest users
     var discord_users_list = []; // List of all discord users that are probably online
     var guild_channels_list = []; // guild channels, but as a list of them
+    var shift_pressed = false; // Track down if shift pressed on messagebox
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -227,8 +228,10 @@
         });
         
         primeEmbed();
-        
         setInterval(send_socket_heartbeat, 5000);
+        if (getParameterByName("username")) {
+            $("#custom_username_field").val(getParameterByName("username"));
+        }
     });
     
     function changeTheme(theme=null, keep_custom_css=true) {
@@ -875,12 +878,21 @@
             }
         }
     });
+    
+    $("#messagebox").keyup(function (event) {
+        if (event.keyCode == 16) {
+            shift_pressed = false;
+        }
+    });
 
-    $("#messagebox").keyup(function(event){
+    $("#messagebox").keydown(function(event){
         if ($(this).val().length == 1) {
             $(this).val($.trim($(this).val()));
         }
-        if(event.keyCode == 13 && $(this).val().length >= 1 && $(this).val().length <= 350) {
+        if (event.keyCode == 16) {
+            shift_pressed = true;
+        }
+        if(event.keyCode == 13 && !shift_pressed && $(this).val().length >= 1 && $(this).val().length <= 350) {
             $(this).val($.trim($(this).val()));
             $(this).blur();
             $("#messagebox").attr('readonly', true);

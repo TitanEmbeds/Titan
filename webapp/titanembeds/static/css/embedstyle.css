@@ -289,6 +289,10 @@ body > div.navbar-fixed > nav > div {
   background-color: #546e7a;
 }
 
+.modal-overlay {
+  height: auto;
+}
+
 .betatag {
   font-variant: small-caps;
   font-size: 15px;
@@ -373,6 +377,16 @@ a {
   margin-left: auto;
   display: block;
   width: 305px;
+}
+
+#visitor_mode_message_note {
+  display: none;
+}
+
+@media only screen and (min-width: 400px) {
+  #visitor_mode_message_note {
+    display: inline;
+  }
 }
 
 #focusmodal {
