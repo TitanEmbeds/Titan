@@ -318,6 +318,7 @@
     function initialize_embed(guildobj) {
         if (socket) {
             socket.disconnect();
+            socket = null;
         }
         if (guildobj === undefined) {
             var guild = query_guild();
@@ -856,8 +857,9 @@
                     if (socket) {
                         run_fetch_routine();
                         socket.disconnect();
-                        initiate_websockets();
+                        socket = null;
                     }
+                    initiate_websockets();
                 });
                 usr.fail(function(data) {
                     if (data.status == 429) {
@@ -938,12 +940,13 @@
         });
         
         socket.on("disconnect", function () {
-            socket = null;
+            
         });
         
         socket.on("revoke", function () {
+            socket.disconnect();
+            socket = null;
             $('#loginmodal').modal('open');
-            setVisitorMode(true);
             primeEmbed();
             Materialize.toast('Authentication error! You have been disconnected by the server.', 10000);
         });
