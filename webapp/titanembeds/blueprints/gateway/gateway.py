@@ -36,7 +36,7 @@ class Gateway(Namespace):
                 emit("embed_user_connect", {"unauthenticated": True, "username": session["username"], "discriminator": session["user_id"]}, room="GUILD_"+guild_id)
             else:
                 nickname = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == session["user_id"]).first().nickname
-                emit("embed_user_connect", {"unauthenticated": False, "id": session["user_id"], "nickname": nickname, "discriminator": session["discriminator"], "avatar_url": session["avatar"]}, room="GUILD_"+guild_id)
+                emit("embed_user_connect", {"unauthenticated": False, "id": session["user_id"], "nickname": nickname, "username": session["username"],"discriminator": session["discriminator"], "avatar_url": session["avatar"]}, room="GUILD_"+guild_id)
         emit("identified")
     
     def on_disconnect(self):
