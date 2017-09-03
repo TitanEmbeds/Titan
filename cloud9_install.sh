@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-echo "[C9Setup] Installing mysql, and creating titan db table"
+echo "[C9Setup] Installing mysql, redis, and creating titan db table"
 cd ~/workspace/
 mysql-ctl start
 mysql -u root -e "CREATE DATABASE titan;"
+sudo service redis-server start
 
 echo "[C9Setup] Copying config.py for webapp/discordbot and alembic.ini"
 cp ~/workspace/webapp/config.example.py ~/workspace/webapp/config.py
