@@ -20,14 +20,14 @@ def set_keyvalproperty(key, value, expiration=None):
 def get_keyvalproperty(key):
     q = db.session.query(KeyValueProperties).filter(KeyValueProperties.key == key)
     now = datetime.now()
-    if q.count() > 0 and (q.first().expiration.replace(tzinfo=None) is None or q.first().expiration.replace(tzinfo=None) > now.replace(tzinfo=None)):
+    if q.count() > 0 and (q.first().expiration is None or q.first().expiration.replace(tzinfo=None) > now.replace(tzinfo=None)):
         return q.first().value
     return None
 
 def getexpir_keyvalproperty(key):
     q = db.session.query(KeyValueProperties).filter(KeyValueProperties.key == key)
     now = datetime.now()
-    if q.count() > 0 and (q.first().expiration.replace(tzinfo=None) is not None and q.first().expiration.replace(tzinfo=None) > now.replace(tzinfo=None)):
+    if q.count() > 0 and (q.first().expiration is not None and q.first().expiration.replace(tzinfo=None) > now.replace(tzinfo=None)):
         return int(q.first().expiration.strftime('%s'))
     return 0
 
