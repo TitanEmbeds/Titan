@@ -50,7 +50,7 @@ class CommandCog:
 
 
 class Titan(commands.Bot):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, command_prefix=commands.when_mentioned, **kwargs)
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
