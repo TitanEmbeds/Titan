@@ -5,7 +5,7 @@ requests_oauthlib
 Flask-SSLify
 flask_socketio
 paypalrestsdk
-https://github.com/TitanEmbeds/discord.py/archive/async.zip#egg=discord.py[voice]
+discord.py
 asyncio_extras
 kombu
 redis
