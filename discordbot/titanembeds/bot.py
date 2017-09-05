@@ -190,7 +190,7 @@ class Titan(discord.Client):
     async def on_server_role_update(self, rolebefore, roleafter):
         await self.wait_until_dbonline()
         await self.database.update_guild(roleafter.server)
-        await self.socketio.on_guild_role_update(role)
+        await self.socketio.on_guild_role_update(roleafter)
 
     async def on_channel_delete(self, channel):
         await self.wait_until_dbonline()
