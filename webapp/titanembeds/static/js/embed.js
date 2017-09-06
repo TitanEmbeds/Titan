@@ -9,6 +9,7 @@
 /* global cheet */
 /* global location */
 /* global io */
+/* global twemoji */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -672,6 +673,18 @@
         }
         var rendered = Mustache.render(template, {"id": "$2", "name": "$1"}).trim();
         message.content = message.content.replace(/&lt;:(.*?):(.*?)&gt;/g, rendered);
+        message.content = twemoji.parse(message.content, {
+            className: "message_emoji",
+            callback: function(icon, options, variant) { // exclude special characters
+                switch (icon) {
+                    case 'a9':      // © copyright
+                    case 'ae':      // ® registered trademark
+                    case '2122':    // ™ trademark
+                        return false;
+                }
+                return ''.concat(options.base, options.size, '/', icon, options.ext);
+            }
+        });
         return message;
     }
     
