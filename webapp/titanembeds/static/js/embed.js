@@ -698,6 +698,8 @@
             message = parse_message_time(message);
             message = parse_message_attachments(message);
             message = parse_channels_in_message(message);
+            message.content = message.content.replaceAll("\\<", "<");
+            message.content = message.content.replaceAll("\\>", ">");
             message.content = escapeHtml(message.content);
             message.content = parse_message_markdown(message.content);
             message = parse_emoji_in_message(message);
