@@ -7,13 +7,14 @@ import aiohttp
 import asyncio
 import sys
 import logging
+import json
 logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
 class Titan(discord.Client):
     def __init__(self):
-        super().__init__()
+        super().__init__(max_messages=20000)
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
@@ -244,3 +245,35 @@ class Titan(discord.Client):
     async def on_webhooks_update(self, server):
         await self.wait_until_dbonline()
         await self.database.update_guild(server)
+
+    async def on_socket_raw_receive(self, msg):
+        if type(msg) is not str:
+            return
+        msg = json.loads(msg)
+        if msg["op"] != 0:
+            return
+        action = msg["t"]
+        await asyncio.sleep(1)
+        if action == "MESSAGE_UPDATE":
+            if not self.in_messages_cache(msg["d"]["id"]):
+                channel = self.get_channel(msg["d"]["channel_id"])
+                message = await self.get_message(channel, msg["d"]["id"])
+                await self.on_message_edit(None, message)
+        if action == "MESSAGE_DELETE":
+            if not self.in_messages_cache(msg["d"]["id"]):
+                await self.process_raw_message_delete(msg["d"]["id"], msg["d"]["channel_id"])
+        if action == "MESSAGE_DELETE_BULK":
+            for msgid in msg["d"]["ids"]:
+                if not self.in_messages_cache(msgid):
+                    await self.process_raw_message_delete(msgid, msg["d"]["channel_id"])
+    
+    async def process_raw_message_delete(self, msg_id, channel_id):
+        channel = self.get_channel(channel_id)
+        msg = discord.Message(channel=channel, reactions=[], id=msg_id, type=0, timestamp="2017-01-15T02:59:58", content="What fun is there in making sense?") # Procreate a fake message object
+        await self.on_message_delete(msg)
+    
+    def in_messages_cache(self, msg_id):
+        for msg in self.messages:
+            if msg.id == msg_id:
+                return True
+        return False
