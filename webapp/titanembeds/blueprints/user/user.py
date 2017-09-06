@@ -231,7 +231,7 @@ def add_bot(guild_id):
 def prepare_guild_members_list(members, bans):
     all_users = []
     ip_pool = []
-    members = sorted(members, key=lambda k: datetime.datetime.strptime(str(k.last_timestamp.replace(tzinfo=None)), "%Y-%m-%d %H:%M:%S"), reverse=True)
+    members = sorted(members, key=lambda k: datetime.datetime.strptime(str(k.last_timestamp.replace(tzinfo=None, microsecond=0)), "%Y-%m-%d %H:%M:%S"), reverse=True)
     for member in members:
         user = {
             "id": member.id,
