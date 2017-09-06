@@ -670,6 +670,8 @@
             var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name}).trim();
             message.content = message.content.replaceAll(emoji_format, rendered);
         }
+        var rendered = Mustache.render(template, {"id": "$2", "name": "$1"}).trim();
+        message.content = message.content.replace(/&lt;:(.*?):(.*?)&gt;/g, rendered);
         return message;
     }
     
