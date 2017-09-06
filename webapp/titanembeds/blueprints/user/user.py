@@ -63,9 +63,6 @@ def logout():
 @discord_users_only()
 def dashboard():
     guilds = get_user_managed_servers()
-    if not guilds:
-        session["redirect"] = url_for("user.dashboard")
-        return redirect(url_for("user.logout"))
     error = request.args.get("error")
     if session["redirect"] and not (error and error == "access_denied"):
         redir = session['redirect']
