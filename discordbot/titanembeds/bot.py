@@ -98,7 +98,10 @@ class Titan(discord.Client):
                 await self.database.update_guild(server)
                 if server.large:
                     await self.request_offline_members(server)
-                server_bans = await self.get_bans(server)
+                if server.me.server_permissions.ban_members:
+                    server_bans = await self.get_bans(server)
+                else:
+                    server_bans = []
                 for member in server.members:
                     banned = member.id in [u.id for u in server_bans]
                     await self.database.update_guild_member(
@@ -113,17 +116,6 @@ class Titan(discord.Client):
             print("Skipping indexing server due to no-init flag")
 
     async def on_message(self, message):
-        crashChar = 'ौौौौ'
-        if crashChar in message.content:
-            try:
-                await bot.delete_message(message)
-                await bot.send_message(message.channel,
-                                       "**I've delete a message posted by {} because it contained characters which crashes discord. I've also banned him.**".format(
-                                           message.author.name + "#" + message.author.discriminator + "(ID: " + message.author.id + ")"))
-                await message.server.ban(message.author, "Causing discord to crash because of weird characters.")
-            except:
-                pass
-            return
         await self.wait_until_dbonline()
         await self.database.push_message(message)
         await self.socketio.on_message(message)
@@ -149,21 +141,18 @@ class Titan(discord.Client):
 
     async def on_server_join(self, guild):
         await self.wait_until_dbonline()
-        await asyncio.sleep(1)
-        if not guild.me.server_permissions.administrator:
-            await asyncio.sleep(1)
-            await self.leave_server(guild)
-            return
-
         await self.database.update_guild(guild)
         for channel in guild.channels:
+            if not channel.permissions_for(channel.server.me).read_messages:
+                continue
             async for message in self.logs_from(channel, limit=50, reverse=True):
                 await self.database.push_message(message)
         for member in guild.members:
             await self.database.update_guild_member(member, True, False)
-        banned = await self.get_bans(guild)
-        for ban in banned:
-            await self.database.update_guild_member(ban, False, True)
+        if guild.me.server_permissions.ban_members:
+            banned = await self.get_bans(guild)
+            for ban in banned:
+                await self.database.update_guild_member(ban, False, True)
 
     async def on_server_remove(self, guild):
         await self.wait_until_dbonline()
