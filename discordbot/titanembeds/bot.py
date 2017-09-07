@@ -9,6 +9,7 @@ import sys
 import logging
 import json
 logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+handler = logging.FileHandler(config.get("logging-location", "titanbot.log"))
 logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
