@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html prefix="og: http://ogp.me/ns#">
   <head>
     <!--Import Google Icon Font-->
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -12,6 +12,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     
     {% include 'seo_meta.html.j2' %}
+    {% with title="Visit " + guild['name'] + " embed", description="Visit " + guild['name'] + " on Titan Embeds and chat with your friends from the comfort of your own website. This page is 100% embeddable, iFrameable and looks good on any webpages. Titan is hassle free and designed as easy to setup!", image=generate_guild_icon( guild['id'], guild['icon']) %}
+      {% include "opengraph_tags.html.j2" %}
+    {% endwith %}
 
     <title>{{ guild['name'] }} - Embed - Titan Embeds for Discord</title>
     {% include 'google_analytics.html.j2' %}
@@ -21,6 +24,7 @@
     {% endif %}
   </head>
   <body>
+    {% include 'nobot_header.html.j2' %}
     <div class="navbar-fixed">
       <nav>
         <div class="nav-wrapper">
@@ -39,10 +43,8 @@
       <ul id="guild-nav" class="side-nav">
         <li>
           <div class="userView">
-            {% if guild['icon'] %}
-            <img class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
-            {% endif %}
-            <span class="name">{{ guild['name']|e }}</span>
+            <img id="guild_icon" class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}" {% if not guild['icon'] %}style="display: none;"{% endif %}>
+            <span id="guild_name" class="name">{{ guild['name']|e }}</span>
           </div>
         </li>
 
@@ -76,6 +78,7 @@
 
       <div id="loginmodal" class="modal">
         <div class="modal-content">
+          {% include 'nobot_header.html.j2' %}
           <h4>{{ login_greeting }}</h4>
           <div id="loginmodal-maincontent" class="row valign-wrap">
             <div id="modal_guildinfobox" class="col m3 s12 center-align">
@@ -112,15 +115,18 @@
         </div>
       </div>
     
-    <div id="focusmodal" class="modal">
-      <div class="modal-content">
-        <h4>This embed is currently unfocused.</h4>
-        <p class="flow-text">Please click this part of the page to initialize the embed.</p>
-      </div>
-    </div>
-    
     <div id="userembedmodal" class="modal">
       <div class="modal-content">
+        {% if unauth_enabled %}
+        <h4>Change Username</h4>
+        <div class="row">
+            <div>
+              <p>(Guests Accounts Only)</p>
+              <input id="change_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% else %}disabled{% endif %}>
+              <label class="active" for="change_username_field">Change your username (Hit ENTER/RETURN key to confirm)</label>
+            </div>
+        </div>
+        {% endif %}
         <h4>Theme</h4>
         <div class="row">
           <div class="input-field col s12">
@@ -129,7 +135,20 @@
               <option value="DiscordDark">DiscordDark</option>
               <option value="BetterTitan">BetterTitan</option>
             </select>
+            <p>
+              <input type="checkbox" class="filled-in" id="overwrite_theme_custom_css_checkbox" checked="checked" />
+              <label for="overwrite_theme_custom_css_checkbox">Overwrite Current Embed Theme w/ User CSS</label>
+            </p>
           </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="emoji-picker">
+      <div id="emoji-picker-content">
+        <div class="row">
+          <h6>Server Emoji</h6>
+          <div id="emoji-picker-emojis"></div>
         </div>
       </div>
     </div>
@@ -146,12 +165,18 @@
           </div>
         </div>
       </div>
+      <div id="emoji-tray-toggle">
+        <a class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">tag_faces</i></a>
+      </div>
       <div id="footercontainer" class="footercontainer">
         <div class="currentuserchip left" id="nameplate">
           <div class="left"><img id="currentuserimage" src="" class="circle left currentuserimage" style="display: none;"></div>
           <div id="currentusername" class="currentusername left"><span id="curuser_name">Titan</span><span id="curuser_discrim">#0001</span></div>
         </div>
-        <div id="messageboxouter" class="input-field inline"><textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea" rows="1"></textarea></div>
+        <div id="messageboxouter" class="input-field inline">
+          <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea" rows="1"></textarea>
+          <span id="visitor_mode_message" style="display:none;"><span id="visitor_mode_message_note">Please login to post a message.</span> <a id="visitor_login_btn" class="waves-effect waves-light btn">Login</a></span>
+        </div>
       </div>
     </footer>
 
@@ -162,6 +187,9 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jQuery-linkify/2.1.4/linkify.min.js" integrity="sha256-/qh8j6L0/OTx+7iY8BAeLirxCDBsu3P15Ci5bo7BJaU=" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jQuery-linkify/2.1.4/linkify-jquery.min.js" integrity="sha256-BlSfVPlZijMLojgte2AtSget879chk1+8Z8bEH/L4Cs=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cheet.js/0.3.3/cheet.min.js" integrity="sha256-FxQrnIC3BX45JRzOyFUlKiM6dY3A/ZakV6w4WpYyfyA=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" integrity="sha256-sdmLD9jD1PIzq3KOQPNSGZYxjv76rds79Mnyk5JNp1M=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/2.5.0/2/twemoji.min.js" integrity="sha256-t5bxASdQ5tDbKQZy330h/YufCiZg82xG8PqIYzFpwhU=" crossorigin="anonymous"></script>
 
     {% raw %}
     <script id="mustache_channellistings" type="text/template">
@@ -177,17 +205,22 @@
     </script>
 
     <script id="mustache_usermessage" type="text/template">
-      <p><span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatusername">{{username}}#{{discriminator}}</span> <span class="chatmessage">{{{content}}}</span></p>
+      <p><span class="chatusername">{{username}}#{{discriminator}}</span> <span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatmessage">{{{content}}}</span></p>
     </script>
 
     <script id="mustache_memberrole" type="text/template">
       <li><a class="subheader role-title">{{name}}</a></li>
+    </script>
+
+    <script id="mustache_message_emoji" type="text/template">
+      <img class="message_emoji tooltipped" src='https://cdn.discordapp.com/emojis/{{id}}.png' data-position="top" data-delay="200" data-tooltip=":{{name}}:" />
     </script>
     {% endraw %}
 
     <script>
         const guild_id = "{{ guild_id }}";
         const bot_client_id = "{{ client_id }}";
+        const visitors_enabled = {% if visitors_enabled %}true{% else %}false{% endif %};
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>

@@ -1,22 +1,29 @@
 from config import config
 from titanembeds.database import DatabaseInterface
 from titanembeds.commands import Commands
+from titanembeds.socketio import SocketIOInterface
 import discord
 import aiohttp
 import asyncio
 import sys
 import logging
+import json
 logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+handler = logging.FileHandler(config.get("logging-location", "titanbot.log"))
 logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
 
 class Titan(discord.Client):
     def __init__(self):
-        super().__init__()
+        super().__init__(max_messages=20000)
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
         self.command = Commands(self, self.database)
+        self.socketio = SocketIOInterface(self, config["redis-uri"])
+        
+        self.database_connected = False
+        self.loop.create_task(self.send_webserver_heartbeat())
 
     def _cleanup(self):
         try:
@@ -31,6 +38,29 @@ class Titan(discord.Client):
             gathered.exception()
         except: # Can be ignored
             pass
+    
+    async def wait_until_dbonline(self):
+        while not self.database_connected:
+            await asyncio.sleep(1) # Wait until db is connected
+    
+    async def send_webserver_heartbeat(self):
+        await self.wait_until_ready()
+        await self.wait_until_dbonline()
+        last_db_conn_status = False
+        while not self.is_closed:
+            try:
+                await self.database.send_webserver_heartbeat()
+                self.database_connected = True
+            except:
+                self.database_connected = False
+            if last_db_conn_status != self.database_connected and config.get("errorreporting-channelid"):
+                error_channel = self.get_channel(config["errorreporting-channelid"])
+                if self.database_connected:
+                    await self.send_message(error_channel, "Titan has obtained connection to the database!")
+                else:
+                    await self.send_message(error_channel, "Titan has lost connection to the database! Don't panic!! We'll sort this out... hopefully soon.")
+                last_db_conn_status = self.database_connected
+            await asyncio.sleep(60)
 
     def run(self):
         try:
@@ -52,11 +82,12 @@ class Titan(discord.Client):
         print('------')
 
         await self.change_presence(
-            game=discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.tk/"), status=discord.Status.online
+            game=discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.com/"), status=discord.Status.online
         )
 
         try:
-            await self.database.connect(config["database-uri"] + "?charset=utf8mb4")
+            await self.database.connect(config["database-uri"])
+            self.database_connected = True
         except Exception:
             self.logger.error("Unable to connect to specified database!")
             traceback.print_exc()
@@ -68,7 +99,10 @@ class Titan(discord.Client):
                 await self.database.update_guild(server)
                 if server.large:
                     await self.request_offline_members(server)
-                server_bans = await self.get_bans(server)
+                if server.me.server_permissions.ban_members:
+                    server_bans = await self.get_bans(server)
+                else:
+                    server_bans = []
                 for member in server.members:
                     banned = member.id in [u.id for u in server_bans]
                     await self.database.update_guild_member(
@@ -83,7 +117,9 @@ class Titan(discord.Client):
             print("Skipping indexing server due to no-init flag")
 
     async def on_message(self, message):
+        await self.wait_until_dbonline()
         await self.database.push_message(message)
+        await self.socketio.on_message(message)
 
         msg_arr = message.content.split() # split the message
         if len(message.content.split()) > 1 and message.server: #making sure there is actually stuff in the message and have arguments and check if it is sent in server (not PM)
@@ -95,75 +131,139 @@ class Titan(discord.Client):
                     await getattr(self.command, msg_cmd)(message) #actually run cmd, passing in msg obj
 
     async def on_message_edit(self, message_before, message_after):
+        await self.wait_until_dbonline()
         await self.database.update_message(message_after)
+        await self.socketio.on_message_update(message_after)
 
     async def on_message_delete(self, message):
+        await self.wait_until_dbonline()
         await self.database.delete_message(message)
+        await self.socketio.on_message_delete(message)
 
     async def on_server_join(self, guild):
-        await asyncio.sleep(1)
-        if not guild.me.server_permissions.administrator:
-            await asyncio.sleep(1)
-            await self.leave_server(guild)
-            return
-
+        await self.wait_until_dbonline()
         await self.database.update_guild(guild)
         for channel in guild.channels:
+            if not channel.permissions_for(channel.server.me).read_messages:
+                continue
             async for message in self.logs_from(channel, limit=50, reverse=True):
                 await self.database.push_message(message)
         for member in guild.members:
             await self.database.update_guild_member(member, True, False)
-        banned = await self.get_bans(guild)
-        for ban in banned:
-            await self.database.update_guild_member(ban, False, True)
+        if guild.me.server_permissions.ban_members:
+            banned = await self.get_bans(guild)
+            for ban in banned:
+                await self.database.update_guild_member(ban, False, True)
 
     async def on_server_remove(self, guild):
+        await self.wait_until_dbonline()
         await self.database.remove_guild(guild)
 
     async def on_server_update(self, guildbefore, guildafter):
+        await self.wait_until_dbonline()
         await self.database.update_guild(guildafter)
+        await self.socketio.on_guild_update(guildafter)
 
     async def on_server_role_create(self, role):
+        await self.wait_until_dbonline()
         if role.name == self.user.name and role.managed:
             await asyncio.sleep(2)
         await self.database.update_guild(role.server)
+        await self.socketio.on_guild_role_create(role)
 
     async def on_server_role_delete(self, role):
+        await self.wait_until_dbonline()
         if role.server.me not in role.server.members:
             return
         await self.database.update_guild(role.server)
+        await self.socketio.on_guild_role_delete(role)
 
     async def on_server_role_update(self, rolebefore, roleafter):
+        await self.wait_until_dbonline()
         await self.database.update_guild(roleafter.server)
+        await self.socketio.on_guild_role_update(roleafter)
 
     async def on_channel_delete(self, channel):
+        await self.wait_until_dbonline()
         await self.database.update_guild(channel.server)
+        await self.socketio.on_channel_delete(channel)
 
     async def on_channel_create(self, channel):
+        await self.wait_until_dbonline()
         await self.database.update_guild(channel.server)
+        await self.socketio.on_channel_create(channel)
 
     async def on_channel_update(self, channelbefore, channelafter):
+        await self.wait_until_dbonline()
         await self.database.update_guild(channelafter.server)
+        await self.socketio.on_channel_update(channelafter)
 
     async def on_member_join(self, member):
+        await self.wait_until_dbonline()
         await self.database.update_guild_member(member, active=True, banned=False)
+        await self.socketio.on_guild_member_add(member)
 
     async def on_member_remove(self, member):
+        await self.wait_until_dbonline()
         await self.database.update_guild_member(member, active=False, banned=False)
+        await self.socketio.on_guild_member_remove(member)
 
     async def on_member_update(self, memberbefore, memberafter):
+        await self.wait_until_dbonline()
         await self.database.update_guild_member(memberafter)
+        await self.socketio.on_guild_member_update(memberafter)
 
     async def on_member_ban(self, member):
+        await self.wait_until_dbonline()
         if self.user.id == member.id:
             return
         await self.database.update_guild_member(member, active=False, banned=True)
 
     async def on_member_unban(self, server, user):
+        await self.wait_until_dbonline()
         await self.database.unban_server_user(user, server)
     
     async def on_server_emojis_update(self, before, after):
+        await self.wait_until_dbonline()
         if len(after) == 0:
             await self.database.update_guild(before[0].server)
+            await self.socketio.on_guild_emojis_update(before)
         else:
             await self.database.update_guild(after[0].server)
+            await self.socketio.on_guild_emojis_update(after)
+            
+    async def on_webhooks_update(self, server):
+        await self.wait_until_dbonline()
+        await self.database.update_guild(server)
+
+    async def on_socket_raw_receive(self, msg):
+        if type(msg) is not str:
+            return
+        msg = json.loads(msg)
+        if msg["op"] != 0:
+            return
+        action = msg["t"]
+        await asyncio.sleep(1)
+        if action == "MESSAGE_UPDATE":
+            if not self.in_messages_cache(msg["d"]["id"]):
+                channel = self.get_channel(msg["d"]["channel_id"])
+                message = await self.get_message(channel, msg["d"]["id"])
+                await self.on_message_edit(None, message)
+        if action == "MESSAGE_DELETE":
+            if not self.in_messages_cache(msg["d"]["id"]):
+                await self.process_raw_message_delete(msg["d"]["id"], msg["d"]["channel_id"])
+        if action == "MESSAGE_DELETE_BULK":
+            for msgid in msg["d"]["ids"]:
+                if not self.in_messages_cache(msgid):
+                    await self.process_raw_message_delete(msgid, msg["d"]["channel_id"])
+    
+    async def process_raw_message_delete(self, msg_id, channel_id):
+        channel = self.get_channel(channel_id)
+        msg = discord.Message(channel=channel, reactions=[], id=msg_id, type=0, timestamp="2017-01-15T02:59:58", content="What fun is there in making sense?") # Procreate a fake message object
+        await self.on_message_delete(msg)
+    
+    def in_messages_cache(self, msg_id):
+        for msg in self.messages:
+            if msg.id == msg_id:
+                return True
+        return False

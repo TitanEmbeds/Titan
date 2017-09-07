@@ -7,6 +7,24 @@ $('#unauth_users').change(function() {
     });
 });
 
+$('#visitor_view').change(function() {
+    var pathname = window.location.pathname;
+    var checked = $(this).is(':checked')
+    var payload = {"visitor_view": checked}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated visitor mode setting!', 2000)
+    });
+});
+
+$('#webhook_messages').change(function() {
+    var pathname = window.location.pathname;
+    var checked = $(this).is(':checked')
+    var payload = {"webhook_messages": checked}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated webhook messages setting!', 2000)
+    });
+});
+
 $('#chat_links').change(function() {
     var pathname = window.location.pathname;
     var checked = $(this).is(':checked')

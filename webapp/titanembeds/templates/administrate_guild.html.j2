@@ -1,5 +1,5 @@
 {% extends 'site_layout.html.j2' %}
-{% block title %}Administrate Guild: {{ guild['name'] }}{% endblock %}
+{% set title="Administrate Guild: " + guild['name'] %}
 
 {% block additional_head_elements %}
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/administrate_guild.css') }}">
@@ -44,6 +44,32 @@
               <label>
                 Disable
                 <input type="checkbox" id="unauth_users" name="unauth_users" {% if guild['unauth_users'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
+            
+            <br>
+
+            <p class="flow-text">Toggle Visitor Mode</p>
+            <p>Visitors are able to view the channels that @everyone has access to. However, they are not able to send messages until they login using the usual methods.</p>
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="visitor_view" name="visitor_view" {% if guild['visitor_view'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
+
+            <br>
+            
+            <p class="flow-text">Toggle Webhooks Messages</p>
+            <p>Instead of sending user messages directly from the Titan bot, webhook messages allows Titan to take advantage of the built-in webhooks to create messages that looks more real. Reading messages in Discord can be <a href="{{ url_for('static', filename='img/webhook_comparison.png') }}" target="_blank" title="A quick comparison between having webhook messages enabled vs disabled for a text channel">20% more cooler</a>!</p>
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="webhook_messages" name="webhook_messages" {% if guild['webhook_messages'] %}checked{% endif %}  >
                 <span class="lever"></span>
                 Enable
               </label>
@@ -160,6 +186,11 @@
     {% endif %}
 
     </div>
+<br><hr>
+{% include 'card_commands.html.j2' %}
+
+{% include 'card_queryparams.html.j2' %}
+
 {% endblock %}
 {% block script %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/administrate_guild.js') }}"></script>

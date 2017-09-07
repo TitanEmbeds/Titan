@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
-from titanembeds.app import app
+from titanembeds.app import app, socketio
+import subprocess
 
 def init_debug():
     import os
@@ -30,6 +31,14 @@ def init_debug():
             decoded = None
         return jsonify(session_cookie=decoded)
 
+    @app.route("/github-update", methods=["POST"])
+    def github_update():
+        try:
+            subprocess.Popen("git pull", shell=True).wait()
+        except OSError:
+            return "ERROR"
+
+        return "OK"
 if __name__ == "__main__":
     init_debug()
-    app.run(host="0.0.0.0",port=3000,debug=True,processes=3)
+    socketio.run(app, host="0.0.0.0",port=3000,debug=True)

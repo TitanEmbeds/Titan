@@ -1,54 +1,121 @@
+@font-face {
+    font-family: Whitney;
+    font-style: light;
+    font-weight: 300;
+    src: url("/static/fonts/whitney_light.woff") format("woff");
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: normal;
+    font-weight: 500;
+    src: url("/static/fonts/whitney_normal.woff") format("woff");
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: medium;
+    font-weight: 600;
+    src: url("/static/fonts/whitney_medium.woff") format("woff");
+}
+
+@font-face {
+    font-family: Whitney;
+    font-style: bold;
+    font-weight: 700;
+    src: url("/static/fonts/whitney_bold.woff") format("woff");
+}
+
 html {
-background-color: #455a64;
-color: white;
+  background-color: #455a64;
+  color: white;
+  font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 main {
-min-height: calc(100vh - 80px);
-overflow-x: hidden;
+  min-height: calc(100vh - 80px);
+  overflow-x: hidden;
 }
 
 footer {
-position: fixed;
-bottom: 0;
-left: 0;
-right: 0;
-height: 50px;
-background-color: #37474f;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background-color: #37474f;
 }
 
 nav {
-background-color: #263238;
-background: linear-gradient(rgba(38, 50, 56, 1), rgba(255,0,0,0));
-box-shadow: none;
+  background-color: #263238;
+  background: linear-gradient(rgba(38, 50, 56, 1), rgba(255,0,0,0));
+  box-shadow: none;
 }
 
 nav .brand-logo {
-font-size: 1.5rem;
+  font-size: 1.5rem;
+}
+
+@media only screen and (min-width: 601px) {
+  nav a.button-collapse {
+    display: block;
+  }
+}
+
+body > div.navbar-fixed > nav > div {
+  background: #263238 background: -webkit-linear-gradient(#263238, #37474f, #455a64);
+  /* For Safari 5.1 to 6.0 */
+  
+  background: -o-linear-gradient(#263238, #37474f, #455a64);
+  /* For Opera 11.1 to 12.0 */
+  
+  background: -moz-linear-gradient(#263238, #37474f, #455a64);
+  /* For Firefox 3.6 to 15 */
+  
+  background: linear-gradient(#263238, #37474f, #455a64);
+  /* Standard syntax */
 }
 
 @media only screen and (min-width: 993px) {
-.container {
-  width: 85%;
-}
+  .container {
+    width: 85%;
+  }
 }
 
 .side-nav {
-color: white;
-background-color: #607d8b;
+  color: white;
+  background-color: #607d8b;
+  max-width: 95%;
 }
 
 .side-nav .userView .name {
-font-size: 20px;
+  font-size: 20px;
 }
 
 .side-nav li>a {
-color: #eceff1;
+  color: #eceff1;
 }
 
 .side-nav .subheader {
-color: #cfd8dc;
-font-variant: small-caps;
+  color: #cfd8dc;
+  font-variant: small-caps;
+}
+
+.side-nav div.divider {
+  background-color: #90a4ae;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#members-btn > i {
+    visibility: hidden;
+}
+
+#members-btn {
+    visibility: visible;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik0xIDFoMjR2MjRIMVYxeiIvPgogICAgPHBhdGggZmlsbD0iI0ZGRiIgZD0iTTE2Ljc3MjA3NTQgMTQuNjc5MTc3OGMtLjIyNDkwOTctLjIyNTY4ODYtLjQ3NDE1NzMtLjQzNTE2ODEtLjc0MjA3NTQtLjYyOTE3NzguMzUtLjAzLjY4LS4wNS45Ny0uMDUgMi4zMyAwIDcgMS4xNyA3IDMuNVYyMGgtNHYtMWMwLTEuODgxNjkxNC0xLjQwNzcwNTYtMy4zMjMwMTQzLTMuMjI3OTI0Ni00LjMyMDgyMjJ6bS0xLjQzODU3MzUtOC4xNzU4NTM0QzE1LjgwOTgwODIgNi4xODUyNTE3MyAxNi4zODI3ODQ1IDYgMTcgNmMxLjY2IDAgMi45OSAxLjM0IDIuOTkgM3MtMS4zMyAzLTIuOTkgM2MtLjYxNzE5MTQgMC0xLjE5MDE0NzEtLjE4NTIzNzMtMS42NjY0NDIzLS41MDMyODcyQzE1Ljc1NzQ4MzIgMTAuNzYyMTQwOTUgMTYgOS45MDk1NTYgMTYgOS4wMDAwNjY5M2MwLS45MDk1Mjg5Ni0uMjQyNTM4MS0xLjc2MjE0ODgtLjY2NjQ5ODEtMi40OTY3NDI1M3pNMTAgMTNjMi4yMSAwIDQtMS43OSA0LTRzLTEuNzktNC00LTQtNCAxLjc5LTQgNCAxLjc5IDQgNCA0em0wIDJjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+CiAgPC9nPgo8L3N2Zz4=);
+    background-repeat: no-repeat;
+    margin-top: 18px
 }
 
 .role-title {
@@ -57,71 +124,118 @@ font-variant: small-caps;
   font-size: 80% !important;
 }
 
-.divider {
-background-color: #90a4ae;
-}
-
 .channel-hash {
-font-size: 95%;
-color: #b0bec5;
+  font-size: 95%;
+  color: #b0bec5;
 }
 
 .membercircle {
-margin-top: 5px;
-height: 40px;
+  margin-top: 5px;
+  height: 40px;
 }
 
 .membername {
-position: absolute;
-padding-left: 10px;
+  position: absolute;
+  padding-left: 10px;
 }
 
-.chatcontent {
-padding-left: 1%;
-padding-top: 1%;
-padding-bottom: 40px;
-
-/* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
-/* These are technically the same, but use both */
-overflow-wrap: break-word;
-word-wrap: break-word;
-
--ms-word-break: break-all;
-/* This is the dangerous one in WebKit, as it breaks things wherever */
-word-break: break-all;
-/* Instead use this non-standard one: */
-word-break: break-word;
-
-/* Adds a hyphen where the word breaks, if supported (No Blink) */
--ms-hyphens: auto;
--moz-hyphens: auto;
--webkit-hyphens: auto;
-hyphens: auto;
+#chatcontent {
+  padding-left: 1%;
+  padding-top: 1%;
+  padding-bottom: 40px;
+  
+  /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+  
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
-@media only screen and (min-width: 601px) {
-nav a.button-collapse {
+#curuser_discrim,
+#curuser_name {
   display: block;
 }
+
+#chatcontent > p {
+  display: table;
+  width: 90%;
+}
+
+#chatcontent > p > span {
+  display: table-row
+}
+
+::-webkit-input-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+:-moz-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+::-moz-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+:-ms-input-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+::-ms-input-placeholder {
+  color: rgb(99, 99, 99);
+}
+
+#discord-members > li > a.subheader,
+#members-nav > li:nth-child(1) > a,
+#discord-members-count,
+#embed-discord-members-count,
+#members-nav > li:nth-child(4) > a,
+#guest-members-count,
+#members-nav > li:nth-child(6) > a {
+  text-transform: uppercase;
+}
+
+.circle:hover {
+  border-radius: 20px;
+  background: linear-gradient(to right, #f9f9f9 90%, #fff);
+}
+
+#channels-list > li:hover {
+  -webkit-filter: brightness(150%);
 }
 
 .chatusername {
-font-weight: bold;
-color: #eceff1;
+  font-weight: bold;
+  color: #eceff1;
 }
 
 .chattimestamp {
-font-size: 10px;
-color: #90a4ae;
-margin-right: 3px;
+  font-size: 10px;
+  color: #90a4ae;
+  margin-right: 3px;
 }
 
 .footercontainer {
-width: 100%;
-position: relative;
-margin: 10px;
-white-space: nowrap;
-overflow: hidden;
+  width: 100%;
+  position: relative;
+  margin: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgb(99, 99, 99);
+  margin-left: -0px;
+  padding-left: -4px;
 }
 
 #messageboxouter {
@@ -130,35 +244,53 @@ overflow: hidden;
 }
 
 .currentuserchip {
-display: inline-block;
-position: relative;
-top: -6px;
-padding: 6px;
-padding-right: 9px;
-background-color: #455a64;
+  display: inline-block;
+  position: relative;
+  top: -6px;
+  padding: 6px;
+  padding-right: 9px;
+  background-color: #455a64;
 }
 
 .currentuserimage {
-width: 30px;
+  width: 30px;
 }
 
 .currentusername {
-position: relative;
-top: 7px;
-left: 5px;
+  position: relative;
+  top: 7px;
+  left: 5px;
+}
+
+#curuser_discrim {
+  font-size: 50%;
+}
+
+#curuser_discrim,
+#curuser_name {
+  margin-top: -2px;
+}
+
+#currentuserimage {
+  margin-top: 4px;
+  margin-right: 4px;
 }
 
 .input-field {
-position: relative;
-top: -19px;
+  position: relative;
+  top: -19px;
 }
 
 .left {
-float: left;
+  float: left;
 }
 
 .modal {
-background-color: #546e7a;
+  background-color: #546e7a;
+}
+
+.modal-overlay {
+  height: auto;
 }
 
 .betatag {
@@ -172,6 +304,10 @@ background-color: #546e7a;
   margin-left: 30px;
   margin-right: auto;
   font-size: 85%;
+}
+
+.input-field label {
+  color: white;
 }
 
 a {
@@ -225,112 +361,124 @@ a {
     display: -ms-flexbox;
     display: flex;
     -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
   }
 }
 
 #nameplate {
   cursor: pointer;
-}
-@font-face {
-    font-family: Whitney;
-    font-style: light;
-    font-weight: 300;
-    src: url("../fonts/whitney_light.woff") format("woff")
+  background: transparent;
+  margin-left: 10px;
 }
 
-@font-face {
-    font-family: Whitney;
-    font-style: normal;
-    font-weight: 500;
-    src: url("../fonts/whitney_normal.woff") format("woff")
+#visitor_mode_message {
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+  width: 305px;
 }
 
-@font-face {
-    font-family: Whitney;
-    font-style: medium;
-    font-weight: 600;
-    src: url("../fonts/whitney_medium.woff") format("woff")
+#visitor_mode_message_note {
+  display: none;
 }
 
-@font-face {
-    font-family: Whitney;
-    font-style: bold;
-    font-weight: 700;
-    src: url("../fonts/whitney_bold.woff") format("woff")
+@media only screen and (min-width: 400px) {
+  #visitor_mode_message_note {
+    display: inline;
+  }
 }
-* {
-font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
+
+#focusmodal {
+  background-color: rgba(84, 110, 122, 0.58);
+  text-shadow: 1px 1px 2px black, 0 0 1em #607d8b, 0 0 0.2em #b0bec5;
 }
-#footercontainer {
-border-radius:20px;
-border: 1px solid rgb(99,99,99);
-margin-left:-0px!important;
-padding-left:-4px!important;
+
+.message_emoji {
+  height: 20px;
 }
-#nameplate {
-background:transparent!important;
-margin-left:10px
+
+.message_emoji:hover {
+  cursor: pointer;
 }
-#chatcontent > p > span.chatusername,
-#curuser_discrim,
-#curuser_name {
-display:block
+
+#chatcontent .message_emoji:hover {
+  height: 30px;
 }
-#curuser_discrim {
-font-size:50%;
+
+.chatusername {
+  display: table-header-group;
 }
-#curuser_discrim,
-#curuser_name {
-margin-top:-2px
+.chatmessage {
+  display: inline;
+  color: rgb(195, 196, 197);
 }
-#currentuserimage {
-margin-top:4px;
-margin-right:4px
+
+p.mentioned {
+  font-weight: bold;
+  font-style: italic;
 }
-#chatcontent > p { display: table; }
-#chatcontent > p > span { display: table-row }
-#chatcontent > p > span.chatusername { display: table-header-group }
-#chatcontent > p > span.chatmessage { display: table-footer-group;display:inline-block!important;color:rgb(195,196,197) }
-::-webkit-input-placeholder { color:rgb(99,99,99) }
-:-moz-placeholder { color:rgb(99,99,99) }
-::-moz-placeholder { color:rgb(99,99,99) }
-:-ms-input-placeholder { color:rgb(99,99,99) }
-::-ms-input-placeholder { color:rgb(99,99,99) }
-body > div.navbar-fixed > nav > div {
-background:#263238
-    background: -webkit-linear-gradient(#263238, #37474f, #455a64); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#263238, #37474f, #455a64); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#263238, #37474f, #455a64); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#263238, #37474f, #455a64); /* Standard syntax */
+
+p.mentioned span.chatmessage {
+  color: #ff5252;
 }
-div.divider {
-margin-left:10px;
-margin-right:10px;
+
+.chatmessage code {
+  background-color: gray;
+  color: lightgray;
+  border-radius: 5px;
+  padding: 2px;
 }
-#discord-members > li > a.subheader,
-#members-nav > li:nth-child(1) > a,
-#discord-members-count,
-#embed-discord-members-count,
-#members-nav > li:nth-child(4) > a,
-#guest-members-count,
-#members-nav > li:nth-child(6) > a {
-text-transform: uppercase;
+
+.chatmessage code.blockcode {
+  width: 100%;
+  display: inline-block;
+  white-space: pre-wrap;
+  line-height: 15px;
+  padding: 5px;
 }
-#members-btn > i { visibility:hidden }
-#members-btn {
-visibility:visible;
-background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik0xIDFoMjR2MjRIMVYxeiIvPgogICAgPHBhdGggZmlsbD0iI0ZGRiIgZD0iTTE2Ljc3MjA3NTQgMTQuNjc5MTc3OGMtLjIyNDkwOTctLjIyNTY4ODYtLjQ3NDE1NzMtLjQzNTE2ODEtLjc0MjA3NTQtLjYyOTE3NzguMzUtLjAzLjY4LS4wNS45Ny0uMDUgMi4zMyAwIDcgMS4xNyA3IDMuNVYyMGgtNHYtMWMwLTEuODgxNjkxNC0xLjQwNzcwNTYtMy4zMjMwMTQzLTMuMjI3OTI0Ni00LjMyMDgyMjJ6bS0xLjQzODU3MzUtOC4xNzU4NTM0QzE1LjgwOTgwODIgNi4xODUyNTE3MyAxNi4zODI3ODQ1IDYgMTcgNmMxLjY2IDAgMi45OSAxLjM0IDIuOTkgM3MtMS4zMyAzLTIuOTkgM2MtLjYxNzE5MTQgMC0xLjE5MDE0NzEtLjE4NTIzNzMtMS42NjY0NDIzLS41MDMyODcyQzE1Ljc1NzQ4MzIgMTAuNzYyMTQwOTUgMTYgOS45MDk1NTYgMTYgOS4wMDAwNjY5M2MwLS45MDk1Mjg5Ni0uMjQyNTM4MS0xLjc2MjE0ODgtLjY2NjQ5ODEtMi40OTY3NDI1M3pNMTAgMTNjMi4yMSAwIDQtMS43OSA0LTRzLTEuNzktNC00LTQtNCAxLjc5LTQgNCAxLjc5IDQgNCA0em0wIDJjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+CiAgPC9nPgo8L3N2Zz4=);
-background-repeat:no-repeat;
-margin-top:18px
+
+#emoji-picker {
+  color: black;
+  position: fixed;
+  bottom: 12%;
+  right: 1%;
+  z-index: 500;
+  width: 350px;
+  height: 110px;
+  max-width: 80%;
+  max-height: 80%;
+  background-color: #eceff1;
+  border-radius: 5px;
+  display: none;
 }
-.circle:hover {
-border-radius:20px;
-background: linear-gradient(to right, #f9f9f9 90%, #fff);
+
+#emoji-picker-content {
+  overflow: auto;
+  height: 100%;
+  padding: 5px;
+  padding-top: 0;
 }
-#channels-list > li:hover {
--webkit-filter: brightness(150%);
+
+#emoji-picker h6 {
+  font-weight: bold;
 }
-#loginmodal {
+
+#emoji-tray-toggle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 14px;
+  right: 30px;
+}
+
+#emoji-tray-toggle > .btn-floating {
+  width: 30px;
+  height: 30px;
+}
+
+#emoji-tray-toggle > .btn-floating > i {
+  line-height: 0;
+  position: relative;
+  top: -5px;
 }

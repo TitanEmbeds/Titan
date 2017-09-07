@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html prefix="og: http://ogp.me/ns#">
   <head>
     <!--Import Google Icon Font-->
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -10,19 +10,30 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>{% block title %}{% endblock %} - Titan Embeds for Discord</title>
+    <title>{{ title }} - Titan Embeds for Discord</title>
     
     {% include 'seo_meta.html.j2' %}
+    
+    {% with title=title, description="Embed your Discord server in any website. Titan is hassle free and designed as easy to setup." %}
+      {% include "opengraph_tags.html.j2" %}
+    {% endwith %}
     
     {% block additional_head_elements %}{% endblock %}
 
     {% include 'google_analytics.html.j2' %}
   </head>
   <body>
+    {% include 'nobot_header.html.j2' %}
     <main>
       {% if session['unauthenticated'] is defined and not session['unauthenticated'] %}
       <ul id="menu_dropdown" class="dropdown-content">
         <li><a href="{{ url_for('user.dashboard') }}">Dashboard</a></li>
+        <li class="divider"></li>
+        <li><a href="{{ url_for('user.donate_get') }}"><i class="material-icons">monetization_on</i></nbr>{{ session["tokens"] }}</a></li>
+        {% if session['user_id'] is defined and session['user_id'] in devs %}
+          <li class="divider"></li>
+          <li><a href="{{ url_for('admin.index') }}">Admin</a></li>
+        {% endif %}
         <li class="divider"></li>
         <li><a href="{{ url_for('user.logout') }}">Logout</a></li>
       </ul>
@@ -59,7 +70,7 @@
       <div class="footer-copyright">
         <div class="container">
         A project by EndenDragon
-        <a class="grey-text text-lighten-4 right" href="https://github.com/EndenDragon/Titan">GitHub Repo</a>
+        <a class="grey-text text-lighten-4 right" href="https://github.com/TitanEmbeds/Titan">GitHub Repo</a>
         </div>
       </div>
     </footer>

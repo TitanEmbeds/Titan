@@ -1,5 +1,9 @@
 {% extends 'site_layout.html.j2' %}
-{% block title %}{% if new %}New{% else %}Editing {{ css.name }} -{% endif %} User CSS{% endblock %}
+{% if new %}
+    {% set title="New - User CSS" %}
+{% else %}
+    {% set title="Editing " + css.name + " - User CSS" %}
+{% endif %}
 
 {% block content %}
 <h1>{% if new %}New{% else %}Editing {{ css.name }}{% endif %} - User Defined CSS</h1>
@@ -14,7 +18,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         <p><strong>This user defined CSS has a unique ID of <em style="font-size: 130%;">{{ css.id }}</em>.</strong></p>
         <p>To use this CSS in the embed, you must apped a <code>?css={{ css.id }}</code> to the embed URL.</p>
         <p>Something like this will work:</p>
-        <input readonly value="https://titanembeds.tk/embed/1234567890987654321?css={{ css.id }}" id="disabled" type="text" onClick="this.setSelectionRange(48, this.value.length)">
+        <input readonly value="https://titanembeds.com/embed/1234567890987654321?css={{ css.id }}" id="disabled" type="text" onClick="this.setSelectionRange(48, this.value.length)">
     </div>
   </div>
 </div>
@@ -80,7 +84,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
     <div class="col s12">
         <p class="flow-text">Edit your CSS code here</p>
         <div style="position: relative; height: 40vh;">
-            <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{{ css.css }}{% endif %}</div>
+            <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{{ css.css|e }}{% endif %}</div>
         </div>
         <br>
     </div>

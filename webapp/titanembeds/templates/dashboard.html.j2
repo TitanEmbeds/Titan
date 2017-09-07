@@ -1,5 +1,5 @@
 {% extends 'site_layout.html.j2' %}
-{% block title %}Dashboard{% endblock %}
+{% set title="Dashboard" %}
 
 {% block content %}
 <h1>User Dashboard</h1>
@@ -60,4 +60,17 @@
   {% endfor %}
 </div>
 {% endif %}
+
+<hr>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <h4>Donations!</h4>
+      <p class="flow-text">Would you like to support the Titan Embeds project?</p>
+      <p>You currently have <strong>{{ session["tokens"] }}</strong> Titan Tokens.</p>
+      <a class="waves-effect waves-light btn" href="{{ url_for('user.donate_get') }}">Donate!!</a>
+    </div>
+  </div>
+</div>
 {% endblock %}

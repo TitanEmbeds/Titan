@@ -17,7 +17,7 @@ class DiscordREST:
     def __init__(self, bot_token):
         self.global_redis_prefix = "discordapiratelimit/"
         self.bot_token = bot_token
-        self.user_agent = "TitanEmbeds (https://github.com/EndenDragon/Titan) Python/{} requests/{}".format(sys.version_info, requests.__version__)
+        self.user_agent = "TitanEmbeds (https://github.com/TitanEmbeds/Titan) Python/{} requests/{}".format(sys.version_info, requests.__version__)
 
     def init_discordrest(self):
         if not self._bucket_contains("global_limited"):
@@ -135,7 +135,41 @@ class DiscordREST:
     def get_widget(self, guild_id):
         _endpoint = _DISCORD_API_BASE + "/servers/{guild_id}/widget.json".format(guild_id=guild_id)
         embed = self.get_guild_embed(guild_id)
+        if not embed.get("success", True):
+            return {"success": False}
         if not embed['content']['enabled']:
             self.modify_guild_embed(guild_id, enabled=True, channel_id=guild_id)
         widget = requests.get(_endpoint).json()
         return widget
+    
+    
+    #####################
+    # Webhook
+    #####################
+    
+    def create_webhook(self, channel_id, name, avatar=None):
+        _endpoint = "/channels/{channel_id}/webhooks".format(channel_id=channel_id)
+        payload = {
+            "name": name,
+        }
+        if avatar:
+            payload["avatar"] = avatar
+        r = self.request("POST", _endpoint, data=payload, json=True)
+        return r
+    
+    def execute_webhook(self, webhook_id, webhook_token, username, avatar, content, wait=True):
+        _endpoint = "/webhooks/{id}/{token}".format(id=webhook_id, token=webhook_token)
+        if wait:
+            _endpoint += "?wait=true"
+        payload = {
+            'content': content,
+            'avatar_url': avatar,
+            'username': username
+        }
+        r = self.request("POST", _endpoint, data=payload)
+        return r
+    
+    def delete_webhook(self, webhook_id, webhook_token):
+        _endpoint = "/webhooks/{id}/{token}".format(id=webhook_id, token=webhook_token)
+        r = self.request("DELETE", _endpoint)
+        return r

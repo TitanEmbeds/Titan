@@ -1,10 +1,12 @@
 from flask import Blueprint, request, redirect, jsonify, abort, session, url_for, render_template
+from flask import current_app as app
 from config import config
 from titanembeds.decorators import discord_users_only
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS, set_titan_token, get_titan_token
 from titanembeds.oauth import authorize_url, token_url, make_authenticated_session, get_current_authenticated_user, get_user_managed_servers, check_user_can_administrate_guild, check_user_permission, generate_avatar_url, generate_guild_icon_url, generate_bot_invite_url
 import time
 import datetime
+import paypalrestsdk
 import json
 
 user = Blueprint("user", __name__)
@@ -40,6 +42,9 @@ def callback():
     session['username'] = user['username']
     session['discriminator'] = user['discriminator']
     session['avatar'] = generate_avatar_url(user['id'], user['avatar'])
+    session["tokens"] = get_titan_token(session["user_id"])
+    if session["tokens"] == -1:
+        session["tokens"] = 0
     if session["redirect"]:
         redir = session["redirect"]
         session['redirect'] = None
@@ -59,9 +64,6 @@ def logout():
 @discord_users_only()
 def dashboard():
     guilds = get_user_managed_servers()
-    if not guilds:
-        session["redirect"] = url_for("user.dashboard")
-        return redirect(url_for("user.logout"))
     error = request.args.get("error")
     if session["redirect"] and not (error and error == "access_denied"):
         redir = session['redirect']
@@ -179,6 +181,8 @@ def administrate_guild(guild_id):
         "id": db_guild.guild_id,
         "name": db_guild.name,
         "unauth_users": db_guild.unauth_users,
+        "visitor_view": db_guild.visitor_view,
+        "webhook_messages": db_guild.webhook_messages,
         "chat_links": db_guild.chat_links,
         "bracket_links": db_guild.bracket_links,
         "mentions_limit": db_guild.mentions_limit,
@@ -196,12 +200,14 @@ def update_administrate_guild(guild_id):
     if not db_guild:
         abort(400)
     db_guild.unauth_users = request.form.get("unauth_users", db_guild.unauth_users) in ["true", True]
+    db_guild.visitor_view = request.form.get("visitor_view", db_guild.visitor_view) in ["true", True]
+    db_guild.webhook_messages = request.form.get("webhook_messages", db_guild.webhook_messages) in ["true", True]
     db_guild.chat_links = request.form.get("chat_links", db_guild.chat_links) in ["true", True]
     db_guild.bracket_links = request.form.get("bracket_links", db_guild.bracket_links) in ["true", True]
     db_guild.mentions_limit = request.form.get("mentions_limit", db_guild.mentions_limit)
     
     discordio = request.form.get("discordio", db_guild.discordio)
-    if discordio.strip() == "":
+    if discordio and discordio.strip() == "":
         discordio = None
     db_guild.discordio = discordio
     db.session.commit()
@@ -209,6 +215,8 @@ def update_administrate_guild(guild_id):
         id=db_guild.id,
         guild_id=db_guild.guild_id,
         unauth_users=db_guild.unauth_users,
+        visitor_view=db_guild.visitor_view,
+        webhook_messages=db_guild.webhook_messages,
         chat_links=db_guild.chat_links,
         bracket_links=db_guild.bracket_links,
         mentions_limit=db_guild.mentions_limit,
@@ -224,7 +232,7 @@ def add_bot(guild_id):
 def prepare_guild_members_list(members, bans):
     all_users = []
     ip_pool = []
-    members = sorted(members, key=lambda k: datetime.datetime.strptime(str(k.last_timestamp), "%Y-%m-%d %H:%M:%S"), reverse=True)
+    members = sorted(members, key=lambda k: datetime.datetime.strptime(str(k.last_timestamp.replace(tzinfo=None, microsecond=0)), "%Y-%m-%d %H:%M:%S"), reverse=True)
     for member in members:
         user = {
             "id": member.id,
@@ -324,3 +332,70 @@ def revoke_unauthenticated_user():
         abort(409)
     db_user.revokeUser()
     return ('', 204)
+
+@user.route('/donate', methods=["GET"])
+@discord_users_only()
+def donate_get():
+    return render_template('donate.html.j2')
+
+def get_paypal_api():
+    return paypalrestsdk.Api({
+        'mode': 'sandbox' if app.config["DEBUG"] else 'live',
+        'client_id': config["paypal-client-id"],
+        'client_secret': config["paypal-client-secret"]})
+
+@user.route('/donate', methods=['POST'])
+@discord_users_only()
+def donate_post():
+    donation_amount = request.form.get('amount')
+    if not donation_amount:
+        abort(402)
+
+    donation_amount = "{0:.2f}".format(float(donation_amount))
+    payer = {"payment_method": "paypal"}
+    items = [{"name": "TitanEmbeds Donation",
+              "price": donation_amount,
+              "currency": "USD",
+              "quantity": "1"}]
+    amount = {"total": donation_amount,
+              "currency": "USD"}
+    description = "Donate and support TitanEmbeds development."
+    redirect_urls = {"return_url": url_for('user.donate_confirm', success="true", _external=True),
+                     "cancel_url": url_for('index', _external=True)}
+    payment = paypalrestsdk.Payment({"intent": "sale",
+                                     "payer": payer,
+                                     "redirect_urls": redirect_urls,
+                                     "transactions": [{"item_list": {"items":
+                                                                     items},
+                                                       "amount": amount,
+                                                       "description":
+                                                       description}]}, api=get_paypal_api())
+    if payment.create():
+        for link in payment.links:
+            if link['method'] == "REDIRECT":
+                return redirect(link["href"])
+    return redirect(url_for('index'))
+    
+@user.route("/donate/confirm")
+@discord_users_only()
+def donate_confirm():
+    if not request.args.get('success'):
+        return redirect(url_for('index'))
+    payment = paypalrestsdk.Payment.find(request.args.get('paymentId'), api=get_paypal_api())
+    if payment.execute({"payer_id": request.args.get('PayerID')}):
+        trans_id = str(payment.transactions[0]["related_resources"][0]["sale"]["id"])
+        amount = float(payment.transactions[0]["amount"]["total"])
+        tokens = int(amount * 100)
+        action = "PAYPAL {}".format(trans_id)
+        set_titan_token(session["user_id"], tokens, action)
+        session["tokens"] = get_titan_token(session["user_id"])
+        return redirect(url_for('user.donate_thanks', transaction=trans_id))
+    else:
+        return redirect(url_for('index'))
+
+@user.route("/donate/thanks")
+@discord_users_only()
+def donate_thanks():
+    tokens = get_titan_token(session["user_id"])
+    transaction = request.args.get("transaction")
+    return render_template("donate_thanks.html.j2", tokens=tokens, transaction=transaction)

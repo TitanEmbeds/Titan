@@ -1,25 +1,22 @@
 #!/usr/bin/env bash
-echo "[C9Setup] Installing mysql, and creating titan db table"
+echo "[C9Setup] Installing mysql, redis, and creating titan db table"
 cd ~/workspace/
 mysql-ctl start
 mysql -u root -e "CREATE DATABASE titan;"
+sudo service redis-server start
 
 echo "[C9Setup] Copying config.py for webapp/discordbot and alembic.ini"
 cp ~/workspace/webapp/config.example.py ~/workspace/webapp/config.py
 cp ~/workspace/discordbot/config.example.py ~/workspace/discordbot/config.py
 cp ~/workspace/webapp/alembic.example.ini ~/workspace/webapp/alembic.ini
 
-echo "[C9Setup] Installing dependancies for discordbot"
-cd ~/workspace/discordbot/
+echo "[C9Setup] Installing Titan dependencies"
+cd ~/workspace/
 sudo python3.5 -m pip install -r requirements.txt
-sudo python3.5 -m pip install pymysql
-
-echo "[C9Setup] Installing webapp dependancies"
-cd ~/workspace/webapp
-sudo pip install -r requirements.txt
-sudo pip install alembic pymysql
+sudo python3.5 -m pip install alembic pymysql eventlet uwsgi
 
 echo "[C9Setup] Auto populating alembic.ini database url and titan database table"
+cd ~/workspace/webapp
 #sqlalchemy.url =  mysql+pymysql://root@localhost/titan
 sed -i '32s/.*/sqlalchemy.url =  mysql+pymysql:\/\/root@localhost\/titan/' ~/workspace/webapp/alembic.ini
 alembic upgrade head
@@ -33,7 +30,8 @@ sed -i "11s/.*/\'database-uri\': \"mysql+pymysql:\/\/root@localhost\/titan\",/" 
 #'app-location': "/home/ubuntu/workspace/webapp/",
 sed -i "8s/.*/\'app-location\': \"\/home\/ubuntu\/workspace\/webapp\/\",/" ~/workspace/webapp/config.py
 
-echo "[C9Setup] Making sure everything can be runned"
+echo "[C9Setup] Making sure everything can be ran"
+cd ~/workspace/
 sudo chmod -R 777 *
 
 echo "------------------------------"

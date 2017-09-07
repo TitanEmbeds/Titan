@@ -1,0 +1,105 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Editing User Titan Tokens" %}
+
+{% block content %}
+<h1>Administrating Titan Tokens</h1>
+
+<div class="row">
+<div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+        <p class="flow-text">New Entry</p>
+      <table class="bordered striped">
+        <thead>
+          <tr>
+              <th>User ID</th>
+              <th>Starting Balance</th>
+              <th>Submit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+                <div class="input-field inline">
+                    <input id="new_user_id" placeholder="User ID">
+                </div>
+            </td>
+            <td>
+                <div class="input-field inline">
+                    <input id="new_user_token" placeholder="Starting Balance" type="number">
+                </div>
+            </td>
+            <td>
+                <a class="waves-effect waves-light btn" id="new_submit">Submit</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col s12">
+      <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+          <p class="flow-text">View Transactions and Modify User Tokens</p>
+          <ul class="collapsible" data-collapsible="accordion">
+            {% for don in donators %}
+            <li>
+              <div class="collapsible-header">{{ don.user_id }}</div>
+              <div class="collapsible-body">
+                  
+                <table class="bordered striped">
+                        <thead>
+                          <tr>
+                              <th>Modify Amount</th>
+                              <th>Submit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                                <div class="input-field inline">
+                                    <input placeholder="Modify Amount" type="number" id="input_{{ don.user_id }}">
+                                </div>
+                                <p>(Place a subtract sign in the front to remove tokens. Otherwise, it will add the amount)</p>
+                            </td>
+                            <td>
+                                <a class="waves-effect waves-light btn" onclick="submit_modify_user('{{ don.user_id }}')">Submit</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                  
+                  <h4>Balance: <strong>{{ don.tokens }}</strong> Tokens</h4>
+              <table class="striped">
+                <thead>
+                  <tr>
+                      <th>Trans #</th>
+                      <th>Timestamp</th>
+                      <th>Action</th>
+                      <th>Change</th>
+                      <th>Starting Bal</th>
+                      <th>Ending Bal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for trans in don.transactions %}
+                  <tr>
+                    <td>{{ trans.id }}</td>
+                    <td>{{ trans.timestamp }}</td>
+                    <td>{{ trans.action }}.</td>
+                    <td>{{ trans.net_tokens }}</td>
+                    <td>{{ trans.start_tokens }}</td>
+                    <td>{{ trans.end_tokens }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/admin_token_transactions.js') }}"></script>
+{% endblock %}

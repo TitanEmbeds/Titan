@@ -1,0 +1,80 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Editing User Cosmetics Privilages" %}
+
+{% block content %}
+<h1>Administrating User Cosmetics Privilages</h1>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+        <p class="flow-text">New Entry</p>
+      <table class="bordered striped">
+        <thead>
+          <tr>
+              <th>User ID</th>
+              <th>CSS</th>
+              <th>Submit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+                <div class="input-field inline">
+                    <input id="new_user_id" placeholder="User ID">
+                </div>
+            </td>
+            <td>
+                <div class="switch">
+                    <label>
+                      Off
+                      <input type="checkbox" id="new_css_switch">
+                      <span class="lever"></span>
+                      On
+                    </label>
+                </div>
+            </td>
+            <td>
+                <a class="waves-effect waves-light btn" id="new_submit">Submit</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <table class="bordered striped">
+        <thead>
+          <tr>
+              <th>Remove</th>
+              <th>User ID</th>
+              <th>CSS</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for cosmetic in cosmetics %}
+          <tr>
+            <td><a class="waves-effect waves-light btn red" id="new_submit" onclick="delete_user('{{ cosmetic.user_id }}');">Remove</a></td>
+            <td>{{ cosmetic.user_id }}</td>
+            <td>
+                <div class="switch">
+                    <label>
+                      Off
+                      <input type="checkbox" id="new_css_switch" {% if cosmetic.css %}checked{% endif %} onchange="update_css_switch('{{ cosmetic.user_id }}', this)">
+                      <span class="lever"></span>
+                      On
+                    </label>
+                </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/admin_cosmetics.js') }}"></script>
+{% endblock %}

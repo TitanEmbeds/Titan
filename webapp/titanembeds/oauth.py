@@ -45,14 +45,14 @@ def user_has_permission(permission, index):
     return bool((int(permission) >> index) & 1)
 
 def get_user_guilds():
-    cache = get_keyvalproperty("OAUTH/USERGUILDS/"+make_user_cache_key())
+    cache = get_keyvalproperty("OAUTH/USERGUILDS/"+str(make_user_cache_key()))
     if cache:
         return cache
     req = discordrest_from_user("/users/@me/guilds")
     if req.status_code != 200:
         abort(req.status_code)
     req = json.dumps(req.json())
-    set_keyvalproperty("OAUTH/USERGUILDS/"+make_user_cache_key(), req, 250)
+    set_keyvalproperty("OAUTH/USERGUILDS/"+str(make_user_cache_key()), req, 250)
     return req
 
 def get_user_managed_servers():
@@ -96,5 +96,5 @@ def generate_guild_icon_url(id, hash):
     return guild_icon_url + str(id) + "/" + str(hash) + ".jpg"
 
 def generate_bot_invite_url(guild_id):
-    url = "https://discordapp.com/oauth2/authorize?&client_id={}&scope=bot&permissions={}&guild_id={}".format(config['client-id'], '536083583', guild_id)
+    url = "https://discordapp.com/oauth2/authorize?&client_id={}&scope=bot&permissions={}&guild_id={}".format(config['client-id'], '537349164', guild_id)
     return url
