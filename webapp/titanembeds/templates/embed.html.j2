@@ -20,7 +20,7 @@
     {% include 'google_analytics.html.j2' %}
     
     {% if css is not none %}
-    <style id="user-defined-css">{{ css.css }}</style>
+    <style id="user-defined-css">{% if cssvariables is not none %}{{ cssvariables }}{% endif %} {{ css.css }}</style>
     {% endif %}
   </head>
   <body>

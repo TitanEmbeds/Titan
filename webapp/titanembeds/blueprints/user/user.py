@@ -7,6 +7,7 @@ from titanembeds.oauth import authorize_url, token_url, make_authenticated_sessi
 import time
 import datetime
 import paypalrestsdk
+import json
 
 user = Blueprint("user", __name__)
 
@@ -97,7 +98,7 @@ def new_custom_css_post():
     else:
         name = name.strip()
         css = css.strip()
-    css = UserCSS(name, user_id, css)
+    css = UserCSS(name, user_id, None, css)
     db.session.add(css)
     db.session.commit()
     return jsonify({"id": css.id})
@@ -113,7 +114,8 @@ def edit_custom_css_get(css_id):
         abort(404)
     if css.user_id != session['user_id']:
         abort(403)
-    return render_template("usercss.html.j2", new=False, css=css)
+    variables = json.loads(css.css_variables)
+    return render_template("usercss.html.j2", new=False, css=css, variables=variables)
 
 @user.route("/custom_css/edit/<css_id>", methods=["POST"])
 @discord_users_only()
@@ -128,6 +130,7 @@ def edit_custom_css_post(css_id):
         abort(403)
     name = request.form.get("name", None)
     css = request.form.get("css", "")
+    variables = request.form.get("variables", None)
     if not name:
         abort(400)
     else:
@@ -135,6 +138,7 @@ def edit_custom_css_post(css_id):
         css = css.strip()
     dbcss.name = name
     dbcss.css = css
+    dbcss.css_variables = variables
     db.session.commit()
     return jsonify({"id": dbcss.id})
 
