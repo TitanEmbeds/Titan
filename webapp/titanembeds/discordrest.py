@@ -135,6 +135,8 @@ class DiscordREST:
     def get_widget(self, guild_id):
         _endpoint = _DISCORD_API_BASE + "/servers/{guild_id}/widget.json".format(guild_id=guild_id)
         embed = self.get_guild_embed(guild_id)
+        if not embed.get("success", True):
+            return {"success": False}
         if not embed['content']['enabled']:
             self.modify_guild_embed(guild_id, enabled=True, channel_id=guild_id)
         widget = requests.get(_endpoint).json()

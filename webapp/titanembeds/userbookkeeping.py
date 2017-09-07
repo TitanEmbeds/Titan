@@ -1,6 +1,7 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, GuildMembers, get_guild_member
 from titanembeds.utils import guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr
 from titanembeds.oauth import check_user_can_administrate_guild, user_has_permission
+from config import config
 from flask import session
 from sqlalchemy import and_
 import json
@@ -107,6 +108,9 @@ def get_guild_channels(guild_id, force_everyone=False):
         member_roles = get_member_roles(guild_id, session['user_id'])
         if guild_id not in member_roles:
             member_roles.append(guild_id)
+    bot_member_roles = get_member_roles(guild_id, config["client-id"])
+    if guild_id not in bot_member_roles:
+        bot_member_roles.append(guild_id)
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     guild_channels = json.loads(dbguild.channels)
     guild_roles = json.loads(dbguild.roles)
@@ -114,70 +118,99 @@ def get_guild_channels(guild_id, force_everyone=False):
     result_channels = []
     for channel in guild_channels:
         if channel['type'] == "text":
-            result = {"channel": channel, "read": False, "write": False, "mention_everyone": False}
-            if guild_owner == session.get("user_id"):
-                result["read"] = True
-                result["write"] = True
-                result["mention_everyone"] = True
-                result_channels.append(result)
-                continue
-            channel_perm = 0
-
-            # @everyone
-            for role in guild_roles:
-                if role["id"] == guild_id:
-                    channel_perm |= role["permissions"]
-                    continue
-
-            # User Guild Roles
-            for m_role in member_roles:
-                for g_role in guild_roles:
-                    if g_role["id"] == m_role:
-                        channel_perm |= g_role["permissions"]
-                        continue
-
-            # If has server administrator permission
-            if user_has_permission(channel_perm, 3):
-                result["read"] = True
-                result["write"] = True
-                result["mention_everyone"] = True
-                result_channels.append(result)
-                continue
-
-            denies = 0
-            allows = 0
-
-            # channel specific
-            for overwrite in channel["permission_overwrites"]:
-                if overwrite["type"] == "role" and overwrite["id"] in member_roles:
-                    denies |= overwrite["deny"]
-                    allows |= overwrite["allow"]
-
-            channel_perm = (channel_perm & ~denies) | allows
-
-            # member specific
-            for overwrite in channel["permission_overwrites"]:
-                if overwrite["type"] == "member" and overwrite["id"] == session.get("user_id"):
-                    channel_perm = (channel_perm & ~overwrite['deny']) | overwrite['allow']
-                    break
-
-            result["read"] = user_has_permission(channel_perm, 10)
-            result["write"] = user_has_permission(channel_perm, 11)
-            result["mention_everyone"] = user_has_permission(channel_perm, 17)
-
-            # If default channel, you can read
-            if channel["id"] == guild_id:
-                result["read"] = True
-
-            # If you cant read channel, you cant write in it
-            if not user_has_permission(channel_perm, 10):
+            result = get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_roles, session.get("user_id"), force_everyone)
+            bot_result = get_channel_permission(channel, guild_id, guild_owner, guild_roles, bot_member_roles, config["client-id"], False)
+            if not bot_result["read"]:
                 result["read"] = False
+            if not bot_result["write"]:
                 result["write"] = False
+            if not bot_result["mention_everyone"]:
                 result["mention_everyone"] = False
-
             result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
 
+def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_roles, user_id=None, force_everyone=False):
+    result = {"channel": channel, "read": False, "write": False, "mention_everyone": False}
+    if not user_id:
+        user_id = session.get("user_id")
+    if guild_owner == user_id:
+        result["read"] = True
+        result["write"] = True
+        result["mention_everyone"] = True
+        return result
+    channel_perm = 0
+    
+    # @everyone
+    for role in guild_roles:
+        if role["id"] == guild_id:
+            channel_perm |= role["permissions"]
+            continue
+    
+    # User Guild Roles
+    for m_role in member_roles:
+        for g_role in guild_roles:
+            if g_role["id"] == m_role:
+                channel_perm |= g_role["permissions"]
+                continue
+    
+    # If has server administrator permission
+    if user_has_permission(channel_perm, 3):
+        result["read"] = True
+        result["write"] = True
+        result["mention_everyone"] = True
+        return result
+    
+    denies = 0
+    allows = 0
+    
+    # channel specific
+    for overwrite in channel["permission_overwrites"]:
+        if overwrite["type"] == "role" and overwrite["id"] in member_roles:
+            denies |= overwrite["deny"]
+            allows |= overwrite["allow"]
+    
+    channel_perm = (channel_perm & ~denies) | allows
+    
+    # member specific
+    for overwrite in channel["permission_overwrites"]:
+        if overwrite["type"] == "member" and overwrite["id"] == session.get("user_id"):
+            channel_perm = (channel_perm & ~overwrite['deny']) | overwrite['allow']
+            break
+    
+    result["read"] = user_has_permission(channel_perm, 10)
+    result["write"] = user_has_permission(channel_perm, 11)
+    result["mention_everyone"] = user_has_permission(channel_perm, 17)
+    
+    # If default channel, you can read
+    if channel["id"] == guild_id:
+        result["read"] = True
+    
+    # If you cant read channel, you cant write in it
+    if not user_has_permission(channel_perm, 10):
+        result["read"] = False
+        result["write"] = False
+        result["mention_everyone"] = False
+    return result
+    
+def bot_can_create_webhooks(guild):
+    perm = 0
+    guild_roles = json.loads(guild.roles)
+    # @everyone
+    for role in guild_roles:
+        if role["id"] == guild.guild_id:
+            perm |= role["permissions"]
+            continue
+    member_roles = get_member_roles(guild.guild_id, config["client-id"])
+    # User Guild Roles
+    for m_role in member_roles:
+        for g_role in guild_roles:
+            if g_role["id"] == m_role:
+                perm |= g_role["permissions"]
+                continue
+    return user_has_permission(perm, 29)
+
 def guild_webhooks_enabled(guild_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-    return dbguild.webhook_messages
+    if not dbguild.webhook_messages:
+        return False
+    return bot_can_create_webhooks(dbguild)

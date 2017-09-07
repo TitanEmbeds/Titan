@@ -98,7 +98,10 @@ class DatabaseInterface(object):
                         session.commit()
 
     async def update_guild(self, guild):
-        server_webhooks = await self.bot.get_server_webhooks(guild)
+        if guild.me.server_permissions.manage_webhooks:
+            server_webhooks = await self.bot.get_server_webhooks(guild)
+        else:
+            server_webhooks = []
         async with threadpool():
             with self.get_session() as session:
                 gui = session.query(Guilds).filter(Guilds.guild_id == guild.id).first()
