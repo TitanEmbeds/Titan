@@ -4,12 +4,13 @@
     
     function postForm() {
         var name = $('#css_name').val();
+        var var_enabled = $("#toggleCSSVar").is(':checked');
         var variables = JSON.stringify(formatCSSVars());
         var css = editor.getValue();
         var funct = $.ajax({
             dataType: "json",
             method: "POST",
-            data: {"name": name, "variables": variables, "css": css}
+            data: {"name": name, "variables_enabled": var_enabled, "variables": variables, "css": css}
         });
         return funct.promise();
     }

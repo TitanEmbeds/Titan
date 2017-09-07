@@ -114,7 +114,9 @@ def edit_custom_css_get(css_id):
         abort(404)
     if css.user_id != session['user_id']:
         abort(403)
-    variables = json.loads(css.css_variables)
+    variables = css.css_variables
+    if variables:
+        variables = json.loads(variables)
     return render_template("usercss.html.j2", new=False, css=css, variables=variables)
 
 @user.route("/custom_css/edit/<css_id>", methods=["POST"])
@@ -131,6 +133,7 @@ def edit_custom_css_post(css_id):
     name = request.form.get("name", None)
     css = request.form.get("css", "")
     variables = request.form.get("variables", None)
+    variables_enabled = request.form.get("variables_enabled", False) in ["true", True]
     if not name:
         abort(400)
     else:
@@ -139,6 +142,7 @@ def edit_custom_css_post(css_id):
     dbcss.name = name
     dbcss.css = css
     dbcss.css_variables = variables
+    dbcss.css_var_bool = variables_enabled
     db.session.commit()
     return jsonify({"id": dbcss.id})
 
