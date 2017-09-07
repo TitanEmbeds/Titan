@@ -79,6 +79,7 @@ class DatabaseInterface(object):
                         .filter(Messages.message_id == message.id).first()
                     if msg:
                         msg.content = message.content
+                        msg.timestamp = message.timestamp
                         msg.edited_timestamp = message.edited_timestamp
                         msg.mentions = json.dumps(get_message_mentions(message.mentions))
                         msg.attachments = json.dumps(message.attachments)
