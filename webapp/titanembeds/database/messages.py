@@ -33,7 +33,7 @@ def get_channel_messages(guild_id, channel_id, after_snowflake=None):
     if not after_snowflake:
         q = db.session.query(Messages).filter(Messages.channel_id == channel_id).order_by(Messages.timestamp.desc()).limit(50)
     else:
-        q = db.session.query(Messages).filter(cast(Messages.channel_id, db.Integer) == int(channel_id)).filter(Messages.message_id > after_snowflake).order_by(Messages.timestamp.desc()).limit(50)
+        q = db.session.query(Messages).filter(cast(Messages.channel_id, db.BigInteger) == int(channel_id)).filter(cast(Messages.message_id, db.BigInteger) > after_snowflake).order_by(Messages.timestamp.desc()).limit(50)
     msgs = []
     snowflakes = []
     for x in q:
