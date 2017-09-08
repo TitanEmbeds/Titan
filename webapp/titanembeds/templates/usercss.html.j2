@@ -18,7 +18,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         <p><strong>This user defined CSS has a unique ID of <em style="font-size: 130%;">{{ css.id }}</em>.</strong></p>
         <p>To use this CSS in the embed, you must apped a <code>?css={{ css.id }}</code> to the embed URL.</p>
         <p>Something like this will work:</p>
-        <input readonly value="https://titanembeds.com/embed/1234567890987654321?css={{ css.id }}" id="disabled" type="text" onClick="this.setSelectionRange(48, this.value.length)">
+        <input readonly value="https://titanembeds.com/embed/1234567890987654321?css={{ css.id }}" id="disabled" type="text" onClick="this.setSelectionRange(this.value.indexOf(&quot;?&quot;), this.value.length)">
     </div>
   </div>
 </div>
@@ -33,6 +33,10 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
     </div>
     <div class="col s12">
         <p class="flow-text">Propose Predefined CSS variables here</p>
+        <p>
+          <input type="checkbox" id="toggleCSSVar" {% if not new and css.css_var_bool %}checked{% endif %}/>
+          <label for="toggleCSSVar">CSS Variables Enabled</label>
+        </p>
         <div class="row">
             <div class="col m6 s12">
                 <span>Modal Background Color (<code>--modal</code>):<span>

@@ -27,7 +27,7 @@
 }
 
 html {
-  background-color: #455a64;
+  background-color: var(--main);
   color: white;
   font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
@@ -43,12 +43,12 @@ footer {
   left: 0;
   right: 0;
   height: 50px;
-  background-color: #37474f;
+  background-color: var(--chatbox);
 }
 
 nav {
-  background-color: #263238;
-  background: linear-gradient(rgba(38, 50, 56, 1), rgba(255,0,0,0));
+  background-color: var(--header);
+  background: linear-gradient(var(--header), rgba(255,0,0,0));
   box-shadow: none;
 }
 
@@ -60,20 +60,6 @@ nav .brand-logo {
   nav a.button-collapse {
     display: block;
   }
-}
-
-body > div.navbar-fixed > nav > div {
-  background: #263238 background: -webkit-linear-gradient(#263238, #37474f, #455a64);
-  /* For Safari 5.1 to 6.0 */
-  
-  background: -o-linear-gradient(#263238, #37474f, #455a64);
-  /* For Opera 11.1 to 12.0 */
-  
-  background: -moz-linear-gradient(#263238, #37474f, #455a64);
-  /* For Firefox 3.6 to 15 */
-  
-  background: linear-gradient(#263238, #37474f, #455a64);
-  /* Standard syntax */
 }
 
 @media only screen and (min-width: 993px) {
@@ -101,8 +87,20 @@ body > div.navbar-fixed > nav > div {
   font-variant: small-caps;
 }
 
+#members-nav {
+  background-color: var(--rightsidebar);
+}
+
+#members-nav li>a {
+  color: var(--noroleusers);
+}
+
+#guild-nav {
+  background-color: var(--leftsidebar);
+}
+
 .side-nav div.divider {
-  background-color: #90a4ae;
+  background-color: var(--sidebardivider);
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -177,23 +175,23 @@ body > div.navbar-fixed > nav > div {
 }
 
 ::-webkit-input-placeholder {
-  color: rgb(99, 99, 99);
+  color: var(--placeholder);
 }
 
 :-moz-placeholder {
-  color: rgb(99, 99, 99);
+  color: var(--placeholder);
 }
 
 ::-moz-placeholder {
-  color: rgb(99, 99, 99);
+  color: var(--placeholder);
 }
 
 :-ms-input-placeholder {
-  color: rgb(99, 99, 99);
+  color: var(--placeholder);
 }
 
 ::-ms-input-placeholder {
-  color: rgb(99, 99, 99);
+  color: var(--placeholder);
 }
 
 #discord-members > li > a.subheader,
@@ -264,6 +262,7 @@ body > div.navbar-fixed > nav > div {
 
 #curuser_discrim {
   font-size: 50%;
+  color: var(--discrim);
 }
 
 #curuser_discrim,
@@ -286,7 +285,7 @@ body > div.navbar-fixed > nav > div {
 }
 
 .modal {
-  background-color: #546e7a;
+  background-color: var(--modal);
 }
 
 .modal-overlay {
@@ -411,7 +410,7 @@ a {
 }
 .chatmessage {
   display: inline;
-  color: rgb(195, 196, 197);
+  color: var(--chatmessage);
 }
 
 p.mentioned {
@@ -481,4 +480,20 @@ p.mentioned span.chatmessage {
   line-height: 0;
   position: relative;
   top: -5px;
+}
+
+/* CSS Variables */
+:root {
+  /*--<var>: <value>*/
+  --modal: #546E7A;
+  --noroleusers: #ECEFF1;
+  --main: #455A64;
+  --placeholder: #636363;
+  --sidebardivider: #90A4AE;
+  --leftsidebar: #607D8B;
+  --rightsidebar: #607D8B;
+  --header: #263238;
+  --chatmessage: #C3C4C5;
+  --discrim: #FFFFFF;
+  --chatbox: #37474F;
 }
