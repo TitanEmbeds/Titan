@@ -46,8 +46,10 @@ def parse_css_variable(css):
         return None
     else:
         variables = css.css_variables
-    variables = json.loads(variables)
-    return CSS_VARIABLES_TEMPLATE % variables
+        if variables:
+            variables = json.loads(variables)
+            return CSS_VARIABLES_TEMPLATE % variables
+    return None
 
 @embed.route("/<string:guild_id>")
 def guild_embed(guild_id):
