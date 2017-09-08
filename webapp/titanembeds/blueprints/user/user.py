@@ -93,12 +93,14 @@ def new_custom_css_post():
     name = request.form.get("name", None)
     user_id = session["user_id"]
     css = request.form.get("css","")
+    variables = request.form.get("variables", None)
+    variables_enabled = request.form.get("variables_enabled", False) in ["true", True]
     if not name:
         abort(400)
     else:
         name = name.strip()
         css = css.strip()
-    css = UserCSS(name, user_id, None, css)
+    css = UserCSS(name, user_id, variables_enabled, variables, css)
     db.session.add(css)
     db.session.commit()
     return jsonify({"id": css.id})
@@ -115,6 +117,7 @@ def edit_custom_css_get(css_id):
     if css.user_id != session['user_id']:
         abort(403)
     variables = css.css_variables
+    print(variables)
     if variables:
         variables = json.loads(variables)
     return render_template("usercss.html.j2", new=False, css=css, variables=variables)

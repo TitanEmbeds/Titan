@@ -34,7 +34,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
     <div class="col s12">
         <p class="flow-text">Propose Predefined CSS variables here</p>
         <p>
-          <input type="checkbox" id="toggleCSSVar" {% if css.css_var_bool %}checked{% endif %}/>
+          <input type="checkbox" id="toggleCSSVar" {% if not new and css.css_var_bool %}checked{% endif %}/>
           <label for="toggleCSSVar">CSS Variables Enabled</label>
         </p>
         <div class="row">
