@@ -179,7 +179,7 @@ def fetch():
         chan = filter_guild_channel(guild_id, channel_id)
         if not chan:
             abort(404)
-        if not chan.get("read"):
+        if not chan.get("read") or chan["channel"]["type"] != "text":
             status_code = 401
         else:
             messages = get_channel_messages(guild_id, channel_id, after_snowflake)
@@ -200,7 +200,7 @@ def fetch_visitor():
     chan = filter_guild_channel(guild_id, channel_id, True)
     if not chan:
         abort(404)
-    if not chan.get("read"):
+    if not chan.get("read") or chan["channel"]["type"] != "text":
         status_code = 401
     else:
         messages = get_channel_messages(guild_id, channel_id, after_snowflake)
@@ -233,7 +233,7 @@ def post():
         status_code = 401
     else:
         chan = filter_guild_channel(guild_id, channel_id)
-        if not chan.get("write"):
+        if not chan.get("write") or chan["channel"]["type"] != "text":
             status_code = 401
         elif not illegal_post:
             userid = session["user_id"]

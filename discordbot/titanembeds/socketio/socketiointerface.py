@@ -149,7 +149,7 @@ class SocketIOInterface:
         await self.io.emit('CHANNEL_CREATE', data=chan, room=str("GUILD_"+channel.server.id), namespace='/gateway')
     
     async def on_channel_update(self, channel):
-        if str(channel.type) != "text":
+        if str(channel.type) not in ["text", "category"]:
             return
         chan = self.get_formatted_channel(channel)
         await self.io.emit('CHANNEL_UPDATE', data=chan, room=str("GUILD_"+channel.server.id), namespace='/gateway')

@@ -64,7 +64,7 @@ def get_roles_list(guildroles):
 def get_channels_list(guildchannels):
     channels = []
     for channel in guildchannels:
-        if str(channel.type) == "text":
+        if str(channel.type) in ["text", "category"]:
             overwrites = []
             for target, overwrite in channel.overwrites:
                 if isinstance(target, discord.Role):
@@ -80,14 +80,17 @@ def get_channels_list(guildchannels):
                     "allow": allow,
                     "deny": deny,
                 })
-
+            parent = channel.parent
+            if parent:
+                parent = parent.id
             channels.append({
                 "id": channel.id,
                 "name": channel.name,
                 "topic": channel.topic,
                 "position": channel.position,
                 "type": str(channel.type),
-                "permission_overwrites": overwrites
+                "permission_overwrites": overwrites,
+                "parent_id": parent,
             })
     return channels
     

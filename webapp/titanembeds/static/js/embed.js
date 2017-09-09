@@ -371,20 +371,74 @@
         guild_channels_list = channels;
         var template = $('#mustache_channellistings').html();
         Mustache.parse(template);
+        var template_category = $('#mustache_channelcategory').html();
+        Mustache.parse(template_category);
         $("#channels-list").empty();
         var curr_default_channel = selected_channel;
+        var categories = [{
+            "channel": {id: null, name: "Uncategorized"},
+            "children": [],
+            "read": true,
+        }];
         for (var i = 0; i < channels.length; i++) {
             var chan = channels[i];
             guild_channels[chan.channel.id] = chan;
-            if (chan.read) {
-              var rendered = Mustache.render(template, {"channelid": chan.channel.id, "channelname": chan.channel.name});
-              $("#channels-list").append(rendered);
-              $("#channel-" + chan.channel.id.toString()).click({"channel_id": chan.channel.id.toString()}, function(event) {
-                  select_channel(event.data.channel_id);
-              });
-              if (!selected_channel && (!curr_default_channel || chan.channel.position < curr_default_channel.channel.position)) {
-                  curr_default_channel = chan;
-              }
+            if (chan.channel.type == "category") {
+                chan.children = [];
+                categories.push(chan);
+            }
+        }
+        categories.sort(function(a, b) {
+          return parseInt(a.channel.position) - parseInt(b.channel.position);
+        });
+        for (var i = 0; i < channels.length; i++) {
+            var chan = channels[i];
+            if (chan.channel.type == "text") {
+                var cate = chan.channel.parent_id;
+                for (var j = 0; j < categories.length; j++) {
+                    var thiscategory = categories[j];
+                    if (thiscategory.channel.id == cate) {
+                        thiscategory.children.push(chan);
+                        break;
+                    }
+                }
+            }
+        }
+        for (var i = 0; i < categories.length; i++) {
+            var cate = categories[i];
+            cate.read = false;
+            for (var j = 0; j < cate.children.length; j++) {
+                var chan = cate.children[j];
+                if (chan.channel.type == "text" && chan.read) {
+                    cate.read = true;
+                    break;
+                }
+            }
+        }
+        for (var i = 0; i < categories.length; i++) {
+            var cate = categories[i];
+            var children = cate.children;
+            children.sort(function(a, b) {
+              return parseInt(a.channel.position) - parseInt(b.channel.position);
+            });
+            if (i != 0) {
+                if (cate.read) {
+                    var rendered_category = Mustache.render(template_category, {"name": cate.channel.name});
+                    $("#channels-list").append(rendered_category);
+                }
+            }
+            for (var j = 0; j < children.length; j++) {
+                var chan = children[j];
+                if (chan.read) {
+                    var rendered_channel = Mustache.render(template, {"channelid": chan.channel.id, "channelname": chan.channel.name});
+                    $("#channels-list").append(rendered_channel);
+                    $("#channel-" + chan.channel.id.toString()).click({"channel_id": chan.channel.id.toString()}, function(event) {
+                        select_channel(event.data.channel_id);
+                    });
+                    if (!selected_channel && (!curr_default_channel || chan.channel.position < curr_default_channel.channel.position)) {
+                        curr_default_channel = chan;
+                    }
+                }
             }
         }
         if (typeof curr_default_channel == "object") {

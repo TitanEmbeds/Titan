@@ -82,6 +82,10 @@ nav .brand-logo {
   color: #eceff1;
 }
 
+.side-nav li>a[id^=channel] {
+  margin-left: 7px;
+}
+
 .side-nav .subheader {
   color: #cfd8dc;
   font-variant: small-caps;
@@ -211,6 +215,10 @@ nav .brand-logo {
 
 #channels-list > li:hover {
   -webkit-filter: brightness(150%);
+}
+
+.subheader .channel-category {
+  text-transform: uppercase;
 }
 
 .chatusername {
