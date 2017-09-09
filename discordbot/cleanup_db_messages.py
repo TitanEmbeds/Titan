@@ -61,7 +61,7 @@ class Titan(discord.Client):
         print('------')
 
         try:
-            await self.database.connect(config["database-uri"] + "?charset=utf8mb4")
+            await self.database.connect(config["database-uri"])
         except Exception:
             self.logger.error("Unable to connect to specified database!")
             traceback.print_exc()
