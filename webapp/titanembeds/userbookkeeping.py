@@ -207,7 +207,7 @@ def bot_can_create_webhooks(guild):
             if g_role["id"] == m_role:
                 perm |= g_role["permissions"]
                 continue
-    if user_has_permission(channel_perm, 3): # Admin perms override yes
+    if user_has_permission(perm, 3): # Admin perms override yes
         return True
     return user_has_permission(perm, 29)
 
