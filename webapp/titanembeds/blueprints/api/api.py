@@ -217,7 +217,7 @@ def post():
     channel_id = request.form.get('channel_id')
     content = request.form.get('content')
     if "user_id" in session:
-        dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == session['user_id']).first()
+        dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == str(session['user_id'])).first()
     else:
         dbUser = None
     if user_unauthenticated():
