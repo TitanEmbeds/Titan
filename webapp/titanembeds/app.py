@@ -2,7 +2,7 @@ from config import config
 from .database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, discord_api, bot_alive, socketio
+from titanembeds.utils import rate_limiter, discord_api, socketio
 from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
@@ -53,5 +53,4 @@ def before_request():
 
 @app.context_processor
 def context_processor():
-    bot_status = bot_alive()
-    return {"bot_status": bot_status, "devs": get_administrators_list()}
+    return {"devs": get_administrators_list()}

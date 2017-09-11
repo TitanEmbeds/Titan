@@ -1,4 +1,4 @@
-from titanembeds.database import db, Guilds, KeyValueProperties, get_keyvalproperty
+from titanembeds.database import db, Guilds
 from flask import request, session
 from flask_limiter import Limiter
 from flask_socketio import SocketIO
@@ -74,20 +74,6 @@ def guild_accepts_visitors(guild_id):
 def guild_query_unauth_users_bool(guild_id):
     dbGuild = db.session.query(Guilds).filter(Guilds.guild_id==guild_id).first()
     return dbGuild.unauth_users
-    
-def bot_alive():
-    results = {"status": False, "formatted_utc": "Never", "epoch_seconds": None}
-    epoch = get_keyvalproperty("bot_heartbeat")
-    if not epoch:
-        return results
-    epoch = float(epoch)
-    utc = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(epoch))
-    results["formatted_utc"] = utc
-    results["epoch_seconds"] = epoch
-    now = time.time()
-    if now - epoch < 60 * 5:
-        results["status"] = True
-    return results
 
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
 socketio = SocketIO()

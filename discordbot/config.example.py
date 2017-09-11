@@ -5,7 +5,5 @@ config = {
     
     'redis-uri': "redis://",
     
-    'errorreporting-channelid': "",
-    
     'logging-location': "/home/titan/Titan/discordbot/titanbot.log",
 }
