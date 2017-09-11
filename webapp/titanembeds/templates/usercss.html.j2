@@ -40,47 +40,47 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         <div class="row">
             <div class="col m6 s12">
                 <span>Modal Background Color (<code>--modal</code>):<span>
-                <input id="css_var_modal" class="jscolor {hash:true}" value="{% if new or variables is none %}#546e7a{% else %}{{ variables.modal }}{% endif %}">
+                <input id="css_var_modal" class="jscolor {hash:true}" value="{% if new or variables is none %}#546e7a{% else %}{{ variables.modal|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Uncategorized Discord Users (<code>--noroleusers</code>):<span>
-                <input id="css_var_noroleusers" class="jscolor {hash:true}" value="{% if new or variables is none %}#eceff1{% else %}{{ variables.noroleusers }}{% endif %}">
+                <input id="css_var_noroleusers" class="jscolor {hash:true}" value="{% if new or variables is none %}#eceff1{% else %}{{ variables.noroleusers|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Main Background Color (<code>--main</code>):<span>
-                <input id="css_var_main" class="jscolor {hash:true}" value="{% if new or variables is none %}#455a64{% else %}{{ variables.main }}{% endif %}">
+                <input id="css_var_main" class="jscolor {hash:true}" value="{% if new or variables is none %}#455a64{% else %}{{ variables.main|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Text input placeholder (<code>--placeholder</code>):<span>
-                <input id="css_var_placeholder" class="jscolor {hash:true}" value="{% if new or variables is none %}#636363{% else %}{{ variables.placeholder }}{% endif %}">
+                <input id="css_var_placeholder" class="jscolor {hash:true}" value="{% if new or variables is none %}#636363{% else %}{{ variables.placeholder|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Sidebar Dividers (<code>--sidebardivider</code>):<span>
-                <input id="css_var_sidebardivider" class="jscolor {hash:true}" value="{% if new or variables is none %}#90a4ae{% else %}{{ variables.sidebardivider }}{% endif %}">
+                <input id="css_var_sidebardivider" class="jscolor {hash:true}" value="{% if new or variables is none %}#90a4ae{% else %}{{ variables.sidebardivider|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Left Sidebar/Guild Navigation Background (<code>--leftsidebar</code>):<span>
-                <input id="css_var_leftsidebar" class="jscolor {hash:true}" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.leftsidebar }}{% endif %}">
+                <input id="css_var_leftsidebar" class="jscolor {hash:true}" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.leftsidebar|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Right Sidebar/Member List Background (<code>--rightsidebar</code>):<span>
-                <input id="css_var_rightsidebar" class="jscolor {hash:true}" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.rightsidebar }}{% endif %}">
+                <input id="css_var_rightsidebar" class="jscolor {hash:true}" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.rightsidebar|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Header Background (<code>--header</code>):<span>
-                <input id="css_var_header" class="jscolor {hash:true}" value="{% if new or variables is none %}#263238{% else %}{{ variables.header }}{% endif %}">
+                <input id="css_var_header" class="jscolor {hash:true}" value="{% if new or variables is none %}#263238{% else %}{{ variables.header|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Chat Message (<code>--chatmessage</code>):<span>
-                <input id="css_var_chatmessage" class="jscolor {hash:true}" value="{% if new or variables is none %}#c3c4c5{% else %}{{ variables.chatmessage }}{% endif %}">
+                <input id="css_var_chatmessage" class="jscolor {hash:true}" value="{% if new or variables is none %}#c3c4c5{% else %}{{ variables.chatmessage|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Discriminator Text (<code>--discrim</code>):<span>
-                <input id="css_var_discrim" class="jscolor {hash:true}" value="{% if new or variables is none %}#FFFFFF{% else %}{{ variables.discrim }}{% endif %}">
+                <input id="css_var_discrim" class="jscolor {hash:true}" value="{% if new or variables is none %}#FFFFFF{% else %}{{ variables.discrim|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Message Box Background (<code>--chatbox</code>):<span>
-                <input id="css_var_chatbox" class="jscolor {hash:true}" value="{% if new or variables is none %}#37474f{% else %}{{ variables.chatbox }}{% endif %}">
+                <input id="css_var_chatbox" class="jscolor {hash:true}" value="{% if new or variables is none %}#37474f{% else %}{{ variables.chatbox|e }}{% endif %}">
             </div>
         </div>
         <p><strong>TIP!</strong> You can use the variables in your CSS below! Something like <code>color: var(--leftsidebar);</code> would work!</p>
