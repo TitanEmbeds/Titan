@@ -5,6 +5,7 @@ class Cosmetics(db.Model):
     id = db.Column(db.Integer, primary_key=True)                    # Auto increment id
     user_id = db.Column(db.String(255), nullable=False)             # Discord user id of user of cosmetics
     css = db.Column(db.Boolean(), nullable=False)                   # If they can create/edit custom CSS
+    css_limit = db.Column(db.Integer, nullable=False, server_default="0") # Custom CSS Limit
     
     def __init__(self, user_id, **kwargs):
         self.user_id = user_id
@@ -13,3 +14,8 @@ class Cosmetics(db.Model):
             self.css = kwargs["css"]
         else:
             self.css = False
+        
+        if "css_limit" in kwargs:
+            self.css_limit = kwargs["css_limit"]
+        else:
+            self.css_limit = 0

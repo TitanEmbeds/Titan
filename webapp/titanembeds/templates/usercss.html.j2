@@ -85,13 +85,23 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         </div>
         <p><strong>TIP!</strong> You can use the variables in your CSS below! Something like <code>color: var(--leftsidebar);</code> would work!</p>
     </div>
+    {% if (new and premium_css_count >= cosmetics.css_limit) or (not new and premium_css_count >= cosmetics.css_limit and css.css is none) %}
+    <div class="col s12">
+        <hr>
+        <p class="flow-text">All custom CSS slots are used. Donate to get more!</p>
+        <p>Free up some slots by emptying your other custom CSS field and submitting it (Titan will automatically mark empty custom css editor fields as unused slots in the database) or delete the user defined css slot altogether.</p>
+        <hr>
+    </div>
+    {% else %}
     <div class="col s12">
         <p class="flow-text">Edit your CSS code here</p>
+        <p><em>Remove any text and leave this box blank when submitting to not use up your custom css slots.</em></p>
         <div style="position: relative; height: 40vh;">
-            <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{{ css.css|e }}{% endif %}</div>
+            <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{% if css.css %}{{ css.css|e }}{% endif %}{% endif %}</div>
         </div>
         <br>
     </div>
+    {% endif %}
     <div class="col s12">
         <a id="submit-btn" class="waves-effect waves-light btn">Submit</a>
         {% if not new %}<a id="delete-btn" class="waves-effect waves-light btn red">Delete</a>{% endif %}

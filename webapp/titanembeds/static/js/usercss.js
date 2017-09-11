@@ -1,12 +1,20 @@
 /*global $, ace, Materialize, newCSS*/
 (function () {
-    var editor = ace.edit("css_editor");
+    if($("#css_editor").length != 0) {
+        var editor = ace.edit("css_editor");
+    }
     
     function postForm() {
         var name = $('#css_name').val();
         var var_enabled = $("#toggleCSSVar").is(':checked');
         var variables = JSON.stringify(formatCSSVars());
-        var css = editor.getValue();
+        var css = null;
+        if($("#css_editor").length != 0) {
+            css = editor.getValue();
+            if (css.length == 0) {
+                css = null;
+            }
+        }
         var funct = $.ajax({
             dataType: "json",
             method: "POST",
@@ -16,8 +24,10 @@
     }
     
     $(function(){
-        editor.getSession().setMode("ace/mode/css");
-        editor.setTheme("ace/theme/chrome");
+        if($("#css_editor").length != 0) {
+            editor.getSession().setMode("ace/mode/css");
+            editor.setTheme("ace/theme/chrome");
+        }
         $("#submit-btn").click(submitForm);
         
         if (!newCSS) {

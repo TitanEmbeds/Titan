@@ -13,6 +13,7 @@
           <tr>
               <th>User ID</th>
               <th>CSS</th>
+              <th>CSS Limit</th>
               <th>Submit</th>
           </tr>
         </thead>
@@ -21,6 +22,11 @@
             <td>
                 <div class="input-field inline">
                     <input id="new_user_id" placeholder="User ID">
+                </div>
+            </td>
+            <td>
+                <div class="input-field inline">
+                    <input id="new_css_limit" placeholder="CSS Limit" type="number">
                 </div>
             </td>
             <td>
@@ -50,21 +56,27 @@
               <th>Remove</th>
               <th>User ID</th>
               <th>CSS</th>
+              <th>CSS Limit</th>
           </tr>
         </thead>
         <tbody>
         {% for cosmetic in cosmetics %}
           <tr>
-            <td><a class="waves-effect waves-light btn red" id="new_submit" onclick="delete_user('{{ cosmetic.user_id }}');">Remove</a></td>
+            <td><a class="waves-effect waves-light btn red" onclick="delete_user('{{ cosmetic.user_id }}');">Remove</a></td>
             <td>{{ cosmetic.user_id }}</td>
             <td>
                 <div class="switch">
                     <label>
                       Off
-                      <input type="checkbox" id="new_css_switch" {% if cosmetic.css %}checked{% endif %} onchange="update_css_switch('{{ cosmetic.user_id }}', this)">
+                      <input type="checkbox" {% if cosmetic.css %}checked{% endif %} onchange="update_css_switch('{{ cosmetic.user_id }}', this)">
                       <span class="lever"></span>
                       On
                     </label>
+                </div>
+            </td>
+            <td>
+                <div class="input-field inline">
+                    <input placeholder="CSS Limit" type="number" value="{{ cosmetic.css_limit }}" onchange="update_css_limit('{{ cosmetic.user_id }}', $(this).val())">
                 </div>
             </td>
           </tr>

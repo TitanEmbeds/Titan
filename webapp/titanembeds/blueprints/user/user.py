@@ -60,6 +60,14 @@ def logout():
         return redirect(session['redirect'])
     return redirect(url_for("index"))
 
+def count_user_premium_css():
+    count = 0
+    css_list = db.session.query(UserCSS).filter(UserCSS.user_id == session['user_id']).all()
+    for css in css_list:
+        if css.css is not None:
+            count += 1
+    return count
+
 @user.route("/dashboard")
 @discord_users_only()
 def dashboard():
@@ -73,7 +81,8 @@ def dashboard():
     css_list = None
     if cosmetics and cosmetics.css:
         css_list = db.session.query(UserCSS).filter(UserCSS.user_id == session['user_id']).all()
-    return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url, cosmetics=cosmetics, css_list=css_list)
+    premium_css_count = count_user_premium_css()
+    return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url, cosmetics=cosmetics, css_list=css_list, premium_css_count=premium_css_count)
 
 @user.route("/custom_css/new", methods=["GET"])
 @discord_users_only()
@@ -81,7 +90,8 @@ def new_custom_css_get():
     cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
     if not cosmetics or not cosmetics.css:
         abort(403)
-    return render_template("usercss.html.j2", new=True)
+    premium_css_count = count_user_premium_css()
+    return render_template("usercss.html.j2", new=True, cosmetics=cosmetics, premium_css_count=premium_css_count)
 
 @user.route("/custom_css/new", methods=["POST"])
 @discord_users_only()
@@ -92,7 +102,7 @@ def new_custom_css_post():
     
     name = request.form.get("name", None)
     user_id = session["user_id"]
-    css = request.form.get("css","")
+    css = request.form.get("css",None)
     variables = request.form.get("variables", None)
     variables_enabled = request.form.get("variables_enabled", False) in ["true", True]
     if not name:
@@ -100,6 +110,8 @@ def new_custom_css_post():
     else:
         name = name.strip()
         css = css.strip()
+    if (len(css) == 0):
+        css = None
     css = UserCSS(name, user_id, variables_enabled, variables, css)
     db.session.add(css)
     db.session.commit()
@@ -120,7 +132,8 @@ def edit_custom_css_get(css_id):
     print(variables)
     if variables:
         variables = json.loads(variables)
-    return render_template("usercss.html.j2", new=False, css=css, variables=variables)
+    premium_css_count = count_user_premium_css()
+    return render_template("usercss.html.j2", new=False, css=css, variables=variables, cosmetics=cosmetics, premium_css_count=premium_css_count)
 
 @user.route("/custom_css/edit/<css_id>", methods=["POST"])
 @discord_users_only()
@@ -134,7 +147,7 @@ def edit_custom_css_post(css_id):
     if dbcss.user_id != session['user_id']:
         abort(403)
     name = request.form.get("name", None)
-    css = request.form.get("css", "")
+    css = request.form.get("css", None)
     variables = request.form.get("variables", None)
     variables_enabled = request.form.get("variables_enabled", False) in ["true", True]
     if not name:
@@ -142,6 +155,8 @@ def edit_custom_css_post(css_id):
     else:
         name = name.strip()
         css = css.strip()
+    if (len(css) == 0):
+        css = None
     dbcss.name = name
     dbcss.css = css
     dbcss.css_variables = variables

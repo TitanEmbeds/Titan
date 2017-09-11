@@ -46,9 +46,11 @@
 
 {% if css_list is not none %}
 <p class="flow-text">
-  Create or modify your custom CSS.
+  Create or modify your user defined CSS.
   <a class="waves-effect waves-light btn" href="{{ url_for("user.new_custom_css_get") }}">New</a>
 </p>
+<p>You have used <strong>{{ premium_css_count }} out of {{ cosmetics.css_limit }}</strong> custom css slots. {% if premium_css_count >= cosmetics.css_limit %}<strong>Don't fret! You can still use CSS variables.</strong>{% endif %} Donate below to obtain more slots!</p>
+{% if premium_css_count >= cosmetics.css_limit %}<p>Free up some slots by emptying your other custom CSS field and submitting it (Titan will automatically mark empty custom css editor fields as unused slots in the database) or delete the user defined css slot altogether.</p>{% endif %}
 <div class="row">
   {% for css in css_list %}
   <div class="col l4 m6 s12">

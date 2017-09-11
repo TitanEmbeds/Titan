@@ -18,11 +18,12 @@ function deleteForm(user_id) {
     return funct.promise();
 }
 
-function patchForm(user_id, css) {
+function patchForm(user_id, param) {
+    var data = Object.assign({"user_id": user_id}, param);
     var funct = $.ajax({
         dataType: "json",
         method: "PATCH",
-        data: {"user_id": user_id, "css": css}
+        data: data,
     });
     return funct.promise();
 }
@@ -68,7 +69,7 @@ function delete_user(user_id) {
 
 function update_css_switch(user_id, element) {
     var css_checked = $(element).is(':checked');
-    var formPatch = patchForm(user_id, css_checked);
+    var formPatch = patchForm(user_id, {"css": css_checked});
     formPatch.done(function (data) {
         Materialize.toast('CSS updated!', 10000);
     });
@@ -77,6 +78,20 @@ function update_css_switch(user_id, element) {
             Materialize.toast('This user id does not exists!', 10000);
         } else {
             Materialize.toast('Oh no! Something has failed changing the css toggle!', 10000);
+        }
+    });
+}
+
+function update_css_limit(user_id, value) {
+    var formPatch = patchForm(user_id, {"css_limit": value});
+    formPatch.done(function (data) {
+        Materialize.toast('CSS value updated!', 10000);
+    });
+    formPatch.fail(function (data) {
+        if (data.status == 409) {
+            Materialize.toast('This user id does not exists!', 10000);
+        } else {
+            Materialize.toast('Oh no! Something has failed changing the css limit field!', 10000);
         }
     });
 }

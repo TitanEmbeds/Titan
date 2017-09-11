@@ -36,6 +36,7 @@ def cosmetics_post():
     if not user_id:
         abort(400)
     css = request.form.get("css", None)
+    css_limit = request.form.get("css_limit", None)
     entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == user_id).first()
     if entry:
         abort(409)
@@ -43,6 +44,8 @@ def cosmetics_post():
     if css:
         css = css.lower() == "true"
         user.css = css
+    if css_limit is not None:
+        user.css_limit = css_limit
     db.session.add(user)
     db.session.commit()
     return ('', 204)
@@ -67,12 +70,15 @@ def cosmetics_patch():
     if not user_id:
         abort(400)
     css = request.form.get("css", None)
+    css_limit = request.form.get("css_limit", None)
     entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == user_id).first()
     if not entry:
         abort(409)
     if css:
         css = css.lower() == "true"
         entry.css = css
+    if css_limit is not None:
+        entry.css_limit = css_limit
     db.session.commit()
     return ('', 204)
 def prepare_guild_members_list(members, bans):
