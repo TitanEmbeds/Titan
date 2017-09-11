@@ -13,6 +13,7 @@
           <tr>
               <th>User ID</th>
               <th>Starting Balance</th>
+              <th>Reason</th>
               <th>Submit</th>
           </tr>
         </thead>
@@ -26,6 +27,11 @@
             <td>
                 <div class="input-field inline">
                     <input id="new_user_token" placeholder="Starting Balance" type="number">
+                </div>
+            </td>
+            <td>
+                <div class="input-field inline">
+                    <input id="new_reason" placeholder="Reason">
                 </div>
             </td>
             <td>
@@ -49,6 +55,7 @@
                         <thead>
                           <tr>
                               <th>Modify Amount</th>
+                              <th>Reason</th>
                               <th>Submit</th>
                           </tr>
                         </thead>
@@ -58,7 +65,11 @@
                                 <div class="input-field inline">
                                     <input placeholder="Modify Amount" type="number" id="input_{{ don.user_id }}">
                                 </div>
-                                <p>(Place a subtract sign in the front to remove tokens. Otherwise, it will add the amount)</p>
+                            </td>
+                            <td>
+                                <div class="input-field inline">
+                                    <input placeholder="Reason" id="input_reason_{{ don.user_id }}">
+                                </div>
                             </td>
                             <td>
                                 <a class="waves-effect waves-light btn" onclick="submit_modify_user('{{ don.user_id }}')">Submit</a>
@@ -66,7 +77,7 @@
                           </tr>
                         </tbody>
                       </table>
-                  
+                  <p>(Place a subtract sign in the front to remove tokens. Otherwise, it will add the amount)</p>
                   <h4>Balance: <strong>{{ don.tokens }}</strong> Tokens</h4>
               <table class="striped">
                 <thead>

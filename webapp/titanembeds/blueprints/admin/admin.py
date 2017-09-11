@@ -213,11 +213,12 @@ def manage_titan_tokens():
 def post_titan_tokens():
     user_id = request.form.get("user_id", None)
     amount = request.form.get("amount", None, type=int)
+    reason = request.form.get("reason", None)
     if not user_id or not amount:
         abort(400)
     if get_titan_token(user_id) != -1:
         abort(409)
-    set_titan_token(user_id, amount, "NEW VIA ADMIN")
+    set_titan_token(user_id, amount, "NEW VIA ADMIN [{}]".format(str(reason)))
     return ('', 204)
 
 @admin.route("/tokens", methods=["PATCH"])
@@ -225,9 +226,10 @@ def post_titan_tokens():
 def patch_titan_tokens():
     user_id = request.form.get("user_id", None)
     amount = request.form.get("amount", None, type=int)
+    reason = request.form.get("reason", None)
     if not user_id or not amount:
         abort(400)
     if get_titan_token(user_id) == -1:
         abort(409)
-    set_titan_token(user_id, amount, "MODIFY VIA ADMIN")
+    set_titan_token(user_id, amount, "MODIFY VIA ADMIN [{}]".format(str(reason)))
     return ('', 204)

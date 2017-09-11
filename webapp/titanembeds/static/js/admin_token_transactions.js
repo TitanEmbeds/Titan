@@ -1,19 +1,19 @@
 /* global $, Materialize, location */
 
-function postForm(user_id, amount) {
+function postForm(user_id, amount, reason) {
     var funct = $.ajax({
         dataType: "json",
         method: "POST",
-        data: {"user_id": user_id, "amount": amount}
+        data: {"user_id": user_id, "amount": amount, "reason": reason}
     });
     return funct.promise();
 }
 
-function patchForm(user_id, amount) {
+function patchForm(user_id, amount, reason) {
     var funct = $.ajax({
         dataType: "json",
         method: "PATCH",
-        data: {"user_id": user_id, "amount": amount}
+        data: {"user_id": user_id, "amount": amount, "reason": reason}
     });
     return funct.promise();
 }
@@ -22,11 +22,12 @@ $(function() {
     $("#new_submit").click(function () {
         var user_id = $("#new_user_id").val();
         var user_token = $("#new_user_token").val();
+        var reason = $("#new_reason").val();
         if (user_id.length < 1 || user_token.length < 1) {
             Materialize.toast("The user ID or balance field can't be blank!", 2000);
             return;
         }
-        var formPost = postForm(user_id, user_token);
+        var formPost = postForm(user_id, user_token, reason);
         formPost.done(function (data) {
             location.reload();
         });
@@ -42,7 +43,8 @@ $(function() {
 
 function submit_modify_user(user_id) {
     var amount = $("#input_"+user_id).val();
-    var formPatch = patchForm(user_id, amount);
+    var reason = $("#input_reason_"+user_id).val();
+    var formPatch = patchForm(user_id, amount, reason);
     formPatch.done(function (data) {
         location.reload();
     });
