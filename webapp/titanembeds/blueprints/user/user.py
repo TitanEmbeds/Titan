@@ -421,3 +421,29 @@ def donate_thanks():
     tokens = get_titan_token(session["user_id"])
     transaction = request.args.get("transaction")
     return render_template("donate_thanks.html.j2", tokens=tokens, transaction=transaction)
+
+@user.route('/donate', methods=['PATCH'])
+@discord_users_only()
+def donate_patch():
+    item = request.form.get('item')
+    amount = int(request.form.get('amount'))
+    if amount <= 0:
+        abort(400)
+    subtract_amt = 0
+    if item == "custom_css_slots":
+        subtract_amt = 100
+    amt_change = -1 * subtract_amt * amount
+    subtract = set_titan_token(session["user_id"], amt_change, "BUY " + item + " x" + str(amount))
+    if not subtract:
+        return ('', 402)
+    session["tokens"] += amt_change
+    if item == "custom_css_slots":
+        entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == session["user_id"]).first()
+        if not entry:
+            entry = Cosmetics(session["user_id"])
+            entry.css = True
+            entry.css_limit = 0
+        entry.css_limit += amount
+        db.session.add(entry)
+        db.session.commit()
+    return ('', 204)
