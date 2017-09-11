@@ -43,14 +43,14 @@ font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
   --dark-highlight-channelheader: #36393e;
 }
 #footer {
-background-color: rgb(60,60,60);
+background-color: var(--chatbox);
 }
 #footercontainer {
 border-radius:20px;
 border: 1px solid rgb(99,99,99);
 margin-left:-0px!important;
 padding-left:-4px!important;
-background-color: rgb(60,60,60);
+background-color: var(--chatbox);
 }
 #nameplate {
 background:transparent!important;
@@ -63,7 +63,7 @@ display:block
 }
 #curuser_discrim {
 font-size:50%;
-color:rgb(125,131,134);
+color:var(--discrim);
 }
 #curuser_discrim,
 #curuser_name {
@@ -77,21 +77,21 @@ margin-right:4px
 #chatcontent > p > span { display: table-row }
 /*#chatcontent > p > span:nth-child(1):before { content:"Today at " }*/
 #chatcontent > p > span.chatusername { display: table-header-group }
-#chatcontent > p > span.chatmessage { display: table-footer-group;display:inline-block!important;color:rgb(195,196,197) }
+#chatcontent > p > span.chatmessage { display: table-footer-group;display:inline-block!important;color:var(--chatmessage) }
 #chatcontent {
-background:rgb(54,57,62)
+background:var(--main)
 }
-::-webkit-input-placeholder { color:rgb(99,99,99) }
-:-moz-placeholder { color:rgb(99,99,99) }
-::-moz-placeholder { color:rgb(99,99,99) }
-:-ms-input-placeholder { color:rgb(99,99,99) }
-::-ms-input-placeholder { color:rgb(99,99,99) }
+::-webkit-input-placeholder { color:var(--placeholder) }
+:-moz-placeholder { color:var(--placeholder) }
+::-moz-placeholder { color:var(--placeholder) }
+:-ms-input-placeholder { color:var(--placeholder) }
+::-ms-input-placeholder { color:var(--placeholder) }
 body > div.navbar-fixed > nav > div,
 #members-nav {
-background:rgb(46,49,54)
+background:var(--rightsidebar)
 }
 #guild-nav {
-background: rgb(30,33,36)
+background: var(--leftsidebar)
 }
 div.divider {
 background:rgb(46,49,54);
@@ -111,7 +111,7 @@ color:rgb(130,131,134)
 }
 body > main,
 body {
-background:rgb(54,57,62)
+background:var(--main)
 }
 #members-btn > i { visibility:hidden }
 #members-btn {
@@ -130,8 +130,24 @@ background: linear-gradient(to right, #f9f9f9 90%, #fff);
 #discord-members > li > a,
 #embed-discord-members > li > a,
 #embed-unauth-users > li > a {
-color:rgb(171,173,175)
+color:var(--noroleusers);
 }
 .modal {
-    background: rgb(54, 57, 62);
+    background: var(--modal);
+}
+
+/* CSS Variables */
+:root {
+  /*--<var>: <value>*/
+  --modal: #36393E;
+  --noroleusers: #ABADAF;
+  --main: #36393E;
+  --placeholder: #636363;
+  --sidebardivider: #2E3136;
+  --leftsidebar: #2E3136;
+  --rightsidebar: #1E2124;
+  --header: #2E3136;
+  --chatmessage: #C3C4C5;
+  --discrim: #7D8386;
+  --chatbox: #3C3C3C;
 }
