@@ -47,6 +47,14 @@ def index():
 def about():
     return render_template("about.html.j2")
 
+@app.route("/terms")
+def terms():
+    return render_template("terms_and_conditions.html.j2")
+
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy_policy.html.j2")
+
 @app.before_request
 def before_request():
     discord_api.init_discordrest()

@@ -69,7 +69,11 @@
       <div class="footer-copyright">
         <div class="container">
         A project by EndenDragon
-        <a class="grey-text text-lighten-4 right" href="https://github.com/TitanEmbeds/Titan">GitHub Repo</a>
+        <span class="right">
+          <a class="grey-text text-lighten-4" href="https://github.com/TitanEmbeds/Titan">GitHub <span class="hide-on-small-only">Repo</span></a>&nbsp;
+          <a class="grey-text text-lighten-4" href="{{ url_for('terms') }}">Terms <span class="hide-on-small-only">and Conditions</span></a>&nbsp;
+          <a class="grey-text text-lighten-4" href="{{ url_for('privacy') }}">Privacy <span class="hide-on-small-only">Policy</span></a>
+        </span>
         </div>
       </div>
     </footer>
