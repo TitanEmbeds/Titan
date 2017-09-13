@@ -743,6 +743,13 @@
     }
     
     function parse_message_markdown(text) {
+        var geturl_regex = /(\(.*?)?\b((?:https?|ftp|file):\/\/[-a-z0-9+&@#\/%?=~_()|!:,.;]*[-a-z0-9+&@#\/%=~_()|])/ig;
+        var links = text.match(geturl_regex); // temporarily remove urls so markdown won't mark inside of the url
+        if (links) {
+            for (var i = 0; i < links.length; i++) {
+                text = text.replace(links[i], "$LINK"+i+"$");
+            }
+        }
         text = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
         text = text.replace(/\*(.*?)\*/g, "<i>$1</i>");
         text = text.replace(/__(.*?)__/g, "<u>$1</u>");
@@ -750,6 +757,11 @@
         text = text.replace(/~~(.*?)~~/g, "<del>$1</del>");
         text = text.replace(/\`\`\`([^]+)\`\`\`/g, "<code class=\"blockcode\">$1</code>");
         text = text.replace(/\`(.*?)\`/g, "<code>$1</code>");
+        if (links) {
+            for (var i = 0; i < links.length; i++) {
+                text = text.replace("$LINK"+i+"$", links[i]);
+            }
+        }
         return text;
     }
 
