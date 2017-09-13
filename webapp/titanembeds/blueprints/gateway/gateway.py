@@ -1,5 +1,4 @@
-from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api
-from titanembeds.userbookkeeping import check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled
+from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api, check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled
 from titanembeds.database import db, GuildMembers, get_guild_member, Guilds
 from flask_socketio import Namespace, emit, disconnect, join_room, leave_room
 import functools
