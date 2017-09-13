@@ -40,6 +40,14 @@
             </div>
         </div>
     </div>
+    <div class="col s12">
+        <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+            <h4>Webhook Guest User Avatar <strong>[300 tokens]</strong></h4>
+            <p class="flow-text">Tired of the bland Titan logo for your guests avatars in your servers? Enables your account to be able to set webhook icons for guests for all servers you can manage.</p>
+            <p>(Note: Webhook Messages has to be enabled & Titan needs server permissions to create webhooks)</p>
+            <a class="waves-effect waves-light btn" id="buy-webhook-guest-user-avatar-btn" {% if cosmetics.webhook_icon %}disabled{% endif %}>{% if cosmetics.webhook_icon %}Already Purchased{% else %}Buy{% endif %}</a>
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block script %}

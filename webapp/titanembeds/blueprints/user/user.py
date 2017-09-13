@@ -196,6 +196,7 @@ def administrate_guild(guild_id):
         permissions.append("Ban Members")
     if check_user_permission(guild_id, 1):
         permissions.append("Kick Members")
+    cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
     all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.last_timestamp).all()
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
@@ -209,9 +210,10 @@ def administrate_guild(guild_id):
         "bracket_links": db_guild.bracket_links,
         "mentions_limit": db_guild.mentions_limit,
         "icon": db_guild.icon,
-        "discordio": db_guild.discordio if db_guild.discordio != None else ""
+        "discordio": db_guild.discordio if db_guild.discordio != None else "",
+        "webhook_icon": db_guild.webhook_icon if db_guild.webhook_icon != None else "",
     }
-    return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions)
+    return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics)
 
 @user.route("/administrate_guild/<guild_id>", methods=["POST"])
 @discord_users_only()
@@ -229,9 +231,15 @@ def update_administrate_guild(guild_id):
     db_guild.mentions_limit = request.form.get("mentions_limit", db_guild.mentions_limit)
     
     discordio = request.form.get("discordio", db_guild.discordio)
-    if discordio and discordio.strip() == "":
+    if discordio != None and discordio.strip() == "":
         discordio = None
     db_guild.discordio = discordio
+    
+    webhook_icon = request.form.get("webhook_icon", db_guild.webhook_icon)
+    if webhook_icon != None and webhook_icon.strip() == "":
+        webhook_icon = None
+    db_guild.webhook_icon = webhook_icon
+    
     db.session.commit()
     return jsonify(
         id=db_guild.id,
@@ -243,6 +251,7 @@ def update_administrate_guild(guild_id):
         bracket_links=db_guild.bracket_links,
         mentions_limit=db_guild.mentions_limit,
         discordio=db_guild.discordio,
+        webhook_icon=webhook_icon,
     )
 
 @user.route("/add-bot/<guild_id>")
@@ -358,7 +367,8 @@ def revoke_unauthenticated_user():
 @user.route('/donate', methods=["GET"])
 @discord_users_only()
 def donate_get():
-    return render_template('donate.html.j2')
+    cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session["user_id"]).first()
+    return render_template('donate.html.j2', cosmetics=cosmetics)
 
 def get_paypal_api():
     return paypalrestsdk.Api({
@@ -430,20 +440,28 @@ def donate_patch():
     if amount <= 0:
         abort(400)
     subtract_amt = 0
+    entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == session["user_id"]).first()
     if item == "custom_css_slots":
         subtract_amt = 100
+    if item == "webhook_icon":
+        subtract_amt = 300
+        if entry is not None and entry.webhook_icon:
+            abort(400)
     amt_change = -1 * subtract_amt * amount
     subtract = set_titan_token(session["user_id"], amt_change, "BUY " + item + " x" + str(amount))
     if not subtract:
         return ('', 402)
     session["tokens"] += amt_change
     if item == "custom_css_slots":
-        entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == session["user_id"]).first()
         if not entry:
             entry = Cosmetics(session["user_id"])
             entry.css = True
             entry.css_limit = 0
         entry.css_limit += amount
-        db.session.add(entry)
-        db.session.commit()
+    if item == "webhook_icon":
+        if not entry:
+            entry = Cosmetics(session["user_id"])
+        entry.webhook_icon = True
+    db.session.add(entry)
+    db.session.commit()
     return ('', 204)

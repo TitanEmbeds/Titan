@@ -8,6 +8,7 @@ class Guilds(Base):
     unauth_users = db.Column(db.Boolean())          # If allowed unauth users
     visitor_view = db.Column(db.Boolean())          # If users are automatically "signed in" and can view chat
     webhook_messages = db.Column(db.Boolean())      # Use webhooks to send messages instead of the bot
+    webhook_icon = db.Column(db.String(255), default=None) # Webhook icon url, None if unset
     chat_links = db.Column(db.Boolean())            # If users can post links
     bracket_links = db.Column(db.Boolean())         # If appending brackets to links to prevent embed
     mentions_limit = db.Column(db.Integer)          # If there is a limit on the number of mentions in a msg
@@ -25,6 +26,7 @@ class Guilds(Base):
         self.unauth_users = True # defaults to true
         self.visitor_view = False
         self.webhook_messages = False
+        self.webhook_icon = None
         self.chat_links = True
         self.bracket_links = True
         self.mentions_limit = -1 # -1 = unlimited mentions

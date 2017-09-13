@@ -246,6 +246,11 @@ def post():
                 if (session['unauthenticated']):
                     username = session["username"] + "#" + str(session["user_id"])
                     avatar = url_for('static', filename='img/titanembeds_round.png', _external=True)
+                    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+                    if dbguild:
+                        icon = dbguild.webhook_icon
+                        if icon:
+                            avatar = icon
                 else:
                     username = session["username"]
                     if dbUser:

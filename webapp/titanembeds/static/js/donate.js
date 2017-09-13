@@ -46,4 +46,21 @@
             }
         });
     });
+
+    $("#buy-webhook-guest-user-avatar-btn").click(function () {
+        var formPatch = patchForm("webhook_icon", 1);
+        formPatch.done(function (data) {
+            alert("Successfully bought webhook guest user avatar perk!");
+            location.reload();
+        });
+        formPatch.fail(function (data) {
+            if (data.status == 400) {
+                Materialize.toast('Item already purchased!', 10000);
+            } else if (data.status == 402) {
+                Materialize.toast('Insufficient token funds!', 10000);
+            } else {
+                Materialize.toast('Purchasing webhook guest user avatar perk failed!', 10000);
+            }
+        });
+    });
 })();

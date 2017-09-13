@@ -65,6 +65,17 @@ $("#discordio").keyup(function(event){
     }
 });
 
+$("#webhook_icon").keyup(function(event){
+    if(event.keyCode == 13){
+      var pathname = window.location.pathname;
+      var value = $("#webhook_icon").val()
+      var payload = {"webhook_icon": value}
+      $.post(pathname, payload, function(data) {
+        Materialize.toast('Updated Webhook Icon setting!', 2000)
+      });
+    }
+});
+
 function initiate_ban(guild_id, user_id) {
   var reason = prompt("Please enter your reason for ban");
   var payload = {

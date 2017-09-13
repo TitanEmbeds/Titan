@@ -14,6 +14,7 @@
               <th>User ID</th>
               <th>CSS</th>
               <th>CSS Limit</th>
+              <th>Webhook Icon</th>
               <th>Submit</th>
           </tr>
         </thead>
@@ -25,6 +26,16 @@
                 </div>
             </td>
             <td>
+                <div class="switch">
+                    <label>
+                      Off
+                      <input type="checkbox" id="new_css_switch">
+                      <span class="lever"></span>
+                      On
+                    </label>
+                </div>
+            </td>
+            <td>
                 <div class="input-field inline">
                     <input id="new_css_limit" placeholder="CSS Limit" type="number">
                 </div>
@@ -33,7 +44,7 @@
                 <div class="switch">
                     <label>
                       Off
-                      <input type="checkbox" id="new_css_switch">
+                      <input type="checkbox" id="new_webhook_icon_switch">
                       <span class="lever"></span>
                       On
                     </label>
@@ -57,6 +68,7 @@
               <th>User ID</th>
               <th>CSS</th>
               <th>CSS Limit</th>
+              <th>Webhook Icon</th>
           </tr>
         </thead>
         <tbody>
@@ -77,6 +89,16 @@
             <td>
                 <div class="input-field inline">
                     <input placeholder="CSS Limit" type="number" value="{{ cosmetic.css_limit }}" onchange="update_css_limit('{{ cosmetic.user_id }}', $(this).val())">
+                </div>
+            </td>
+            <td>
+                <div class="switch">
+                    <label>
+                      Off
+                      <input type="checkbox" {% if cosmetic.webhook_icon %}checked{% endif %} onchange="update_webhook_icon_switch('{{ cosmetic.user_id }}', this)">
+                      <span class="lever"></span>
+                      On
+                    </label>
                 </div>
             </td>
           </tr>
