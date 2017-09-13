@@ -13,10 +13,7 @@ from titanembeds.discordrest import DiscordREST
 discord_api = DiscordREST(config['bot-token'])
 
 def get_client_ipaddr():
-    if "X-Real-IP" in request.headers: # pythonanywhere specific
-        ip = request.headers['X-Real-IP']
-    else: # general
-        ip = request.remote_addr
+    ip = request.remote_addr
     return hashlib.sha512((config['app-secret'] + ip).encode('utf-8')).hexdigest()[:15]
 
 def generate_session_key():
