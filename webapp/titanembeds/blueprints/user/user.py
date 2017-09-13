@@ -223,6 +223,8 @@ def update_administrate_guild(guild_id):
     db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     if not db_guild:
         abort(400)
+    if not check_user_permission(guild_id, 5):
+        abort(403)
     db_guild.unauth_users = request.form.get("unauth_users", db_guild.unauth_users) in ["true", True]
     db_guild.visitor_view = request.form.get("visitor_view", db_guild.visitor_view) in ["true", True]
     db_guild.webhook_messages = request.form.get("webhook_messages", db_guild.webhook_messages) in ["true", True]
