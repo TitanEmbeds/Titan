@@ -52,10 +52,13 @@ class Gateway(Namespace):
             dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
             guild_webhooks = json.loads(dbguild.webhooks)
             name = "[Titan] "
+            username = session["username"]
+            if len(username) > 19:
+                username = username[:19]
             if session["unauthenticated"]:
-                name = name + session["username"] + "#" + str(session["user_id"])
+                name = name + username + "#" + str(session["user_id"])
             else:
-                name = name + session["username"] + "#" + str(session["discriminator"])
+                name = name + username + "#" + str(session["discriminator"])
             for webhook in guild_webhooks:
                 if webhook["name"] == name:
                     discord_api.delete_webhook(webhook["id"], webhook["token"])

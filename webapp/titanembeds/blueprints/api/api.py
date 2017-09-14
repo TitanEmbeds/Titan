@@ -143,10 +143,13 @@ def get_channel_webhook_url(guild_id, channel_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     guild_webhooks = json.loads(dbguild.webhooks)
     name = "[Titan] "
+    username = session["username"]
+    if len(username) > 19:
+        username = username[:19]
     if user_unauthenticated():
-        name = name + session["username"] + "#" + str(session["user_id"])
+        name = name + username + "#" + str(session["user_id"])
     else:
-        name = name + session["username"] + "#" + str(session["discriminator"])
+        name = name + username + "#" + str(session["discriminator"])
     for webhook in guild_webhooks:
         if channel_id == webhook["channel_id"] and webhook["name"] == name:
             return {
