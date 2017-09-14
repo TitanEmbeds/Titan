@@ -11,6 +11,7 @@
             <p class="flow-text">You now have <strong>{{ tokens }}</strong> tokens!</p>
             <p>Please visit our support server and contact a True Titan (Administrators Role) to claim your Supporter role, if you haven't done so already. Mention the transaction ID of <strong>{{ transaction }}</strong>.</p>
             <a class="waves-effect waves-light btn" href="https://discord.io/Titan" target="_blank">Support Server</a>
+            <a class="waves-effect waves-light btn" href="{{ url_for("user.donate_get") }}">Visit the Shoppe</a>
             <p><em>Have a nice day!</em></p>
         </div>
     </div>
