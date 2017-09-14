@@ -2,7 +2,13 @@
 (function () {
     if($("#css_editor").length != 0) {
         var editor = ace.edit("css_editor");
-        debugger;
+        editor.commands.addCommand({
+            name: 'save',
+            bindKey: {win: "Ctrl-S", "mac": "Cmd-S"},
+            exec: function(editor) {
+                $('#submit-btn').trigger('click');
+            }
+        });
     }
     
     function postForm() {
