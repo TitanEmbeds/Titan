@@ -178,7 +178,6 @@ def update_administrate_guild(guild_id):
     if webhook_icon != None and webhook_icon.strip() == "":
         webhook_icon = None
     db_guild.webhook_icon = webhook_icon
-    print(webhook_icon)
     db.session.commit()
     return jsonify(
         id=db_guild.id,

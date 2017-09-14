@@ -129,7 +129,6 @@ def edit_custom_css_get(css_id):
     if css.user_id != session['user_id']:
         abort(403)
     variables = css.css_variables
-    print(variables)
     if variables:
         variables = json.loads(variables)
     premium_css_count = count_user_premium_css()

@@ -2,6 +2,7 @@
 (function () {
     if($("#css_editor").length != 0) {
         var editor = ace.edit("css_editor");
+        debugger;
     }
     
     function postForm() {
