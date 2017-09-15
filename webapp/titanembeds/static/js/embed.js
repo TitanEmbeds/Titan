@@ -800,6 +800,9 @@
                 replace.find(".blockcode").find("br").remove();
             }
             var usrcachekey = username + "#" + message.author.discriminator;
+            if (usrcachekey.startsWith("(Titan Dev) ")) {
+                usrcachekey = usrcachekey.substr(12);
+            }
             if (!(usrcachekey in message_users_cache)) {
                 message_users_cache[usrcachekey] = {"data": {}, "msgs": []};
                 
