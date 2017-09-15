@@ -241,9 +241,8 @@ def post():
             userid = session["user_id"]
             content = format_everyone_mention(chan, content)
             webhook = get_channel_webhook_url(guild_id, channel_id)
-            if userid in get_administrators_list():
-                oldcontent = content
-                content = "(Titan Dev) " + oldcontent
+            # if userid in get_administrators_list():
+            #     content = "(Titan Dev) " + content
             if webhook:
                 if (session['unauthenticated']):
                     username = session["username"] + "#" + str(session["user_id"])
@@ -258,11 +257,10 @@ def post():
                     if dbUser:
                         if dbUser.nickname:
                             username = dbUser.nickname
-                    if content.startswith("(Titan Dev) "):
-                        content = content[12:]
-                        username = "(Titan Dev) " + username
-                    else:
-                        username = username + "#" + str(session['discriminator'])
+                    # if content.startswith("(Titan Dev) "):
+                    #     content = content[12:]
+                    #     username = "(Titan Dev) " + username
+                    username = username + "#" + str(session['discriminator'])
                     avatar = session['avatar']
                 message = discord_api.execute_webhook(webhook.get("id"), webhook.get("token"), username, avatar, content)
             else:

@@ -10,6 +10,7 @@
 /* global location */
 /* global io */
 /* global twemoji */
+/* global jQuery */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -29,6 +30,7 @@
     var unauthenticated_users_list = []; // List of all guest users
     var discord_users_list = []; // List of all discord users that are probably online
     var guild_channels_list = []; // guild channels, but as a list of them
+    var message_users_cache = {}; // {"name#discrim": {"data": {}, "msgs": []} Cache of the users fetched from websockets to paint the messages
     var shift_pressed = false; // Track down if shift pressed on messagebox
 
     function element_in_view(element, fullyInView) {
@@ -797,6 +799,12 @@
                 replace.html($(rendered).html());
                 replace.find(".blockcode").find("br").remove();
             }
+            var usrcachekey = username + "#" + message.author.discriminator;
+            if (!(usrcachekey in message_users_cache)) {
+                message_users_cache[usrcachekey] = {"data": {}, "msgs": []};
+                
+            }
+            message_users_cache[usrcachekey]["msgs"].push(message.id);
             last = message.id;
         }
         if (replace == null) {
@@ -806,6 +814,7 @@
             target: "_blank"
         });
         $('.tooltipped').tooltip();
+        process_message_users_cache();
         return last;
     }
 
@@ -860,6 +869,42 @@
         fet.always(function() {
             $("#fetching-indicator").fadeOut(800);
         });
+    }
+    
+    function process_message_users_cache() {
+        var keys = Object.keys(message_users_cache);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var hashpos = key.lastIndexOf("#");
+            var name = key.substring(0, hashpos);
+            var discriminator = key.substring(hashpos+1);
+            if (name.startsWith("(Titan Dev) ")) {
+                name = name.substring(12);
+            }
+            var key_helper = name + "#" + discriminator;
+            if (jQuery.isEmptyObject(message_users_cache[key_helper]["data"])) {
+                if (socket) {
+                    socket.emit("lookup_user_info", {"guild_id": guild_id, "name": name, "discriminator": discriminator});
+                }
+            } else {
+                process_message_users_cache_helper(key_helper, message_users_cache[key_helper]["data"]);
+            }
+
+        }
+    }
+    
+    function process_message_users_cache_helper(key, usr) {
+        var msgs = message_users_cache[key]["msgs"];
+        while (msgs.length > 0) {
+            var element = $("#discordmessage_"+msgs.pop());
+            var parent = element.parent();
+            if (usr.color) {
+                parent.find(".chatusername").css("color", "#"+usr.color);
+            } else {
+                parent.find(".chatusername").css("color", null);
+            }
+            parent.attr("discord_userid", usr.id);
+        }
     }
 
     function update_embed_userchip(authenticated, avatar, username, nickname, userid, discrim=null) {
@@ -1032,6 +1077,7 @@
         socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway", {path: '/gateway', transports: ['websocket']});
         socket.on('connect', function () {
             socket.emit('identify', {"guild_id": guild_id, "visitor_mode": visitor_mode});
+            process_message_users_cache();
         });
         
         socket.on("disconnect", function () {
@@ -1206,6 +1252,16 @@
         
         socket.on("current_user_info", function (usr) {
             update_embed_userchip(true, usr.avatar, usr.username, usr.nickname, usr.userid, usr.discriminator);
+        });
+        
+        socket.on("lookup_user_info", function (usr) {
+            var key = usr.name + "#" + usr.discriminator;
+            var cache = message_users_cache[key];
+            if (!cache) {
+                return;
+            }
+            cache["data"] = usr;
+            process_message_users_cache_helper(key, usr);
         });
     }
     

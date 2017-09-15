@@ -106,3 +106,62 @@ class Gateway(Namespace):
                 'user_id': session['user_id'],
             }
             emit("current_user_info", usr)
+    
+    def get_user_color(self, guild_id, user_id):
+        color = None
+        member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == user_id).first()
+        if not member:
+            return None
+        guild_roles = json.loads(db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().roles)
+        guildroles_filtered = {}
+        for role in guild_roles:
+            guildroles_filtered[role["id"]] = role
+        member_roleids = json.loads(member.roles)
+        member_roles = []
+        for roleid in member_roleids:
+            role = guildroles_filtered.get(roleid)
+            if not role:
+                continue
+            member_roles.append(role)
+        member_roles = sorted(member_roles, key=lambda k: k['position'])
+        for role in member_roles:
+            if role["color"] != 0:
+                color = '{0:02x}'.format(role["color"])
+                while len(color) < 6:
+                    color = "0" + color
+        return color
+    
+    def on_lookup_user_info(self, data):
+        guild_id = data["guild_id"]
+        name = data["name"]
+        discriminator = data["discriminator"]
+        usr = {
+            "name": name,
+            "id": None,
+            "username": None,
+            "nickname": None,
+            "discriminator": discriminator,
+            "avatar": None,
+            "color": None,
+            "avatar_url": None,
+        }
+        member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.username == name, GuildMembers.discriminator == discriminator).first()
+        if member:
+            usr["id"] = member.user_id
+            usr["username"] = member.username
+            usr["nickname"] = member.nickname
+            usr["avatar"] = member.avatar
+            usr["color"] = self.get_user_color(guild_id, usr["id"])
+            if (usr["avatar"]):
+                usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.jpg".format(usr["id"], usr["avatar"])
+        else:
+            member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.nickname == name, GuildMembers.discriminator == discriminator).first()
+            if member:
+                usr["id"] = member.user_id
+                usr["username"] = member.username
+                usr["nickname"] = member.nickname
+                usr["avatar"] = member.avatar
+                usr["color"] = self.get_user_color(guild_id, usr["id"])
+                if (usr["avatar"]):
+                    usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.jpg".format(usr["id"], usr["avatar"])
+        emit("lookup_user_info", usr)
