@@ -201,9 +201,9 @@
     <script id="mustache_unauthedusers" type="text/template">
       <li><a class="waves-effect truncate"><span class="membername">{{username}}#{{discriminator}}</span></a></li>
     </script>
-
+    
     <script id="mustache_usermessage" type="text/template">
-      <p><span class="chatusername">{{username}}#{{discriminator}}</span> <span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatmessage">{{{content}}}</span></p>
+      <p><span class="chatusername"><span class="authorname">{{username}}</span><span class="authorhash">#</span><span class="authordiscriminator">{{discriminator}}</span></span> <span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatmessage">{{{content}}}</span></p>
     </script>
 
     <script id="mustache_memberrole" type="text/template">
