@@ -5,6 +5,20 @@
     {% set title="Editing " + css.name + " - User CSS" %}
 {% endif %}
 
+{%- set live_preview -%}
+    <iframe id="iframepreview" src="
+    {% if new %}
+        {{ url_for("embed.guild_embed", guild_id="295085744249110529") }}
+    {% else %}
+        {{ url_for("embed.guild_embed", guild_id="295085744249110529", css=css.id) }}
+    {% endif %}
+    " frameborder="0"></iframe>
+    <div class="input-field inline">
+        {{ request.url_root }}embed/<input id="preview_guildid" value="295085744249110529" placeholder="Server ID">
+    </div>
+    <p class="red lighten-3" id="live_preview_warning" style="display: none;">WARNING: Changes you've made to the css shown in the live preview MAY NOT have been saved! <strong>Hit the submit button to save your work.</strong></p>
+{% endset %}
+
 {% block content %}
 <h1>{% if new %}New{% else %}Editing {{ css.name }}{% endif %} - User Defined CSS</h1>
 <p><strong>Note:</strong> This feature is only used for CSS. Any attempts to enter HTML or malicious CSS code
@@ -40,47 +54,47 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         <div class="row">
             <div class="col m6 s12">
                 <span>Modal Background Color (<code>--modal</code>):<span>
-                <input id="css_var_modal" class="jscolor {hash:true}" value="{% if new or variables is none %}#546e7a{% else %}{{ variables.modal|e }}{% endif %}">
+                <input id="css_var_modal" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#546e7a{% else %}{{ variables.modal|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Uncategorized Discord Users (<code>--noroleusers</code>):<span>
-                <input id="css_var_noroleusers" class="jscolor {hash:true}" value="{% if new or variables is none %}#eceff1{% else %}{{ variables.noroleusers|e }}{% endif %}">
+                <input id="css_var_noroleusers" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#eceff1{% else %}{{ variables.noroleusers|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Main Background Color (<code>--main</code>):<span>
-                <input id="css_var_main" class="jscolor {hash:true}" value="{% if new or variables is none %}#455a64{% else %}{{ variables.main|e }}{% endif %}">
+                <input id="css_var_main" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#455a64{% else %}{{ variables.main|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Text input placeholder (<code>--placeholder</code>):<span>
-                <input id="css_var_placeholder" class="jscolor {hash:true}" value="{% if new or variables is none %}#636363{% else %}{{ variables.placeholder|e }}{% endif %}">
+                <input id="css_var_placeholder" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#636363{% else %}{{ variables.placeholder|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Sidebar Dividers (<code>--sidebardivider</code>):<span>
-                <input id="css_var_sidebardivider" class="jscolor {hash:true}" value="{% if new or variables is none %}#90a4ae{% else %}{{ variables.sidebardivider|e }}{% endif %}">
+                <input id="css_var_sidebardivider" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#90a4ae{% else %}{{ variables.sidebardivider|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Left Sidebar/Guild Navigation Background (<code>--leftsidebar</code>):<span>
-                <input id="css_var_leftsidebar" class="jscolor {hash:true}" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.leftsidebar|e }}{% endif %}">
+                <input id="css_var_leftsidebar" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.leftsidebar|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Right Sidebar/Member List Background (<code>--rightsidebar</code>):<span>
-                <input id="css_var_rightsidebar" class="jscolor {hash:true}" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.rightsidebar|e }}{% endif %}">
+                <input id="css_var_rightsidebar" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#607d8b{% else %}{{ variables.rightsidebar|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Header Background (<code>--header</code>):<span>
-                <input id="css_var_header" class="jscolor {hash:true}" value="{% if new or variables is none %}#263238{% else %}{{ variables.header|e }}{% endif %}">
+                <input id="css_var_header" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#263238{% else %}{{ variables.header|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Chat Message (<code>--chatmessage</code>):<span>
-                <input id="css_var_chatmessage" class="jscolor {hash:true}" value="{% if new or variables is none %}#c3c4c5{% else %}{{ variables.chatmessage|e }}{% endif %}">
+                <input id="css_var_chatmessage" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#c3c4c5{% else %}{{ variables.chatmessage|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Discriminator Text (<code>--discrim</code>):<span>
-                <input id="css_var_discrim" class="jscolor {hash:true}" value="{% if new or variables is none %}#FFFFFF{% else %}{{ variables.discrim|e }}{% endif %}">
+                <input id="css_var_discrim" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#FFFFFF{% else %}{{ variables.discrim|e }}{% endif %}">
             </div>
             <div class="col m6 s12">
                 <span>Message Box Background (<code>--chatbox</code>):<span>
-                <input id="css_var_chatbox" class="jscolor {hash:true}" value="{% if new or variables is none %}#37474f{% else %}{{ variables.chatbox|e }}{% endif %}">
+                <input id="css_var_chatbox" class="jscolor {hash:true} updateLivePreview" value="{% if new or variables is none %}#37474f{% else %}{{ variables.chatbox|e }}{% endif %}">
             </div>
         </div>
         <p><strong>TIP!</strong> You can use the variables in your CSS below! Something like <code>color: var(--leftsidebar);</code> would work!</p>
@@ -91,13 +105,19 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         <p class="flow-text">All custom CSS slots are used. Donate to get more!</p>
         <p>Free up some slots by emptying your other custom CSS field and submitting it (Titan will automatically mark empty custom css editor fields as unused slots in the database) or delete the user defined css slot altogether.</p>
         <hr>
+        {{ live_preview }}
     </div>
     {% else %}
     <div class="col s12">
         <p class="flow-text">Edit your CSS code here</p>
         <p><em>Remove any text and leave this box blank when submitting to not use up your custom css slots.</em></p>
-        <div style="position: relative; height: 40vh;">
-            <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{% if css.css %}{{ css.css|e }}{% endif %}{% endif %}</div>
+        <div class="row">
+            <div class="col s12 m12 l6" id="css_editor_container">
+                <div id="css_editor">{% if new %}/* Enter your CSS code here! */{% else %}{% if css.css %}{{ css.css|e }}{% endif %}{% endif %}</div>
+            </div>
+            <div class="col s12 m12 l6">
+                {{ live_preview }}
+            </div>
         </div>
         <br>
     </div>
@@ -116,6 +136,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
 <script src="//cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.js" integrity="sha256-y1h79SSb3icyBC/BrLCzoexQZAOGwlvoAr85biY4QGw=" crossorigin="anonymous"></script>
 <script>
     const newCSS = {% if new %}true{% else %}false{% endif %};
+    const CSS_ID = {%if new %}null{% else %}{{ css.id }}{% endif %};
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/usercss.js') }}"></script>
 {% endblock %}
@@ -129,6 +150,18 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         right: 0;
         bottom: 0;
         left: 0;
+    }
+    
+    #css_editor_container {
+        position: relative;
+        height: 55vh;
+        min-height: 500px;
+    }
+    
+    #iframepreview {
+        width: 100%;
+        height: 43vh;
+        min-height: 450px;
     }
 </style>
 {% endblock %}

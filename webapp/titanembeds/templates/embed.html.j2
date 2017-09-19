@@ -19,9 +19,12 @@
     <title>{{ guild['name'] }} - Embed - Titan Embeds for Discord</title>
     {% include 'google_analytics.html.j2' %}
     
-    {% if css is not none %}
-    <style id="user-defined-css">{% if cssvariables is not none and css.css_var_bool %}{{ cssvariables|e }}{% endif %} {% if css.css is not none %}{{ css.css }}{% endif %}</style>
-    {% endif %}
+    <style id="user-defined-css">
+      {% if css is not none %}
+        {% if cssvariables is not none and css.css_var_bool %}{{ cssvariables|e }}{% endif %}
+        {% if css.css is not none %}{{ css.css }}{% endif %}
+      {% endif %}
+    </style>
   </head>
   <body>
     <div class="navbar-fixed">
