@@ -271,7 +271,7 @@ def post():
     return response
 
 @api.route("/create_unauthenticated_user", methods=["POST"])
-@rate_limiter.limit("1 per 15 minute", key_func=guild_ratelimit_key)
+@rate_limiter.limit("3 per 30 minute", key_func=guild_ratelimit_key)
 def create_unauthenticated_user():
     session['unauthenticated'] = True
     username = request.form['username']
@@ -307,7 +307,7 @@ def create_unauthenticated_user():
         return response
 
 @api.route("/change_unauthenticated_username", methods=["POST"])
-@rate_limiter.limit("1 per 15 minute", key_func=guild_ratelimit_key)
+@rate_limiter.limit("1 per 10 minute", key_func=guild_ratelimit_key)
 def change_unauthenticated_username():
     username = request.form['username']
     guild_id = request.form['guild_id']

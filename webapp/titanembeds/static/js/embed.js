@@ -964,7 +964,7 @@
                 });
                 usr.fail(function(data) {
                     if (data.status == 429) {
-                        Materialize.toast('Sorry! You are allowed to log in as a guest once every 15 minutes.', 10000);
+                        Materialize.toast('Sorry! You are allowed to log in as a guest three times in a span of 30 minutes.', 10000);
                     } else if (data.status == 403) {
                         Materialize.toast('Authentication error! You have been banned.', 10000);
                     } else if (data.status == 406) {
@@ -997,7 +997,7 @@
                 });
                 usr.fail(function(data) {
                     if (data.status == 429) {
-                        Materialize.toast('Sorry! You are allowed to change your username once every 15 minutes.', 10000);
+                        Materialize.toast('Sorry! You are allowed to change your username once every 10 minutes.', 10000);
                     } else if (data.status == 403) {
                         Materialize.toast('Authentication error! You have been banned.', 10000);
                     } else if (data.status == 406) {
