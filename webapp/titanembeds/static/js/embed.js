@@ -969,6 +969,8 @@
                         Materialize.toast('Authentication error! You have been banned.', 10000);
                     } else if (data.status == 406) {
                         Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
+                    } else if (data.status == 422) {
+                        Materialize.toast("Attempting to add you into the server has failed. Either you are banned, reached 100 servers in Discord, or something else bad has happened.", 10000);
                     }
                     unlock_login_fields();
                     setVisitorMode(true);

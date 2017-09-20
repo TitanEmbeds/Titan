@@ -390,7 +390,9 @@ def create_authenticated_user():
             if not check_user_in_guild(guild_id):
                 add_member = discord_api.add_guild_member(guild_id, session['user_id'], session['user_keys']['access_token'])
                 if not add_member["success"]:
-                    abort(403)
+                    response = jsonify(add_member)
+                    response.status_code = 422
+                    return response
             db_user = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
             if not db_user:
                 db_user = AuthenticatedUsers(guild_id, session['user_id'])
