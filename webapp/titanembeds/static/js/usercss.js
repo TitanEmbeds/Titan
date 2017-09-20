@@ -112,7 +112,7 @@
     
     function update_live_preview(refresh=false) {
         if (refresh) {
-            $('#iframepreview')[0].contentWindow.location.reload(true);
+            $('#iframepreview').attr('src', $('#iframepreview').attr('src'));
             return;
         }
         $("#live_preview_warning").show();
