@@ -11,6 +11,7 @@
 /* global io */
 /* global twemoji */
 /* global jQuery */
+/* global grecaptcha */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -73,12 +74,12 @@
         return funct.promise();
     }
 
-    function create_unauthenticated_user(username) {
+    function create_unauthenticated_user(username, captchaResponse) {
         var funct = $.ajax({
             method: "POST",
             dataType: "json",
             url: "/api/create_unauthenticated_user",
-            data: {"username": username, "guild_id": guild_id}
+            data: {"username": username, "guild_id": guild_id, "captcha_response": captchaResponse}
         });
         return funct.promise();
     }
@@ -142,6 +143,14 @@
           }
         );
         $('#loginmodal').modal('open');
+        $("#recaptchamodal").modal({
+            dismissible: true,
+            opacity: .5,
+            inDuration: 400,
+            outDuration: 400,
+            startingTop: '40%',
+            endingTop: '30%',
+        });
         $("#userembedmodal").modal({
             dismissible: true,
             opacity: .5,
@@ -948,7 +957,7 @@
         lock_login_fields();
         wait_for_discord_login();
     });
-
+    
     $("#custom_username_field").keyup(function(event){
         if (event.keyCode == 13) {
             if (!(new RegExp(/^[a-z\d\-_\s]+$/i).test($(this).val()))) {
@@ -956,27 +965,35 @@
                 return;
             }
             if($(this).val().length >= 2 && $(this).val().length <= 32) {
-                lock_login_fields();
-                var usr = create_unauthenticated_user($(this).val());
-                usr.done(function(data) {
-                    setVisitorMode(false);
-                    initialize_embed();
-                });
-                usr.fail(function(data) {
-                    if (data.status == 429) {
-                        Materialize.toast('Sorry! You are allowed to log in as a guest three times in a span of 30 minutes.', 10000);
-                    } else if (data.status == 403) {
-                        Materialize.toast('Authentication error! You have been banned.', 10000);
-                    } else if (data.status == 406) {
-                        Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
-                    } else if (data.status == 422) {
-                        Materialize.toast("Attempting to add you into the server has failed. Either you are banned, reached 100 servers in Discord, or something else bad has happened.", 10000);
-                    }
-                    unlock_login_fields();
-                    setVisitorMode(true);
-                });
+                $("#custom_username_field").blur();
+                $('#recaptchamodal').modal('open');
             }
         }
+    });
+
+    $("#submit-unauthenticated-captcha-btn").click(function(){
+        lock_login_fields();
+        var usr = create_unauthenticated_user($("#custom_username_field").val(), grecaptcha.getResponse());
+        usr.done(function(data) {
+            grecaptcha.reset();
+            setVisitorMode(false);
+            initialize_embed();
+        });
+        usr.fail(function(data) {
+            if (data.status == 429) {
+                Materialize.toast('Sorry! You are allowed to log in as a guest three times in a span of 30 minutes.', 10000);
+            } else if (data.status == 403) {
+                Materialize.toast('Authentication error! You have been banned.', 10000);
+            } else if (data.status == 406) {
+                Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
+            } else if (data.status == 422) {
+                Materialize.toast("Attempting to add you into the server has failed. Either you are banned, reached 100 servers in Discord, or something else bad has happened.", 10000);
+            } else if (data.status == 412) {
+                Materialize.toast("reCAPTCHA reponse has failed. Try again?", 10000);
+            }
+            unlock_login_fields();
+            setVisitorMode(true);
+        });
     });
     
     $("#change_username_field").keyup(function(event){
@@ -1283,3 +1300,8 @@
         }
     }
 })();
+
+function submit_unauthenticated_captcha() { // To be invoked when recaptcha is completed
+    $('#recaptchamodal').modal('close');
+    $("#submit-unauthenticated-captcha-btn").click();
+}

@@ -3,12 +3,14 @@ from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 from flask import Blueprint, abort, jsonify, session, request, url_for
+from flask import current_app as app
 from flask_socketio import emit
 from sqlalchemy import and_
 import random
 import json
 import datetime
 import re
+import requests
 from config import config
 
 api = Blueprint("api", __name__)
@@ -270,6 +272,17 @@ def post():
     response.status_code = status_code
     return response
 
+def verify_captcha_request(captcha_response, ip_address):
+    payload = {
+        "secret": config["recaptcha-secret-key"],
+        "response": captcha_response,
+        "remoteip": ip_address,
+    }
+    if app.config["DEBUG"]:
+        del payload["remoteip"]
+    r = requests.post("https://www.google.com/recaptcha/api/siteverify", data=payload).json()
+    return r["success"]
+
 @api.route("/create_unauthenticated_user", methods=["POST"])
 @rate_limiter.limit("3 per 30 minute", key_func=guild_ratelimit_key)
 def create_unauthenticated_user():
@@ -278,6 +291,9 @@ def create_unauthenticated_user():
     guild_id = request.form['guild_id']
     ip_address = get_client_ipaddr()
     username = username.strip()
+    captcha_response = request.form['captcha_response']
+    if not verify_captcha_request(captcha_response, request.remote_addr):
+        abort(412)
     if len(username) < 2 or len(username) > 32:
         abort(406)
     if not all(x.isalnum() or x.isspace() or "-" == x or "_" == x for x in username):

@@ -65,11 +65,13 @@ def guild_embed(guild_id):
         customcss = get_custom_css()
         return render_template("embed.html.j2",
             login_greeting=get_logingreeting(),
-            guild_id=guild_id, guild=guild_dict,
+            guild_id=guild_id,
+            guild=guild_dict,
             generate_guild_icon=generate_guild_icon_url,
             unauth_enabled=guild_query_unauth_users_bool(guild_id),
             visitors_enabled=guild_accepts_visitors(guild_id),
             client_id=config['client-id'],
+            recaptcha_site_key=config["recaptcha-site-key"],
             css=customcss,
             cssvariables=parse_css_variable(customcss)
         )
