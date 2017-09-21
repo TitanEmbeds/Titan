@@ -490,6 +490,11 @@ p.mentioned span.chatmessage {
   top: -5px;
 }
 
+#google-recaptcha {
+  margin: 0 auto;
+  width: 302px;
+}
+
 /* CSS Variables */
 :root {
   /*--<var>: <value>*/

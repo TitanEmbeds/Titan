@@ -18,6 +18,7 @@
 
     <title>{{ guild['name'] }} - Embed - Titan Embeds for Discord</title>
     {% include 'google_analytics.html.j2' %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     
     <style id="user-defined-css">
       {% if css is not none %}
@@ -142,6 +143,14 @@
             </p>
           </div>
         </div>
+      </div>
+    </div>
+    
+    <div id="recaptchamodal" class="modal">
+      <div class="modal-content">
+        <h4 class="center-align">Just one more step...</h4>
+        <div id="google-recaptcha" class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-callback="submit_unauthenticated_captcha"></div>
+        <input type="hidden" id="submit-unauthenticated-captcha-btn" />
       </div>
     </div>
     
