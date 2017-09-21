@@ -616,6 +616,12 @@
                 if (data.status == 403) {
                     Materialize.toast('Authentication error! You have been banned.', 10000);
                     setVisitorMode(true);
+                } else if (data.status == 422) {
+                    if (data.responseJSON.code == 403) {
+                        Materialize.toast("Attempting to add you into the server store has failed. The bot does not have permissions to create instant invite. Therefore, Discord Login has been disabled.", 10000);
+                    } else {
+                        Materialize.toast("Attempting to add you into the server has failed. Either you are banned, reached 100 servers in Discord, or something else bad has happened.", 10000);
+                    }
                 } else if (index < 10) {
                     _wait_for_discord_login(index + 1);
                 }
@@ -986,8 +992,6 @@
                 Materialize.toast('Authentication error! You have been banned.', 10000);
             } else if (data.status == 406) {
                 Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
-            } else if (data.status == 422) {
-                Materialize.toast("Attempting to add you into the server has failed. Either you are banned, reached 100 servers in Discord, or something else bad has happened.", 10000);
             } else if (data.status == 412) {
                 Materialize.toast("reCAPTCHA reponse has failed. Try again?", 10000);
             }
