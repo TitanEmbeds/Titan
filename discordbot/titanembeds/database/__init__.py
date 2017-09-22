@@ -287,3 +287,9 @@ class DatabaseInterface(object):
                 dbuser.revoked = True
                 session.commit()
                 return "Successfully kicked **{}#{}**!".format(dbuser.username, dbuser.discriminator)
+                
+    async def delete_all_messages_from_channel(self, channel_id):
+        async with threadpool():
+            with self.get_session() as session:
+                session.query(Messages).filter(Messages.channel_id == channel_id).delete()
+                session.commit()

@@ -6,6 +6,7 @@ import aiohttp
 import asyncio
 import sys
 import logging
+import gc
 logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
@@ -72,6 +73,7 @@ class Titan(discord.Client):
             try:
                 if str(channel.type) == "text":
                     print("Processing channel: ID-{} Name-'{}' ServerID-{} Server-'{}'".format(channel.id, channel.name, channel.server.id, channel.server.name))
+                    await self.database.delete_all_messages_from_channel(channel.id)
                     async for message in self.logs_from(channel, limit=50, reverse=True):
                         await self.database.push_message(message)
             except:
