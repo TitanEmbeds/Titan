@@ -69,7 +69,8 @@ class Titan(discord.Client):
             return
 
         print("working on this...")
-        for channel in self.get_all_channels():
+        all_channels = list(self.get_all_channels())
+        for channel in all_channels:
             try:
                 if str(channel.type) == "text":
                     print("Processing channel: ID-{} Name-'{}' ServerID-{} Server-'{}'".format(channel.id, channel.name, channel.server.id, channel.server.name))
