@@ -80,10 +80,9 @@ class Titan(discord.Client):
                         continue
                     for channel in channelsjson:
                         chanid = channel["id"]
-                        msgs = session.query(Messages).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).offset(50).all()
-                        for msg in msgs:
-                            session.delete(msg)
-                    session.commit()
+                        keep_these = session.query(Messages.id).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).limit(50)
+                        session.query(Messages).filter(Messages.channel_id == chanid, ~Messages.id.in_(keep_these)).delete(synchronize_session=False)
+                        session.commit()
         print("done!")
         await self.logout()
 

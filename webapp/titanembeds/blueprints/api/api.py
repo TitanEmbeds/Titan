@@ -436,18 +436,16 @@ def cleanup_keyval_db():
         db.session.query(KeyValueProperties).filter(KeyValueProperties.expiration < datetime.datetime.now()).delete()
         db.session.commit()
 
-        # guilds = Guilds.query.all()
-        # for guild in guilds:
-        #     try:
-        #         channelsjson = json.loads(guild.channels)
-        #     except:
-        #         continue
-        #     for channel in channelsjson:
-        #         chanid = channel["id"]
-        #         msgs = db.session.query(Messages).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).offset(50).all()
-        #         for msg in msgs:
-        #             db.session.delete(msg)
-        #     db.session.commit()
-                
+        guilds = Guilds.query.all()
+        for guild in guilds:
+            try:
+                channelsjson = json.loads(guild.channels)
+            except:
+                continue
+            for channel in channelsjson:
+                chanid = channel["id"]
+                keep_these = db.session.query(Messages.id).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).limit(50)
+                db.session.query(Messages).filter(Messages.channel_id == chanid, ~Messages.id.in_(keep_these)).delete(synchronize_session=False)
+                db.session.commit()
         return ('', 204)
     abort(401)
