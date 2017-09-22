@@ -69,10 +69,13 @@ class Titan(discord.Client):
 
         print("working on this...")
         for channel in self.get_all_channels():
-            if str(channel.type) == "text":
-                print("Processing channel: ID-{} Name-'{}' ServerID-{} Server-'{}'".format(channel.id, channel.name, channel.server.id, channel.server.name))
-                async for message in self.logs_from(channel, limit=50, reverse=True):
-                    await self.database.push_message(message)
+            try:
+                if str(channel.type) == "text":
+                    print("Processing channel: ID-{} Name-'{}' ServerID-{} Server-'{}'".format(channel.id, channel.name, channel.server.id, channel.server.name))
+                    async for message in self.logs_from(channel, limit=50, reverse=True):
+                        await self.database.push_message(message)
+            except:
+                continue
         print("done!")
         await self.logout()
 
