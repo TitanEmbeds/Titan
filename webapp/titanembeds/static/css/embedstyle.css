@@ -431,7 +431,7 @@ p.mentioned span.chatmessage {
 }
 
 .chatmessage code {
-  background-color: gray;
+  background-color: rgba(0, 0, 0, 0.1);
   color: lightgray;
   border-radius: 5px;
   padding: 2px;

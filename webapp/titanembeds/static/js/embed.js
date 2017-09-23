@@ -12,6 +12,8 @@
 /* global twemoji */
 /* global jQuery */
 /* global grecaptcha */
+/* global hljs */
+/* global linkify */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -210,6 +212,9 @@
             var keep_custom_css = $("#overwrite_theme_custom_css_checkbox").is(':checked');
             changeTheme(null, keep_custom_css);
         });
+        
+        hljs.configure({useBR: true});
+        linkify.options.defaults.ignoreTags = ["code"];
         
         var themeparam = getParameterByName('theme');
         var localstore_theme = localStorage.getItem("theme");
@@ -781,6 +786,29 @@
         }
         return text;
     }
+    
+    function render_code_highlighting(element) {
+        element.each(function(i, block) {
+            var elem = $(block);
+            var codetext = elem.text();
+            var splitted = codetext.split("\n");
+            if (splitted.length > 1) {
+                var firstLine = splitted[0];
+                if (!(/^\s/.test(firstLine))) { // make sure no whitespace at begining
+                    var firstLineSplitted = firstLine.split(/[ ]+/); // split at whitespace
+                    if (firstLineSplitted.length == 1 && firstLineSplitted[0] != "") { // only one token and the token is not empty
+                        var language = firstLineSplitted[0]; // assume token is lang
+                        if (hljs.getLanguage(language)) {
+                            splitted.splice(0, 1); // delete first line
+                            var restOfCode = splitted.join("\n");
+                            var highlighted = hljs.highlight(language, restOfCode, true);
+                            element.html(highlighted.value);
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     function fill_discord_messages(messages, jumpscroll, replace=null) {
         if (messages.length == 0) {
@@ -810,9 +838,11 @@
                 $("#chatcontent").append(rendered);
                 handle_last_message_mention();
                 $("#chatcontent p:last-child").find(".blockcode").find("br").remove(); // Remove excessive breaks in codeblocks
+                render_code_highlighting($("#chatcontent p:last-child").find(".blockcode"));
             } else {
                 replace.html($(rendered).html());
                 replace.find(".blockcode").find("br").remove();
+                render_code_highlighting(replace.find(".blockcode"));
             }
             var usrcachekey = username + "#" + message.author.discriminator;
             if (usrcachekey.startsWith("(Titan Dev) ")) {

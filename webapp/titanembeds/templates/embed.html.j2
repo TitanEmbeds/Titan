@@ -5,6 +5,7 @@
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" integrity="sha256-6DQKO56c9MZL0LAc7QNtxqJyqSa3rS9Gq5FVcIhtA+w=" crossorigin="anonymous" media="screen,projection"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-dark.min.css" integrity="sha256-90Y+fvi28WF+3jKH4tHEkoQ9WLeFKJjpvCPNOtU9ZvU=" crossorigin="anonymous" />
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/embedstyle.css') }}">
     <link id="css-theme" type="text/css" rel="stylesheet" href="">
 
@@ -200,6 +201,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cheet.js/0.3.3/cheet.min.js" integrity="sha256-FxQrnIC3BX45JRzOyFUlKiM6dY3A/ZakV6w4WpYyfyA=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" integrity="sha256-sdmLD9jD1PIzq3KOQPNSGZYxjv76rds79Mnyk5JNp1M=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/2.5.0/2/twemoji.min.js" integrity="sha256-t5bxASdQ5tDbKQZy330h/YufCiZg82xG8PqIYzFpwhU=" crossorigin="anonymous"></script>
+    
+    <script src="{{ url_for("static", filename="js/vendor/highlight.pack.js") }}"></script>
 
     {% raw %}
     <script id="mustache_channellistings" type="text/template">
