@@ -358,6 +358,10 @@ def change_unauthenticated_username():
         response.status_code = 403
         return response
 
+def get_guild_guest_icon(guild_id):
+    return db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().guest_icon
+    
+
 def process_query_guild(guild_id, visitor=False):
     widget = discord_api.get_widget(guild_id)
     channels = get_guild_channels(guild_id, visitor)
@@ -367,10 +371,11 @@ def process_query_guild(guild_id, visitor=False):
         discordmembers = [{"id": 0, "color": "FFD6D6", "status": "dnd", "username": "Discord Server Widget is Currently Disabled"}]
     embedmembers = get_online_embed_users(guild_id)
     emojis = get_guild_emojis(guild_id)
+    guest_icon = get_guild_guest_icon(guild_id)
     if visitor:
         for channel in channels:
             channel["write"] = False
-    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, instant_invite=widget.get("instant_invite", None))
+    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, guest_icon=guest_icon, instant_invite=widget.get("instant_invite", None))
 
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)

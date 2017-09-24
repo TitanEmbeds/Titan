@@ -1,5 +1,6 @@
 from flask import Blueprint, request, redirect, jsonify, abort, session, url_for, render_template
 from flask import current_app as app
+from flask_socketio import emit
 from config import config
 from titanembeds.decorators import discord_users_only
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS, set_titan_token, get_titan_token
@@ -242,6 +243,7 @@ def update_administrate_guild(guild_id):
     db_guild.guest_icon = guest_icon
     
     db.session.commit()
+    emit("guest_icon_change", {"guest_icon": guest_icon}, room="GUILD_"+guild_id, namespace="/gateway")
     return jsonify(
         id=db_guild.id,
         guild_id=db_guild.guild_id,

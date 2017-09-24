@@ -35,6 +35,7 @@
     var guild_channels_list = []; // guild channels, but as a list of them
     var message_users_cache = {}; // {"name#discrim": {"data": {}, "msgs": []} Cache of the users fetched from websockets to paint the messages
     var shift_pressed = false; // Track down if shift pressed on messagebox
+    var global_guest_icon = null; // Guest icon
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -809,6 +810,14 @@
             }
         }
     }
+    
+    function generate_avatar_url(user_id, avatar_hash, message_contents=null) {
+        if (user_id == bot_client_id && (message_contents.includes("**") && ( (message_contents.includes("<")&&message_contents.includes(">")) || (message_contents.includes("[") && message_contents.includes("]")) ))) {
+            return global_guest_icon;
+        } else {
+            return "https://cdn.discordapp.com/avatars/" + user_id + "/" + avatar_hash + ".png";
+        }
+    }
 
     function fill_discord_messages(messages, jumpscroll, replace=null) {
         if (messages.length == 0) {
@@ -833,7 +842,8 @@
             if (message.author.nickname) {
                 username = message.author.nickname;
             }
-            var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": username, "discriminator": message.author.discriminator, "content": nl2br(message.content)});
+            var avatar = generate_avatar_url(message.author.id, message.author.avatar, message.content);
+            var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": username, "discriminator": message.author.discriminator, "avatar": avatar, "content": nl2br(message.content)});
             if (replace == null) {
                 $("#chatcontent").append(rendered);
                 handle_last_message_mention();
@@ -951,7 +961,10 @@
             } else {
                 parent.find(".chatusername").css("color", null);
             }
-            parent.attr("discord_userid", usr.id);
+            if (usr.avatar_url) {
+                parent.attr("discord_userid", usr.id);
+                parent.find(".authoravatar").prop("src", usr.avatar_url);
+            }
         }
     }
 
@@ -1318,6 +1331,10 @@
             }
             cache["data"] = usr;
             process_message_users_cache_helper(key, usr);
+        });
+        
+        socket.on("guest_icon_change", function (icon) {
+            global_guest_icon = icon.guest_icon;
         });
     }
     

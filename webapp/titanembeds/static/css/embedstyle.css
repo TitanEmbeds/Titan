@@ -172,11 +172,14 @@ nav .brand-logo {
 #chatcontent > p {
   display: table;
   width: 90%;
+  border-top: solid 1px rgba(0, 0, 0, 0.1);
+  padding-top: 10px;
+  margin-bottom: 11px;
 }
 
-#chatcontent > p > span {
-  display: table-row
-}
+/*#chatcontent > p > span {*/
+/*  display: table-row*/
+/*}*/
 
 ::-webkit-input-placeholder {
   color: var(--placeholder);
@@ -224,12 +227,23 @@ nav .brand-logo {
 .chatusername {
   font-weight: bold;
   color: #eceff1;
+  margin-right: 10px;
+  vertical-align: middle;
+  font-size: 110%;
 }
 
 .chattimestamp {
-  font-size: 10px;
+  font-size: 11px;
   color: #90a4ae;
   margin-right: 3px;
+}
+
+.authoravatar {
+  width: 100%;
+  max-width: 30px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 
 .footercontainer {
@@ -413,12 +427,13 @@ a {
   height: 30px;
 }
 
-.chatusername {
-  display: table-header-group;
-}
+/*.chatusername {*/
+/*  display: table-header-group;*/
+/*}*/
 .chatmessage {
-  display: inline;
+  display: block;
   color: var(--chatmessage);
+  margin-top: 5px;
 }
 
 p.mentioned {
@@ -443,6 +458,7 @@ p.mentioned span.chatmessage {
   white-space: pre-wrap;
   line-height: 15px;
   padding: 5px;
+  margin-bottom: 3px;
 }
 
 #emoji-picker {
