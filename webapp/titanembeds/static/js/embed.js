@@ -788,8 +788,8 @@
     }
     
     function render_code_highlighting(element) {
-        element.each(function(i, block) {
-            var elem = $(block);
+        for (var i = 0; i < element.length; i++) {
+            var elem = $(element[i]);
             var codetext = elem.text();
             var splitted = codetext.split("\n");
             if (splitted.length > 1) {
@@ -802,12 +802,12 @@
                             splitted.splice(0, 1); // delete first line
                             var restOfCode = splitted.join("\n");
                             var highlighted = hljs.highlight(language, restOfCode, true);
-                            element.html(highlighted.value);
+                            elem.html(highlighted.value);
                         }
                     }
                 }
             }
-        });
+        }
     }
 
     function fill_discord_messages(messages, jumpscroll, replace=null) {
