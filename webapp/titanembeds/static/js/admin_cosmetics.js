@@ -105,13 +105,13 @@ function update_guest_icon_switch(user_id, element) {
     var webhook_checked = $(element).is(':checked');
     var formPatch = patchForm(user_id, {"guest_icon": webhook_checked});
     formPatch.done(function (data) {
-        Materialize.toast('Webhook Icon updated!', 10000);
+        Materialize.toast('Guest Icon updated!', 10000);
     });
     formPatch.fail(function (data) {
         if (data.status == 409) {
             Materialize.toast('This user id does not exists!', 10000);
         } else {
-            Materialize.toast('Oh no! Something has failed changing the webhook icon toggle!', 10000);
+            Materialize.toast('Oh no! Something has failed changing the guest icon toggle!', 10000);
         }
     });
 }
