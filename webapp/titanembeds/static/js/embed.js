@@ -374,6 +374,7 @@
     }
 
     function prepare_guild(guildobj) {
+        global_guest_icon = guildobj.guest_icon;
         emoji_store = guildobj.emojis;
         fill_channels(guildobj.channels);
         fill_discord_members(guildobj.discordmembers);
@@ -828,6 +829,7 @@
         Mustache.parse(template);
         for (var i = messages.length-1; i >= 0; i--) {
             var message = messages[i];
+            var avatar = generate_avatar_url(message.author.id, message.author.avatar, message.content);
             message = replace_message_mentions(message);
             message = format_bot_message(message);
             message = parse_message_time(message);
@@ -842,7 +844,6 @@
             if (message.author.nickname) {
                 username = message.author.nickname;
             }
-            var avatar = generate_avatar_url(message.author.id, message.author.avatar, message.content);
             var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": username, "discriminator": message.author.discriminator, "avatar": avatar, "content": nl2br(message.content)});
             if (replace == null) {
                 $("#chatcontent").append(rendered);
