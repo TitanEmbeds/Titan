@@ -210,7 +210,7 @@ def administrate_guild(guild_id):
         "mentions_limit": db_guild.mentions_limit,
         "icon": db_guild.icon,
         "discordio": db_guild.discordio if db_guild.discordio != None else "",
-        "webhook_icon": db_guild.webhook_icon if db_guild.webhook_icon != None else "",
+        "guest_icon": db_guild.guest_icon if db_guild.guest_icon != None else "",
     }
     return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics)
 
@@ -236,10 +236,10 @@ def update_administrate_guild(guild_id):
         discordio = None
     db_guild.discordio = discordio
     
-    webhook_icon = request.form.get("webhook_icon", db_guild.webhook_icon)
-    if webhook_icon != None and webhook_icon.strip() == "":
-        webhook_icon = None
-    db_guild.webhook_icon = webhook_icon
+    guest_icon = request.form.get("guest_icon", db_guild.guest_icon)
+    if guest_icon != None and guest_icon.strip() == "":
+        guest_icon = None
+    db_guild.guest_icon = guest_icon
     
     db.session.commit()
     return jsonify(
@@ -252,7 +252,7 @@ def update_administrate_guild(guild_id):
         bracket_links=db_guild.bracket_links,
         mentions_limit=db_guild.mentions_limit,
         discordio=db_guild.discordio,
-        webhook_icon=webhook_icon,
+        guest_icon=guest_icon,
     )
 
 @user.route("/add-bot/<guild_id>")
@@ -444,9 +444,9 @@ def donate_patch():
     entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == session["user_id"]).first()
     if item == "custom_css_slots":
         subtract_amt = 100
-    if item == "webhook_icon":
+    if item == "guest_icon":
         subtract_amt = 300
-        if entry is not None and entry.webhook_icon:
+        if entry is not None and entry.guest_icon:
             abort(400)
     amt_change = -1 * subtract_amt * amount
     subtract = set_titan_token(session["user_id"], amt_change, "BUY " + item + " x" + str(amount))
@@ -459,10 +459,10 @@ def donate_patch():
             entry.css = True
             entry.css_limit = 0
         entry.css_limit += amount
-    if item == "webhook_icon":
+    if item == "guest_icon":
         if not entry:
             entry = Cosmetics(session["user_id"])
-        entry.webhook_icon = True
+        entry.guest_icon = True
     db.session.add(entry)
     db.session.commit()
     return ('', 204)

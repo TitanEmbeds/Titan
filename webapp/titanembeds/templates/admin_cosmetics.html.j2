@@ -14,7 +14,7 @@
               <th>User ID</th>
               <th>CSS</th>
               <th>CSS Limit</th>
-              <th>Webhook Icon</th>
+              <th>Guest Icon</th>
               <th>Submit</th>
           </tr>
         </thead>
@@ -44,7 +44,7 @@
                 <div class="switch">
                     <label>
                       Off
-                      <input type="checkbox" id="new_webhook_icon_switch">
+                      <input type="checkbox" id="new_guest_icon_switch">
                       <span class="lever"></span>
                       On
                     </label>
@@ -68,7 +68,7 @@
               <th>User ID</th>
               <th>CSS</th>
               <th>CSS Limit</th>
-              <th>Webhook Icon</th>
+              <th>Guest Icon</th>
           </tr>
         </thead>
         <tbody>
@@ -95,7 +95,7 @@
                 <div class="switch">
                     <label>
                       Off
-                      <input type="checkbox" {% if cosmetic.webhook_icon %}checked{% endif %} onchange="update_webhook_icon_switch('{{ cosmetic.user_id }}', this)">
+                      <input type="checkbox" {% if cosmetic.guest_icon %}checked{% endif %} onchange="update_guest_icon_switch('{{ cosmetic.user_id }}', this)">
                       <span class="lever"></span>
                       On
                     </label>

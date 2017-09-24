@@ -37,7 +37,7 @@ def cosmetics_post():
         abort(400)
     css = request.form.get("css", None)
     css_limit = int(request.form.get("css_limit", 0))
-    webhook_icon = request.form.get("webhook_icon", None)
+    guest_icon = request.form.get("guest_icon", None)
     entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == user_id).first()
     if entry:
         abort(409)
@@ -47,9 +47,9 @@ def cosmetics_post():
         user.css = css
     if css_limit is not None:
         user.css_limit = css_limit
-    if webhook_icon is not None:
-        webhook_icon = webhook_icon.lower() == "true"
-        user.webhook_icon = webhook_icon
+    if guest_icon is not None:
+        guest_icon = guest_icon.lower() == "true"
+        user.guest_icon = guest_icon
     db.session.add(user)
     db.session.commit()
     return ('', 204)
@@ -75,7 +75,7 @@ def cosmetics_patch():
         abort(400)
     css = request.form.get("css", None)
     css_limit = request.form.get("css_limit", None)
-    webhook_icon = request.form.get("webhook_icon", None)
+    guest_icon = request.form.get("guest_icon", None)
     entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == user_id).first()
     if not entry:
         abort(409)
@@ -84,9 +84,9 @@ def cosmetics_patch():
         entry.css = css
     if css_limit is not None:
         entry.css_limit = css_limit
-    if webhook_icon:
-        webhook_icon = webhook_icon.lower() == "true"
-        entry.webhook_icon = webhook_icon
+    if guest_icon:
+        guest_icon = guest_icon.lower() == "true"
+        entry.guest_icon = guest_icon
     db.session.commit()
     return ('', 204)
 def prepare_guild_members_list(members, bans):
@@ -156,7 +156,7 @@ def administrate_guild(guild_id):
         "mentions_limit": db_guild.mentions_limit,
         "icon": db_guild.icon,
         "discordio": db_guild.discordio if db_guild.discordio != None else "",
-        "webhook_icon": db_guild.webhook_icon if db_guild.webhook_icon != None else "",
+        "guest_icon": db_guild.guest_icon if db_guild.guest_icon != None else "",
     }
     return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics)
 
@@ -174,10 +174,10 @@ def update_administrate_guild(guild_id):
     if discordio != None and discordio.strip() == "":
         discordio = None
     db_guild.discordio = discordio
-    webhook_icon = request.form.get("webhook_icon", db_guild.webhook_icon)
-    if webhook_icon != None and webhook_icon.strip() == "":
-        webhook_icon = None
-    db_guild.webhook_icon = webhook_icon
+    guest_icon = request.form.get("guest_icon", db_guild.guest_icon)
+    if guest_icon != None and guest_icon.strip() == "":
+        guest_icon = None
+    db_guild.guest_icon = guest_icon
     db.session.commit()
     return jsonify(
         id=db_guild.id,
@@ -189,7 +189,7 @@ def update_administrate_guild(guild_id):
         bracket_links=db_guild.bracket_links,
         mentions_limit=db_guild.mentions_limit,
         discordio=db_guild.discordio,
-        webhook_icon=db_guild.webhook_icon,
+        guest_icon=db_guild.guest_icon,
     )
 
 @admin.route("/guilds")

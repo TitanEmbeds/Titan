@@ -1,13 +1,13 @@
 /* global $, Materialize, location */
 
-function postForm(user_id, css, css_limit, webhook_icon) {
+function postForm(user_id, css, css_limit, guest_icon) {
     if (css_limit == "") {
         css_limit = 0;
     }
     var funct = $.ajax({
         dataType: "json",
         method: "POST",
-        data: {"user_id": user_id, "css": css, "css_limit": css_limit, "webhook_icon": webhook_icon}
+        data: {"user_id": user_id, "css": css, "css_limit": css_limit, "guest_icon": guest_icon}
     });
     return funct.promise();
 }
@@ -40,8 +40,8 @@ $(function() {
         }
         var css_checked = $("#new_css_switch").is(':checked');
         var css_limit = $("#new_css_limit").val();
-        var webhook_icon_checked = $("#new_webhook_icon_switch").is(':checked');
-        var formPost = postForm(user_id, css_checked, css_limit, webhook_icon_checked);
+        var guest_icon_checked = $("#new_guest_icon_switch").is(':checked');
+        var formPost = postForm(user_id, css_checked, css_limit, guest_icon_checked);
         formPost.done(function (data) {
             location.reload();
         });
@@ -101,9 +101,9 @@ function update_css_limit(user_id, value) {
     });
 }
 
-function update_webhook_icon_switch(user_id, element) {
+function update_guest_icon_switch(user_id, element) {
     var webhook_checked = $(element).is(':checked');
-    var formPatch = patchForm(user_id, {"webhook_icon": webhook_checked});
+    var formPatch = patchForm(user_id, {"guest_icon": webhook_checked});
     formPatch.done(function (data) {
         Materialize.toast('Webhook Icon updated!', 10000);
     });

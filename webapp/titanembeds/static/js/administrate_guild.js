@@ -65,13 +65,13 @@ $("#discordio").keyup(function(event){
     }
 });
 
-$("#webhook_icon").keyup(function(event){
+$("#guest_icon").keyup(function(event){
     if(event.keyCode == 13){
       var pathname = window.location.pathname;
-      var value = $("#webhook_icon").val()
-      var payload = {"webhook_icon": value}
+      var value = $("#guest_icon").val()
+      var payload = {"guest_icon": value}
       $.post(pathname, payload, function(data) {
-        Materialize.toast('Updated Webhook Icon setting!', 2000)
+        Materialize.toast('Updated Guest Icon setting!', 2000)
       });
     }
 });

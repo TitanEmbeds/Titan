@@ -6,7 +6,7 @@ class Cosmetics(db.Model):
     user_id = db.Column(db.String(255), nullable=False)             # Discord user id of user of cosmetics
     css = db.Column(db.Boolean(), nullable=False)                   # If they can create/edit custom CSS
     css_limit = db.Column(db.Integer, nullable=False, server_default="0") # Custom CSS Limit
-    webhook_icon = db.Column(db.Boolean(), nullable=False, server_default=db.false()) # If they can set the webhook icon for all guilds
+    guest_icon = db.Column(db.Boolean(), nullable=False, server_default=db.false()) # If they can set the guest icon for all guilds
     
     def __init__(self, user_id, **kwargs):
         self.user_id = user_id
@@ -21,7 +21,7 @@ class Cosmetics(db.Model):
         else:
             self.css_limit = 0
 
-        if "webhook_icon" in kwargs:
-            self.webhook_icon = kwargs["webhook_icon"]
+        if "guest_icon" in kwargs:
+            self.guest_icon = kwargs["guest_icon"]
         else:
-            self.webhook_icon = False
+            self.guest_icon = False

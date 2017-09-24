@@ -251,7 +251,7 @@ def post():
                     avatar = url_for('static', filename='img/titanembeds_square.png', _external=True)
                     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
                     if dbguild:
-                        icon = dbguild.webhook_icon
+                        icon = dbguild.guest_icon
                         if icon:
                             avatar = icon
                 else:

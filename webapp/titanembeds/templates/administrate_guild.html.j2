@@ -115,13 +115,13 @@
 
             <br>
             
-            <p class="flow-text">Webhook Guest User Avatar URL</p>
-            <p>If enabled Webhook Messages, you may set it so that the guest users may have a custom avatar instead of the Titan logo. Source must be the permanent URL location to the image file (try imgur and get direct link to image).</p>
+            <p class="flow-text">Guest User Avatar URL</p>
+            <p>Guest users may have a custom avatar instead of the Titan logo. Source must be the permanent URL location to the image file (try imgur and get direct link to image).</p>
             <p>(Leave blank if none - enter to submit)</p>
-            {% if not cosmetics.webhook_icon %}
-            <p class="red lighten-4"><strong>Your user account does not have access to change webhook avatar url. Please visit the Titan Tokens shop to activate this cosmetic item.</strong></p>
+            {% if not cosmetics.guest_icon %}
+            <p class="red lighten-4"><strong>Your user account does not have access to change guest avatar url. Please visit the Titan Tokens shop to activate this cosmetic item.</strong></p>
             {% endif %}
-            <input id="webhook_icon" value="{{ guild['webhook_icon'] }}" {% if not cosmetics.webhook_icon %}disabled{% endif %}>
+            <input id="guest_icon" value="{{ guild['guest_icon'] }}" {% if not cosmetics.guest_icon %}disabled{% endif %}>
           </div>
         </div>
       </div>
