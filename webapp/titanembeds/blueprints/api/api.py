@@ -359,8 +359,8 @@ def change_unauthenticated_username():
         return response
 
 def get_guild_guest_icon(guild_id):
-    return db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().guest_icon
-    
+    guest_icon = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().guest_icon
+    return guest_icon if guest_icon else url_for('static', filename='img/titanembeds_square.png')
 
 def process_query_guild(guild_id, visitor=False):
     widget = discord_api.get_widget(guild_id)
