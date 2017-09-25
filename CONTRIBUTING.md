@@ -15,10 +15,11 @@ For those who would like to run the codebase yourself, you may follow the instru
 7. Set the `Clone from Git or Mercurial url` to `git@github.com:TitanEmbeds/Titan.git` This should pull titan to your workspace.
 8. Right click `cloud9_install.sh` file at the left sidebar and click run. This will set everything up.
 9. Afterwards, just edit the respective config.py files in the webapp/discordbot directories and you are ready to go!
-10. Now you're ready to run Titan... webapp! To make the webapp to work, rightclick `run_c9.py` file and click run. Congratz! It will tell you the exact url where your stuff is running at.
-11. For discord bot, you can change the directory to the discordbot `cd discordbot/` and run `python3.5 run.py` to start the bot from the bash console!
-12. To make the login system work, go back to your discord bot applications page... for the redirect uris, add these: `http://xxx.cs50.io/user/callback` and `http://xxx.cs50.io/user/dashboard`. Replacing the `xxx` with your subdomain url in the webapp. That outta make the login work! (Take note that there is no http**s** in http).
-Now that you set everything up, take a step back and learn some ubuntu/bash to get familiar with it. Some things like git commit/push/pull, etc might be helpful. Maybe you can get phpmyadmin and inspect the database yourself, in gui form <https://community.c9.io/t/setting-up-phpmyadmin/1723>.
+10. Now you're ready to run Titan! To make the webapp to work, (1)Double click run_c9.py in the webapp folder, (2)At the menu bar: hit Run->Run With->Python3.5, to start the webapp.
+11. Do the same thing with run.py in the discordbot folder
+12. The console will show: wsgi starting up on `http://0.0.0.0:8080`. Click on that url and hit Open to view the local webapp.
+13. To make the login system work, go back to your discord bot applications page... for the redirect uris, add these: `http://xxx.cs50.io/user/callback` and `http://xxx.cs50.io/user/dashboard`. Replacing the `xxx` with your subdomain url in the webapp. That outta make the login work! (Take note that there is no http**s** in http).
+Now that you set everything up, take a step back and learn some ubuntu/bash to get familiar with it. Some things like git commit/push/pull, etc might be helpful.
 
 ## Pull Requesting
 If you do not have write access to the codebase, please make a fork of the project. Edit your changes on your fork and push it out onto GitHub. Afterwards, you may submit a pull request for your changes to be merged to the master branch (production). If you do however have write access to the repository, please create a branch and propose pull requests for me to merge into the production.
