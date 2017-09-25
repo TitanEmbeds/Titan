@@ -816,7 +816,7 @@
         if (user_id == bot_client_id && (message_contents.includes("**") && ( (message_contents.includes("<")&&message_contents.includes(">")) || (message_contents.includes("[") && message_contents.includes("]")) ))) {
             return global_guest_icon;
         } else {
-            return "https://cdn.discordapp.com/avatars/" + user_id + "/" + avatar_hash + ".png";
+            return "https://cdn.discordapp.com/avatars/" + user_id + "/" + avatar_hash + ".webp?size=1024";
         }
     }
 

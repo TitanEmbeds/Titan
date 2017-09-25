@@ -90,10 +90,10 @@ def check_user_permission(guild_id, id):
     return False
 
 def generate_avatar_url(id, av):
-    return avatar_base_url + str(id) + '/' + str(av) + '.jpg'
+    return avatar_base_url + str(id) + '/' + str(av) + '.webp?size=1024'
 
 def generate_guild_icon_url(id, hash):
-    return guild_icon_url + str(id) + "/" + str(hash) + ".jpg"
+    return guild_icon_url + str(id) + "/" + str(hash) + ".webp?size=1024"
 
 def generate_bot_invite_url(guild_id):
     url = "https://discordapp.com/oauth2/authorize?&client_id={}&scope=bot&permissions={}&guild_id={}".format(config['client-id'], '641195117', guild_id)
