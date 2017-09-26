@@ -158,7 +158,8 @@ class DatabaseInterface(object):
             with self.get_session() as session:
                 dbmember = session.query(GuildMembers) \
                     .filter(GuildMembers.guild_id == member.server.id) \
-                    .filter(GuildMembers.user_id == member.id).first()
+                    .filter(GuildMembers.user_id == member.id) \
+                    .order_by(GuildMembers.id).all()
                 if not dbmember:
                     dbmember = GuildMembers(
                         member.server.id,
@@ -173,6 +174,10 @@ class DatabaseInterface(object):
                     )
                     session.add(dbmember)
                 else:
+                    if len(dbmember) > 1:
+                        for mem in dbmember[1:]:
+                            session.delete(mem)
+                    dbmember = dbmember[0]
                     dbmember.banned = banned
                     dbmember.active = active
                     dbmember.username = member.name
