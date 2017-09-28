@@ -55,8 +55,8 @@ def terms():
 def privacy():
     return render_template("privacy_policy.html.j2")
 
-@app.before_request
-def before_request():
+@app.before_first_request
+def before_first_request():
     discord_api.init_discordrest()
 
 @app.context_processor
