@@ -351,6 +351,12 @@ a {
   filter: brightness(0) invert(1);
 }
 
+@media screen and (max-width: 280px) {
+  .brand-logo-text {
+    display: none;
+  }
+}
+
 .align-top {
   vertical-align: top;
 }
