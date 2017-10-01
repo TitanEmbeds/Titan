@@ -7,6 +7,10 @@ import time
 import json
 
 class Gateway(Namespace):
+    def teardown_db_session(self):
+        db.session.commit()
+        db.session.remove()
+    
     def on_connect(self):
         emit('hello')
     
@@ -37,6 +41,7 @@ class Gateway(Namespace):
                 nickname = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == session["user_id"]).first().nickname
                 emit("embed_user_connect", {"unauthenticated": False, "id": session["user_id"], "nickname": nickname, "username": session["username"],"discriminator": session["discriminator"], "avatar_url": session["avatar"]}, room="GUILD_"+guild_id)
         emit("identified")
+        self.teardown_db_session()
     
     def on_disconnect(self):
         if "user_keys" not in session:
@@ -62,7 +67,8 @@ class Gateway(Namespace):
             for webhook in guild_webhooks:
                 if webhook["name"] == name:
                     discord_api.delete_webhook(webhook["id"], webhook["token"])
-    
+        self.teardown_db_session()
+        
     def on_heartbeat(self, data):
         guild_id = data["guild_id"]
         visitor_mode = data["visitor_mode"]
@@ -78,7 +84,8 @@ class Gateway(Namespace):
         else:
             if not guild_accepts_visitors(guild_id):
                 disconnect()
-    
+        self.teardown_db_session()
+        
     def on_channel_list(self, data):
         guild_id = data["guild_id"]
         visitor_mode = data["visitor_mode"]
@@ -93,7 +100,8 @@ class Gateway(Namespace):
             else:
                 leave_room("CHANNEL_"+chan["channel"]["id"])
         emit("channel_list", channels)
-    
+        self.teardown_db_session()
+        
     def on_current_user_info(self, data):
         guild_id = data["guild_id"]
         if "user_keys" in session and not session["unauthenticated"]:
@@ -106,7 +114,8 @@ class Gateway(Namespace):
                 'user_id': session['user_id'],
             }
             emit("current_user_info", usr)
-    
+        self.teardown_db_session()
+        
     def get_user_color(self, guild_id, user_id):
         color = None
         member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == user_id).first()
@@ -165,3 +174,4 @@ class Gateway(Namespace):
                 if (usr["avatar"]):
                     usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.jpg".format(usr["id"], usr["avatar"])
         emit("lookup_user_info", usr)
+        self.teardown_db_session()
