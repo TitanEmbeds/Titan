@@ -226,7 +226,7 @@
             } else {
                 theme = localstore_theme;
             }
-            changeTheme(theme);
+            changeTheme(theme, true, false);
             $("#theme-selector option").removeAttr('selected');
             $("#theme-selector option[value=" + theme + "]").attr('selected', 'selected');
             $('select').material_select();
@@ -252,11 +252,13 @@
         }
     });
     
-    function changeTheme(theme=null, keep_custom_css=true) {
+    function changeTheme(theme=null, keep_custom_css=true, modifyLocalStore=true) {
         if (theme == "") {
           $("#css-theme").attr("href", "");
           $("#user-defined-css").text(user_def_css);
-          localStorage.removeItem("theme");
+          if (modifyLocalStore) {
+              localStorage.removeItem("theme");
+          }
         } else if ($.inArray(theme, theme_options) != -1 || theme == null) {
             if (!keep_custom_css) {
                 $("#user-defined-css").text("");
@@ -265,7 +267,9 @@
             }
             if (theme) {
                 $("#css-theme").attr("href", "/static/themes/" + theme + "/css/style.css");
-                localStorage.setItem("theme", theme);
+                if (modifyLocalStore) {
+                    localStorage.setItem("theme", theme);
+                }
             }
         }
     }
