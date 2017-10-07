@@ -870,7 +870,7 @@
             message_users_cache[usrcachekey]["msgs"].push(message.id);
             last = message.id;
         }
-        if (replace == null) {
+        if (replace == null && jumpscroll) {
             $("html, body").animate({ scrollTop: $(document).height() }, "slow");
         }
         $('#chatcontent').linkify({
