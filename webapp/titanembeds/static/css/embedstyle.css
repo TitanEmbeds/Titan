@@ -177,6 +177,10 @@ nav .brand-logo {
   margin-bottom: 11px;
 }
 
+#chatcontent .chatusername {
+  cursor: pointer;
+}
+
 /*#chatcontent > p > span {*/
 /*  display: table-row*/
 /*}*/

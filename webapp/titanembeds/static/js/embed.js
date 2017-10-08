@@ -877,6 +877,12 @@
             target: "_blank"
         });
         $('.tooltipped').tooltip();
+        $("#chatcontent .chatusername").click(function () {
+            var discordid = $(this).parent().attr("discord_userid");
+            if (discordid) {
+                mention_member(discordid);
+            }
+        });
         process_message_users_cache();
         return last;
     }
