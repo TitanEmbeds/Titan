@@ -854,6 +854,12 @@
                 handle_last_message_mention();
                 $("#chatcontent p:last-child").find(".blockcode").find("br").remove(); // Remove excessive breaks in codeblocks
                 render_code_highlighting($("#chatcontent p:last-child").find(".blockcode"));
+                $("#chatcontent .chatusername").last().click(function () {
+                    var discordid = $(this).parent().attr("discord_userid");
+                    if (discordid) {
+                        mention_member(discordid);
+                    }
+                });
             } else {
                 replace.html($(rendered).html());
                 replace.find(".blockcode").find("br").remove();
@@ -865,7 +871,6 @@
             }
             if (!(usrcachekey in message_users_cache)) {
                 message_users_cache[usrcachekey] = {"data": {}, "msgs": []};
-                
             }
             message_users_cache[usrcachekey]["msgs"].push(message.id);
             last = message.id;
@@ -877,12 +882,6 @@
             target: "_blank"
         });
         $('.tooltipped').tooltip();
-        $("#chatcontent .chatusername").click(function () {
-            var discordid = $(this).parent().attr("discord_userid");
-            if (discordid) {
-                mention_member(discordid);
-            }
-        });
         process_message_users_cache();
         return last;
     }
