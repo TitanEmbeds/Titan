@@ -833,7 +833,11 @@
         Mustache.parse(template);
         for (var i = messages.length-1; i >= 0; i--) {
             var message = messages[i];
-            var avatar = generate_avatar_url(message.author.id, message.author.avatar, message.content);
+            if (message.author.avatar) {
+                var avatar = generate_avatar_url(message.author.id, message.author.avatar, message.content);
+            } else {
+                var avatar = global_guest_icon;
+            }
             message = replace_message_mentions(message);
             message = format_bot_message(message);
             message = parse_message_time(message);
