@@ -988,7 +988,7 @@
         for (var i = 1; i < allMessages.length; i++) {
             var last = $(allMessages[i - 1]);
             var current = $(allMessages[i]);
-            if (last.attr("discord_userid") == current.attr("discord_userid")) {
+            if (last.attr("discord_userid") == current.attr("discord_userid") && current.attr("discord_userid")) {
                 current.addClass("collapsed");
             } else {
                 current.removeClass("collapsed");
