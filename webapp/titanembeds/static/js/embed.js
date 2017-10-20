@@ -901,7 +901,7 @@
             jumpscroll = true;
         } else {
             fet = fetch(channel_id, last_message_id);
-            jumpscroll = element_in_view($('#discordmessage_'+last_message_id), true);
+            jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent(), true);
         }
         fet.done(function(data) {
             var status = data.status;
@@ -963,6 +963,7 @@
             }
 
         }
+        collapse_messages();
     }
     
     function process_message_users_cache_helper(key, usr) {
@@ -978,6 +979,19 @@
             if (usr.avatar_url) {
                 parent.attr("discord_userid", usr.id);
                 parent.find(".authoravatar").prop("src", usr.avatar_url);
+            }
+        }
+    }
+    
+    function collapse_messages() {
+        var allMessages = $('[id^="discordmessage_"]').parent();
+        for (var i = 1; i < allMessages.length; i++) {
+            var last = $(allMessages[i - 1]);
+            var current = $(allMessages[i]);
+            if (last.attr("discord_userid") == current.attr("discord_userid")) {
+                current.addClass("collapsed");
+            } else {
+                current.removeClass("collapsed");
             }
         }
     }
@@ -1224,7 +1238,7 @@
             if (selected_channel != thismsgchan) {
                 return;
             }
-            var jumpscroll = element_in_view($('#discordmessage_'+last_message_id), true);
+            var jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent(), true);
             last_message_id = fill_discord_messages([msg], jumpscroll);
         });
         

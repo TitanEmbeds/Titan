@@ -145,6 +145,7 @@ nav .brand-logo {
   padding-left: 1%;
   padding-top: 1%;
   padding-bottom: 40px;
+  margin-bottom: 13px;
   
   /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
   /* These are technically the same, but use both */
@@ -174,7 +175,17 @@ nav .brand-logo {
   width: 90%;
   border-top: solid 1px rgba(0, 0, 0, 0.1);
   padding-top: 10px;
-  margin-bottom: 11px;
+  margin-bottom: 0;
+}
+
+#chatcontent > p.collapsed {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+#chatcontent > p.collapsed > .chattimestamp, #chatcontent > p.collapsed > .chatusername, #chatcontent > p.collapsed > .authoravatar {
+  display: none;
 }
 
 #chatcontent .chatusername {
