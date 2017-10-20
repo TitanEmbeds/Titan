@@ -963,7 +963,6 @@
             }
 
         }
-        collapse_messages();
     }
     
     function process_message_users_cache_helper(key, usr) {
@@ -981,6 +980,7 @@
                 parent.find(".authoravatar").prop("src", usr.avatar_url);
             }
         }
+        collapse_messages();
     }
     
     function collapse_messages() {
