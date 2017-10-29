@@ -20,6 +20,7 @@
     
     var user_def_css; // Saves the user defined css
     var has_already_been_initially_resized = false; // keep track if the embed initially been resized
+    var has_handled_noscroll = false; // Prevent scrolling to bottom of embed at load if false
     var logintimer; // timer to keep track of user inactivity after hitting login
     var last_message_id; // last message tracked
     var selected_channel = null; // user selected channel
@@ -237,11 +238,20 @@
             $("#modal_invite_btn").attr("href", data.instant_invite);
         });
         
+        if (getParameterByName("noscroll") != "true") {
+            has_handled_noscroll = true;
+        }
+        
         $(window).resize(function(){
             // For those who decides to hide the embed at first load (display: none), resulting in the messages being not scrolled down.
             if (!has_already_been_initially_resized) {
                 has_already_been_initially_resized = true;
-                $("html, body").animate({ scrollTop: $(document).height() }, "fast");
+                if (has_handled_noscroll) {
+                    $("html, body").animate({ scrollTop: $(document).height() }, "fast");
+                } else {
+                    has_handled_noscroll = true;
+                    Materialize.toast('Continue scrolling to read on...', 5000);
+                }
             }
         });
         
@@ -880,7 +890,12 @@
             last = message.id;
         }
         if (replace == null && jumpscroll) {
-            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+            if (!has_handled_noscroll) {
+                has_handled_noscroll = true;
+                Materialize.toast('Continue scrolling to read on...', 5000);
+            } else {
+                $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+            }
         }
         $('#chatcontent').linkify({
             target: "_blank"
