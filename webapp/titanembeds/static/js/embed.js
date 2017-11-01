@@ -663,6 +663,9 @@
         if (selected_channel != channel_id && guild_channels[channel_id] && guild_channels[channel_id].read) {
             if (animate_it) {
                 $("#guild-btn").sideNav("show");
+                if (!element_in_view($("#channel-"+channel_id), true)) {
+                    $("#guild-nav").animate({ scrollTop: $(document).height() }, "fast");
+                }
                 flashElement($("#channel-"+channel_id));
                 setTimeout(function () {
                     $("#guild-btn").sideNav("hide");
