@@ -649,9 +649,27 @@
             });
         }, 5000);
     }
+    
+    function flashElement(element) {
+        var opacity = element.css("opacity");
+        for (var i = 0; i < 3; i++) {
+            element.animate({opacity: 0}, "fast");
+            element.animate({opacity: 100}, "fast");
+        }
+        element.css("opacity", opacity);
+    }
 
-    function select_channel(channel_id) {
-        if (selected_channel != channel_id) {
+    function select_channel(channel_id, animate_it) {
+        if (selected_channel != channel_id && guild_channels[channel_id] && guild_channels[channel_id].read) {
+            if (animate_it) {
+                $("#guild-btn").sideNav("show");
+                flashElement($("#channel-"+channel_id));
+                setTimeout(function () {
+                    $("#guild-btn").sideNav("hide");
+                    select_channel(channel_id);
+                }, 1000);
+                return;
+            }
             selected_channel = channel_id;
             last_message_id = null;
             $("#channels-list > li.active").removeClass("active");
@@ -748,8 +766,9 @@
     function parse_channels_in_message(message) {
         var channelids = Object.keys(guild_channels);
         for (var i = 0; i < channelids.length; i++) {
-            var pattern = "<#" + channelids[i] + ">";
-            message.content = message.content.replace(new RegExp(pattern, "g"), "#" + guild_channels[channelids[i]].channel.name);
+            var pattern = "&lt;#" + channelids[i] + "&gt;";
+            var elem = "<span class=\"channellink\" channelid=\"" + channelids[i] + "\">#" + guild_channels[channelids[i]].channel.name + "</span>";
+            message.content = message.content.replace(new RegExp(pattern, "g"), elem);
         }
         return message;
     }
@@ -852,11 +871,11 @@
             message = format_bot_message(message);
             message = parse_message_time(message);
             message = parse_message_attachments(message);
-            message = parse_channels_in_message(message);
             message.content = message.content.replaceAll("\\<", "<");
             message.content = message.content.replaceAll("\\>", ">");
             message.content = escapeHtml(message.content);
             message.content = parse_message_markdown(message.content);
+            message = parse_channels_in_message(message);
             message = parse_emoji_in_message(message);
             var username = message.author.username;
             if (message.author.nickname) {
@@ -874,10 +893,16 @@
                         mention_member(discordid);
                     }
                 });
+                $("#chatcontent p:last-child").find(".channellink").click(function () {
+                    select_channel($(this).attr("channelid"), true);
+                });
             } else {
                 replace.html($(rendered).html());
                 replace.find(".blockcode").find("br").remove();
                 render_code_highlighting(replace.find(".blockcode"));
+                replace.find(".channellink").click(function () {
+                    select_channel($(this).attr("channelid"), true);
+                });
             }
             var usrcachekey = username + "#" + message.author.discriminator;
             if (usrcachekey.startsWith("(Titan Dev) ")) {

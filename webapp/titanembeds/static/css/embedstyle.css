@@ -350,6 +350,10 @@ a {
   color: #82b1ff;
 }
 
+#chatcontent a:hover {
+  text-decoration: underline;
+}
+
 #fetching-indicator {
   position: absolute;
   right: 1vw;
@@ -480,6 +484,19 @@ p.mentioned span.chatmessage {
   line-height: 15px;
   padding: 5px;
   margin-bottom: 3px;
+}
+
+.chatmessage .channellink {
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #82b1ff;
+  cursor: pointer;
+
+}
+
+.chatmessage .channellink:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
 }
 
 #emoji-picker {
