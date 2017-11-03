@@ -22,8 +22,6 @@ def set_titan_token(user_id, amt_change, action):
     else:
         token_count = 0
         token_usr = TitanTokens(user_id, 0)
-        db.session.add(token_usr)
-        db.session.commit()
     new_token_count = token_count + amt_change
     if new_token_count < 0:
         return False
