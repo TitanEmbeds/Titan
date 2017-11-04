@@ -194,7 +194,7 @@ def update_administrate_guild(guild_id):
         mentions_limit=db_guild.mentions_limit,
         discordio=db_guild.discordio,
         guest_icon=db_guild.guest_icon,
-        unauth_captcha=unauth_captcha,
+        unauth_captcha=db_guild.unauth_captcha,
     )
 
 @admin.route("/guilds")
