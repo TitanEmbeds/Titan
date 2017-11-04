@@ -14,6 +14,7 @@
 /* global grecaptcha */
 /* global hljs */
 /* global linkify */
+/* global unauth_captcha_enabled */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -1084,7 +1085,11 @@
             }
             if($(this).val().length >= 2 && $(this).val().length <= 32) {
                 $("#custom_username_field").blur();
-                $('#recaptchamodal').modal('open');
+                if (unauth_captcha_enabled) {
+                    $('#recaptchamodal').modal('open');
+                } else {
+                    submit_unauthenticated_captcha();
+                }
             }
         }
     });

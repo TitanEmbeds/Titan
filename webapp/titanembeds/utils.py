@@ -287,5 +287,9 @@ def guild_webhooks_enabled(guild_id):
         return False
     return bot_can_create_webhooks(dbguild)
 
+def guild_unauthcaptcha_enabled(guild_id):
+    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    return dbguild.unauth_captcha
+
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
 socketio = SocketIO()

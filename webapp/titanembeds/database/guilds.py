@@ -11,6 +11,7 @@ class Guilds(db.Model):
     guest_icon = db.Column(db.String(255), default=None)                        # Guest icon url, None if unset
     chat_links = db.Column(db.Boolean(), nullable=False, default=1)             # If users can post links
     bracket_links = db.Column(db.Boolean(), nullable=False, default=1)          # If appending brackets to links to prevent embed
+    unauth_captcha = db.Column(db.Boolean(), nullable=False, server_default="1")# Enforce captcha on guest users
     mentions_limit = db.Column(db.Integer, nullable=False, default=11)          # If there is a limit on the number of mentions in a msg
     roles = db.Column(db.Text().with_variant(db.Text(4294967295), 'mysql'), nullable=False)                      # Guild Roles
     channels = db.Column(db.Text().with_variant(db.Text(4294967295), 'mysql'), nullable=False)                   # Guild channels
@@ -29,6 +30,7 @@ class Guilds(db.Model):
         self.guest_icon = None
         self.chat_links = True
         self.bracket_links = True
+        self.unauth_captcha = True
         self.mentions_limit = -1 # -1 = unlimited mentions
         self.roles = roles
         self.channels = channels

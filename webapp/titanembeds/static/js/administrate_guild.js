@@ -76,6 +76,15 @@ $("#guest_icon").keyup(function(event){
     }
 });
 
+$('#unauth_captcha').change(function() {
+    var pathname = window.location.pathname;
+    var checked = $(this).is(':checked')
+    var payload = {"unauth_captcha": checked}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated Guest User Captcha setting!', 2000)
+    });
+});
+
 function initiate_ban(guild_id, user_id) {
   var reason = prompt("Please enter your reason for ban");
   var payload = {

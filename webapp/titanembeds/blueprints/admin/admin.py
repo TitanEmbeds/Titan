@@ -155,6 +155,7 @@ def administrate_guild(guild_id):
         "chat_links": db_guild.chat_links,
         "bracket_links": db_guild.bracket_links,
         "mentions_limit": db_guild.mentions_limit,
+        "unauth_captcha": db_guild.unauth_captcha,
         "icon": db_guild.icon,
         "discordio": db_guild.discordio if db_guild.discordio != None else "",
         "guest_icon": db_guild.guest_icon if db_guild.guest_icon != None else "",
@@ -171,6 +172,7 @@ def update_administrate_guild(guild_id):
     db_guild.chat_links = request.form.get("chat_links", db_guild.chat_links) in ["true", True]
     db_guild.bracket_links = request.form.get("bracket_links", db_guild.bracket_links) in ["true", True]
     db_guild.mentions_limit = request.form.get("mentions_limit", db_guild.mentions_limit)
+    db_guild.unauth_captcha = request.form.get("unauth_captcha", db_guild.unauth_captcha) in ["true", True]
     discordio = request.form.get("discordio", db_guild.discordio)
     if discordio != None and discordio.strip() == "":
         discordio = None
@@ -192,6 +194,7 @@ def update_administrate_guild(guild_id):
         mentions_limit=db_guild.mentions_limit,
         discordio=db_guild.discordio,
         guest_icon=db_guild.guest_icon,
+        unauth_captcha=unauth_captcha,
     )
 
 @admin.route("/guilds")

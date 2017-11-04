@@ -101,6 +101,19 @@
             </div>
 
             <br>
+            
+            <p class="flow-text">Toggle Guest Captcha</p>
+            <p>Prevent bots from logging into your embed</p>
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="unauth_captcha" name="unauth_captcha" {% if guild['unauth_captcha'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
+            
+            <br>
 
             <p class="flow-text">Message mentions limit</p>
             <p>(-1 to have no limit - enter to submit)</p>
