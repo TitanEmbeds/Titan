@@ -395,6 +395,10 @@ a {
   max-width: 100%;
 }
 
+#modal_invite_btn {
+  padding: 0 1em;
+}
+
 @media only screen and (max-width: 800px) {
   #modal_guildiconcircle {
     max-width: 75px;
