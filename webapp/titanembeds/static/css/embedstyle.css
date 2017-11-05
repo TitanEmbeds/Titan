@@ -584,6 +584,11 @@ p.mentioned span.chatmessage {
   width: 100%;
 }
 
+#chatcontent img.attachment {
+  width: 100%;
+  max-width: 300px;
+}
+
 #emoji-picker {
   color: black;
   position: fixed;

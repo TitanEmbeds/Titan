@@ -736,7 +736,11 @@
             if (message.content.length != 0) {
                 attach = " ";
             }
-            attach += message.attachments[i].url;
+            if (message.attachments[i].url.endsWith(".png") || message.attachments[i].url.endsWith(".jpg") || message.attachments[i].url.endsWith(".jpeg") || message.attachments[i].url.endsWith(".gif")) {
+                attach += "<img class=\"attachment\" src=\"" + message.attachments[i].url + "\">";
+            } else {
+                attach += message.attachments[i].url;
+            }
             message.content += attach;
         }
         return message;
@@ -900,10 +904,10 @@
             message = replace_message_mentions(message);
             message = format_bot_message(message);
             message = parse_message_time(message);
-            message = parse_message_attachments(message);
             message.content = message.content.replaceAll("\\<", "<");
             message.content = message.content.replaceAll("\\>", ">");
             message.content = escapeHtml(message.content);
+            message = parse_message_attachments(message);
             message.content = parse_message_markdown(message.content);
             message = parse_channels_in_message(message);
             message = parse_emoji_in_message(message);
