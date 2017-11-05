@@ -854,6 +854,34 @@
             return "https://cdn.discordapp.com/avatars/" + user_id + "/" + avatar_hash + ".png";
         }
     }
+    
+    function parse_message_embeds(embeds) {
+        var emb = [];
+        for (var i = 0; i < embeds.length; i++) {
+            var disembed = embeds[i];
+            if (disembed.type != "rich") {
+                continue;
+            }
+            disembed.toRenderFooter = false;
+            if (disembed.footer) {
+                disembed.toRenderFooter = true;
+            } else if (disembed.timestamp) {
+                disembed.toRenderFooter = true;
+            }
+            disembed.footerVerticalBar = disembed.footer && disembed.timestamp;
+            if (disembed.timestamp) {
+                disembed.formatted_timestamp = moment(disembed.timestamp).format('ddd MMM Do, YYYY [at] h:mm A');
+            }
+            if (disembed.color) {
+                disembed.hexColor = "#" + disembed.color.toString(16);
+            }
+            var template = $('#mustache_richembed').html();
+            Mustache.parse(template);
+            var rendered = Mustache.render(template, disembed);
+            emb.push(rendered);
+        }
+        return emb;
+    }
 
     function fill_discord_messages(messages, jumpscroll, replace=null) {
         if (messages.length == 0) {
@@ -906,6 +934,11 @@
                     select_channel($(this).attr("channelid"), true);
                 });
             }
+            var embeds = parse_message_embeds(message.embeds);
+            $("#discordmessage_"+message.id).parent().find("span.embeds").text("");
+            for(var j = 0; j < embeds.length; j++) {
+                $("#discordmessage_"+message.id).parent().find("span.embeds").append(embeds[j]);
+            }
             var usrcachekey = username + "#" + message.author.discriminator;
             if (usrcachekey.startsWith("(Titan Dev) ")) {
                 usrcachekey = usrcachekey.substr(12);
@@ -943,7 +976,7 @@
             jumpscroll = true;
         } else {
             fet = fetch(channel_id, last_message_id);
-            jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent(), true);
+            jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent());
         }
         fet.done(function(data) {
             var status = data.status;
@@ -1284,7 +1317,7 @@
             if (selected_channel != thismsgchan) {
                 return;
             }
-            var jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent(), true);
+            var jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent());
             last_message_id = fill_discord_messages([msg], jumpscroll);
         });
         

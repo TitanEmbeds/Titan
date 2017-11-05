@@ -62,7 +62,8 @@ class DatabaseInterface(object):
                         str(message.timestamp),
                         edit_ts,
                         json.dumps(get_message_mentions(message.mentions)),
-                        json.dumps(message.attachments)
+                        json.dumps(message.attachments),
+                        json.dumps(message.embeds)
                     )
                     session.add(msg)
                     session.commit()
@@ -81,6 +82,7 @@ class DatabaseInterface(object):
                         msg.edited_timestamp = message.edited_timestamp
                         msg.mentions = json.dumps(get_message_mentions(message.mentions))
                         msg.attachments = json.dumps(message.attachments)
+                        msg.embeds = json.dumps(message.embeds)
                         msg.author = json.dumps(get_message_author(message))
                         session.commit()
 

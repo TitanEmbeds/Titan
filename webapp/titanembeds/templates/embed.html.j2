@@ -218,7 +218,7 @@
     </script>
     
     <script id="mustache_usermessage" type="text/template">
-      <p><img class="authoravatar" src="{{avatar}}"> <span class="chatusername"><span class="authorname">{{username}}</span><span class="authorhash">#</span><span class="authordiscriminator">{{discriminator}}</span></span> <span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatmessage">{{{content}}}</span></p>
+      <p><img class="authoravatar" src="{{avatar}}"> <span class="chatusername"><span class="authorname">{{username}}</span><span class="authorhash">#</span><span class="authordiscriminator">{{discriminator}}</span></span> <span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatmessage">{{{content}}}</span><span class="embeds"></span></p>
     </script>
 
     <script id="mustache_memberrole" type="text/template">
@@ -231,6 +231,81 @@
 
     <script id="mustache_message_emoji" type="text/template">
       <img class="message_emoji tooltipped" src='https://cdn.discordapp.com/emojis/{{id}}.png' data-position="top" data-delay="200" data-tooltip=":{{name}}:" alt=":{{name}}:" />
+    </script>
+    
+    <script id="mustache_richembed" type="text/template">
+      <div class="richembed">
+        {{#color}}
+        <div class="color" style="background-color: {{hexColor}}"></div>
+        {{/color}}
+        {{^color}}
+        <div class="color"></div>
+        {{/color}}
+        <div class="rich">
+          <div class="content">
+            <div class="innercontent">
+              {{#author}}
+              <div class="author">
+                {{#author.icon_url}}
+                <img src="{{author.icon_url}}">
+                {{/author.icon_url}}
+                <a href="
+                  {{#author.url}}{{author.url}}{{/author.url}}
+                  {{^author.url}}#{{/author.url}}
+                " class="name">{{author.name}}</a>
+              </div>
+              {{/author}}
+              {{#title}}
+              <div class="title">
+                <a href="
+                  {{#url}}{{url}}{{/url}}
+                  {{^url}}#{{/url}}
+                ">{{title}}</a>
+              </div>
+              {{/title}}
+              {{#description}}
+              <div class="description">{{description}}</div>
+              {{/description}}
+              {{#fields.length}}
+              <div class="fields">
+                {{#fields}}
+                <div class="field {{#inline}}inline{{/inline}}">
+                  <div class="field-name">{{name}}</div>
+                  <div class="field-content">{{value}}</div>
+                </div>
+                {{/fields}}
+              </div>
+              {{/fields.length}}
+            </div>
+            {{#thumbnail}}
+            <div class="thumbnail">
+              <img src="{{thumbnail.url}}">
+            </div>
+            {{/thumbnail}}
+          </div>
+          {{#image}}
+          <div class="image">
+            <img src="{{image.url}}">
+          </div>
+          {{/image}}
+          {{#toRenderFooter}}
+          <div class="footer">
+            {{#footer}}
+            {{#footer.icon_url}}
+            <img class="icon_url" src="{{footer.icon_url}}">
+            {{/footer.icon_url}}
+            <span class="text">{{footer.text}}</span>
+            {{/footer}}
+            {{#footerVerticalBar}}
+            |
+            {{/footerVerticalBar}}
+            {{#timestamp}}
+            <span class="timestamp">{{formatted_timestamp}}</span>
+            {{/timestamp}}
+          </div>
+          {{/toRenderFooter}}
+        </div>
+      </div>
     </script>
     {% endraw %}
 

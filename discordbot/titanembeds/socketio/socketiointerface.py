@@ -26,6 +26,7 @@ class SocketIOInterface:
             "edited_timestamp": edit_ts,
             "mentions": get_message_mentions(message.mentions),
             "attachments": message.attachments,
+            "embeds": message.embeds,
         }
         nickname = None
         if hasattr(message.author, 'nick') and message.author.nick:

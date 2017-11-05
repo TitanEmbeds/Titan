@@ -491,12 +491,97 @@ p.mentioned span.chatmessage {
   background-color: rgba(0, 0, 0, 0.2);
   color: #82b1ff;
   cursor: pointer;
-
 }
 
 .chatmessage .channellink:hover {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
+}
+
+.embeds {
+  display: block;
+  width: 60%;
+}
+
+@media(max-width: 600px) {
+  .embeds {
+    width: 100%;
+  }
+}
+
+.richembed {
+  display: flex;
+  border: solid 1px grey;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 3px;
+}
+
+.richembed .color {
+  width: 6px;
+  background-color: #cacbce;
+}
+
+.richembed .rich {
+  margin: 10px;
+}
+
+.richembed img {
+  border-radius: 5px;
+}
+
+.richembed .author img, .richembed .footer img {
+  width: 20px;
+  border-radius: 100px;
+  vertical-align: bottom;
+}
+
+.richembed .content {
+  display: flex;
+}
+
+.richembed .thumbnail {
+  margin-left: 2px;
+}
+
+.richembed .thumbnail img {
+  width: 100%;
+  max-width: 170px;
+}
+
+.richembed .fields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.richembed .field-name {
+  font-weight: bold;
+}
+
+.richembed .field {
+  flex: 0;
+  min-width: 100%;
+}
+
+.richembed .field.inline {
+  flex: 1;
+  flex-basis: auto;
+  min-width: 100px;
+}
+
+@media(max-width: 600px) {
+  .richembed .field.inline {
+    flex: 0;
+    flex-basis: unset;
+    min-width: 100%;
+  }
+}
+
+.richembed .image img {
+  max-width: 300px;
+  width: 100%;
 }
 
 #emoji-picker {
