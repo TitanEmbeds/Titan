@@ -525,6 +525,7 @@ p.mentioned span.chatmessage {
 
 .richembed .rich {
   margin: 10px;
+  width: 100%;
 }
 
 .richembed img {
@@ -539,6 +540,10 @@ p.mentioned span.chatmessage {
 
 .richembed .content {
   display: flex;
+}
+
+.richembed .innercontent {
+  width: 100%;
 }
 
 .richembed .thumbnail {
