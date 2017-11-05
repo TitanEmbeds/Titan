@@ -594,6 +594,7 @@ p.mentioned span.chatmessage {
   max-width: 300px;
   max-height: 300px;
   object-fit: contain;
+  display: block;
 }
 
 #emoji-picker {
