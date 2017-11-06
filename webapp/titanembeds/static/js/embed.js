@@ -682,16 +682,17 @@
 
     function replace_message_mentions(message) {
         var mentions = message.mentions;
+        var template = $('#mustache_discordmention').html();
+        Mustache.parse(template);
         for (var i = 0; i < mentions.length; i++) {
             var mention = mentions[i];
             var username = mention.username;
             if (mention.nickname) {
                 username = mention.nickname;
             }
-            console.log(message.content)
-            var templ = "<span class=\"mention\">@<span class=\"username\">" + username + "</span><span class=\"discriminator\">#" + mention.discriminator + "</span></span>";
-            message.content = message.content.replace(new RegExp("&lt;@" + mention.id + "&gt;", 'g'), templ);
-            message.content = message.content.replace(new RegExp("&lt;@!" + mention.id + "&gt;", 'g'), templ);
+            var rendered = Mustache.render(template, {"username": username, "discriminator": mention.discriminator}).trim();
+            message.content = message.content.replace(new RegExp("&lt;@" + mention.id + "&gt;", 'g'), rendered);
+            message.content = message.content.replace(new RegExp("&lt;@!" + mention.id + "&gt;", 'g'), rendered);
             message.content = message.content.replace("&lt;@&" + guild_id + "&gt;", "@everyone");
         }
         return message;

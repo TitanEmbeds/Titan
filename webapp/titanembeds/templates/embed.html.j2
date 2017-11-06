@@ -233,6 +233,10 @@
       <img class="message_emoji tooltipped" src='https://cdn.discordapp.com/emojis/{{id}}.png' data-position="top" data-delay="200" data-tooltip=":{{name}}:" alt=":{{name}}:" />
     </script>
     
+    <script id="mustache_discordmention" type="text/template">
+      <span class="discordmention"><span class="atsign">@</span><span class="username">{{username}}</span><span class="hash">#</span><span class="discriminator">{{discriminator}}</span></span>
+    </script>
+    
     <script id="mustache_richembed" type="text/template">
       <div class="richembed">
         {{#color}}
