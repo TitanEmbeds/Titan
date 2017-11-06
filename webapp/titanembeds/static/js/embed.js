@@ -688,9 +688,11 @@
             if (mention.nickname) {
                 username = mention.nickname;
             }
-            message.content = message.content.replace(new RegExp("<@" + mention.id + ">", 'g'), "@" + username + "#" + mention.discriminator);
-            message.content = message.content.replace(new RegExp("<@!" + mention.id + ">", 'g'), "@" + username + "#" + mention.discriminator);
-            message.content = message.content.replace("<@&" + guild_id + ">", "@everyone");
+            console.log(message.content)
+            var templ = "<span class=\"mention\">@<span class=\"username\">" + username + "</span><span class=\"discriminator\">#" + mention.discriminator + "</span></span>";
+            message.content = message.content.replace(new RegExp("&lt;@" + mention.id + "&gt;", 'g'), templ);
+            message.content = message.content.replace(new RegExp("&lt;@!" + mention.id + "&gt;", 'g'), templ);
+            message.content = message.content.replace("&lt;@&" + guild_id + "&gt;", "@everyone");
         }
         return message;
     }
@@ -901,12 +903,12 @@
             } else {
                 var avatar = global_guest_icon;
             }
-            message = replace_message_mentions(message);
             message = format_bot_message(message);
             message = parse_message_time(message);
             message.content = message.content.replaceAll("\\<", "<");
             message.content = message.content.replaceAll("\\>", ">");
             message.content = escapeHtml(message.content);
+            message = replace_message_mentions(message);
             message = parse_message_attachments(message);
             message.content = parse_message_markdown(message.content);
             message = parse_channels_in_message(message);
