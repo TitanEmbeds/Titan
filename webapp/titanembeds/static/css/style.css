@@ -15,7 +15,7 @@ main {
 
 nav {
   background-color: #3f51b5;
-  background: linear-gradient(rgba(63, 81, 181, 1), rgba(255,0,0,0));
+  background: linear-gradient(rgba(63, 81, 181, 1), rgba(63, 81, 181, 0));
   box-shadow: none;
 }
 

@@ -48,7 +48,7 @@ footer {
 
 nav {
   background-color: var(--header);
-  background: linear-gradient(var(--header), rgba(255,0,0,0));
+  background: linear-gradient(var(--header), rgba(38,50,56,0));
   box-shadow: none;
 }
 
