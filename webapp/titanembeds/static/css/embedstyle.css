@@ -262,6 +262,7 @@ nav .brand-logo {
 }
 
 .footercontainer {
+  display: flex;
   width: 100%;
   position: relative;
   margin: 10px;
@@ -276,6 +277,28 @@ nav .brand-logo {
 #messageboxouter {
   width: 100%;
   overflow: hidden;
+  height: 46px;
+}
+
+.input-field.inline {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0px;
+}
+
+textarea.materialize-textarea {
+    overflow-y: hidden;
+    padding: 8px 0px 0px 5px;
+    resize: none;
+    min-height: 50px;
+    margin: 0px 0px 0px 0px;
+    line-height: initial;
+    border-bottom: none;
+}
+
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: none;
+    box-shadow: none;
 }
 
 .currentuserchip {
@@ -287,11 +310,17 @@ nav .brand-logo {
   background-color: #455a64;
 }
 
+#currentuserimage_parent {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .currentuserimage {
   width: 30px;
 }
 
 .currentusername {
+  display: inline-block;
   position: relative;
   top: 7px;
   left: 5px;
@@ -308,7 +337,6 @@ nav .brand-logo {
 }
 
 #currentuserimage {
-  margin-top: 4px;
   margin-right: 4px;
 }
 
@@ -352,14 +380,6 @@ a {
 
 #chatcontent a:hover {
   text-decoration: underline;
-}
-
-#fetching-indicator {
-  position: absolute;
-  right: 1vw;
-  bottom: 13px;
-  width: 25px;
-  height: 25px;
 }
 
 .brand-logo img {

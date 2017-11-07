@@ -976,7 +976,6 @@
         var channel_id = selected_channel;
         var fet;
         var jumpscroll;
-        $("#fetching-indicator").fadeIn(800);
         if (last_message_id == null) {
             $("#chatcontent").empty();
             fet = fetch(channel_id);
@@ -1019,9 +1018,6 @@
                 Materialize.toast('Session expired! You have been logged out.', 10000);
             }
             setVisitorMode(true);
-        });
-        fet.always(function() {
-            $("#fetching-indicator").fadeOut(800);
         });
     }
     
