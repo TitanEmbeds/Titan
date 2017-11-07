@@ -116,17 +116,17 @@ class Titan(discord.Client):
 
     async def on_server_join(self, guild):
         await self.database.update_guild(guild)
-        for channel in guild.channels:
-            if not channel.permissions_for(channel.server.me).read_messages:
-                continue
-            async for message in self.logs_from(channel, limit=50, reverse=True):
-                await self.database.push_message(message)
         for member in guild.members:
             await self.database.update_guild_member(member, True, False)
         if guild.me.server_permissions.ban_members:
             banned = await self.get_bans(guild)
             for ban in banned:
                 await self.database.update_guild_member(ban, False, True)
+        for channel in guild.channels:
+            if not channel.permissions_for(channel.server.me).read_messages:
+                continue
+            async for message in self.logs_from(channel, limit=50, reverse=True):
+                await self.database.push_message(message)
 
     async def on_server_remove(self, guild):
         await self.database.remove_guild(guild)
