@@ -510,14 +510,14 @@ p.mentioned span.chatmessage {
   margin-bottom: 3px;
 }
 
-.chatmessage .channellink {
+.chatmessage .channellink, .chatmessage .discordmention {
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.2);
   color: #82b1ff;
   cursor: pointer;
 }
 
-.chatmessage .channellink:hover {
+.chatmessage .channellink:hover, .chatmessage .discordmention:hover {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
 }
