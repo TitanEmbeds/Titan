@@ -102,7 +102,7 @@
               </div>
               <div class="row">
                 <div class="col s12 l4">
-                  <a id="discordlogin_btn" href="{{ url_for("embed.login_discord", _external=True) }}" class="waves-effect waves-light btn-large" target="_blank">Discord Login</a>
+                  <a id="discordlogin_btn" href="{% if not same_target %}{{ url_for("embed.login_discord", _external=True) }}{% else %}{{ url_for("user.login_authenticated", redirect=request.url, _external=True) }}{% endif %}" class="waves-effect waves-light btn-large" {% if not same_target %}target="_blank"{% endif %}>Discord Login</a>
                   <p>*You will be invited into this server.</p>
                 </div>
                 {% if unauth_enabled %}
