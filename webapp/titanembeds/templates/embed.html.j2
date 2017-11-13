@@ -144,6 +144,23 @@
             </p>
           </div>
         </div>
+        <h4>Notification Sound</h4>
+        <div class="row">
+          <div class="input-field col s12">
+            <span>
+              <input name="notification_sound_radiobtn" type="radio" id="notification_sound_radiobtn_newmsgs" value="newmsgs" />
+              <label for="notification_sound_radiobtn_newmsgs">New Messages</label>
+            </span>
+            <span>
+              <input name="notification_sound_radiobtn" type="radio" id="notification_sound_radiobtn_mentions" value="mentions" />
+              <label for="notification_sound_radiobtn_mentions">Mentions</label>
+            </span>
+            <span>
+              <input name="notification_sound_radiobtn" type="radio" id="notification_sound_radiobtn_nothing" value="nothing" />
+              <label for="notification_sound_radiobtn_nothing">Nothing</label>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -190,6 +207,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cheet.js/0.3.3/cheet.min.js" integrity="sha256-FxQrnIC3BX45JRzOyFUlKiM6dY3A/ZakV6w4WpYyfyA=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" integrity="sha256-sdmLD9jD1PIzq3KOQPNSGZYxjv76rds79Mnyk5JNp1M=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/2.5.0/2/twemoji.min.js" integrity="sha256-t5bxASdQ5tDbKQZy330h/YufCiZg82xG8PqIYzFpwhU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/soundmanager2/2.97a.20150601/script/soundmanager2-nodebug-jsmin.js" integrity="sha256-5KBL+8gS3BkWOs22YOrezN3Djl4pwodgZaPQY9hgu4Y=" crossorigin="anonymous"></script>
     
     <script src="{{ url_for("static", filename="js/vendor/highlight.pack.js") }}"></script>
 

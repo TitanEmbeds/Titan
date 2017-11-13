@@ -15,6 +15,7 @@
 /* global hljs */
 /* global linkify */
 /* global unauth_captcha_enabled */
+/* global soundManager */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -38,6 +39,8 @@
     var message_users_cache = {}; // {"name#discrim": {"data": {}, "msgs": []} Cache of the users fetched from websockets to paint the messages
     var shift_pressed = false; // Track down if shift pressed on messagebox
     var global_guest_icon = null; // Guest icon
+    var notification_sound = null; // Sound Manager 2 demonstrative.mp3 object https://notificationsounds.com/message-tones/demonstrative-516
+    var notification_sound_setting; // nothing, mentions, newmsgs - to control what new sound it makes
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -234,6 +237,22 @@
             $('select').material_select();
         }
         
+        $("[name=notification_sound_radiobtn]").click(function (event) {
+            changeNotificationSound(event.target.value);
+        });
+        var localstore_notification_sound = localStorage.getItem("notification_sound");
+        if (localstore_notification_sound) {
+            changeNotificationSound(localstore_notification_sound);
+        } else {
+            changeNotificationSound("mentions");
+        }
+        
+        notification_sound = soundManager.createSound({
+            id: 'notification_sound_id',
+            url: "/static/audio/demonstrative.mp3",
+            volume: 8,
+        });
+        
         var dembed = discord_embed();
         dembed.done(function (data) {
             $("#modal_invite_btn").attr("href", data.instant_invite);
@@ -262,6 +281,15 @@
             $("#custom_username_field").val(getParameterByName("username"));
         }
     });
+    
+    function changeNotificationSound(sound) {
+        var soundTypes = ["newmsgs", "mentions", "nothing"];
+        if ($.inArray(sound, soundTypes) != -1) {
+            notification_sound_setting = sound;
+            $("[name=notification_sound_radiobtn][value=" + sound + "]").prop("checked", true);
+            localStorage.setItem("notification_sound", sound);
+        }
+    }
     
     function changeTheme(theme=null, keep_custom_css=true, modifyLocalStore=true) {
         if (theme == "") {
@@ -757,6 +785,17 @@
             lastmsg.addClass( "mentioned" );
         }
     }
+    
+    function play_notification_sound(type) { // type can be mention or new
+        if (notification_sound_setting == "nothing") {
+            return;
+        } else if (notification_sound_setting == "mentions" && type != "mention") {
+            return;
+        }
+        if (notification_sound.playState == 0) {
+            notification_sound.play();
+        }
+    }
 
     function escapeHtml(unsafe) { /* http://stackoverflow.com/questions/6234773/can-i-escape-html-special-chars-in-javascript */
         return unsafe
@@ -955,6 +994,11 @@
             }
             message_users_cache[usrcachekey]["msgs"].push(message.id);
             last = message.id;
+        }
+        if (replace == null) {
+            play_notification_sound("new");
+        } else if ($("#chatcontent p:last-child.mentioned").length) {
+            play_notification_sound("mention");
         }
         if (replace == null && jumpscroll) {
             if (!has_handled_noscroll) {
