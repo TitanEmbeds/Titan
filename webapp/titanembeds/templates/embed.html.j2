@@ -52,31 +52,31 @@
           </div>
         </li>
 
-        <li><a class="subheader">Actions</a></li>
-        <li><a href="{{ url_for("user.administrate_guild", guild_id=guild['id']) }}" class="waves-effect" target="_blank" id="administrate_link" style="display: none;">Manage Guild Embed</a></li>
-        <li><a id="instant-inv" href="#" class="waves-effect" target="_blank">Open Server on Discordapp</a></li>
+        <li><a class="subheader">{{ _("Actions") }}</a></li>
+        <li><a href="{{ url_for("user.administrate_guild", guild_id=guild['id']) }}" class="waves-effect" target="_blank" id="administrate_link" style="display: none;">{{ _("Manage Guild Embed") }}</a></li>
+        <li><a id="instant-inv" href="#" class="waves-effect" target="_blank">{{ _("Open Server on Discordapp") }}</a></li>
 
         <li><div class="divider"></div></li>
 
-        <li><a class="subheader">Channel Topic</a></li>
+        <li><a class="subheader">{{ _("Channel Topic") }}</a></li>
         <div id="channeltopic"></div>
 
         <li><div class="divider"></div></li>
 
-        <li><a class="subheader">Channels</a></li>
+        <li><a class="subheader">{{ _("Channels") }}</a></li>
         <span id="channels-list"></span>
       </ul>
 
       <ul id="members-nav" class="side-nav">
-        <li><a class="subheader">Online Server Members - <span id="discord-members-count"></span></a></li>
+        <li><a class="subheader">{{ _("Online Server Members") }} - <span id="discord-members-count"></span></a></li>
         <span id="discord-members"></span>
 
         <li><div class="divider"></div></li>
 
-        <li><a class="subheader">Authenticated Embed Users - <span id="embed-discord-members-count"></span></a></li>
+        <li><a class="subheader">{{ _("Authenticated Embed Users") }} - <span id="embed-discord-members-count"></span></a></li>
         <span id="embed-discord-members"></span>
 
-        <li><a class="subheader">Guest Embed Users - <span id="guest-members-count"></span></a></li>
+        <li><a class="subheader">{{ _("Guest Embed Users") }} - <span id="guest-members-count"></span></a></li>
         <span id="embed-unauth-users"></span>
       </ul>
 
@@ -96,20 +96,20 @@
               {% endif %}
             </div>
             <div class="col m9 s12">
-              <p class="flow-text">Please choose one of the following methods to authenticate!</p>
+              <p class="flow-text">{{ _("Please choose one of the following methods to authenticate!") }}</p>
               <div class="progress" id="loginProgress" style="display: none;">
                   <div class="indeterminate"></div>
               </div>
               <div class="row">
                 <div class="col s12 l4">
-                  <a id="discordlogin_btn" href="{% if not same_target %}{{ url_for("embed.login_discord", _external=True) }}{% else %}{{ url_for("user.login_authenticated", redirect=request.url, _external=True) }}{% endif %}" class="waves-effect waves-light btn-large" {% if not same_target %}target="_blank"{% endif %}>Discord Login</a>
-                  <p>*You will be invited into this server.</p>
+                  <a id="discordlogin_btn" href="{% if not same_target %}{{ url_for("embed.login_discord", _external=True) }}{% else %}{{ url_for("user.login_authenticated", redirect=request.url, _external=True) }}{% endif %}" class="waves-effect waves-light btn-large" {% if not same_target %}target="_blank"{% endif %}>{{ _("Discord Login") }}</a>
+                  <p>*{{ _("You will be invited into this server.") }}</p>
                 </div>
                 {% if unauth_enabled %}
                 <div class="col s12 l8">
-                  <p>Of course, you also have the option to login by picking a temporary username for your current browsing session.</p>
+                  <p>{{ _("Of course, you also have the option to login by picking a temporary username for your current browsing session.") }}</p>
                   <input id="custom_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% endif %}>
-                  <label class="active" for="custom_username_field">Username (Hit ENTER/RETURN key to confirm)</label>
+                  <label class="active" for="custom_username_field">{{ _("Username (Hit ENTER/RETURN key to confirm)") }}</label>
                 </div>
                 {% endif %}
               </div>
@@ -121,16 +121,16 @@
     <div id="userembedmodal" class="modal">
       <div class="modal-content">
         {% if unauth_enabled %}
-        <h4>Change Username</h4>
+        <h4>{{ _("Change Username") }}</h4>
         <div class="row">
             <div>
-              <p>(Guests Accounts Only)</p>
+              <p>({{ _("Guests Accounts Only") }})</p>
               <input id="change_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% else %}disabled{% endif %}>
-              <label class="active" for="change_username_field">Change your username (Hit ENTER/RETURN key to confirm)</label>
+              <label class="active" for="change_username_field">{{ _("Change your username (Hit ENTER/RETURN key to confirm)") }}</label>
             </div>
         </div>
         {% endif %}
-        <h4>Theme</h4>
+        <h4>{{ _("Theme") }}</h4>
         <div class="row">
           <div class="input-field col s12">
             <select id="theme-selector">
@@ -140,24 +140,24 @@
             </select>
             <p>
               <input type="checkbox" class="filled-in" id="overwrite_theme_custom_css_checkbox" checked="checked" />
-              <label for="overwrite_theme_custom_css_checkbox">Overwrite Current Embed Theme w/ User CSS</label>
+              <label for="overwrite_theme_custom_css_checkbox">{{ _("Overwrite Current Embed Theme w/ User CSS") }}</label>
             </p>
           </div>
         </div>
-        <h4>Notification Sound</h4>
+        <h4>{{ _("Notification Sound") }}</h4>
         <div class="row">
           <div class="input-field col s12">
             <span>
               <input name="notification_sound_radiobtn" type="radio" id="notification_sound_radiobtn_newmsgs" value="newmsgs" />
-              <label for="notification_sound_radiobtn_newmsgs">New Messages</label>
+              <label for="notification_sound_radiobtn_newmsgs">{{ _("New Messages") }}</label>
             </span>
             <span>
               <input name="notification_sound_radiobtn" type="radio" id="notification_sound_radiobtn_mentions" value="mentions" />
-              <label for="notification_sound_radiobtn_mentions">Mentions</label>
+              <label for="notification_sound_radiobtn_mentions">{{ _("Mentions") }}</label>
             </span>
             <span>
               <input name="notification_sound_radiobtn" type="radio" id="notification_sound_radiobtn_nothing" value="nothing" />
-              <label for="notification_sound_radiobtn_nothing">Nothing</label>
+              <label for="notification_sound_radiobtn_nothing">{{ _("Nothing") }}</label>
             </span>
           </div>
         </div>
@@ -175,7 +175,7 @@
     <div id="emoji-picker">
       <div id="emoji-picker-content">
         <div class="row">
-          <h6>Server Emoji</h6>
+          <h6>{{ _("Server Emoji") }}</h6>
           <div id="emoji-picker-emojis"></div>
         </div>
       </div>
@@ -192,7 +192,7 @@
         </div>
         <div id="messageboxouter" class="input-field inline">
           <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea" rows="1"></textarea>
-          <span id="visitor_mode_message" style="display:none;"><span id="visitor_mode_message_note">Please login to post a message.</span> <a id="visitor_login_btn" class="waves-effect waves-light btn">Login</a></span>
+          <span id="visitor_mode_message" style="display:none;"><span id="visitor_mode_message_note">{{ _("Please login to post a message.") }}</span> <a id="visitor_login_btn" class="waves-effect waves-light btn">{{ _("Login") }}</a></span>
         </div>
       </div>
     </footer>

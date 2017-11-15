@@ -2,7 +2,7 @@ from config import config
 from .database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, discord_api, socketio
+from titanembeds.utils import rate_limiter, discord_api, socketio, babel
 from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
@@ -33,6 +33,7 @@ db.init_app(app)
 rate_limiter.init_app(app)
 sslify = SSLify(app, permanent=True)
 socketio.init_app(app, message_queue=config["redis-uri"], path='gateway', async_mode=config.get("websockets-mode", None))
+babel.init_app(app)
 
 app.register_blueprint(api.api, url_prefix="/api", template_folder="/templates")
 app.register_blueprint(admin.admin, url_prefix="/admin", template_folder="/templates")

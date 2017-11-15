@@ -2,6 +2,7 @@ from titanembeds.database import db, Guilds, UnauthenticatedUsers, Unauthenticat
 from flask import request, session
 from flask_limiter import Limiter
 from flask_socketio import SocketIO
+from flask_babel import Babel
 from config import config
 from sqlalchemy import and_
 import random
@@ -293,3 +294,4 @@ def guild_unauthcaptcha_enabled(guild_id):
 
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
 socketio = SocketIO()
+babel = Babel()

@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, abort, redirect, url_for, session, request
+from flask_babel import gettext
 from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
 from titanembeds.database import db, Guilds, UserCSS
@@ -10,14 +11,14 @@ embed = Blueprint("embed", __name__)
 
 def get_logingreeting():
     greetings = [
-        "Let's get to know each other! My name is Titan, what's yours?",
-        "Hello and welcome!",
-        "What brings you here today?",
-        "....what do you expect this text to say?",
-        "Aha! ..made you look!",
-        "Initiating launch sequence...",
-        "Captain, what's your option?",
-        "Alright, here's the usual~",
+        gettext("Let's get to know each other! My name is Titan, what's yours?"),
+        gettext("Hello and welcome!"),
+        gettext("What brings you here today?"),
+        gettext("....what do you expect this text to say?"),
+        gettext("Aha! ..made you look!"),
+        gettext("Initiating launch sequence..."),
+        gettext("Captain, what's your option?"),
+        gettext("Alright, here's the usual~"),
     ]
     return random.choice(greetings)
 

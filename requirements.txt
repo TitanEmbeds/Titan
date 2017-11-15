@@ -10,3 +10,4 @@ asyncio_extras
 kombu
 redis
 aioredis
+Flask-Babel
