@@ -30,5 +30,8 @@ To set up the database for it to work with the webapp and the discordbot, one mu
 ## Join us!
 Come and talk with us at our very own [discord server](https://discord.gg/z4pdtuV)! We offer support too!
 
+## Translate for us!
+Visit us over at our [CrowdIn project](http://translate.titanembeds.com/) and teach Titan how to speak your language!
+
 ## Disclaimer
 This project is never to be used as a replacement for Discord app. It is used in conjunction for a quick and dirty Discord embed for websites. Some uses are via shoutboxes, etc.
