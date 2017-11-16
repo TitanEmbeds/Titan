@@ -6,6 +6,7 @@ from titanembeds.utils import rate_limiter, discord_api, socketio, babel
 from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
+from titanembeds.i18n import LANGUAGES
 
 try:
     import uwsgi
@@ -40,6 +41,13 @@ app.register_blueprint(admin.admin, url_prefix="/admin", template_folder="/templ
 app.register_blueprint(user.user, url_prefix="/user", template_folder="/templates")
 app.register_blueprint(embed.embed, url_prefix="/embed", template_folder="/templates")
 socketio.on_namespace(gateway.Gateway('/gateway'))
+
+@babel.localeselector
+def get_locale():
+    param_lang = request.args.get("lang", None)
+    if param_lang in LANGUAGES:
+        return param_lang
+    return request.accept_languages.best_match(LANGUAGES.keys())
 
 @app.route("/")
 def index():
