@@ -1,0 +1,151 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: titanembeds\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-11-15 05:32+0000\n"
+"PO-Revision-Date: 2017-11-17 15:40-0500\n"
+"Last-Translator: That Guy (maksinibob)\n"
+"Language-Team: Polish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: titanembeds\n"
+"X-Crowdin-Language: pl\n"
+"X-Crowdin-File: messages.pot\n"
+"Language: pl_PL\n"
+
+#: titanembeds/blueprints/embed/embed.py:14
+msgid "Let's get to know each other! My name is Titan, what's yours?"
+msgstr "Cześć, jestem Titan! A ty jak masz na imię?"
+
+#: titanembeds/blueprints/embed/embed.py:15
+msgid "Hello and welcome!"
+msgstr "Witamy!"
+
+#: titanembeds/blueprints/embed/embed.py:16
+msgid "What brings you here today?"
+msgstr "Co cię dzisiaj tu sprowadza?"
+
+#: titanembeds/blueprints/embed/embed.py:17
+msgid "....what do you expect this text to say?"
+msgstr "...co tu ma niby pisać?"
+
+#: titanembeds/blueprints/embed/embed.py:18
+msgid "Aha! ..made you look!"
+msgstr "Aha! ..masz tu nos!"
+
+#: titanembeds/blueprints/embed/embed.py:19
+msgid "Initiating launch sequence..."
+msgstr "Przygotować się do startu..."
+
+#: titanembeds/blueprints/embed/embed.py:20
+msgid "Captain, what's your option?"
+msgstr "Kapitanie, jakieś opcje?"
+
+#: titanembeds/blueprints/embed/embed.py:21
+msgid "Alright, here's the usual~"
+msgstr "Ok, jak zawsze"
+
+#: titanembeds/templates/embed.html.j2:55
+msgid "Actions"
+msgstr "Akcje"
+
+#: titanembeds/templates/embed.html.j2:56
+msgid "Manage Guild Embed"
+msgstr "Ustawienia embeda"
+
+#: titanembeds/templates/embed.html.j2:57
+msgid "Open Server on Discordapp"
+msgstr "Otwórz w Discordapp"
+
+#: titanembeds/templates/embed.html.j2:61
+msgid "Channel Topic"
+msgstr "Temat kanału"
+
+#: titanembeds/templates/embed.html.j2:66
+msgid "Channels"
+msgstr "Kanały"
+
+#: titanembeds/templates/embed.html.j2:71
+msgid "Online Server Members"
+msgstr "Aktywni członkowie serwera"
+
+#: titanembeds/templates/embed.html.j2:76
+msgid "Authenticated Embed Users"
+msgstr "Uwierzytelnieni użytkownicy embeda"
+
+#: titanembeds/templates/embed.html.j2:79
+msgid "Guest Embed Users"
+msgstr "Goście"
+
+#: titanembeds/templates/embed.html.j2:99
+msgid "Please choose one of the following methods to authenticate!"
+msgstr "Wybierz sposób uwierzytelnienia!"
+
+#: titanembeds/templates/embed.html.j2:105
+msgid "Discord Login"
+msgstr "Logowanie przez Discord"
+
+#: titanembeds/templates/embed.html.j2:106
+msgid "You will be invited into this server."
+msgstr "Będziesz zaproszony do serwera."
+
+#: titanembeds/templates/embed.html.j2:110
+msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
+msgstr "Oczywiście, możesz się zalogować jako gość używając konta, które zostanie usunięte po wyłączeniu twojej przeglądarki."
+
+#: titanembeds/templates/embed.html.j2:112
+msgid "Username (Hit ENTER/RETURN key to confirm)"
+msgstr "Nazwa (Kliknij ENTER lub RETURN aby potwierdzić)"
+
+#: titanembeds/templates/embed.html.j2:124
+msgid "Change Username"
+msgstr "Zmień nazwę"
+
+#: titanembeds/templates/embed.html.j2:127
+msgid "Guests Accounts Only"
+msgstr "Tylko goście"
+
+#: titanembeds/templates/embed.html.j2:129
+msgid "Change your username (Hit ENTER/RETURN key to confirm)"
+msgstr "Zmień swoją nazwę (Kliknij ENTER lub RETURN aby potwierdzić)"
+
+#: titanembeds/templates/embed.html.j2:133
+msgid "Theme"
+msgstr "Wygląd"
+
+#: titanembeds/templates/embed.html.j2:143
+msgid "Overwrite Current Embed Theme w/ User CSS"
+msgstr "Zastąp wygląd łącznie z własnym CSS"
+
+#: titanembeds/templates/embed.html.j2:147
+msgid "Notification Sound"
+msgstr "Dźwięk powiadomienia"
+
+#: titanembeds/templates/embed.html.j2:152
+msgid "New Messages"
+msgstr "Nowe wiadomości"
+
+#: titanembeds/templates/embed.html.j2:156
+msgid "Mentions"
+msgstr "Wspomnienia"
+
+#: titanembeds/templates/embed.html.j2:160
+msgid "Nothing"
+msgstr "Nic"
+
+#: titanembeds/templates/embed.html.j2:178
+msgid "Server Emoji"
+msgstr "Emoji serwera"
+
+#: titanembeds/templates/embed.html.j2:195
+msgid "Please login to post a message."
+msgstr "Zaloguj się aby wysłać wiadomość."
+
+#: titanembeds/templates/embed.html.j2:195
+msgid "Login"
+msgstr "Zaloguj się"
+
