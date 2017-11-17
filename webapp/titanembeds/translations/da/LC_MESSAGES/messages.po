@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-11-15 05:32+0000\n"
 "PO-Revision-Date: 2017-11-17 15:40-0500\n"
-"Last-Translator: justdotJS\n"
-"Language-Team: Italian\n"
+"Last-Translator: Victor Fisker (victorfrb)\n"
+"Language-Team: Danish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,105 +13,105 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: titanembeds\n"
-"X-Crowdin-Language: it\n"
+"X-Crowdin-Language: da\n"
 "X-Crowdin-File: messages.pot\n"
-"Language: it_IT\n"
+"Language: da_DK\n"
 
 #: titanembeds/blueprints/embed/embed.py:14
 msgid "Let's get to know each other! My name is Titan, what's yours?"
-msgstr "Conosciamoci! Il mio nome è Titan, cose il tuo?"
+msgstr "Lad os lære hinanden at kende! Mit navn er Titan, hvad er dit?"
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Hello and welcome!"
-msgstr "Ciao e benvenuto!"
+msgstr "Hej og velkommen!"
 
 #: titanembeds/blueprints/embed/embed.py:16
 msgid "What brings you here today?"
-msgstr "Cosa ti porta qui oggi?"
+msgstr "Hvad bringer dig hid?"
 
 #: titanembeds/blueprints/embed/embed.py:17
 msgid "....what do you expect this text to say?"
-msgstr "...cosa ti aspettavi che dicessi questo testo?"
+msgstr "...hvad forventer du denne tekst at sige?"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "Aha! ..made you look!"
-msgstr "Ah!... Ti ho fatto guardare!"
+msgstr "Aha!... fik dig til at kigge!"
 
 #: titanembeds/blueprints/embed/embed.py:19
 msgid "Initiating launch sequence..."
-msgstr "Iniziando sequenza di lancio..."
+msgstr "Igangsættende lancerings sekvens..."
 
 #: titanembeds/blueprints/embed/embed.py:20
 msgid "Captain, what's your option?"
-msgstr "Capitano, qual è la tua opinione?"
+msgstr "Kaptajn, hvad er dit valg?"
 
 #: titanembeds/blueprints/embed/embed.py:21
 msgid "Alright, here's the usual~"
-msgstr "Bene, ecco il solito ~"
+msgstr "Okay, her er det sædvanlige~"
 
 #: titanembeds/templates/embed.html.j2:55
 msgid "Actions"
-msgstr "Azioni"
+msgstr "Handlinger"
 
 #: titanembeds/templates/embed.html.j2:56
 msgid "Manage Guild Embed"
-msgstr "Gestisci Guild Embed"
+msgstr "Administrere Guild Integreringer"
 
 #: titanembeds/templates/embed.html.j2:57
 msgid "Open Server on Discordapp"
-msgstr "Apri Server su Discord"
+msgstr "Åben Server på Discordapp"
 
 #: titanembeds/templates/embed.html.j2:61
 msgid "Channel Topic"
-msgstr "Argomento di Canale"
+msgstr "Kanal Emne"
 
 #: titanembeds/templates/embed.html.j2:66
 msgid "Channels"
-msgstr "Canali"
+msgstr "Kanaler"
 
 #: titanembeds/templates/embed.html.j2:71
 msgid "Online Server Members"
-msgstr "Membri Online"
+msgstr "Online Server Medlemmer"
 
 #: titanembeds/templates/embed.html.j2:76
 msgid "Authenticated Embed Users"
-msgstr "Utenti Autenticati"
+msgstr "Godkendte Integrerede Brugere"
 
 #: titanembeds/templates/embed.html.j2:79
 msgid "Guest Embed Users"
-msgstr "Utenti Guest"
+msgstr "Integrerede Gæst Brugere"
 
 #: titanembeds/templates/embed.html.j2:99
 msgid "Please choose one of the following methods to authenticate!"
-msgstr "Si prega di scegliere uno dei seguenti metodi per autenticare!"
+msgstr "Vælg en af følgende metoder til at godkende!"
 
 #: titanembeds/templates/embed.html.j2:105
 msgid "Discord Login"
-msgstr "Discord Login"
+msgstr "Discord Log ind"
 
 #: titanembeds/templates/embed.html.j2:106
 msgid "You will be invited into this server."
-msgstr "Sarai invitato a questo server."
+msgstr "Du vil blive inviteret til denne server."
 
 #: titanembeds/templates/embed.html.j2:110
 msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
-msgstr "Naturalmente, hai anche l'opzione per effettuare il login con la scelta di un nome utente temporaneo per la sessione corrente."
+msgstr "Selvfølgelig, har du også mulighed for at logge ind, ved at vælge et midlertidligt brugernavn for din aktuelle browsersession."
 
 #: titanembeds/templates/embed.html.j2:112
 msgid "Username (Hit ENTER/RETURN key to confirm)"
-msgstr "Nome Utente (Premi ENTER per confirmare)"
+msgstr "Brugernavn (Tryk Enter/Tilbage tasten for at bekræfte)"
 
 #: titanembeds/templates/embed.html.j2:124
 msgid "Change Username"
-msgstr "Cambia Nome Utente"
+msgstr "Ændre Brugernavn"
 
 #: titanembeds/templates/embed.html.j2:127
 msgid "Guests Accounts Only"
-msgstr "Guest Utenti Solo"
+msgstr "Gæste Kontier Kun"
 
 #: titanembeds/templates/embed.html.j2:129
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
-msgstr "Cambia Nome Utente (Premi ENTER per confirmare)"
+msgstr "Skift dit brugernavn (tryk ENTER/Tilbage tasten for at bekræfte)"
 
 #: titanembeds/templates/embed.html.j2:133
 msgid "Theme"
@@ -119,23 +119,23 @@ msgstr "Tema"
 
 #: titanembeds/templates/embed.html.j2:143
 msgid "Overwrite Current Embed Theme w/ User CSS"
-msgstr "Sovrascrivi il corrente CSS del tema con CSS utente"
+msgstr "Overskriv Aktuel Integreret Tema m/bruger CSS"
 
 #: titanembeds/templates/embed.html.j2:147
 msgid "Notification Sound"
-msgstr "Suono di notifica"
+msgstr "Meddelelseslyd"
 
 #: titanembeds/templates/embed.html.j2:152
 msgid "New Messages"
-msgstr "Nuovi messaggi"
+msgstr "Nye Meddelelser"
 
 #: titanembeds/templates/embed.html.j2:156
 msgid "Mentions"
-msgstr "Menzioni"
+msgstr "Nævninger"
 
 #: titanembeds/templates/embed.html.j2:160
 msgid "Nothing"
-msgstr "Niente"
+msgstr "Intet"
 
 #: titanembeds/templates/embed.html.j2:178
 msgid "Server Emoji"
@@ -143,9 +143,9 @@ msgstr "Server Emoji"
 
 #: titanembeds/templates/embed.html.j2:195
 msgid "Please login to post a message."
-msgstr "Effettua il login per inviare un messaggio."
+msgstr "Log på, for at sende en besked."
 
 #: titanembeds/templates/embed.html.j2:195
 msgid "Login"
-msgstr "Login"
+msgstr "Log Ind"
 

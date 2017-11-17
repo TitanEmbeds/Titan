@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-11-15 05:32+0000\n"
-"PO-Revision-Date: 2017-11-15 19:06-0500\n"
+"PO-Revision-Date: 2017-11-17 15:40-0500\n"
 "Last-Translator: jelle619\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr "Opstartsequentie initialiseren..."
 
 #: titanembeds/blueprints/embed/embed.py:20
 msgid "Captain, what's your option?"
-msgstr "Kapitein, wat is je optie?"
+msgstr "Kapitein, wat is uw keuze?"
 
 #: titanembeds/blueprints/embed/embed.py:21
 msgid "Alright, here's the usual~"
@@ -63,7 +63,7 @@ msgstr "Open server in Discordapp"
 
 #: titanembeds/templates/embed.html.j2:61
 msgid "Channel Topic"
-msgstr "Kanaalonderwerp"
+msgstr "Kanaalbeschrijving"
 
 #: titanembeds/templates/embed.html.j2:66
 msgid "Channels"
