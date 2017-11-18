@@ -97,7 +97,13 @@ nav .brand-logo {
 
 #members-nav li>a {
   color: var(--noroleusers);
-  overflow: hidden;
+}
+
+#members-nav li>a.role-title {
+  height: unset;
+  line-height: normal;
+  padding-bottom: 20px;
+  padding-top: 10px;
 }
 
 #guild-nav {
