@@ -106,6 +106,12 @@ nav .brand-logo {
   padding-top: 10px;
 }
 
+#members-nav li>a.subheader {
+  height: fit-content;
+  line-height: initial;
+  padding-top: 15px;
+}
+
 #guild-nav {
   background-color: var(--leftsidebar);
 }
