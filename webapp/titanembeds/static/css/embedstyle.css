@@ -97,6 +97,7 @@ nav .brand-logo {
 
 #members-nav li>a {
   color: var(--noroleusers);
+  overflow: hidden;
 }
 
 #guild-nav {
