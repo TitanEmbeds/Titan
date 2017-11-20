@@ -684,6 +684,10 @@ p.mentioned span.chatmessage {
   width: 302px;
 }
 
+#logout_btn {
+  background-color: red;
+}
+
 /* CSS Variables */
 :root {
   /*--<var>: <value>*/

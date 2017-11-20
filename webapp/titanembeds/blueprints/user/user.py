@@ -55,6 +55,8 @@ def callback():
 @user.route('/logout', methods=["GET"])
 def logout():
     redir = session.get("redirect", None)
+    if not redir:
+        redir = request.args.get("redirect", None)
     session.clear()
     if redir:
         session['redirect'] = redir
