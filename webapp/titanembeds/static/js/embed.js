@@ -905,7 +905,7 @@
         var emb = [];
         for (var i = 0; i < embeds.length; i++) {
             var disembed = embeds[i];
-            if (disembed.type != "rich") {
+            if ($.inArray(disembed.type, ["rich", "link", "video"]) == -1) {
                 continue;
             }
             disembed.toRenderFooter = false;
