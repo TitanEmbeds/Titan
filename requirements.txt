@@ -11,3 +11,4 @@ kombu
 redis
 aioredis
 Flask-Babel
+patreon

@@ -12,6 +12,10 @@ config = {
     # V2 reCAPTCHA from https://www.google.com/recaptcha/admin
     'recaptcha-site-key': "reCAPTCHA v2 Site Key",
     'recaptcha-secret-key': "reCAPTCHA v2 Secret Key",
+    
+    # Patreon
+    'patreon-client-id': "Patreon client id",
+    'patreon-client-secret': "Patreon client secret",
 
     'app-location': "/var/www/Titan/webapp/",
     'app-secret': "Type something random here, go wild.",

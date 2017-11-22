@@ -6,12 +6,7 @@
 <p class="flow-text">Contributing to the Titan project has never been so easy! Donate to support our project development and hosting.</p>
 
 <div class="row">
-    <div class="col s12">
-        <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
-            <a id="patreonbtn" class="waves-effect waves-light btn btn-large center_content" href="https://www.patreon.com/TitanEmbeds" target="_blank">Donate monthly on our Patreon!</a>
-        </div>
-    </div>
-    <div class="col s12">
+    <div class="col s12 m8">
         <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
             <h4>The Name-Your-Price Tool</h4>
             <p class="flow-text">Donate to receive <strong>Titan Tokens&trade;</strong> (to be spent on donator features below) and a <strong>supporter role</strong> on our support server.</p>
@@ -20,6 +15,16 @@
             </p>
             <p class="flow-text">$<span id="money-display">5</span> for <strong><span id="token-display">500</span> tokens</strong>!</p>
             <a class="waves-effect waves-light btn" id="donate-btn">Donate</a>
+        </div>
+    </div>
+    <div class="col s12 m4">
+        <div class="col s12">
+            <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+                <h4>Patreon</h4>
+                <p>Would you like to donate monthly instead of one-time? How about using a different payment method other than PayPal? Patreon, is the answer!</p>
+                <a id="patreonbtn" class="waves-effect waves-light btn btn-large center_content" href="https://www.patreon.com/TitanEmbeds" target="_blank">Visit Patreon</a> <br>
+                <a id="patreonsyncbtn" class="waves-effect waves-light btn btn-large center_content" href="{{ url_for("user.patreon_landing") }}">Sync Pledges</a>
+            </div>
         </div>
     </div>
 </div>

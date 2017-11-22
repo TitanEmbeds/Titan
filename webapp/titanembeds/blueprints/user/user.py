@@ -3,12 +3,13 @@ from flask import current_app as app
 from flask_socketio import emit
 from config import config
 from titanembeds.decorators import discord_users_only
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS, set_titan_token, get_titan_token
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS, Patreon, set_titan_token, get_titan_token
 from titanembeds.oauth import authorize_url, token_url, make_authenticated_session, get_current_authenticated_user, get_user_managed_servers, check_user_can_administrate_guild, check_user_permission, generate_avatar_url, generate_guild_icon_url, generate_bot_invite_url
 import time
 import datetime
 import paypalrestsdk
 import json
+import patreon
 
 user = Blueprint("user", __name__)
 
@@ -473,3 +474,90 @@ def donate_patch():
     db.session.add(entry)
     db.session.commit()
     return ('', 204)
+
+@user.route("/patreon")
+@discord_users_only()
+def patreon_landing():
+    return render_template("patreon.html.j2", pclient_id=config["patreon-client-id"], state="initial")
+
+@user.route("/patreon/callback")
+@discord_users_only()
+def patreon_callback():
+    patreon_oauth_client = patreon.OAuth(config["patreon-client-id"], config["patreon-client-secret"])
+    tokens = patreon_oauth_client.get_tokens(request.args.get("code"), url_for("user.patreon_callback", _external=True))
+    if "error" in tokens:
+        if "patreon" in session:
+            del session["patreon"]
+        return redirect(url_for("user.patreon_landing"))
+    session["patreon"] = tokens
+    return redirect(url_for("user.patreon_sync_get"))
+
+def format_patreon_user(user):
+    pledges = []
+    for pledge in user.relationship('pledges'):
+        pledges.append({
+            "id": pledge.id(),
+            "attributes": pledge.attributes(),
+        })
+    usrobj = {
+        "id": user.id(),
+        "attributes": user.attributes(),
+        "pledges": pledges,
+        "titan": {
+            "eligible_tokens": 0,
+            "total_cents_synced": 0,
+            "total_cents_pledged": 0,
+        },
+    }
+    if usrobj["pledges"]:
+        usrobj["titan"]["total_cents_pledged"] = usrobj["pledges"][0]["total_historical_amount_cents"]
+    dbpatreon = db.session.query(Patreon).filter(Patreon.user_id == user.id()).first()
+    if dbpatreon:
+        usrobj["titan"]["total_cents_synced"] = dbpatreon.total_synced
+    usrobj["titan"]["eligible_tokens"] = usrobj["titan"]["total_cents_pledged"] - usrobj["titan"]["total_cents_synced"]
+    return usrobj
+
+@user.route("/patreon/sync", methods=["GET"])
+@discord_users_only()
+def patreon_sync_get():
+    if "patreon" not in session:
+        return redirect(url_for("user.patreon_landing"))
+    api_client = patreon.API(session["patreon"]["access_token"])
+    user_response = api_client.fetch_user(None, {
+        'pledge': ["amount_cents", "total_historical_amount_cents", "declined_since", "created_at", "pledge_cap_cents", "patron_pays_fees", "outstanding_payment_amount_cents"]
+    })
+    user = user_response.data()
+    if not (user):
+        del session["patreon"]
+        return redirect(url_for("user.patreon_landing"))
+    return render_template("patreon.html.j2", state="prepare", user=format_patreon_user(user))
+
+@user.route("/patreon/sync", methods=["POST"])
+@discord_users_only()
+def patreon_sync_post():
+    if "patreon" not in session:
+        abort(401)
+    api_client = patreon.API(session["patreon"]["access_token"])
+    user_response = api_client.fetch_user(None, {
+        'pledge': ["amount_cents", "total_historical_amount_cents", "declined_since", "created_at", "pledge_cap_cents", "patron_pays_fees", "outstanding_payment_amount_cents"]
+    })
+    user = user_response.data()
+    if not (user):
+        abort(403)
+    usr = format_patreon_user(user)
+    if usr["titan"]["eligible_tokens"] <= 0:
+        return ('', 402)
+    dbpatreon = db.session.query(Patreon).filter(Patreon.user_id == usr["id"]).first()
+    if not dbpatreon:
+        dbpatreon = Patreon(usr["id"])
+    dbpatreon.total_synced = usr["titan"]["total_cents_pledged"]
+    db.session.add(dbpatreon)
+    db.session.commit()
+    set_titan_token(session["user_id"], usr["titan"]["eligible_tokens"], "PATREON {} [{}]".format(usr["attributes"]["full_name"], usr["id"]))
+    session["tokens"] = get_titan_token(session["user_id"])
+    return ('', 204)
+
+@user.route("/patreon/thanks")
+@discord_users_only()
+def patreon_thanks():
+    return render_template("patreon.html.j2", state="thanks")

@@ -1,0 +1,87 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Patreon Portal" %}
+
+{% block content %}
+<h1>Ready to sync your Patreon with Titan Embeds?</h1>
+<p class="flow-text">Keeping track of Titan Tokens from your patreon pledges has never been so easy!</p>
+<div class="row">
+  <div class="col s12">
+    {% if state %}
+    
+    {% if state == "initial" %}
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
+      <span class="black-text center-align">
+        <h5>Once you are ready to sync your Patreon pledges with Titan, hit the button to begin!</h5>
+        <br>
+        <a href="{{ "https://www.patreon.com/oauth2/authorize?response_type=code&client_id={}&redirect_uri={}".format(pclient_id, url_for("user.patreon_callback", _external=True))|e }}" class="waves-effect waves-light btn btn-large center_content">Authenticate w/ Patreon!</a>
+      </span>
+    </div>
+    {% endif %}
+    
+    {% if state == "prepare" %}
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
+      <span class="black-text center-align">
+        <h5>Just making sure this is correct...</h5>
+        <p>If any of these information is incorrect, you may be using an incorrect account for either services before syncing.</p>
+        <br>
+        <div class="row">
+          <div class="col s12 m6">
+            <h4>Discord</h4>
+            <img src="{{ session["avatar"] }}" class="circle syncavatar">
+            <p class="flow-text">{{ session["username"] }}#{{ session["discriminator"] }}</p>
+          </div>
+          <div class="col s12 m6">
+            <h4>Patreon</h4>
+            <img src="{{ user["attributes"]["thumb_url"] }}" class="circle syncavatar">
+            <p class="flow-text">{{ user["attributes"]["full_name"] }}</p>
+            <p class="flow-text">{{ user["attributes"]["email"] }}</p>
+          </div>
+          <div class="col s12">
+            <p class="flow-text">Notices:</p>
+            <ul class="browser-default">
+              {% if user["attributes"]["discord_id"] is none %}
+                <li class="warning">You have not linked a Discord account with your Patreon. Proceed with caution as the account you're trying to sync may be different.</li>
+              {% elif user["attributes"]["discord_id"] != session["user_id"] %}
+                <li class="warning">Patreon has reported that you've linked a different Discord account to their services. Proceed with caution as the account you're trying to sync may be different.</li>
+              {% endif %}
+              <li>Titan Embeds will only sync pledges that have been successfully paid. If you have pledged more than what it currently shows here, please wait till the payment goes through at the beginning of next month.</li>
+            </ul>
+          </div>
+        </div>
+        <br>
+        <p class="flow-text"><strong>{{ user["titan"]["eligible_tokens"] }} tokens avaliable for syncing.</strong><br>Out of {{ "$%.2f"|format(user["titan"]["total_cents_pledged"]/100) }} dollar total pledged, {{ "$%.2f"|format(user["titan"]["total_cents_synced"]/100) }} has been claimed from the Patreon account already.</p>
+        <a id="syncbtn" class="waves-effect waves-light btn btn-large center_content" {% if user["titan"]["eligible_tokens"] <= 0 %}disabled{% endif %}>Sync</a>
+        <p>*If there are any discrepancies, please <a href="https://discord.io/titan" target="_blank">contact us</a>!</p>
+      </span>
+    </div>
+    {% endif %}
+    
+    {% if state == "thanks" %}
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
+      <span class="black-text center-align">
+        <h5>Thanks for syncing your Patreon!</h5>
+        <p>You now have {{ session["tokens"] }} Titan Tokens!</p>
+        <br>
+        <a href="{{ url_for("user.donate_get") }}" class="waves-effect waves-light btn btn-large center_content">Return to Store</a>
+      </span>
+    </div>
+    {% endif %}
+    
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block additional_head_elements %}
+<style>
+  .syncavatar {
+    max-width: 100px;
+  }
+  
+  li.warning {
+    color: red;
+  }
+</style>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/patreon.js') }}"></script>
+{% endblock %}

@@ -14,6 +14,7 @@ from .user_css import UserCSS
 from .administrators import Administrators, get_administrators_list
 from .titan_tokens import TitanTokens, get_titan_token
 from .token_transactions import TokenTransactions
+from .patreon import Patreon
 
 def set_titan_token(user_id, amt_change, action):
     token_count = get_titan_token(user_id)
