@@ -510,7 +510,7 @@ def format_patreon_user(user):
         },
     }
     if usrobj["pledges"]:
-        usrobj["titan"]["total_cents_pledged"] = usrobj["pledges"][0]["total_historical_amount_cents"]
+        usrobj["titan"]["total_cents_pledged"] = usrobj["pledges"][0]["attributes"]["total_historical_amount_cents"]
     dbpatreon = db.session.query(Patreon).filter(Patreon.user_id == user.id()).first()
     if dbpatreon:
         usrobj["titan"]["total_cents_synced"] = dbpatreon.total_synced
