@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-11-15 05:32+0000\n"
-"PO-Revision-Date: 2017-11-17 15:40-0500\n"
+"PO-Revision-Date: 2017-11-24 21:24-0500\n"
 "Last-Translator: That Guy (maksinibob)\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr "Cześć, jestem Titan! A ty jak masz na imię?"
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Hello and welcome!"
-msgstr "Witamy!"
+msgstr "Cześć i witaj!"
 
 #: titanembeds/blueprints/embed/embed.py:16
 msgid "What brings you here today?"
@@ -35,7 +35,7 @@ msgstr "...co tu ma niby pisać?"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "Aha! ..made you look!"
-msgstr "Aha! ..masz tu nos!"
+msgstr ""
 
 #: titanembeds/blueprints/embed/embed.py:19
 msgid "Initiating launch sequence..."
@@ -127,15 +127,15 @@ msgstr "Dźwięk powiadomienia"
 
 #: titanembeds/templates/embed.html.j2:152
 msgid "New Messages"
-msgstr "Nowe wiadomości"
+msgstr "Na nowe wiadomości"
 
 #: titanembeds/templates/embed.html.j2:156
 msgid "Mentions"
-msgstr "Wspomnienia"
+msgstr "Na wspomnienia ciebie"
 
 #: titanembeds/templates/embed.html.j2:160
 msgid "Nothing"
-msgstr "Nic"
+msgstr "Wyłączony"
 
 #: titanembeds/templates/embed.html.j2:178
 msgid "Server Emoji"
