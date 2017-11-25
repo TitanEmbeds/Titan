@@ -123,7 +123,8 @@ class Titan(discord.Client):
             for ban in banned:
                 await self.database.update_guild_member(ban, False, True)
         for channel in guild.channels:
-            if not channel.permissions_for(channel.server.me).read_messages:
+            chanperm = channel.permissions_for(channel.server.me)
+            if not chanperm.read_messages or not chanperm.read_message_history:
                 continue
             async for message in self.logs_from(channel, limit=50, reverse=True):
                 await self.database.push_message(message)
