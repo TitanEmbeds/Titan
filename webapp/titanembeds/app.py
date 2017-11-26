@@ -7,6 +7,7 @@ from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
 from titanembeds.i18n import LANGUAGES
+import titanembeds.constants as constants
 
 try:
     import uwsgi
@@ -71,4 +72,4 @@ def before_first_request():
 
 @app.context_processor
 def context_processor():
-    return {"devs": get_administrators_list()}
+    return {"devs": get_administrators_list(), "constants": constants}

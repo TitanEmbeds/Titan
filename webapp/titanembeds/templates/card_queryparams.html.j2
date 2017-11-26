@@ -7,67 +7,52 @@
                 <p class="flow-text">Use query parameters to customize your individual embeds out of this world!</p>
                 <p>Query parameters are in the format of key-value pairs. They are appended after your embed url such that it would look like so: <br><em>https://titanembeds.com/embed/1234567890<strong>?css=1&defaultchannel=81387914189078528&theme=DiscordDark</strong></em></p>
                 <p>Below is the reference of all the avaliable query parameters that may be used.</p>
+                {% if "administrate_guild" in request.url %}<p><strong>Modify the input fields to change your query parameters for your embed. Leave a box empty to not use the parameter.</strong></p>{% endif %}
                 <ul class="collection">
+                    {% for param in constants.QUERY_PARAMETERS %}
                     <li class="collection-item">
-                      <strong>css=&lt;integer&gt;</strong> <br>
-                      Styles the embed's theme according to the unique custom CSS ID. Custom CSS may be managed from the user dashboard page. <br>
-                      <em>Eg: css=1</em>
-                    </li>
-                    <li class="collection-item">
-                      <strong>defaultchannel=&lt;snowflake&gt;</strong> <br>
-                      Instead of having the top channel as the first channel your users see, you may change it. Enable Discord's Developer mode in the Appearances tab of the User Settings and copy the channel ID. <br>
-                      <em>Eg: defaultchannel=1234567890</em>
-                    </li>
-                    <li class="collection-item">
-                      <strong>lang=&lt;language&gt;</strong> <br>
-                      Is your users multilingual? No worries, Titan can speak multiple languages! <a href="https://github.com/TitanEmbeds/Titan/blob/master/webapp/titanembeds/i18n.py" target="_blank">Check here</a> for a list of all language parameters Titan can support. <br>
-                      Wish Titan supported your language? Consider contributing to <a href="http://translate.titanembeds.com/" target="_blank">our CrowdIn project</a>! <br>
-                      <em>Eg: lang=nl</em>
-                    </li>
-                    <li class="collection-item">
-                      <strong>noscroll=&lt;boolean&gt;</strong> <br>
-                      Prevents the embed from scrolling down on first load. Useful for those who wants to set #info -typed channels as their default channel. Gotta have those good reads!
+                      <strong>{{ param.name }}=&lt;{{ param.type }}&gt;</strong> <br>
+                      {{ param.description }}
+                      {% if param.options %}
                       <hr>
                       <strong>Avaliable Options:</strong>
                       <ul class="browser-default">
-                        <li><strong>true</strong></li>
-                        <li><strong>false</strong> (default)</li>
+                        {% for option in param.options %}
+                        <li><strong>{{ option.name }}</strong> {% if option.default %}(default){% endif %}</li>
+                        {% endfor %}
                       </ul>
                       <hr>
-                      <em>Eg: noscroll=true</em>
+                      {% else %}
+                      <br>
+                      {% endif %}
+                      <em>Eg: {{ param.name }}={{ param.example }}</em>
+                      {% if "administrate_guild" in request.url %}
+                      <br>
+                      <input class="queryparam" name="{{ param.name }}" type="text" style="background-color: #F9F8F6;">
+                      {% endif %}
                     </li>
-                    <li class="collection-item">
-                      <strong>sametarget=&lt;boolean&gt;</strong> <br>
-                      For those who don't want the Discord Login to open in a new tab/window... (<em>Does not work for iframe loaded embeds!!!</em> This is a direct link option only.)
-                      <hr>
-                      <strong>Avaliable Options:</strong>
-                      <ul class="browser-default">
-                        <li><strong>true</strong></li>
-                        <li><strong>false</strong> (default)</li>
-                      </ul>
-                      <hr>
-                      <em>Eg: sametarget=true</em>
-                    </li>
-                    <li class="collection-item">
-                      <strong>theme=&lt;string&gt;</strong> <br>
-                      Want your embed to use one of our premade themes? Look no further! <br>
-                      <hr>
-                      <strong>Avaliable Options:</strong>
-                      <ul class="browser-default">
-                          <li><strong>BetterTitan</strong></li>
-                          <li><strong>DiscordDark</strong></li>
-                      </ul>
-                      <hr>
-                      <em>Eg: theme=DiscordDark</em>
-                    </li>
-                    <li class="collection-item">
-                      <strong>username=&lt;string&gt;</strong> <br>
-                      Prefills the guest username field with the given username. <br>
-                      <em>Eg: username=Rainbow%20Dash</em>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
+            {% if "administrate_guild" in request.url %}
+            <div class="col s12 black-text">
+              <p class="flow-text">Copy this URL for your iFrame src (or as a direct link) after entering the parameters in the form.</p>
+              <ul class="collection">
+                <li class="collection-item">
+                  <strong>Embed/Server ID</strong>
+                  <input id="queryparam_guildid" type="text" style="background-color: #F9F8F6;" value="{{ guild['id'] }}">
+                </li>
+                <li class="collection-item">
+                  Embed URL after query parameters appled
+                  <input id="queryparam_url" readonly value="{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}" id="disabled" type="text" onclick="this.setSelectionRange(0, this.value.length)">
+                </li>
+              </ul>
+            </div>
+            {% endif %}
           </div>
         </div>
     </div>
 </div>
+{% if "administrate_guild" in request.url %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/query_parameters.js') }}" defer></script>
+{% endif %}
