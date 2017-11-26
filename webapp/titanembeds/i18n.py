@@ -4,4 +4,5 @@ LANGUAGES = {
     'it': 'Italiano', # Italian
     'nl': 'Nederlands', # Dutch
     'pl': 'Polski', # Polish
+    'th': "ไทย", # Thai
 }
