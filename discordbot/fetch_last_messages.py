@@ -69,7 +69,27 @@ class Titan(discord.Client):
             return
 
         print("working on this...")
-        all_channels = list(self.get_all_channels())
+        all_channels = []
+        if len(sys.argv) < 2:
+            print("fetch_last_messages.py <server/all> [server_id]")
+            await self.logout()
+            return
+        if "server" == sys.argv[1]:
+            server_id = sys.argv[2]
+            server = self.get_server(server_id)
+            if not server:
+                print("Server not found")
+                await self.logout()
+                return
+            print("Getting server: " + str(server))
+            all_channels = server.channels
+        elif "all" == sys.argv[1]:
+            print("Getting all channels")
+            all_channels = list(self.get_all_channels())
+        else:
+            print("fetch_last_messages.py <server/all> [server_id]")
+            await self.logout()
+            return
         for channel in all_channels:
             try:
                 if str(channel.type) == "text":
