@@ -39,6 +39,7 @@ def callback():
         return redirect(url_for('user.logout'))
     session['user_keys'] = discord_token
     session['unauthenticated'] = False
+    session.permanent = True
     user = get_current_authenticated_user()
     session['user_id'] = user['id']
     session['username'] = user['username']

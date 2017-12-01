@@ -315,6 +315,7 @@ def create_unauthenticated_user():
             session['user_keys'] = {guild_id: key}
         else:
             session['user_keys'][guild_id] = key
+        session.permanent = False
         status = update_user_status(guild_id, username, key)
         return jsonify(status=status)
     else:

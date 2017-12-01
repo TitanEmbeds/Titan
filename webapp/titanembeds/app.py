@@ -8,6 +8,7 @@ import os
 from titanembeds.database import get_administrators_list
 from titanembeds.i18n import LANGUAGES
 import titanembeds.constants as constants
+from datetime import timedelta
 
 try:
     import uwsgi
@@ -29,6 +30,7 @@ app.config['RATELIMIT_HEADERS_ENABLED'] = True
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 250
 app.config['SQLALCHEMY_POOL_SIZE'] = 100
 app.config['RATELIMIT_STORAGE_URL'] = 'keyvalprops://'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=3)
 app.secret_key = config['app-secret']
 
 db.init_app(app)
