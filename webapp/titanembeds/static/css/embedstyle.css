@@ -679,6 +679,10 @@ p.mentioned span.chatmessage {
   top: -5px;
 }
 
+#usercard .avatar {
+  width: 100%;
+}
+
 #usercard .identity {
   display: inline;
   vertical-align: sub;
