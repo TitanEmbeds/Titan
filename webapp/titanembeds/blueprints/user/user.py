@@ -3,7 +3,7 @@ from flask import current_app as app
 from flask_socketio import emit
 from config import config
 from titanembeds.decorators import discord_users_only
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS, Patreon, set_titan_token, get_titan_token
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS, Patreon, set_titan_token, get_titan_token, add_badge
 from titanembeds.oauth import authorize_url, token_url, make_authenticated_session, get_current_authenticated_user, get_user_managed_servers, check_user_can_administrate_guild, check_user_permission, generate_avatar_url, generate_guild_icon_url, generate_bot_invite_url
 import time
 import datetime
@@ -431,6 +431,7 @@ def donate_confirm():
         action = "PAYPAL {}".format(trans_id)
         set_titan_token(session["user_id"], tokens, action)
         session["tokens"] = get_titan_token(session["user_id"])
+        add_badge(session["user_id"], "supporter")
         return redirect(url_for('user.donate_thanks', transaction=trans_id))
     else:
         return redirect(url_for('index'))
@@ -555,6 +556,7 @@ def patreon_sync_post():
     db.session.add(dbpatreon)
     db.session.commit()
     set_titan_token(session["user_id"], usr["titan"]["eligible_tokens"], "PATREON {} [{}]".format(usr["attributes"]["full_name"], usr["id"]))
+    add_badge(session["user_id"], "supporter")
     session["tokens"] = get_titan_token(session["user_id"])
     return ('', 204)
 

@@ -15,6 +15,7 @@
               <th>CSS</th>
               <th>CSS Limit</th>
               <th>Guest Icon</th>
+              <th>Badges</th>
               <th>Submit</th>
           </tr>
         </thead>
@@ -51,6 +52,17 @@
                 </div>
             </td>
             <td>
+              <div class="input-field col s12">
+                <select multiple id="new_badges">
+                  <option value="" disabled>Choose your option</option>
+                  <option value="administrator">TitanEmbeds Administrators</option>
+                  <option value="partner">TitanEmbeds Partner</option>
+                  <option value="supporter">TitanEmbeds Supporter</option>
+                  <option value="star">GitHub Stargazer</option>
+                </select>
+              </div>
+            </td>
+            <td>
                 <a class="waves-effect waves-light btn" id="new_submit">Submit</a>
             </td>
           </tr>
@@ -69,6 +81,7 @@
               <th>CSS</th>
               <th>CSS Limit</th>
               <th>Guest Icon</th>
+              <th>Badges</th>
           </tr>
         </thead>
         <tbody>
@@ -100,6 +113,17 @@
                       On
                     </label>
                 </div>
+            </td>
+            <td>
+              <div class="input-field col s12">
+                <select multiple id="new_badges" onchange="update_badges('{{ cosmetic.user_id }}', this)">
+                  <option value="" disabled>Choose your option</option>
+                  <option value="administrator" {% if "administrator" in cosmetic.badges %}selected{% endif %}>TitanEmbeds Administrators</option>
+                  <option value="partner" {% if "partner" in cosmetic.badges %}selected{% endif %}>TitanEmbeds Partner</option>
+                  <option value="supporter" {% if "supporter" in cosmetic.badges %}selected{% endif %}>TitanEmbeds Supporter</option>
+                  <option value="star" {% if "star" in cosmetic.badges %}selected{% endif %}>GitHub Stargazer</option>
+                </select>
+              </div>
             </td>
           </tr>
           {% endfor %}

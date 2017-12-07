@@ -1,4 +1,4 @@
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties, GuildMembers, Messages, get_channel_messages, list_all_guild_members, get_guild_member, get_administrators_list
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, KeyValueProperties, GuildMembers, Messages, get_channel_messages, list_all_guild_members, get_guild_member, get_administrators_list, get_badges
 from titanembeds.decorators import valid_session_required, discord_users_only
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
@@ -429,6 +429,10 @@ def create_authenticated_user():
             response.status_code = 403
             return response
 
+@api.route("/badges/<user_id>")
+def badges(user_id):
+    return jsonify(get_badges(user_id))
+
 def canCleanupDB():
     canclean = False
     if request.form.get("secret", None) == config['app-secret']:
@@ -437,6 +441,7 @@ def canCleanupDB():
         if session['user_id'] in get_administrators_list():
             canclean = True
     return canclean
+    
 @api.route("/cleanup-db", methods=["DELETE"])
 def cleanup_keyval_db():
     if canCleanupDB():

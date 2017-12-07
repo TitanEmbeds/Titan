@@ -19,6 +19,7 @@
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
+    const badges_options = ["administrator", "partner", "supporter", "star"]; // All badges avaliable
     
     var user_def_css; // Saves the user defined css
     var has_already_been_initially_resized = false; // keep track if the embed initially been resized
@@ -134,6 +135,14 @@
         return funct.promise();
     }
     
+    function api_badges(user_id) {
+        var funct = $.ajax({
+            dataType: "json",
+            url: "/api/badges/" + user_id,
+        });
+        return funct.promise();
+    }
+    
     $(function() {
         if ($("#user-defined-css").length > 0) {
             user_def_css = $("#user-defined-css").text();
@@ -164,6 +173,9 @@
             opacity: .5,
             inDuration: 400,
             outDuration: 400,
+        });
+        $("#usercard").modal({
+            opacity: .5,
         });
         
         $("#nameplate").click(function () {
@@ -607,7 +619,7 @@
             var rendered_user = Mustache.render(template_user, {"id": member.id.toString() + "d", "username": member_name, "avatar": member.avatar_url});
             $("#discord-members").append(rendered_user);
             $( "#discorduser-" + member.id.toString() + "d").click({"member_id": member.id.toString()}, function(event) {
-              mention_member(event.data.member_id);
+              openUserCard(event.data.member_id);
             });
             if (member.color) {
               $( "#discorduser-" + member.id.toString() + "d").css("color", "#" + member.color);
@@ -631,7 +643,7 @@
             var rendered = Mustache.render(template, {"id": member.id.toString() + "a", "username": username, "avatar": member.avatar_url});
             $("#embed-discord-members").append(rendered);
             $( "#discorduser-" + member.id.toString() + "a").click({"member_id": member.id.toString()}, function(event) {
-              mention_member(event.data.member_id);
+              openUserCard(event.data.member_id);
             });
         }
         authenticated_users_list = users;
@@ -677,6 +689,60 @@
                 }
             });
         }, 5000);
+    }
+    
+    function openUserCard(user_id) {
+        var bgs = api_badges(user_id);
+        bgs.done(function (data) {
+            for (var i = 0; i < badges_options.length; i++) {
+                var badge = badges_options[i];
+                if (data.indexOf(badge) != -1) {
+                    $(`#usercard .badges .${badge}`).show();
+                } else {
+                    $(`#usercard .badges .${badge}`).hide();
+                }
+            }
+        });
+        for (var i = 0; i < discord_users_list.length; i++) {
+            var usr = discord_users_list[i];
+            if (usr.id == user_id) {
+                $("#usercard .avatar").attr("src", usr.avatar_url);
+                $("#usercard .identity .username").text(usr.username);
+                $("#usercard .identity .discriminator").text(usr.discriminator);
+                if (usr.bot) {
+                    $("#usercard .bottag").show();
+                } else {
+                    $("#usercard .bottag").hide();
+                }
+                if (usr.status == "offline") {
+                    $("#usercard .offline-text").show();
+                } else {
+                    $("#usercard .offline-text").hide();
+                }
+                if (usr["hoist-role"]) {
+                    $("#usercard .role").show();
+                    $("#usercard .role .text").text(usr["hoist-role"].name);
+                    if (usr.color) {
+                        $("#usercard .role .bubble").css("color", "#" + usr.color);
+                        $("#usercard .role .color").css("background-color", "#" + usr.color);
+                    }
+                } else {
+                    $("#usercard .role").hide();
+                }
+                if (usr.game) {
+                    $("#usercard .game").show();
+                    $("#usercard .game .text").text(usr.game.name);
+                } else {
+                    $("#usercard .game").hide();
+                }
+                $("#usercard-mention-btn").off("click");
+                $("#usercard-mention-btn").click(function () {
+                    mention_member(user_id);
+                    $("#usercard").modal('close');
+                });
+            }
+        }
+        $("#usercard").modal('open');
     }
     
     function flashElement(element) {
@@ -966,7 +1032,7 @@
                 $("#chatcontent .chatusername").last().click(function () {
                     var discordid = $(this).parent().attr("discord_userid");
                     if (discordid) {
-                        mention_member(discordid);
+                        openUserCard(discordid);
                     }
                 });
                 $("#chatcontent p:last-child").find(".channellink").click(function () {

@@ -9,7 +9,7 @@ from .authenticated_users import AuthenticatedUsers
 from .guild_members import GuildMembers, list_all_guild_members, get_guild_member
 from .keyvalue_properties import KeyValueProperties, set_keyvalproperty, get_keyvalproperty, getexpir_keyvalproperty, setexpir_keyvalproperty, ifexists_keyvalproperty, delete_keyvalproperty
 from .messages import Messages, get_channel_messages
-from .cosmetics import Cosmetics
+from .cosmetics import Cosmetics, set_badges, get_badges, add_badge, remove_badge
 from .user_css import UserCSS
 from .administrators import Administrators, get_administrators_list
 from .titan_tokens import TitanTokens, get_titan_token

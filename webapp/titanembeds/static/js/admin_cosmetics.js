@@ -1,13 +1,13 @@
 /* global $, Materialize, location */
 
-function postForm(user_id, css, css_limit, guest_icon) {
+function postForm(user_id, css, css_limit, guest_icon, badges) {
     if (css_limit == "") {
         css_limit = 0;
     }
     var funct = $.ajax({
         dataType: "json",
         method: "POST",
-        data: {"user_id": user_id, "css": css, "css_limit": css_limit, "guest_icon": guest_icon}
+        data: {"user_id": user_id, "css": css, "css_limit": css_limit, "guest_icon": guest_icon, "badges": badges}
     });
     return funct.promise();
 }
@@ -32,6 +32,7 @@ function patchForm(user_id, param) {
 }
 
 $(function() {
+    $('select').material_select();
     $("#new_submit").click(function () {
         var user_id = $("#new_user_id").val();
         if (user_id.length < 1) {
@@ -41,7 +42,8 @@ $(function() {
         var css_checked = $("#new_css_switch").is(':checked');
         var css_limit = $("#new_css_limit").val();
         var guest_icon_checked = $("#new_guest_icon_switch").is(':checked');
-        var formPost = postForm(user_id, css_checked, css_limit, guest_icon_checked);
+        var badges = $("#new_badges > option:selected").map(function(){ return this.value }).get().join();
+        var formPost = postForm(user_id, css_checked, css_limit, guest_icon_checked, badges);
         formPost.done(function (data) {
             location.reload();
         });
@@ -112,6 +114,21 @@ function update_guest_icon_switch(user_id, element) {
             Materialize.toast('This user id does not exists!', 10000);
         } else {
             Materialize.toast('Oh no! Something has failed changing the guest icon toggle!', 10000);
+        }
+    });
+}
+
+function update_badges(user_id, element) {
+    var badges = $(element).val().join();
+    var formPatch = patchForm(user_id, {"badges": badges});
+    formPatch.done(function (data) {
+        Materialize.toast('Badges updated!', 10000);
+    });
+    formPatch.fail(function (data) {
+        if (data.status == 409) {
+            Materialize.toast('This user id does not exists!', 10000);
+        } else {
+            Materialize.toast('Oh no! Something has failed changing the badges!', 10000);
         }
     });
 }

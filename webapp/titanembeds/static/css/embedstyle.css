@@ -679,6 +679,73 @@ p.mentioned span.chatmessage {
   top: -5px;
 }
 
+#usercard .identity {
+  display: inline;
+  vertical-align: sub;
+}
+
+#usercard .identity .hash, #usercard .identity .discriminator {
+  font-size: 1.30rem;
+}
+
+#usercard .bottag {
+  background-color: #5DADE2;
+  padding: 5px;
+  border-radius: 10px;
+  font-weight: bold;
+  margin-left: 7px;
+  font-size: 10pt;
+}
+
+#usercard .role .bubble {
+  color: #cacbce;
+  border: 1px solid;
+  border-color: inherit;
+  border-radius: 10px;
+}
+
+#usercard .role .text, #usercard .role .color {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#usercard .role .color {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #cacbce;
+  margin-right: 0;
+  border-radius: 10px;
+}
+
+#usercard .role .text {
+  color: lightgray;
+}
+
+#usercard .game {
+  font-weight: bold;
+}
+
+#usercard .game .text {
+  font-weight: normal;
+}
+
+#usercard .badges .star {
+  color: yellow;
+}
+
+#usercard .badges .supporter {
+  color: limegreen;
+}
+
+#usercard .badges .administrator {
+  color: hotpink;
+}
+
+#usercard .badges .partner {
+  color: orange;
+}
+
 #google-recaptcha {
   margin: 0 auto;
   width: 302px;

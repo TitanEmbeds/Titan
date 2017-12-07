@@ -7,6 +7,9 @@ def init_debug():
     from flask import jsonify, request
 
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' # Testing oauthlib
+    
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
 
     # Session viewer https://gist.github.com/babldev/502364a3f7c9bafaa6db
     def decode_flask_cookie(secret_key, cookie_str):

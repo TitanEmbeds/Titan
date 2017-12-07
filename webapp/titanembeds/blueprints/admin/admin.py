@@ -4,6 +4,7 @@ from functools import wraps
 from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token
 from titanembeds.oauth import generate_guild_icon_url
 import datetime
+import json
 
 admin = Blueprint("admin", __name__)
 
@@ -39,6 +40,7 @@ def cosmetics_post():
     css = request.form.get("css", None)
     css_limit = int(request.form.get("css_limit", 0))
     guest_icon = request.form.get("guest_icon", None)
+    badges = request.form.get("badges", None)
     entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == user_id).first()
     if entry:
         abort(409)
@@ -51,6 +53,11 @@ def cosmetics_post():
     if guest_icon is not None:
         guest_icon = guest_icon.lower() == "true"
         user.guest_icon = guest_icon
+    if badges is not None:
+        badges = badges.split(",")
+        if badges == [""]:
+            badges = []
+        user.badges = json.dumps(badges)
     db.session.add(user)
     db.session.commit()
     return ('', 204)
@@ -77,6 +84,7 @@ def cosmetics_patch():
     css = request.form.get("css", None)
     css_limit = request.form.get("css_limit", None)
     guest_icon = request.form.get("guest_icon", None)
+    badges = request.form.get("badges", None)
     entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == user_id).first()
     if not entry:
         abort(409)
@@ -88,8 +96,14 @@ def cosmetics_patch():
     if guest_icon:
         guest_icon = guest_icon.lower() == "true"
         entry.guest_icon = guest_icon
+    if badges is not None:
+        badges = badges.split(",")
+        if badges == [""]:
+            badges = []
+        entry.badges = json.dumps(badges)
     db.session.commit()
     return ('', 204)
+    
 def prepare_guild_members_list(members, bans):
     all_users = []
     ip_pool = []
