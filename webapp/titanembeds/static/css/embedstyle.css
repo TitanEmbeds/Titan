@@ -681,6 +681,7 @@ p.mentioned span.chatmessage {
 
 #usercard .avatar {
   width: 100%;
+  max-width: 120px;
 }
 
 #usercard .identity {
