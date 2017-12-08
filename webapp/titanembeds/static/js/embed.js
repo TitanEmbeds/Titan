@@ -1163,6 +1163,9 @@
             } else {
                 parent.find(".chatusername").css("color", null);
             }
+            if (usr.stargazer) {
+                parent.find(".chatusername").addClass("stargazer");
+            }
             if (usr.avatar_url) {
                 parent.attr("discord_userid", usr.id);
                 parent.find(".authoravatar").prop("src", usr.avatar_url);

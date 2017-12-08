@@ -1,5 +1,5 @@
 from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api, check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled
-from titanembeds.database import db, GuildMembers, get_guild_member, Guilds
+from titanembeds.database import db, GuildMembers, get_guild_member, Guilds, get_badges
 from flask_socketio import Namespace, emit, disconnect, join_room, leave_room
 import functools
 from flask import request, session
@@ -153,6 +153,7 @@ class Gateway(Namespace):
             "avatar": None,
             "color": None,
             "avatar_url": None,
+            "stargazer": False,
         }
         member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.username == name, GuildMembers.discriminator == discriminator).first()
         if member:
@@ -163,6 +164,7 @@ class Gateway(Namespace):
             usr["color"] = self.get_user_color(guild_id, usr["id"])
             if (usr["avatar"]):
                 usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.jpg".format(usr["id"], usr["avatar"])
+            usr["stargazer"] = "star" in get_badges(member.user_id)
         else:
             member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.nickname == name, GuildMembers.discriminator == discriminator).first()
             if member:
@@ -173,5 +175,6 @@ class Gateway(Namespace):
                 usr["color"] = self.get_user_color(guild_id, usr["id"])
                 if (usr["avatar"]):
                     usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.jpg".format(usr["id"], usr["avatar"])
+                usr["stargazer"] = "star" in get_badges(member.user_id)
         emit("lookup_user_info", usr)
         self.teardown_db_session()

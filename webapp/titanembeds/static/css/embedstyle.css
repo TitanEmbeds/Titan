@@ -205,6 +205,10 @@ nav .brand-logo {
   cursor: pointer;
 }
 
+#chatcontent .chatusername.stargazer {
+  text-shadow: 2px 2px 10px yellow;
+}
+
 /*#chatcontent > p > span {*/
 /*  display: table-row*/
 /*}*/
