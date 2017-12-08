@@ -580,7 +580,7 @@ p.mentioned span.chatmessage {
 }
 
 .richembed .description {
-  white-space: pre-line
+  white-space: pre-line;
 }
 
 .richembed .content {
