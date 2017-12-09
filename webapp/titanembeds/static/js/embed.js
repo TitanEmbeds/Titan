@@ -135,10 +135,10 @@
         return funct.promise();
     }
     
-    function api_badges(user_id) {
+    function api_user(user_id) {
         var funct = $.ajax({
             dataType: "json",
-            url: "/api/badges/" + user_id,
+            url: "/api/user/" + guild_id + "/" + user_id,
         });
         return funct.promise();
     }
@@ -692,54 +692,59 @@
     }
     
     function openUserCard(user_id) {
-        var bgs = api_badges(user_id);
-        bgs.done(function (data) {
+        var usr = api_user(user_id);
+        usr.done(function (data) {
             for (var i = 0; i < badges_options.length; i++) {
                 var badge = badges_options[i];
-                if (data.indexOf(badge) != -1) {
+                if (data.badges.indexOf(badge) != -1) {
                     $(`#usercard .badges .${badge}`).show();
                 } else {
                     $(`#usercard .badges .${badge}`).hide();
                 }
             }
+            $("#usercard .avatar").attr("src", data.avatar_url);
+            $("#usercard .identity .username").text(data.username);
+            $("#usercard .identity .discriminator").text(data.discriminator);
+            $("#usercard .identity .discriminator").text(data.discriminator);
+            
+            var template = $('#mustache_rolebubble').html();
+            Mustache.parse(template);
+            data.roles.sort(function(a, b) {
+                return parseFloat(b.position) - parseFloat(a.position);
+            });
+            $("#usercard .role .roles").empty();
+            for (var j = 0; j < data.roles.length; j++) {
+                var role = data.roles[j];
+                var color = null;
+                if (role.color) {
+                    color = "#" + role.color.toString(16);
+                }
+                var rol = Mustache.render(template, {name: role.name, color: color});
+                $("#usercard .role .roles").append(rol);
+            }
+            
+            $("#usercard-mention-btn").off("click");
+            $("#usercard-mention-btn").click(function () {
+                mention_member(data.id);
+                $("#usercard").modal('close');
+            });
         });
+        
+        $("#usercard .offline-text").show();
+        $("#usercard .game").hide();
+        $("#usercard .bottag").hide();
         for (var i = 0; i < discord_users_list.length; i++) {
             var usr = discord_users_list[i];
             if (usr.id == user_id) {
-                $("#usercard .avatar").attr("src", usr.avatar_url);
-                $("#usercard .identity .username").text(usr.username);
-                $("#usercard .identity .discriminator").text(usr.discriminator);
+                $("#usercard .offline-text").hide();
                 if (usr.bot) {
                     $("#usercard .bottag").show();
-                } else {
-                    $("#usercard .bottag").hide();
-                }
-                if (usr.status == "offline") {
-                    $("#usercard .offline-text").show();
-                } else {
-                    $("#usercard .offline-text").hide();
-                }
-                if (usr["hoist-role"]) {
-                    $("#usercard .role").show();
-                    $("#usercard .role .text").text(usr["hoist-role"].name);
-                    if (usr.color) {
-                        $("#usercard .role .bubble").css("color", "#" + usr.color);
-                        $("#usercard .role .color").css("background-color", "#" + usr.color);
-                    }
-                } else {
-                    $("#usercard .role").hide();
                 }
                 if (usr.game) {
                     $("#usercard .game").show();
                     $("#usercard .game .text").text(usr.game.name);
-                } else {
-                    $("#usercard .game").hide();
                 }
-                $("#usercard-mention-btn").off("click");
-                $("#usercard-mention-btn").click(function () {
-                    mention_member(user_id);
-                    $("#usercard").modal('close');
-                });
+                break;
             }
         }
         $("#usercard").modal('open');

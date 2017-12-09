@@ -191,9 +191,9 @@
               <a class="supporter tooltipped" data-tooltip="TitanEmbeds Supporter" data-position="top" href="https://titanembeds.com/user/donate" target="_blank"><i class="material-icons">attach_money</i></a>
               <a class="star tooltipped" data-tooltip="GitHub Stargazer" data-position="top" href="https://github.com/TitanEmbeds/Titan" target="_blank"><i class="material-icons">star</i></a>
             </div>
-            <p class="offline-text">User is Offline.</p>
+            <p class="offline-text">User is OFFLINE in Discord.</p>
             <p class="game">Playing <span class="text"></span></p>
-            <p class="role">Highest Role: <span class="bubble"><span class="color"></span> <span class="text"></span></span></p>
+            <p class="role">Roles: <span class="roles"></span></p>
           </div>
         </div>
       </div>
@@ -344,6 +344,10 @@
           {{/toRenderFooter}}
         </div>
       </div>
+    </script>
+    
+    <script id="mustache_rolebubble" type="text/template">
+      <span class="bubble" {{#color}}style="color: {{color}};"{{/color}}><span class="color" {{#color}}style="background-color: {{color}};"{{/color}}></span> <span class="text">{{name}}</span></span>
     </script>
     {% endraw %}
 
