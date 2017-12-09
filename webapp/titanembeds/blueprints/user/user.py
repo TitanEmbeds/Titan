@@ -44,7 +44,7 @@ def callback():
     session['user_id'] = user['id']
     session['username'] = user['username']
     session['discriminator'] = user['discriminator']
-    session['avatar'] = generate_avatar_url(user['id'], user['avatar'])
+    session['avatar'] = generate_avatar_url(user['id'], user['avatar'], user['discriminator'])
     session["tokens"] = get_titan_token(session["user_id"])
     if session["tokens"] == -1:
         session["tokens"] = 0

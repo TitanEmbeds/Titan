@@ -89,8 +89,13 @@ def check_user_permission(guild_id, id):
             return user_has_permission(guild['permissions'], id) or guild['owner']
     return False
 
-def generate_avatar_url(id, av):
-    return avatar_base_url + str(id) + '/' + str(av) + '.jpg'
+def generate_avatar_url(id, av, discrim="0000"):
+    if av:
+        return avatar_base_url + str(id) + '/' + str(av) + '.jpg'
+    else:
+        default_av = [0, 1, 2, 3, 4]
+        discrim = int(discrim)
+        return "https://cdn.discordapp.com/embed/avatars/{}.png".format(default_av[int(discrim) % len(default_av)])
 
 def generate_guild_icon_url(id, hash):
     return guild_icon_url + str(id) + "/" + str(hash) + ".jpg"
