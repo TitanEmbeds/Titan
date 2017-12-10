@@ -810,6 +810,7 @@
                 message.content = message.content.substring(usernamefield.length + 7);
             }
             message.author.username = usernamefield.split("#")[0];
+            message.author.nickname = null;
             message.author.discriminator = usernamefield.split("#")[1];
         } else if (message.author.bot && message.author.discriminator == "0000" && message.author.username.substring(message.author.username.length-5, message.author.username.length-4) == "#") {
             var namestr = message.author.username;
