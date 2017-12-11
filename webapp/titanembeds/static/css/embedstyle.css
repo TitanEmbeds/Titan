@@ -407,7 +407,7 @@ a {
   filter: brightness(0) invert(1);
 }
 
-@media screen and (max-width: 280px) {
+@media screen and (max-width: 390px) {
   .brand-logo-text {
     display: none;
   }
