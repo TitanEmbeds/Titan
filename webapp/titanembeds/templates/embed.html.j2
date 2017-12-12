@@ -223,6 +223,14 @@
         </div>
       </div>
     </footer>
+    
+    <!-- Electron fix -->
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;  
+      }
+    </script>
 
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
@@ -359,5 +367,12 @@
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
+    
+    <!-- Electron fix -->
+    <script>
+      if (window.module) {
+        module = window.module;
+      }
+    </script>
   </body>
 </html>
