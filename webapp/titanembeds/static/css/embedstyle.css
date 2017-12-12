@@ -387,7 +387,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
   font-size: 85%;
 }
 
-.input-field label {
+label {
   color: white;
 }
 

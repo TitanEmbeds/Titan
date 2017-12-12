@@ -1069,7 +1069,8 @@
         }
         if (replace == null) {
             play_notification_sound("new");
-        } else if ($("#chatcontent p:last-child.mentioned").length) {
+        }
+        if ($("#chatcontent p:last-child.mentioned").length) {
             play_notification_sound("mention");
         }
         if (replace == null && jumpscroll) {
