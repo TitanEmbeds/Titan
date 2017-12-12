@@ -1,21 +1,19 @@
+
 msgid ""
 msgstr ""
-"Project-Id-Version: titanembeds\n"
+"Project-Id-Version:  titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-11-15 05:32+0000\n"
+"POT-Creation-Date: 2017-12-12 23:34+0000\n"
 "PO-Revision-Date: 2017-12-12 16:30-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
+"Language: pl\n"
 "Language-Team: Polish\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
+"(n%100<10 || n%100>=20) ? 1 : 2)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: crowdin.com\n"
-"X-Crowdin-Project: titanembeds\n"
-"X-Crowdin-Language: pl\n"
-"X-Crowdin-File: messages.pot\n"
-"Language: pl_PL\n"
 
 #: titanembeds/blueprints/embed/embed.py:14
 msgid "Let's get to know each other! My name is Titan, what's yours?"
@@ -94,8 +92,12 @@ msgid "You will be invited into this server."
 msgstr "Będziesz zaproszony do serwera."
 
 #: titanembeds/templates/embed.html.j2:110
-msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
-msgstr "Oczywiście, możesz się zalogować jako gość używając konta, które zostanie usunięte po wyłączeniu twojej przeglądarki."
+msgid ""
+"Of course, you also have the option to login by picking a temporary "
+"username for your current browsing session."
+msgstr ""
+"Oczywiście, możesz się zalogować jako gość używając konta, które zostanie"
+" usunięte po wyłączeniu twojej przeglądarki."
 
 #: titanembeds/templates/embed.html.j2:112
 msgid "Username (Hit ENTER/RETURN key to confirm)"
@@ -137,15 +139,51 @@ msgstr "Na wspomnienia ciebie"
 msgid "Nothing"
 msgstr "Wyłączony"
 
-#: titanembeds/templates/embed.html.j2:178
+#: titanembeds/templates/embed.html.j2:172
+msgid "Just one more step..."
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:184
+msgid "Mention"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:189
+msgid "TitanEmbeds Administrator"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:190
+msgid "TitanEmbeds Partner"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:191
+msgid "TitanEmbeds Supporter"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:192
+msgid "GitHub Stargazer"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:194
+msgid "User is offline in Discord."
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:195
+msgid "Playing"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:196
+msgid "Roles"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:205
 msgid "Server Emoji"
 msgstr "Emoji serwera"
 
-#: titanembeds/templates/embed.html.j2:195
+#: titanembeds/templates/embed.html.j2:222
 msgid "Please login to post a message."
 msgstr "Zaloguj się aby wysłać wiadomość."
 
-#: titanembeds/templates/embed.html.j2:195
+#: titanembeds/templates/embed.html.j2:222
 msgid "Login"
 msgstr "Zaloguj się"
 

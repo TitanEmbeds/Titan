@@ -169,7 +169,7 @@
     
     <div id="recaptchamodal" class="modal">
       <div class="modal-content">
-        <h4 class="center-align">Just one more step...</h4>
+        <h4 class="center-align">{{ _("Just one more step...") }}</h4>
         <div id="google-recaptcha" class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-callback="submit_unauthenticated_captcha"></div>
         <input type="hidden" id="submit-unauthenticated-captcha-btn" />
       </div>
@@ -181,19 +181,19 @@
           <div class="col s12 m2">
             <img class="circle avatar" src="">
             <br>
-            <a class="waves-effect waves-light btn" id="usercard-mention-btn">Mention</a>
+            <a class="waves-effect waves-light btn" id="usercard-mention-btn">{{ _("Mention") }}</a>
           </div>
           <div class="col s12 m10">
             <h4 class="identity"><span class="username"></span><span class="hash">#</span><span class="discriminator"></span></h4> <span class="bottag">BOT</span>
             <div class="badges">
-              <a class="administrator tooltipped" data-tooltip="TitanEmbeds Administrator" data-position="top" href="https://titanembeds.com/" target="_blank"><i class="material-icons">gavel</i></a>
-              <a class="partner tooltipped" data-tooltip="TitanEmbeds Partner" data-position="top" href="https://titanembeds.com/about" target="_blank"><i class="material-icons">person_pin</i></a>
-              <a class="supporter tooltipped" data-tooltip="TitanEmbeds Supporter" data-position="top" href="https://titanembeds.com/user/donate" target="_blank"><i class="material-icons">attach_money</i></a>
-              <a class="star tooltipped" data-tooltip="GitHub Stargazer" data-position="top" href="https://github.com/TitanEmbeds/Titan" target="_blank"><i class="material-icons">star</i></a>
+              <a class="administrator tooltipped" data-tooltip="{{ _("TitanEmbeds Administrator") }}" data-position="top" href="https://titanembeds.com/" target="_blank"><i class="material-icons">gavel</i></a>
+              <a class="partner tooltipped" data-tooltip="{{ _("TitanEmbeds Partner") }}" data-position="top" href="https://titanembeds.com/about" target="_blank"><i class="material-icons">person_pin</i></a>
+              <a class="supporter tooltipped" data-tooltip="{{ _("TitanEmbeds Supporter") }}" data-position="top" href="https://titanembeds.com/user/donate" target="_blank"><i class="material-icons">attach_money</i></a>
+              <a class="star tooltipped" data-tooltip="{{ _("GitHub Stargazer") }}" data-position="top" href="https://github.com/TitanEmbeds/Titan" target="_blank"><i class="material-icons">star</i></a>
             </div>
-            <p class="offline-text">User is OFFLINE in Discord.</p>
-            <p class="game">Playing <span class="text"></span></p>
-            <p class="role">Roles: <span class="roles"></span></p>
+            <p class="offline-text">{{ _("User is offline in Discord.") }}</p>
+            <p class="game">{{ _("Playing") }} <span class="text"></span></p>
+            <p class="role">{{ _("Roles") }}: <span class="roles"></span></p>
           </div>
         </div>
       </div>
