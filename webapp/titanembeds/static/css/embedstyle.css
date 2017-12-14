@@ -27,6 +27,7 @@
 }
 
 html {
+  background-color: #455A64;
   background-color: var(--main);
   color: white;
   font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -43,11 +44,14 @@ footer {
   left: 0;
   right: 0;
   height: 50px;
+  background-color: #37474F;
   background-color: var(--chatbox);
 }
 
 nav {
+  background-color: #263238;
   background-color: var(--header);
+  background: linear-gradient(#263238, rgba(38,50,56,0));
   background: linear-gradient(var(--header), rgba(38,50,56,0));
   box-shadow: none;
 }
@@ -92,10 +96,12 @@ nav .brand-logo {
 }
 
 #members-nav {
+  background-color: #607D8B;
   background-color: var(--rightsidebar);
 }
 
 #members-nav li>a {
+  color: #ECEFF1;
   color: var(--noroleusers);
 }
 
@@ -113,10 +119,12 @@ nav .brand-logo {
 }
 
 #guild-nav {
+  background-color: #607D8B;
   background-color: var(--leftsidebar);
 }
 
 .side-nav div.divider {
+  background-color: #90A4AE;
   background-color: var(--sidebardivider);
   margin-left: 10px;
   margin-right: 10px;
@@ -214,22 +222,27 @@ nav .brand-logo {
 /*}*/
 
 ::-webkit-input-placeholder {
+  color: #636363;
   color: var(--placeholder);
 }
 
 :-moz-placeholder {
+  color: #636363;
   color: var(--placeholder);
 }
 
 ::-moz-placeholder {
+  color: #636363;
   color: var(--placeholder);
 }
 
 :-ms-input-placeholder {
+  color: #636363;
   color: var(--placeholder);
 }
 
 ::-ms-input-placeholder {
+  color: #636363;
   color: var(--placeholder);
 }
 
@@ -345,6 +358,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 #curuser_discrim {
   font-size: 50%;
+  color: #FFFFFF;
   color: var(--discrim);
 }
 
@@ -367,6 +381,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 }
 
 .modal {
+  background-color: #546E7A;
   background-color: var(--modal);
 }
 
@@ -498,6 +513,7 @@ a {
 /*}*/
 .chatmessage {
   display: block;
+  color: #C3C4C5;
   color: var(--chatmessage);
   margin-top: 5px;
 }

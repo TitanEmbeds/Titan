@@ -103,7 +103,10 @@
         return funct.promise();
     }
 
-    function fetch(channel_id, after=null) {
+    function fetch(channel_id, after) {
+        if (after === undefined) {
+            after = null;
+        }
         var url = "/api/fetch";
         if (visitor_mode) {
             url += "_visitor";
@@ -303,7 +306,16 @@
         }
     }
     
-    function changeTheme(theme=null, keep_custom_css=true, modifyLocalStore=true) {
+    function changeTheme(theme, keep_custom_css, modifyLocalStore) {
+        if (theme === undefined) {
+            theme = null;
+        }
+        if (keep_custom_css === undefined) {
+            keep_custom_css = true;
+        }
+        if (modifyLocalStore === undefined) {
+            modifyLocalStore = true;
+        }
         if (theme == "") {
           $("#css-theme").attr("href", "");
           $("#user-defined-css").text(user_def_css);
@@ -965,7 +977,10 @@
         }
     }
     
-    function generate_avatar_url(user_id, avatar_hash, message_contents=null) {
+    function generate_avatar_url(user_id, avatar_hash, message_contents) {
+        if (message_contents === undefined) {
+            message_contents = null;
+        }
         if (user_id == bot_client_id && (message_contents.includes("**") && ( (message_contents.includes("<")&&message_contents.includes(">")) || (message_contents.includes("[") && message_contents.includes("]")) ))) {
             return global_guest_icon;
         } else {
@@ -1001,7 +1016,10 @@
         return emb;
     }
 
-    function fill_discord_messages(messages, jumpscroll, replace=null) {
+    function fill_discord_messages(messages, jumpscroll, replace) {
+        if (replace === undefined) {
+            replace = null;
+        }
         if (messages.length == 0) {
             return last_message_id;
         }
@@ -1194,7 +1212,10 @@
         }
     }
 
-    function update_embed_userchip(authenticated, avatar, username, nickname, userid, discrim=null) {
+    function update_embed_userchip(authenticated, avatar, username, nickname, userid, discrim) {
+        if (discrim === undefined) {
+            discrim = null;
+        }
         if (authenticated) {
             $("#currentuserimage").show();
             $("#currentuserimage").attr("src", avatar);
@@ -1215,7 +1236,13 @@
         }
     }
     
-    function update_change_username_modal(authenticated=false, username=null) {
+    function update_change_username_modal(authenticated, username) {
+        if (authenticated === undefined) {
+            authenticated = null;
+        }
+        if (username === undefined) {
+            username = null;
+        }
         if (!$("#change_username_field") || $("#change_username_field").is(":focus")) {
             return;
         }
