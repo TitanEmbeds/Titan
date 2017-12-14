@@ -709,9 +709,9 @@
             for (var i = 0; i < badges_options.length; i++) {
                 var badge = badges_options[i];
                 if (data.badges.indexOf(badge) != -1) {
-                    $(`#usercard .badges .${badge}`).show();
+                    $("#usercard .badges ." + badge).show();
                 } else {
-                    $(`#usercard .badges .${badge}`).hide();
+                    $("#usercard .badges ." + badge).hide();
                 }
             }
             $("#usercard .avatar").attr("src", data.avatar_url);
