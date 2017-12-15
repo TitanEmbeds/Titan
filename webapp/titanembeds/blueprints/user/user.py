@@ -466,8 +466,8 @@ def donate_patch():
     if item == "custom_css_slots":
         if not entry:
             entry = Cosmetics(session["user_id"])
-            entry.css = True
             entry.css_limit = 0
+        entry.css = True
         entry.css_limit += amount
     if item == "guest_icon":
         if not entry:
