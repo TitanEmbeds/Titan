@@ -35,7 +35,8 @@ app.secret_key = config['app-secret']
 
 db.init_app(app)
 rate_limiter.init_app(app)
-sslify = SSLify(app, permanent=True)
+if config.get("enable-ssl", False):
+    sslify = SSLify(app, permanent=True)
 socketio.init_app(app, message_queue=config["redis-uri"], path='gateway', async_mode=config.get("websockets-mode", None))
 babel.init_app(app)
 
