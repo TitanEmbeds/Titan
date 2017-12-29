@@ -2,7 +2,7 @@ from config import config
 from .database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, discord_api, socketio, babel
+from titanembeds.utils import rate_limiter, discord_api, socketio, babel, redis_store
 from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
@@ -29,8 +29,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no 
 app.config['RATELIMIT_HEADERS_ENABLED'] = True
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 250
 app.config['SQLALCHEMY_POOL_SIZE'] = 100
-app.config['RATELIMIT_STORAGE_URL'] = 'keyvalprops://'
+app.config['RATELIMIT_STORAGE_URL'] = config["redis-uri"]
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=3)
+app.config['REDIS_URL'] = config["redis-uri"]
 app.secret_key = config['app-secret']
 
 db.init_app(app)
@@ -39,6 +40,7 @@ if config.get("enable-ssl", False):
     sslify = SSLify(app, permanent=True)
 socketio.init_app(app, message_queue=config["redis-uri"], path='gateway', async_mode=config.get("websockets-mode", None))
 babel.init_app(app)
+redis_store.init_app(app)
 
 app.register_blueprint(api.api, url_prefix="/api", template_folder="/templates")
 app.register_blueprint(admin.admin, url_prefix="/admin", template_folder="/templates")

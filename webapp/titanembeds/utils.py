@@ -3,6 +3,7 @@ from flask import request, session
 from flask_limiter import Limiter
 from flask_socketio import SocketIO
 from flask_babel import Babel
+from flask_redis import FlaskRedis
 from config import config
 from sqlalchemy import and_
 import random
@@ -10,6 +11,8 @@ import string
 import hashlib
 import time
 import json
+
+redis_store = FlaskRedis()
 
 from titanembeds.discordrest import DiscordREST
 

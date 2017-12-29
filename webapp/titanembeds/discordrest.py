@@ -2,7 +2,7 @@ import requests
 import sys
 import time
 import json
-from titanembeds.database import db, KeyValueProperties, get_keyvalproperty, set_keyvalproperty, ifexists_keyvalproperty
+from titanembeds.utils import redis_store
 from flask import request
 
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
@@ -25,14 +25,14 @@ class DiscordREST:
             self._set_bucket("global_limit_expire", 0)
 
     def _get_bucket(self, key):
-        value = get_keyvalproperty(self.global_redis_prefix + key)
+        value = redis_store.get(self.global_redis_prefix + key).decode("utf-8")
         return value
 
     def _set_bucket(self, key, value):
-        return set_keyvalproperty(self.global_redis_prefix + key, value)
+        return redis_store.set(self.global_redis_prefix + key, value)
 
     def _bucket_contains(self, key):
-        return ifexists_keyvalproperty(self.global_redis_prefix + key)
+        return redis_store.exists(self.global_redis_prefix + key)
 
     def request(self, verb, url, **kwargs):
         headers = {

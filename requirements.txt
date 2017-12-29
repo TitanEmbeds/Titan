@@ -12,3 +12,4 @@ redis
 aioredis
 Flask-Babel
 patreon
+flask-redis
