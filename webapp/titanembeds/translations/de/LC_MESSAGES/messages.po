@@ -1,22 +1,22 @@
-
 msgid ""
 msgstr ""
-"Project-Id-Version:  titanembeds\n"
+"Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-12-12 23:34+0000\n"
-"PO-Revision-Date: 2017-12-12 07:43-0500\n"
-"Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
+"PO-Revision-Date: 2017-12-30 00:40+0100\n"
+"Last-Translator: Sascha Greuel <sascha@softcreatr.de>\n"
 "Language: de\n"
 "Language-Team: German\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
+"X-Generator: Poedit 2.0.5\n"
 
 #: titanembeds/blueprints/embed/embed.py:14
 msgid "Let's get to know each other! My name is Titan, what's yours?"
-msgstr "Lass uns einander kennenlernen! Mein Name ist Titan, was Ihnen?"
+msgstr "Lass uns einander kennenlernen! Mein Name ist Titan, wie lautet deiner?"
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Hello and welcome!"
@@ -24,15 +24,15 @@ msgstr "Hallo und willkommen!"
 
 #: titanembeds/blueprints/embed/embed.py:16
 msgid "What brings you here today?"
-msgstr "Was bringt du hierher heute?"
+msgstr "Was führt dich heute her?"
 
 #: titanembeds/blueprints/embed/embed.py:17
 msgid "....what do you expect this text to say?"
-msgstr "...was erwartest du diesen SMS zu sagen?"
+msgstr "...was möchtest du mit diesem Text sagen?"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "Aha! ..made you look!"
-msgstr "Ach nee! Ich zwang dir ansehen!"
+msgstr "Aha! Du hast hingesehen!"
 
 #: titanembeds/blueprints/embed/embed.py:19
 msgid "Initiating launch sequence..."
@@ -40,15 +40,16 @@ msgstr "Startsequenz wird initiiert..."
 
 #: titanembeds/blueprints/embed/embed.py:20
 msgid "Captain, what's your option?"
-msgstr "Kapitän, was ist Ihre Wahl?"
+msgstr "Kapitän, wie lautet Ihre Entscheidung?"
 
 #: titanembeds/blueprints/embed/embed.py:21
+#, fuzzy
 msgid "Alright, here's the usual~"
 msgstr "Okay, hier ist die übliche ~"
 
 #: titanembeds/templates/embed.html.j2:55
 msgid "Actions"
-msgstr "Arbeitsweise"
+msgstr "Aktionen"
 
 #: titanembeds/templates/embed.html.j2:56
 msgid "Manage Guild Embed"
@@ -56,7 +57,7 @@ msgstr "Verwalten der Gilde einbetten"
 
 #: titanembeds/templates/embed.html.j2:57
 msgid "Open Server on Discordapp"
-msgstr "Offen das Server auf Discordapp"
+msgstr "Server in Discord App öffnen"
 
 #: titanembeds/templates/embed.html.j2:61
 msgid "Channel Topic"
@@ -80,7 +81,7 @@ msgstr "Gast Benutzer einbetten"
 
 #: titanembeds/templates/embed.html.j2:99
 msgid "Please choose one of the following methods to authenticate!"
-msgstr "Bitte wählst du einer folgenden Methoden zur Authentifizierung aus!"
+msgstr "Bitte wähle aus einer der folgenden Authentifizierungsmethoden aus!"
 
 #: titanembeds/templates/embed.html.j2:105
 msgid "Discord Login"
@@ -92,19 +93,19 @@ msgstr "Sie werden auf diesen Server eingeladen."
 
 #: titanembeds/templates/embed.html.j2:110
 msgid ""
-"Of course, you also have the option to login by picking a temporary "
-"username for your current browsing session."
+"Of course, you also have the option to login by picking a temporary username "
+"for your current browsing session."
 msgstr ""
-"Sie können sich auch anmelden, indem Sie einen temporären Benutzernamen "
-"für Ihre aktuelle Browsersitzung auswählen."
+"Sie können sich auch anmelden, indem Sie einen temporären Benutzernamen für "
+"Ihre aktuelle Browser-Sitzung auswählen."
 
 #: titanembeds/templates/embed.html.j2:112
 msgid "Username (Hit ENTER/RETURN key to confirm)"
-msgstr "Username (Drücken Sie zur Bestätigung die Taste ENTER / RETURN)"
+msgstr "Benutzername (Drücken Sie zur Bestätigung die Taste ENTER / RETURN)"
 
 #: titanembeds/templates/embed.html.j2:124
 msgid "Change Username"
-msgstr "Usernamen ändern"
+msgstr "Benutzername ändern"
 
 #: titanembeds/templates/embed.html.j2:127
 msgid "Guests Accounts Only"
@@ -112,15 +113,17 @@ msgstr "Nur Gästekonten"
 
 #: titanembeds/templates/embed.html.j2:129
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
-msgstr "Usernamen ändern (Drücken Sie zur Bestätigung die Taste ENTER / RETURN)"
+msgstr ""
+"Ändere deinen Benutzernamen (Drücken Sie zur Bestätigung die Taste ENTER / "
+"RETURN)"
 
 #: titanembeds/templates/embed.html.j2:133
 msgid "Theme"
-msgstr "Thema"
+msgstr "Farbschema"
 
 #: titanembeds/templates/embed.html.j2:143
 msgid "Overwrite Current Embed Theme w/ User CSS"
-msgstr "Aktuelles Thema einbetten mit User-CSS überschreiben"
+msgstr "Aktuelles Farbschema mit benutzerdefiniertem CSS überschreiben"
 
 #: titanembeds/templates/embed.html.j2:147
 msgid "Notification Sound"
@@ -140,39 +143,39 @@ msgstr "Unwichtigkeit"
 
 #: titanembeds/templates/embed.html.j2:172
 msgid "Just one more step..."
-msgstr ""
+msgstr "Nur noch ein Schritt..."
 
 #: titanembeds/templates/embed.html.j2:184
 msgid "Mention"
-msgstr ""
+msgstr "Erwähnen"
 
 #: titanembeds/templates/embed.html.j2:189
 msgid "TitanEmbeds Administrator"
-msgstr ""
+msgstr "TitanEmbeds Administrator"
 
 #: titanembeds/templates/embed.html.j2:190
 msgid "TitanEmbeds Partner"
-msgstr ""
+msgstr "TitanEmbeds Partner"
 
 #: titanembeds/templates/embed.html.j2:191
 msgid "TitanEmbeds Supporter"
-msgstr ""
+msgstr "TitanEmbeds Unterstützer"
 
 #: titanembeds/templates/embed.html.j2:192
 msgid "GitHub Stargazer"
-msgstr ""
+msgstr "GitHub Sterndeuter"
 
 #: titanembeds/templates/embed.html.j2:194
 msgid "User is offline in Discord."
-msgstr ""
+msgstr "Benutzer ist offline in Discord."
 
 #: titanembeds/templates/embed.html.j2:195
 msgid "Playing"
-msgstr ""
+msgstr "Spielt"
 
 #: titanembeds/templates/embed.html.j2:196
 msgid "Roles"
-msgstr ""
+msgstr "Rollen"
 
 #: titanembeds/templates/embed.html.j2:205
 msgid "Server Emoji"
@@ -180,9 +183,8 @@ msgstr "Server-Emoji"
 
 #: titanembeds/templates/embed.html.j2:222
 msgid "Please login to post a message."
-msgstr "Bitte loggen Sie sich ein, eine Nachricht zu posten."
+msgstr "Bitte loggen Sie sich ein, um eine Nachricht zu posten."
 
 #: titanembeds/templates/embed.html.j2:222
 msgid "Login"
-msgstr "Login"
-
+msgstr "Einloggen"
