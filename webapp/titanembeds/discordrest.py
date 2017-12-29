@@ -25,7 +25,9 @@ class DiscordREST:
             self._set_bucket("global_limit_expire", 0)
 
     def _get_bucket(self, key):
-        value = redis_store.get(self.global_redis_prefix + key).decode("utf-8")
+        value = redis_store.get(self.global_redis_prefix + key)
+        if value:
+            value = value.decode("utf-8")
         return value
 
     def _set_bucket(self, key, value):
