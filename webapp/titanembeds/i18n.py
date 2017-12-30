@@ -17,6 +17,6 @@ LANGUAGES = {
     'sv_SE': 'svenska', # Swedish
     'th': "ไทย", # Thai
     'tr': 'Türk', # Turkish
-    'zh_CN': '简体中文', # Chinese Simplified
-    'zh_TW': '中国传统的', # Chinese Traditional
+    'zh_Hans_CN': '简体中文', # Chinese Simplified
+    'zh_Hant_TW': '中国传统的', # Chinese Traditional
 }
