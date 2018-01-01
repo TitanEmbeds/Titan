@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-12-12 23:33+0000\n"
-"PO-Revision-Date: 2017-12-30 03:25-0500\n"
+"PO-Revision-Date: 2018-01-01 06:16-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Catalan\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr "Anem a conèixer'ns uns als altres! El meu nom és Titan, quin és la te
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Hello and welcome!"
-msgstr "Hola i benvolguts!"
+msgstr "Hola i benvingut!"
 
 #: titanembeds/blueprints/embed/embed.py:16
 msgid "What brings you here today?"
@@ -31,15 +31,15 @@ msgstr "Què et porta aquí avui?"
 
 #: titanembeds/blueprints/embed/embed.py:17
 msgid "....what do you expect this text to say?"
-msgstr "... què espera que aquest text vol dir?"
+msgstr "...què esperes que digui aquest text?"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "Aha! ..made you look!"
-msgstr "Aha!... mira què has fet!"
+msgstr "Aha!... t'ha fet mirar!"
 
 #: titanembeds/blueprints/embed/embed.py:19
 msgid "Initiating launch sequence..."
-msgstr "Iniciant seqüencia de llançament..."
+msgstr "Iniciant seqüència de llançament..."
 
 #: titanembeds/blueprints/embed/embed.py:20
 msgid "Captain, what's your option?"
@@ -55,15 +55,15 @@ msgstr "Accions"
 
 #: titanembeds/templates/embed.html.j2:56
 msgid "Manage Guild Embed"
-msgstr "Gestionar el Gremi"
+msgstr "Gestiona la integració del gremi"
 
 #: titanembeds/templates/embed.html.j2:57
 msgid "Open Server on Discordapp"
-msgstr "Obrir Servidor a Discordapp"
+msgstr "Obre el servidor al Discord"
 
 #: titanembeds/templates/embed.html.j2:61
 msgid "Channel Topic"
-msgstr "Tema del Canal"
+msgstr "Tema del canal"
 
 #: titanembeds/templates/embed.html.j2:66
 msgid "Channels"
@@ -79,39 +79,39 @@ msgstr "Comentaris dels usuaris autenticats"
 
 #: titanembeds/templates/embed.html.j2:79
 msgid "Guest Embed Users"
-msgstr "Comentaris dels usuaris anónims"
+msgstr "Comentaris dels usuaris anònims"
 
 #: titanembeds/templates/embed.html.j2:99
 msgid "Please choose one of the following methods to authenticate!"
-msgstr "Si us plau trii un del seguents metots per a iniciar sessió!"
+msgstr "Si us plau, tria un del següents mètodes per iniciar sessió!"
 
 #: titanembeds/templates/embed.html.j2:105
 msgid "Discord Login"
-msgstr "Iniciar sessió amb Discord"
+msgstr "Inici de sessió al Discord"
 
 #: titanembeds/templates/embed.html.j2:106
 msgid "You will be invited into this server."
-msgstr "Serás convidat a aquest servidor."
+msgstr "Seràs convidat a aquest servidor."
 
 #: titanembeds/templates/embed.html.j2:110
 msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
-msgstr "Per descomptat, tindrás la opció de iniciar sesió triant un nom temporal per aquesta seisó de navegador."
+msgstr "Per descomptat, també tens l'opció d'iniciar sessió seleccionant un nom d'usuari temporal per la sessió de navegació actual."
 
 #: titanembeds/templates/embed.html.j2:112
 msgid "Username (Hit ENTER/RETURN key to confirm)"
-msgstr "Nom d'usuari(pitgi entrar/retornar per a confirmar)"
+msgstr "Nom d'usuari (prem ENTER/RETORN per confirmar)"
 
 #: titanembeds/templates/embed.html.j2:124
 msgid "Change Username"
-msgstr "Canviar nom d'usuari"
+msgstr "Canvia el nom d'usuari"
 
 #: titanembeds/templates/embed.html.j2:127
 msgid "Guests Accounts Only"
-msgstr "Comptes de convidats només"
+msgstr "Només comptes de convidats"
 
 #: titanembeds/templates/embed.html.j2:129
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
-msgstr "Canvii el seu nom d'usuari(pitgi entrar/retornar per a confirmar)"
+msgstr "Canvia el teu nom d'usuari (prem ENTER/RETORN per confirmar)"
 
 #: titanembeds/templates/embed.html.j2:133
 msgid "Theme"
@@ -119,7 +119,7 @@ msgstr "Tema"
 
 #: titanembeds/templates/embed.html.j2:143
 msgid "Overwrite Current Embed Theme w/ User CSS"
-msgstr "Sobreescriure l'actual tema / usuari CSS"
+msgstr "Sobreescriu el tema incrustat actual amb CSS de l'usuari"
 
 #: titanembeds/templates/embed.html.j2:147
 msgid "Notification Sound"
@@ -139,7 +139,7 @@ msgstr "Res"
 
 #: titanembeds/templates/embed.html.j2:172
 msgid "Just one more step..."
-msgstr "Sol una passa més..."
+msgstr "Només un pas més..."
 
 #: titanembeds/templates/embed.html.j2:184
 msgid "Mention"
@@ -155,19 +155,19 @@ msgstr "Soci de TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:191
 msgid "TitanEmbeds Supporter"
-msgstr "Soci de TitanEmbeds"
+msgstr "Simpatitzant de TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:192
 msgid "GitHub Stargazer"
-msgstr "Stargazer de GitHub"
+msgstr "GitHub de Stargazer"
 
 #: titanembeds/templates/embed.html.j2:194
 msgid "User is offline in Discord."
-msgstr "L'usuari esta desconectat a discord."
+msgstr "L'usuari està desconectat al Discord."
 
 #: titanembeds/templates/embed.html.j2:195
 msgid "Playing"
-msgstr "Jugant"
+msgstr "Jugant a"
 
 #: titanembeds/templates/embed.html.j2:196
 msgid "Roles"
@@ -175,13 +175,13 @@ msgstr "Rols"
 
 #: titanembeds/templates/embed.html.j2:205
 msgid "Server Emoji"
-msgstr "Emoticones del Servidor"
+msgstr "Emoticones del servidor"
 
 #: titanembeds/templates/embed.html.j2:222
 msgid "Please login to post a message."
-msgstr "Si us plau inicieu sesií per a posar un missatge."
+msgstr "Si us plau, inicia sessió per escriure un missatge."
 
 #: titanembeds/templates/embed.html.j2:222
 msgid "Login"
-msgstr "Iniciar Sessió"
+msgstr "Inicia sessió"
 

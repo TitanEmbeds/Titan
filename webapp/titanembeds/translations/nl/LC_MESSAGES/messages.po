@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-12-12 23:33+0000\n"
-"PO-Revision-Date: 2017-12-17 17:03-0500\n"
+"PO-Revision-Date: 2018-01-01 06:16-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgstr "Open server in Discordapp"
 
 #: titanembeds/templates/embed.html.j2:61
 msgid "Channel Topic"
-msgstr "Kanaalbeschrijving"
+msgstr "Kanaalomschrijving"
 
 #: titanembeds/templates/embed.html.j2:66
 msgid "Channels"

@@ -1,18 +1,21 @@
-
 msgid ""
 msgstr ""
-"Project-Id-Version:  titanembeds\n"
+"Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-12-12 23:34+0000\n"
-"PO-Revision-Date: 2017-12-12 07:43-0500\n"
+"POT-Creation-Date: 2017-12-12 23:33+0000\n"
+"PO-Revision-Date: 2018-01-01 06:16-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
-"Language: id\n"
 "Language-Team: Indonesian\n"
-"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: titanembeds\n"
+"X-Crowdin-Language: id\n"
+"X-Crowdin-File: messages.pot\n"
+"Language: id_ID\n"
 
 #: titanembeds/blueprints/embed/embed.py:14
 msgid "Let's get to know each other! My name is Titan, what's yours?"
@@ -91,12 +94,8 @@ msgid "You will be invited into this server."
 msgstr "Kamu akan diundang ke server ini."
 
 #: titanembeds/templates/embed.html.j2:110
-msgid ""
-"Of course, you also have the option to login by picking a temporary "
-"username for your current browsing session."
-msgstr ""
-"Tentu saja, kamu juga memiliki pilihan untuk masuk menggunakan nama "
-"sementara untuk sesi menelusuri kamu saat ini."
+msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
+msgstr "Tentu saja, kamu juga memiliki pilihan untuk masuk menggunakan nama sementara untuk sesi menelusuri kamu saat ini."
 
 #: titanembeds/templates/embed.html.j2:112
 msgid "Username (Hit ENTER/RETURN key to confirm)"
@@ -140,39 +139,39 @@ msgstr "Tidak ada"
 
 #: titanembeds/templates/embed.html.j2:172
 msgid "Just one more step..."
-msgstr ""
+msgstr "Hanya satu langkah lagi..."
 
 #: titanembeds/templates/embed.html.j2:184
 msgid "Mention"
-msgstr ""
+msgstr "Menyebut"
 
 #: titanembeds/templates/embed.html.j2:189
 msgid "TitanEmbeds Administrator"
-msgstr ""
+msgstr "TitanEmbeds Administrator"
 
 #: titanembeds/templates/embed.html.j2:190
 msgid "TitanEmbeds Partner"
-msgstr ""
+msgstr "Mitra TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:191
 msgid "TitanEmbeds Supporter"
-msgstr ""
+msgstr "TitanEmbeds Supporter"
 
 #: titanembeds/templates/embed.html.j2:192
 msgid "GitHub Stargazer"
-msgstr ""
+msgstr "GitHub Stargazer"
 
 #: titanembeds/templates/embed.html.j2:194
 msgid "User is offline in Discord."
-msgstr ""
+msgstr "Pengguna sedang offline di Discord."
 
 #: titanembeds/templates/embed.html.j2:195
 msgid "Playing"
-msgstr ""
+msgstr "Bermain"
 
 #: titanembeds/templates/embed.html.j2:196
 msgid "Roles"
-msgstr ""
+msgstr "Peran"
 
 #: titanembeds/templates/embed.html.j2:205
 msgid "Server Emoji"
