@@ -95,7 +95,7 @@ def checkUserRevoke(guild_id, user_key=None):
         dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == session["user_id"]).first()
         revoked = not dbUser or not dbUser.active
     return revoked
-
+    
 def checkUserBanned(guild_id, ip_address=None):
     banned = True
     if user_unauthenticated():

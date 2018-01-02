@@ -368,9 +368,11 @@
         lock_login_fields();
 
         var guild = query_guild();
-        guild.fail(function() {
+        guild.fail(function(data) {
             unlock_login_fields();
-            if (visitors_enabled) {
+            if (data.status == 403 && getParameterByName("create_authenticated_user") == "true" && getParameterByName("sametarget") == "true") {
+                wait_for_discord_login();
+            } else if (visitors_enabled) {
                 setVisitorMode(true);
                 var guild2 = query_guild();
                 guild2.done(function(data) {
