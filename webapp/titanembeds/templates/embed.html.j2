@@ -27,6 +27,11 @@
         {% if css.css is not none %}{{ css.css }}{% endif %}
       {% endif %}
     </style>
+    
+    <!--Provide default mobile metadata-->
+    <meta id=AppTitleApple name="apple-mobile-web-app-title" content="TitanEmbeds">
+    <meta id=AppTitleAndroid name="application-name" content="TitanEmbeds">
+    
   </head>
   <body>
     <div class="navbar-fixed">
@@ -368,6 +373,15 @@
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
+    
+    <!--Update mobile metadata to guild name-->
+    <script>
+      function AppTitleUpdate() {
+      var UpdatedAppTitle = document.getElementById("guild_name").innerHTML;
+      document.getElementById("AppTitleApple").content = UpdatedAppTitle;
+      document.getElementById("AppTitleAndroid").content = UpdatedAppTitle;
+    }
+    </script>
     
     <!-- Electron fix -->
     <script>
