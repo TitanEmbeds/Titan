@@ -13,6 +13,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     
     {% include 'seo_meta.html.j2' %}
+    
+    <!--Provide default mobile metadata-->
+    <meta name="apple-mobile-web-app-title" content="{{ guild['name']|e }}">
+    <meta name="application-name" content="{{ guild['name']|e }}">
+    
     {% with title="Visit " + guild['name'] + " embed", description="Visit " + guild['name'] + " on Titan Embeds and chat with your friends from the comfort of your own website. This page is 100% embeddable, iFrameable and looks good on any webpages. Titan is hassle free and designed as easy to setup!", image=generate_guild_icon( guild['id'], guild['icon']) %}
       {% include "opengraph_tags.html.j2" %}
     {% endwith %}
@@ -27,11 +32,6 @@
         {% if css.css is not none %}{{ css.css }}{% endif %}
       {% endif %}
     </style>
-    
-    <!--Provide default mobile metadata-->
-    <meta id="AppTitleApple" name="apple-mobile-web-app-title" content="TitanEmbeds">
-    <meta id="AppTitleAndroid" name="application-name" content="TitanEmbeds">
-    
   </head>
   <body>
     <div class="navbar-fixed">
@@ -373,26 +373,6 @@
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
-    
-    <!--Specify icons for Apple devices (can also be used as fallback for Android)-->
-    <link rel="apple-touch-icon" href="https://titanembeds.com/static/img/titanembeds_square.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/img/appicons/icon_60x60@3x.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/static/img/appicons/icon_76x76@1x.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/static/img/appicons/icon_76x76@2x.png" />
-    <link rel="apple-touch-icon" sizes="58x58" href="/static/img/appicons/icon_58x58@1x.png" />
-
-    <!--Specify icons for Android devices-->
-    <link rel="icon" sizes="192x192" href="/static/img/appicons/icon_192x192.png">
-    <link rel="icon" sizes="128x128" href="/static/img/appicons/icon_128x128.png">
-    
-    <!--Update mobile metadata to guild name-->
-    <script>
-      function AppTitleUpdate() {
-        var UpdatedAppTitle = document.getElementById("guild_name").innerHTML;
-        document.getElementById("AppTitleApple").content = UpdatedAppTitle;
-        document.getElementById("AppTitleAndroid").content = UpdatedAppTitle;
-      }
-    </script>
     
     <!-- Electron fix -->
     <script>
