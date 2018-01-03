@@ -14,6 +14,7 @@ LANGUAGES = {
     'pt_PT': 'Português', # Portuguese
     'ro': 'Română', # Romanian
     'sr': 'Српски', # Serbian (Cyrillic)
+    'sr_CS': 'Српски', # Serbian (Latin)
     'sv_SE': 'svenska', # Swedish
     'th': "ไทย", # Thai
     'tr': 'Türk', # Turkish
