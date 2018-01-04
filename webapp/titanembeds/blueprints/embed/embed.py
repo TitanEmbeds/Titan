@@ -87,3 +87,7 @@ def signin_complete():
 @embed.route("/login_discord")
 def login_discord():
     return redirect(url_for("user.login_authenticated", redirect=url_for("embed.signin_complete", _external=True)))
+
+@embed.route("/noscript")
+def noscript():
+    return render_template("noscript.html.j2")
