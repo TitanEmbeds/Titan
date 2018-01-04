@@ -261,6 +261,11 @@ nav .brand-logo {
   background: linear-gradient(to right, #f9f9f9 90%, #fff);
 }
 
+#channels-list {
+  display: block;
+  margin-bottom: 40px;
+}
+
 #channels-list > li:hover {
   -webkit-filter: brightness(150%);
 }
