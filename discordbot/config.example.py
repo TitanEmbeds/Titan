@@ -5,5 +5,7 @@ config = {
     
     'redis-uri': "redis://",
     
+    'discord-bots-org-token': "DiscordBots.org Post Stats Token",
+    
     'logging-location': "/home/titan/Titan/discordbot/titanbot.log",
 }

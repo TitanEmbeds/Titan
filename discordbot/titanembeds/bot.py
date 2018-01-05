@@ -2,6 +2,7 @@ from config import config
 from titanembeds.database import DatabaseInterface
 from titanembeds.commands import Commands
 from titanembeds.socketio import SocketIOInterface
+from titanembeds.poststats import DiscordBotsOrg
 from collections import deque
 import discord
 import aiohttp
@@ -24,6 +25,8 @@ class Titan(discord.Client):
         self.socketio = SocketIOInterface(self, config["redis-uri"])
         
         self.delete_list = [] # List of msg ids to prevent duplicate delete
+        
+        self.discordBotsOrg = None
 
     def _cleanup(self):
         try:
@@ -91,6 +94,9 @@ class Titan(discord.Client):
             await self.database.remove_unused_guilds(self.servers)
         else:
             print("Skipping indexing server due to no-init flag")
+        
+        self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
+        await self.discordBotsOrg.post(len(self.servers))
 
     async def on_message(self, message):
         await self.database.push_message(message)
@@ -128,9 +134,11 @@ class Titan(discord.Client):
                 continue
             async for message in self.logs_from(channel, limit=50, reverse=True):
                 await self.database.push_message(message)
+        await self.discordBotsOrg.post(len(self.servers))
 
     async def on_server_remove(self, guild):
         await self.database.remove_guild(guild)
+        await self.discordBotsOrg.post(len(self.servers))
 
     async def on_server_update(self, guildbefore, guildafter):
         await self.database.update_guild(guildafter)
