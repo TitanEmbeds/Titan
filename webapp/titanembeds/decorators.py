@@ -1,5 +1,6 @@
 from functools import wraps
-from flask import url_for, redirect, session, jsonify, abort
+from flask import url_for, redirect, session, jsonify, abort, request
+from titanembeds.database import list_disabled_guilds
 
 def valid_session_required(api=False):
     def decorator(f):
@@ -23,6 +24,17 @@ def discord_users_only(api=False):
                 if api:
                     return jsonify(error=True, message="Not logged in as a discord user"), 401
                 return redirect(url_for("user.login_authenticated"))
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+def abort_if_guild_disabled():
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            guild_id = request.args.get("guild_id", None)
+            if guild_id in list_disabled_guilds():
+                return ('', 423)
             return f(*args, **kwargs)
         return decorated_function
     return decorator

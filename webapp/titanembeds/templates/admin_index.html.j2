@@ -27,5 +27,12 @@
       <a class="waves-effect waves-light btn" href="{{ url_for('admin.manage_titan_tokens') }}">Manage</a>
     </div>
   </div>
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <h4>Disabled Servers</h4>
+      <p class="flow-text">Block or reinstate servers from using Titan Embeds.</p>
+      <a class="waves-effect waves-light btn" href="{{ url_for('admin.get_disabled_guilds') }}">Manage</a>
+    </div>
+  </div>
 </div>
 {% endblock %}

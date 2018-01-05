@@ -3,7 +3,7 @@ from flask import current_app as app
 from flask_socketio import emit
 from config import config
 from titanembeds.decorators import discord_users_only
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS, Patreon, set_titan_token, get_titan_token, add_badge
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS, Patreon, set_titan_token, get_titan_token, add_badge, list_disabled_guilds
 from titanembeds.oauth import authorize_url, token_url, make_authenticated_session, get_current_authenticated_user, get_user_managed_servers, check_user_can_administrate_guild, check_user_permission, generate_avatar_url, generate_guild_icon_url, generate_bot_invite_url
 import time
 import datetime
@@ -218,11 +218,13 @@ def administrate_guild(guild_id):
         "discordio": db_guild.discordio if db_guild.discordio != None else "",
         "guest_icon": db_guild.guest_icon if db_guild.guest_icon != None else "",
     }
-    return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics)
+    return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics, disabled=(guild_id in list_disabled_guilds()))
 
 @user.route("/administrate_guild/<guild_id>", methods=["POST"])
 @discord_users_only()
 def update_administrate_guild(guild_id):
+    if guild_id in list_disabled_guilds():
+        return ('', 423)
     if not check_user_can_administrate_guild(guild_id):
         abort(403)
     db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
@@ -316,6 +318,8 @@ def ban_unauthenticated_user():
     guild_id = request.form.get("guild_id", None)
     user_id = request.form.get("user_id", None)
     reason = request.form.get("reason", None)
+    if guild_id in list_disabled_guilds():
+        return ('', 423)
     if reason is not None:
         reason = reason.strip()
         if reason == "":
@@ -342,6 +346,8 @@ def ban_unauthenticated_user():
 def unban_unauthenticated_user():
     guild_id = request.args.get("guild_id", None)
     user_id = request.args.get("user_id", None)
+    if guild_id in list_disabled_guilds():
+        return ('', 423)
     if not guild_id or not user_id:
         abort(400)
     if not check_user_permission(guild_id, 2):
@@ -362,6 +368,8 @@ def unban_unauthenticated_user():
 def revoke_unauthenticated_user():
     guild_id = request.form.get("guild_id", None)
     user_id = request.form.get("user_id", None)
+    if guild_id in list_disabled_guilds():
+        return ('', 423)
     if not guild_id or not user_id:
         abort(400)
     if not check_user_permission(guild_id, 1):

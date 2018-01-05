@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, abort, redirect, url_for, session,
 from flask_babel import gettext
 from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
-from titanembeds.database import db, Guilds, UserCSS
+from titanembeds.database import db, Guilds, UserCSS, list_disabled_guilds
 from config import config
 import random
 import json
@@ -65,6 +65,7 @@ def guild_embed(guild_id):
         }
         customcss = get_custom_css()
         return render_template("embed.html.j2",
+            disabled=guild_id in list_disabled_guilds(),
             login_greeting=get_logingreeting(),
             guild_id=guild_id,
             guild=guild_dict,

@@ -16,6 +16,7 @@
 /* global linkify */
 /* global unauth_captcha_enabled */
 /* global soundManager */
+/* global disabled */
 
 (function () {
     const theme_options = ["DiscordDark", "BetterTitan"]; // All the avaliable theming names
@@ -289,6 +290,11 @@
                 }
             }
         });
+        
+        if (disabled) {
+            Materialize.toast('This server is currently disabled. If you are an administrator of this server, please get in touch with a TitanEmbeds team member to lift the ban.', 100000);
+            return;
+        }
         
         primeEmbed();
         setInterval(send_socket_heartbeat, 5000);

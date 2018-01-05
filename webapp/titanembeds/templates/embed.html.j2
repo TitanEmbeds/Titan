@@ -371,6 +371,7 @@
     {% endraw %}
 
     <script>
+        const disabled = {{ disabled|tojson|safe }};
         const guild_id = "{{ guild_id }}";
         const bot_client_id = "{{ client_id }}";
         const visitors_enabled = {% if visitors_enabled %}true{% else %}false{% endif %};

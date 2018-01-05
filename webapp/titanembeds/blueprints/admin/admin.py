@@ -1,7 +1,7 @@
 from flask import Blueprint, url_for, redirect, session, render_template, abort, request, jsonify
 from flask_socketio import emit
 from functools import wraps
-from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token
+from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds
 from titanembeds.oauth import generate_guild_icon_url
 import datetime
 import json
@@ -266,4 +266,31 @@ def patch_titan_tokens():
     if get_titan_token(user_id) == -1:
         abort(409)
     set_titan_token(user_id, amount, "MODIFY VIA ADMIN [{}]".format(str(reason)))
+    return ('', 204)
+
+@admin.route("/disabled_guilds", methods=["GET"])
+@is_admin
+def get_disabled_guilds():
+    return render_template("admin_disabled_guilds.html.j2", guilds=list_disabled_guilds())
+
+@admin.route("/disabled_guilds", methods=["POST"])
+@is_admin
+def post_disabled_guilds():
+    guild_id = request.form.get("guild_id", None)
+    if guild_id in list_disabled_guilds():
+        abort(409)
+    guild = DisabledGuilds(guild_id)
+    db.session.add(guild)
+    db.session.commit()
+    return ('', 204)
+
+@admin.route("/disabled_guilds", methods=["DELETE"])
+@is_admin
+def delete_disabled_guilds():
+    guild_id = request.form.get("guild_id", None)
+    if guild_id not in list_disabled_guilds():
+        abort(409)
+    guild = db.session.query(DisabledGuilds).filter(DisabledGuilds.guild_id == guild_id).first()
+    db.session.delete(guild)
+    db.session.commit()
     return ('', 204)

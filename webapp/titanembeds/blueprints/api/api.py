@@ -1,5 +1,5 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, GuildMembers, Messages, get_channel_messages, list_all_guild_members, get_guild_member, get_administrators_list, get_badges
-from titanembeds.decorators import valid_session_required, discord_users_only
+from titanembeds.decorators import valid_session_required, discord_users_only, abort_if_guild_disabled
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 from flask import Blueprint, abort, jsonify, session, request, url_for
@@ -163,6 +163,7 @@ def get_channel_webhook_url(guild_id, channel_id):
 
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
+@abort_if_guild_disabled()
 @rate_limiter.limit("2 per 2 second", key_func = channel_ratelimit_key)
 def fetch():
     guild_id = request.args.get("guild_id")
@@ -193,6 +194,7 @@ def fetch():
     return response
 
 @api.route("/fetch_visitor", methods=["GET"])
+@abort_if_guild_disabled()
 @rate_limiter.limit("2 per 2 second", key_func = channel_ratelimit_key)
 def fetch_visitor():
     guild_id = request.args.get("guild_id")
@@ -215,6 +217,7 @@ def fetch_visitor():
 
 @api.route("/post", methods=["POST"])
 @valid_session_required(api=True)
+@abort_if_guild_disabled()
 @rate_limiter.limit("1 per 5 second", key_func = channel_ratelimit_key)
 def post():
     guild_id = request.form.get("guild_id")
@@ -285,6 +288,7 @@ def verify_captcha_request(captcha_response, ip_address):
 
 @api.route("/create_unauthenticated_user", methods=["POST"])
 @rate_limiter.limit("3 per 30 minute", key_func=guild_ratelimit_key)
+@abort_if_guild_disabled()
 def create_unauthenticated_user():
     session['unauthenticated'] = True
     username = request.form['username']
@@ -326,6 +330,7 @@ def create_unauthenticated_user():
 
 @api.route("/change_unauthenticated_username", methods=["POST"])
 @rate_limiter.limit("1 per 10 minute", key_func=guild_ratelimit_key)
+@abort_if_guild_disabled()
 def change_unauthenticated_username():
     username = request.form['username']
     guild_id = request.form['guild_id']
@@ -381,6 +386,7 @@ def process_query_guild(guild_id, visitor=False):
 
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)
+@abort_if_guild_disabled()
 def query_guild():
     guild_id = request.args.get('guild_id')
     if check_guild_existance(guild_id):
@@ -390,6 +396,7 @@ def query_guild():
     abort(404)
 
 @api.route("/query_guild_visitor", methods=["GET"])
+@abort_if_guild_disabled()
 def query_guild_visitor():
     guild_id = request.args.get('guild_id')
     if check_guild_existance(guild_id):
@@ -400,6 +407,7 @@ def query_guild_visitor():
 
 @api.route("/create_authenticated_user", methods=["POST"])
 @discord_users_only(api=True)
+@abort_if_guild_disabled()
 def create_authenticated_user():
     guild_id = request.form.get('guild_id')
     if session['unauthenticated']:

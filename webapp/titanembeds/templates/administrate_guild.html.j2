@@ -17,6 +17,19 @@
   .</p>
 
   <div class="row">
+    
+    {% if disabled %}
+    <div class="col s12">
+      <div class="card horizontal red-text red lighten-5 z-depth-3 hoverable">
+        <div class="card-stacked">
+          <div class="card-content">
+            <strong class="flow-text">This server is currently disabled on the platform.</strong>
+            <p>You will not be able to embed the server for the time being. To have this action lifted, <em>please see an administrator</em>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
 
     <div class="col s12">
       <h2 class="header">Embed URLs</h2>
