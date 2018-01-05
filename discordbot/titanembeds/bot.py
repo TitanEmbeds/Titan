@@ -72,6 +72,9 @@ class Titan(discord.Client):
             traceback.print_exc()
             await self.logout()
             return
+        
+        self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
+        await self.discordBotsOrg.post(len(self.servers))
 
         if "no-init" not in sys.argv:
             for server in self.servers:
@@ -94,9 +97,6 @@ class Titan(discord.Client):
             await self.database.remove_unused_guilds(self.servers)
         else:
             print("Skipping indexing server due to no-init flag")
-        
-        self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
-        await self.discordBotsOrg.post(len(self.servers))
 
     async def on_message(self, message):
         await self.database.push_message(message)
