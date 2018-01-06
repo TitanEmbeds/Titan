@@ -7,5 +7,7 @@ config = {
     
     'discord-bots-org-token': "DiscordBots.org Post Stats Token",
     
+    'bots-discord-pw-token': "bots.discord.pw Post Stats Token",
+    
     'logging-location': "/home/titan/Titan/discordbot/titanbot.log",
 }

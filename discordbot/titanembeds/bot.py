@@ -2,7 +2,7 @@ from config import config
 from titanembeds.database import DatabaseInterface
 from titanembeds.commands import Commands
 from titanembeds.socketio import SocketIOInterface
-from titanembeds.poststats import DiscordBotsOrg
+from titanembeds.poststats import DiscordBotsOrg, BotsDiscordPw
 from collections import deque
 import discord
 import aiohttp
@@ -27,6 +27,7 @@ class Titan(discord.Client):
         self.delete_list = [] # List of msg ids to prevent duplicate delete
         
         self.discordBotsOrg = None
+        self.botsDiscordPw = None
 
     def _cleanup(self):
         try:
@@ -74,7 +75,8 @@ class Titan(discord.Client):
             return
         
         self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
-        await self.discordBotsOrg.post(len(self.servers))
+        self.botsDiscordPw = BotsDiscordPw(self.user.id, config.get("bots-discord-pw-token", None))
+        await self.postStats()
 
         if "no-init" not in sys.argv:
             for server in self.servers:
@@ -134,11 +136,11 @@ class Titan(discord.Client):
                 continue
             async for message in self.logs_from(channel, limit=50, reverse=True):
                 await self.database.push_message(message)
-        await self.discordBotsOrg.post(len(self.servers))
+        await self.postStats()
 
     async def on_server_remove(self, guild):
         await self.database.remove_guild(guild)
-        await self.discordBotsOrg.post(len(self.servers))
+        await self.postStats()
 
     async def on_server_update(self, guildbefore, guildafter):
         await self.database.update_guild(guildafter)
@@ -240,3 +242,8 @@ class Titan(discord.Client):
             if msg.id == msg_id:
                 return True
         return False
+        
+    async def postStats(self):
+        count = len(self.servers)
+        await self.discordBotsOrg.post(count)
+        await self.botsDiscordPw.post(count)
