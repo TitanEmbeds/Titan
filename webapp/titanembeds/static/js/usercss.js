@@ -1,4 +1,4 @@
-/*global $, ace, Materialize, newCSS, CSS_ID*/
+/*global $, ace, Materialize, newCSS, CSS_ID, ADMIN*/
 (function () {
     if($("#css_editor").length != 0) {
         var editor = ace.edit("css_editor");
@@ -7,7 +7,6 @@
     function postForm() {
         var name = $('#css_name').val();
         var var_enabled = $("#toggleCSSVar").is(':checked');
-        var variables = JSON.stringify(formatCSSVars());
         var css = null;
         if($("#css_editor").length != 0) {
             css = editor.getValue();
@@ -15,10 +14,21 @@
                 css = null;
             }
         }
+        
+        var payload = {"name": name, "variables_enabled": var_enabled, "css": css};
+        if (var_enabled) {
+            var variables = JSON.stringify(formatCSSVars());
+            payload.variables = variables;
+        }
+        if (ADMIN) {
+            var user_id = $('#css_user_id').val();
+            payload.user_id = user_id;
+        }
+        
         var funct = $.ajax({
             dataType: "json",
             method: "POST",
-            data: {"name": name, "variables_enabled": var_enabled, "variables": variables, "css": css}
+            data: payload
         });
         return funct.promise();
     }
@@ -102,8 +112,12 @@
           type: 'DELETE',
           success: function() {
               alert("You have successfully deleted the CSS!");
-              window.location.href = "/user/dashboard";
-          },
+                    if (ADMIN) {
+                        window.location.href = "/admin/custom_css";
+                    } else {
+                        window.location.href = "/user/dashboard";
+                    }
+              },
           error: function() {
               Materialize.toast('Oh no! Something has failed deleting your CSS!', 10000);
           }

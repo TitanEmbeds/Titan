@@ -5,6 +5,10 @@
     {% set title="Editing " + css.name + " - User CSS" %}
 {% endif %}
 
+{% if not admin %}
+    {% set admin=False %}
+{% endif %}
+
 {%- set live_preview -%}
     <iframe id="iframepreview" src="
     {% if new %}
@@ -45,6 +49,13 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         <input placeholder="Some Lit CSS" id="css_name" type="text" {% if not new %}value="{{ css.name }}"{% endif %}>
         <label for="css_name">Name</label>
     </div>
+    {% if admin %}
+    <div class="col s12">
+        <p class="flow-text">Set CSS Ownership</p>
+        <input placeholder="User ID" id="css_user_id" type="text" {% if admin and not new %}value="{{ css.user_id }}"{% endif %}>
+        <label for="css_user_id">User ID</label>
+    </div>
+    {% endif %}
     <div class="col s12">
         <p class="flow-text">Propose Predefined CSS variables here</p>
         <p>
@@ -99,7 +110,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
         </div>
         <p><strong>TIP!</strong> You can use the variables in your CSS below! Something like <code>color: var(--leftsidebar);</code> would work!</p>
     </div>
-    {% if (new and premium_css_count >= cosmetics.css_limit) or (not new and premium_css_count >= cosmetics.css_limit and css.css is none) %}
+    {% if not admin and ((new and premium_css_count >= cosmetics.css_limit) or (not new and premium_css_count >= cosmetics.css_limit and css.css is none)) %}
     <div class="col s12">
         <hr>
         <p class="flow-text">All custom CSS slots are used. Donate to get more!</p>
@@ -137,6 +148,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
 <script>
     const newCSS = {% if new %}true{% else %}false{% endif %};
     const CSS_ID = {%if new %}null{% else %}{{ css.id }}{% endif %};
+    const ADMIN = {{ admin|tojson|safe }};
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/usercss.js') }}"></script>
 {% endblock %}

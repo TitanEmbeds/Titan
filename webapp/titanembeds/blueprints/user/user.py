@@ -85,7 +85,7 @@ def dashboard():
     cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
     css_list = None
     if cosmetics and cosmetics.css:
-        css_list = db.session.query(UserCSS).filter(UserCSS.user_id == session['user_id']).all()
+        css_list = db.session.query(UserCSS).filter(UserCSS.user_id == session['user_id']).order_by(UserCSS.id).all()
     premium_css_count = count_user_premium_css()
     return render_template("dashboard.html.j2", servers=guilds, icon_generate=generate_guild_icon_url, cosmetics=cosmetics, css_list=css_list, premium_css_count=premium_css_count)
 

@@ -1,7 +1,7 @@
 from flask import Blueprint, url_for, redirect, session, render_template, abort, request, jsonify
 from flask_socketio import emit
 from functools import wraps
-from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds
+from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS
 from titanembeds.oauth import generate_guild_icon_url
 import datetime
 import json
@@ -294,3 +294,85 @@ def delete_disabled_guilds():
     db.session.delete(guild)
     db.session.commit()
     return ('', 204)
+
+@admin.route("/custom_css", methods=["GET"])
+@is_admin
+def list_custom_css_get():
+    css = db.session.query(UserCSS).order_by(UserCSS.id).all()
+    return render_template("admin_usercss.html.j2", css=css)
+
+@admin.route("/custom_css/edit/<css_id>", methods=["GET"])
+@is_admin
+def edit_custom_css_get(css_id):
+    css = db.session.query(UserCSS).filter(UserCSS.id == css_id).first()
+    if not css:
+        abort(404)
+    variables = css.css_variables
+    if variables:
+        variables = json.loads(variables)
+    return render_template("usercss.html.j2", new=False, css=css, variables=variables, admin=True)
+
+@admin.route("/custom_css/edit/<css_id>", methods=["POST"])
+@is_admin
+def edit_custom_css_post(css_id):
+    dbcss = db.session.query(UserCSS).filter(UserCSS.id == css_id).first()
+    if not dbcss:
+        abort(404)
+    name = request.form.get("name", None)
+    user_id = request.form.get("user_id", None)
+    css = request.form.get("css", None)
+    variables = request.form.get("variables", None)
+    variables_enabled = request.form.get("variables_enabled", False) in ["true", True]
+    if not name:
+        abort(400)
+    else:
+        name = name.strip()
+        css = css.strip()
+    if not user_id:
+        user_id = dbcss.user_id
+    if (len(css) == 0):
+        css = None
+    dbcss.name = name
+    dbcss.user_id = user_id
+    dbcss.css = css
+    dbcss.css_variables = variables
+    dbcss.css_var_bool = variables_enabled
+    db.session.commit()
+    return jsonify({"id": dbcss.id})
+    
+@admin.route("/custom_css/edit/<css_id>", methods=["DELETE"])
+@is_admin
+def edit_custom_css_delete(css_id):
+    dbcss = db.session.query(UserCSS).filter(UserCSS.id == css_id).first()
+    if not dbcss:
+        abort(404)
+    db.session.delete(dbcss)
+    db.session.commit()
+    return jsonify({})
+
+@admin.route("/custom_css/new", methods=["GET"])
+@is_admin
+def new_custom_css_get():
+    return render_template("usercss.html.j2", new=True, admin=True)
+    
+@admin.route("/custom_css/new", methods=["POST"])
+@is_admin
+def new_custom_css_post():
+    name = request.form.get("name", None)
+    user_id = request.form.get("user_id", None)
+    css = request.form.get("css", None)
+    variables = request.form.get("variables", None)
+    variables_enabled = request.form.get("variables_enabled", False) in ["true", True]
+    if not name:
+        abort(400)
+    else:
+        name = name.strip()
+        css = css.strip()
+    if not user_id:
+        abort(400)
+    if (len(css) == 0):
+        css = None
+    css = UserCSS(name, user_id, variables_enabled, variables, css)
+    db.session.add(css)
+    db.session.commit()
+    return jsonify({"id": css.id})

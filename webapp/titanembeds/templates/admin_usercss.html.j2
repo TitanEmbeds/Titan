@@ -1,0 +1,20 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Manage User CSS as Administrator" %}
+
+{% block content %}
+<h1>Manage User CSS</h1>
+<p class="flow-text">Select a CSS to manage. Or, create a new user css. <a class="waves-effect waves-light btn" href="{{ url_for('admin.new_custom_css_get') }}">NEW</a></p>
+<div class="row">
+  {% for c in css %}
+  <div class="col l4 m6 s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
+      <div class="row black-text">
+        <p class="flow-text"><strong>#{{ c.id }}</strong> {{ c.name }}</p>
+        <p>Owned by: {{ c.user_id }}</p>
+        <a class="waves-effect waves-light btn" href="{{ url_for('admin.edit_custom_css_get', css_id=c.id) }}">Manage</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
