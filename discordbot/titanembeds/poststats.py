@@ -1,5 +1,4 @@
 import aiohttp
-import json
 
 class DiscordBotsOrg(): # https://discordbots.org
     def __init__(self, client_id, token):
@@ -21,4 +20,4 @@ class BotsDiscordPw(): # https://bots.discord.pw/
         headers = {"Authorization": self.token}
         payload = {"server_count": count}
         async with aiohttp.ClientSession() as aioclient:
-            t = await aioclient.post(self.url, json=payload, headers=headers)
+            await aioclient.post(self.url, json=payload, headers=headers)
