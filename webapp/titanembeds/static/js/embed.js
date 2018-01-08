@@ -1000,9 +1000,9 @@
         var emb = [];
         for (var i = 0; i < embeds.length; i++) {
             var disembed = embeds[i];
-            if ($.inArray(disembed.type, ["rich", "link", "video"]) == -1) {
-                continue;
-            }
+            // if ($.inArray(disembed.type, ["rich", "link", "video"]) == -1) {
+            //     continue;
+            // }
             disembed.toRenderFooter = false;
             if (disembed.footer) {
                 disembed.toRenderFooter = true;
