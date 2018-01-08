@@ -1,10 +1,11 @@
 from flask import Blueprint, url_for, redirect, session, render_template, abort, request, jsonify
 from flask_socketio import emit
 from functools import wraps
-from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS
+from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS, AuthenticatedUsers
 from titanembeds.oauth import generate_guild_icon_url
 import datetime
 import json
+from sqlalchemy import func
 
 admin = Blueprint("admin", __name__)
 
@@ -20,10 +21,16 @@ def is_admin(f):
         return decorated_function
     return decorator(f)
 
+def get_online_users_count():
+    time_past = (datetime.datetime.now() - datetime.timedelta(seconds = 15)).strftime('%Y-%m-%d %H:%M:%S')
+    unauths = db.session.query(func.count(UnauthenticatedUsers.id)).filter(UnauthenticatedUsers.last_timestamp > time_past, UnauthenticatedUsers.revoked == False).scalar()
+    auths = db.session.query(func.count(AuthenticatedUsers.id)).filter(AuthenticatedUsers.last_timestamp > time_past).scalar()
+    return {"authenticated": auths, "guest": unauths, "total": auths + unauths}
+
 @admin.route("/")
 @is_admin
 def index():
-    return render_template("admin_index.html.j2")
+    return render_template("admin_index.html.j2", count=get_online_users_count())
 
 @admin.route("/cosmetics", methods=["GET"])
 @is_admin

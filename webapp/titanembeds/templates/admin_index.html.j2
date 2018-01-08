@@ -8,6 +8,14 @@
 <div class="row">
   <div class="col s12">
     <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <h4>Online Members Count - {{ count["total"] }}</h4>
+      <p>Discord Users: {{ count["authenticated"] }}</p>
+      <p>Guest Users: {{ count["guest"] }}</p>
+      <p><em>(Excluding those utilizing visitor view)</em></p>
+    </div>
+  </div>
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
       <h4>Cosmetics</h4>
       <p class="flow-text">Give or revoke special <em>cosmetics privilages</em> for users.</p>
       <a class="waves-effect waves-light btn" href="{{ url_for('admin.cosmetics') }}">Manage</a>
