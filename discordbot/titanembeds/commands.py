@@ -32,3 +32,9 @@ class Commands():
         discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
         reason = await self.database.revoke_unauth_user_by_query(message.server.id, username, discriminator)
         await self.client.send_message(message.channel, message.author.mention + " " + reason)
+
+    async def invite(self, message):
+        await self.client.send_message(message.channel, "You can invite Titan to your server by clicking this link: https://discordapp.com/oauth2/authorize?&client_id=299403260031139840&scope=bot&permissions=641195117")
+        
+    async def invite(self, message):
+        await self.client.send_message(message.channel, "Join the Titan Embeds Discord server! https://discord.io/Titan")
