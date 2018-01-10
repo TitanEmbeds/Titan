@@ -28,7 +28,7 @@ To set up the database for it to work with the webapp and the discordbot, one mu
 
 
 ## Join us!
-Come and talk with us at our very own [discord server](https://discord.gg/z4pdtuV)! We offer support too!
+Come and talk with us at our very own [Discord server](https://discord.gg/z4pdtuV)! We offer support too!
 
 ## Translate for us!
 Visit us over at our [CrowdIn project](http://translate.titanembeds.com/) and teach Titan how to speak your language!
