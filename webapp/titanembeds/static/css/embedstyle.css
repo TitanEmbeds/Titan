@@ -473,6 +473,112 @@ a {
   }
 }
 
+
+#loginmodal {
+  font-size: 9pt;
+}
+
+#loginmodal h4 {
+  font-size: 15pt;
+}
+
+#guest_login_instr {
+  margin: 0;
+}
+
+#loginmodal .flow-text {
+  font-size: 11pt;
+}
+
+@media screen and (max-width: 600px) {
+  #guest_login_instr {
+    display: none;
+  }
+
+  #loginmodal h4 {
+    font-size: 12pt;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #modal_guildinfobox {
+    width: 100%;
+  }
+  
+  #modal_guildiconcircle {
+    float: left;
+  }
+  
+  #authfields {
+    width: 100%;
+  }
+  
+  #modal_guildiconcircle {
+    width: 55px;
+  }
+  
+  #modal_guildname {
+    margin: 5px;
+  }
+  
+  #authfield-choosetxt.flow-text {
+    font-size: 9pt;
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #authfields {
+    margin-top: 5px;
+  }
+  
+  #discordlogin_btn_warn {
+    display: none;
+  }
+  
+  #loginmodal a.btn, #loginmodal a.btn-large {
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+    font-size: 7pt;
+  }
+  
+  #loginmodal h4 {
+    display: none;
+  }
+  
+  #discordlogin_box {
+    width: 100%;
+  }
+  
+  #guestlogin_box {
+    width: 100%;
+  }
+  
+  #discordlogin_btn {
+    width: 100%;
+  }
+  
+  #custom_username_field {
+    margin-bottom: 0;
+  }
+  
+  #custom_username_field_label {
+    font-size: 6pt;
+  }
+  
+  #authfield-choosetxt {
+    font-size: 7pt;
+  }
+}
+
+@media screen and (max-width: 230px) {
+  #authfield-choosetxt {
+    display: none;
+  }
+}
+
 #nameplate {
   cursor: pointer;
   background: transparent;
