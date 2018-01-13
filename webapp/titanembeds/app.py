@@ -2,11 +2,10 @@ from config import config
 from .database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, discord_api, socketio, babel, redis_store
+from titanembeds.utils import rate_limiter, discord_api, socketio, babel, redis_store, language_code_list
 from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
-from titanembeds.i18n import LANGUAGES
 import titanembeds.constants as constants
 from datetime import timedelta
 
@@ -51,9 +50,9 @@ socketio.on_namespace(gateway.Gateway('/gateway'))
 @babel.localeselector
 def get_locale():
     param_lang = request.args.get("lang", None)
-    if param_lang in LANGUAGES:
+    if param_lang in language_code_list():
         return param_lang
-    return request.accept_languages.best_match(LANGUAGES.keys())
+    return request.accept_languages.best_match(language_code_list())
 
 @app.route("/")
 def index():

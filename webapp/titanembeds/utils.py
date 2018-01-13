@@ -1,4 +1,5 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, GuildMembers, get_guild_member
+from titanembeds.constants import LANGUAGES
 from flask import request, session
 from flask_limiter import Limiter
 from flask_socketio import SocketIO
@@ -294,6 +295,12 @@ def guild_webhooks_enabled(guild_id):
 def guild_unauthcaptcha_enabled(guild_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     return dbguild.unauth_captcha
+    
+def language_code_list():
+    codes = []
+    for lang in LANGUAGES:
+        codes.append(lang["code"])
+    return codes
 
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
 socketio = SocketIO()

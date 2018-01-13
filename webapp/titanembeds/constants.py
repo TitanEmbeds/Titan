@@ -14,7 +14,7 @@ QUERY_PARAMETERS = [
     {
         "name": "lang",
         "type": "language",
-        "description": "Is your users multilingual? No worries, Titan can speak multiple languages! <a href=\"https://github.com/TitanEmbeds/Titan/blob/master/webapp/titanembeds/i18n.py\" target=\"_blank\">Check here</a> for a list of all language parameters Titan can support. <br> Wish Titan supported your language? Consider contributing to <a href=\"http://translate.titanembeds.com/\" target=\"_blank\">our CrowdIn project</a>!",
+        "description": "Is your users multilingual? No worries, Titan can speak multiple languages! Check the about page for a list of all language parameters Titan can support. <br> Wish Titan supported your language? Consider contributing to <a href=\"http://translate.titanembeds.com/\" target=\"_blank\">our CrowdIn project</a>!",
         "example": "nl",
         "input": "text",
     },
@@ -71,5 +71,290 @@ QUERY_PARAMETERS = [
         "type": "string",
         "description": "Prefills the guest username field with the given username.",
         "example": "Rainbow%20Dash",
+    },
+]
+
+LANGUAGES = [
+    {
+        "code": "ca",
+        "name_en": "Catalan",
+        "name": "Català",
+        "translators": [
+            {
+                "name": "jan",
+                "crowdin_profile": "test83318",
+            },
+            {
+                "name": "Jaime Muñoz Martín",
+                "crowdin_profile": "jmmartin_5",
+            },
+        ],
+    },
+    {
+        "code": "da",
+        "name_en": "Danish",
+        "name": "Dansk",
+        "translators": [
+            {
+                "name": "Victor Fisker",
+                "crowdin_profile": "victorfrb",
+            },
+        ],
+    },
+    {
+        "code": "de",
+        "name_en": "German",
+        "name": "Deutsche",
+        "translators": [
+            {
+                "name": "futureyess22",
+                "crowdin_profile": "futureyess22",
+            },
+            {
+                "name": "Sascha Greuel",
+                "crowdin_profile": "SoftCreatR",
+            },
+        ],
+    },
+    {
+        "code": "en",
+        "name_en": "English",
+        "name": "English",
+        "translators": [
+            {
+                "name": "Tornado1878",
+                "crowdin_profile": "Tornado1878",
+            },
+        ],
+    },
+    {
+        "code": "es_ES",
+        "name_en": "Spanish",
+        "name": "Español",
+        "translators": [
+            {
+                "name": "jmromero",
+                "crowdin_profile": "jmromero",
+            },
+            {
+                "name": "NeHoMaR",
+                "crowdin_profile": "NeHoMaR",
+            },
+            {
+                "name": "Jaime Muñoz Martín",
+                "crowdin_profile": "jmmartin_5",
+            },
+        ],
+    },
+    {
+        "code": "fr",
+        "name_en": "French",
+        "name": "français",
+        "translators": [
+            {
+                "name": "𝔻𝕣.𝕄𝕦𝕣𝕠𝕨",
+                "crowdin_profile": "drmurow",
+            },
+        ],
+    },
+    {
+        "code": "hi",
+        "name_en": "Hindi",
+        "name": "हिंदी",
+        "translators": [
+            {
+                "name": "jznsamuel",
+                "crowdin_profile": "jasonsamuel88",
+            },
+        ],
+    },
+    {
+        "code": "hu",
+        "name_en": "Hungarian",
+        "name": "Magyar",
+        "translators": [
+            {
+                "name": "János Erkli",
+                "crowdin_profile": "erklijani0521",
+            },
+            {
+                "name": "csongorhunt",
+                "crowdin_profile": "csongorhunt",
+            },
+        ],
+    },
+    {
+        "code": "id",
+        "name_en": "Indonesian",
+        "name": "bahasa Indonesia",
+        "translators": [
+            {
+                "name": "isaideureka",
+                "crowdin_profile": "isaideureka",
+            },
+            {
+                "name": "riesky",
+                "crowdin_profile": "riesky",
+            },
+        ],
+    },
+    {
+        "code": "it",
+        "name_en": "Italian",
+        "name": "Italiano",
+        "translators": [
+            {
+                "name": "dotJS",
+                "crowdin_profile": "justdotJS",
+            },
+        ],
+    },
+    {
+        "code": "ja",
+        "name_en": "Japanese",
+        "name": "日本語",
+        "translators": [
+            {
+                "name": "Jacob Ayeni",
+                "crowdin_profile": "MehItsJacob",
+            },
+        ],
+    },
+    {
+        "code": "nl",
+        "name_en": "Dutch",
+        "name": "Nederlands",
+        "translators": [
+            {
+                "name": "jelle619",
+                "crowdin_profile": "jelle619",
+            },
+            {
+                "name": "Reeskikker",
+                "crowdin_profile": "Reeskikker",
+            },
+            {
+                "name": "SuperVK",
+                "crowdin_profile": "SuperVK",
+            },
+        ],
+    },
+    {
+        "code": "pl",
+        "name_en": "Polish",
+        "name": "Polski",
+        "translators": [
+            {
+                "name": "That Guy",
+                "crowdin_profile": "maksinibob",
+            },
+        ],
+    },
+    {
+        "code": "pt_PT",
+        "name_en": "Portuguese",
+        "name": "Português",
+        "translators": [
+            {
+                "name": "Miguel Dos Reis",
+                "crowdin_profile": "siersod",
+            },
+        ],
+    },
+    {
+        "code": "ro",
+        "name_en": "Romanian",
+        "name": "Română",
+        "translators": [
+            {
+                "name": "Andra",
+                "crowdin_profile": "sarmizegetusa",
+            },
+        ],
+    },
+    {
+        "code": "sr",
+        "name_en": "Serbian (Cyrillic)",
+        "name": "Српски",
+        "translators": [
+            {
+                "name": "\"adriatic\" Miguel Dos Reis",
+                "crowdin_profile": "siersod",
+            },
+            {
+                "name": "Ciker",
+                "crowdin_profile": "CikerDeveloper",
+            },
+        ],
+    },
+    {
+        "code": "sr_CS",
+        "name_en": "Serbian (Latin)",
+        "name": "Српски",
+        "translators": [
+            {
+                "name": "Ciker",
+                "crowdin_profile": "CikerDeveloper",
+            },
+        ],
+    },
+    {
+        "code": "sv_SE",
+        "name_en": "Swedish",
+        "name": "svenska",
+        "translators": [
+            {
+                "name": "Samuel Sandstrom",
+                "crowdin_profile": "ssandstrom95",
+            },
+        ],
+    },
+    {
+        "code": "th",
+        "name_en": "Thai",
+        "name": "ไทย",
+        "translators": [
+            {
+                "name": "Pantakarn Toopprateep",
+                "crowdin_profile": "CardKunG",
+            },
+        ],
+    },
+    {
+        "code": "tr",
+        "name_en": "Turkish",
+        "name": "Türk",
+        "translators": [
+            {
+                "name": "monomyth",
+                "crowdin_profile": "monomyth",
+            },
+        ],
+    },
+    {
+        "code": "zh_Hans_CN",
+        "name_en": "Chinese Simplified",
+        "name": "简体中文",
+        "translators": [
+            {
+                "name": "dotJS",
+                "crowdin_profile": "justdotJS",
+            },
+            {
+                "name": "myjourney in Steemit",
+                "crowdin_profile": "myjourney",
+            },
+        ],
+    },
+    {
+        "code": "zh_Hant_TW",
+        "name_en": "Chinese Traditional",
+        "name": "中国传统的",
+        "translators": [
+            {
+                "name": "myjourney in Steemit",
+                "crowdin_profile": "myjourney",
+            },
+        ],
     },
 ]

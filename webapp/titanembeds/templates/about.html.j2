@@ -340,148 +340,16 @@ We want to see all of our members rise to their potential and find success in th
     <div class="col s12">
         <div class="card-panel indigo lighten-5 z-depth-1">
             <ul>
+              {% for language in constants.LANGUAGES %}
               <li>
-                <span class="flow-text">Catalan (Català) [ca]</span>
+                <span class="flow-text">{{ language["name_en"] }} ({{ language["name"] }}) [{{ language["code"] }}]</span>
                 <ul class="browser-default">
-                  <li>jan (<a href="https://crowdin.com/profile/test83318" target="_blank">test83318</a>)</li>
-                  <li>Jaime Muñoz Martín (<a href="https://crowdin.com/profile/jmmartin_5" target="_blank">jmmartin_5</a>)</li>
+                  {% for translator in language["translators"] %}
+                  <li>{{ translator["name"] }} (<a href="https://crowdin.com/profile/{{ translator["crowdin_profile"] }}" target="_blank">{{ translator["crowdin_profile"] }}</a>)</li>
+                  {% endfor %}
                 </ul>
               </li>
-              <li>
-                <span class="flow-text">Danish (Dansk) [da]</span>
-                <ul class="browser-default">
-                  <li>Victor Fisker (<a href="https://crowdin.com/profile/victorfrb" target="_blank">victorfrb</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">German (Deutsche) [de]</span>
-                <ul class="browser-default">
-                  <li>futureyess22 (<a href="https://crowdin.com/profile/futureyess22" target="_blank">futureyess22</a>)</li>
-                  <li>Sascha Greuel (<a href="https://crowdin.com/profile/SoftCreatR" target="_blank">SoftCreatR</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">English (English) [en_US]</span>
-                <ul class="browser-default">
-                  <li>Tornado1878 (<a href="https://crowdin.com/profile/Tornado1878" target="_blank">Tornado1878</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Spanish (Español) [es_ES]</span>
-                <ul class="browser-default">
-                  <li>jmromero (<a href="https://crowdin.com/profile/jmromero" target="_blank">jmromero</a>)</li>
-                  <li>NeHoMaR (<a href="https://crowdin.com/profile/NeHoMaR" target="_blank">NeHoMaR</a>)</li>
-                  <li>Jaime Muñoz Martín (<a href="https://crowdin.com/profile/jmmartin_5" target="_blank">jmmartin_5</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">French (français) [fr]</span>
-                <ul class="browser-default">
-                  <li>𝔻𝕣.𝕄𝕦𝕣𝕠𝕨 (<a href="https://crowdin.com/profile/drmurow" target="_blank">drmurow</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Hindi (हिंदी) [hi]</span>
-                <ul class="browser-default">
-                  <li>jznsamuel (<a href="https://crowdin.com/profile/jasonsamuel88" target="_blank">jasonsamuel88</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Hungarian (Magyar) [hu]</span>
-                <ul class="browser-default">
-                  <li>János Erkli (<a href="https://crowdin.com/profile/erklijani0521" target="_blank">erklijani0521</a>)</li>
-                  <li>csongorhunt (<a href="https://crowdin.com/profile/csongorhunt" target="_blank">csongorhunt</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Indonesian (bahasa Indonesia) [id]</span>
-                <ul class="browser-default">
-                  <li>isaideureka (<a href="https://crowdin.com/profile/isaideureka" target="_blank">isaideureka</a>)</li>
-                  <li>riesky (<a href="https://crowdin.com/profile/riesky" target="_blank">riesky</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Italian (Italiano) [it]</span>
-                <ul class="browser-default">
-                  <li>dotJS (<a href="https://crowdin.com/profile/justdotJS" target="_blank">justdotJS</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Japanese (日本語) [ja]</span>
-                <ul class="browser-default">
-                  <li>Jacob Ayeni (<a href="https://crowdin.com/profile/MehItsJacob" target="_blank">MehItsJacob</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Dutch (Nederlands) [nl]</span>
-                <ul class="browser-default">
-                  <li>jelle619 (<a href="https://crowdin.com/profile/jelle619" target="_blank">jelle619</a>)</li>
-                  <li>Reeskikker (<a href="https://crowdin.com/profile/Reeskikker" target="_blank">Reeskikker</a>)</li>
-                  <li>SuperVK (<a href="https://crowdin.com/profile/SuperVK" target="_blank">SuperVK</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Polish (Polski) [pl]</span>
-                <ul class="browser-default">
-                  <li>That Guy (<a href="https://crowdin.com/profile/maksinibob" target="_blank">maksinibob</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Portuguese (Português) [pt_PT]</span>
-                <ul class="browser-default">
-                  <li>Miguel Dos Reis (<a href="https://crowdin.com/profile/siersod" target="_blank">siersod</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Romanian (Română) [ro]</span>
-                <ul class="browser-default">
-                  <li>Andra (<a href="https://crowdin.com/profile/sarmizegetusa" target="_blank">sarmizegetusa</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Serbian (Cyrillic) (Српски) [sr]</span>
-                <ul class="browser-default">
-                  <li>"adriatic" Miguel Dos Reis (<a href="https://crowdin.com/profile/siersod" target="_blank">siersod</a>)</li>
-                  <li>Ciker (<a href="https://crowdin.com/profile/CikerDeveloper" target="_blank">CikerDeveloper</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Serbian (Latin) (Српски) [sr_CS]</span>
-                <ul class="browser-default">
-                  <li>Ciker (<a href="https://crowdin.com/profile/CikerDeveloper" target="_blank">CikerDeveloper</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Swedish (svenska) [sv_SE]</span>
-                <ul class="browser-default">
-                  <li>Samuel Sandstrom (<a href="https://crowdin.com/profile/ssandstrom95" target="_blank">ssandstrom95</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Thai (ไทย) [th]</span>
-                <ul class="browser-default">
-                  <li>Pantakarn Toopprateep (<a href="https://crowdin.com/profile/CardKunG" target="_blank">CardKunG</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Turkish (Türk) [tr]</span>
-                <ul class="browser-default">
-                  <li>monomyth (<a href="https://crowdin.com/profile/monomyth" target="_blank">monomyth</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Chinese Simplified (简体中文) [zh_Hans_CN]</span>
-                <ul class="browser-default">
-                  <li>dotJS (<a href="https://crowdin.com/profile/justdotJS" target="_blank">justdotJS</a>)</li>
-                  <li>myjourney in Steemit (<a href="https://crowdin.com/profile/myjourney" target="_blank">myjourney</a>)</li>
-                </ul>
-              </li>
-              <li>
-                <span class="flow-text">Chinese Traditional (中国传统的) [zh_Hant_TW]</span>
-                <ul class="browser-default">
-                  <li>myjourney in Steemit (<a href="https://crowdin.com/profile/myjourney" target="_blank">myjourney</a>)</li>
-                </ul>
-              </li>
+              {% endfor %}
             </ul>
             <p>Wish Titan supported your language? Consider contributing to our <a href="http://translate.titanembeds.com/" target="_blank">CrowdIn project</a>! </p>
           </div>
