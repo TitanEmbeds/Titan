@@ -54,13 +54,13 @@ $("#mentions_limit").keyup(function(event){
     }
 });
 
-$("#discordio").keyup(function(event){
+$("#invite_link").keyup(function(event){
     if(event.keyCode == 13){
       var pathname = window.location.pathname;
-      var value = $("#discordio").val()
-      var payload = {"discordio": value}
+      var value = $("#invite_link").val()
+      var payload = {"invite_link": value}
       $.post(pathname, payload, function(data) {
-        Materialize.toast('Updated Discord.io setting!', 2000)
+        Materialize.toast('Updated invite link setting!', 2000)
       });
     }
 });

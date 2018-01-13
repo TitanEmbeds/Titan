@@ -6,6 +6,7 @@ from titanembeds.database import db, Guilds, UserCSS, list_disabled_guilds
 from config import config
 import random
 import json
+from urllib.parse import urlparse
 
 embed = Blueprint("embed", __name__)
 
@@ -52,6 +53,12 @@ def parse_css_variable(css):
             return CSS_VARIABLES_TEMPLATE % variables
     return None
 
+def parse_url_domain(url):
+    parsed = urlparse(url)
+    if parsed.netloc != "":
+        return parsed.netloc
+    return url
+
 @embed.route("/<string:guild_id>")
 def guild_embed(guild_id):
     if check_guild_existance(guild_id):
@@ -61,7 +68,8 @@ def guild_embed(guild_id):
             "name": guild.name,
             "unauth_users": guild.unauth_users,
             "icon": guild.icon,
-            "discordio": guild.discordio,
+            "invite_link": guild.invite_link,
+            "invite_domain": parse_url_domain(guild.invite_link),
         }
         customcss = get_custom_css()
         return render_template("embed.html.j2",
