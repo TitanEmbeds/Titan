@@ -87,6 +87,12 @@
     }
     
     function submitForm() {
+        var name = $('#css_name').val();
+        if (name == "") {
+            Materialize.toast("Don't forget to name your CSS!", 10000);
+            return;
+        }
+        
         var formPost = postForm();
         formPost.done(function (data) {
             if (newCSS) {
