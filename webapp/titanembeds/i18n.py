@@ -9,6 +9,7 @@ LANGUAGES = {
     'hu': "Magyar", # Hungarian
     'id': 'bahasa Indonesia', # Indonesian
     'it': 'Italiano', # Italian
+    'ja': '日本語', # Japanese
     'nl': 'Nederlands', # Dutch
     'pl': 'Polski', # Polish
     'pt_PT': 'Português', # Portuguese
