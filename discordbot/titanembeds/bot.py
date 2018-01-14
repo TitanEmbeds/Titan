@@ -127,9 +127,16 @@ class Titan(discord.Client):
         for member in guild.members:
             await self.database.update_guild_member(member, True, False)
         if guild.me.server_permissions.ban_members:
-            banned = await self.get_bans(guild)
+            banned = await self.get_bans(message.server)
             for ban in banned:
-                await self.database.update_guild_member(ban, False, True)
+                member = discord.Member(user={
+                    "username": ban.name,
+                    "id": ban.id,
+                    "discriminator": ban.discriminator,
+                    "avatar": ban.avatar,
+                    "bot": ban.bot
+                })
+                await self.database.update_guild_member(member, False, True)
         for channel in guild.channels:
             chanperm = channel.permissions_for(channel.server.me)
             if not chanperm.read_messages or not chanperm.read_message_history:
