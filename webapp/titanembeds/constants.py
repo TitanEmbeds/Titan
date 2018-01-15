@@ -273,6 +273,17 @@ LANGUAGES = [
         ],
     },
     {
+        "code": "sl",
+        "name_en": "Slovenian",
+        "name": "Slovenščina",
+        "translators": [
+            {
+                "name": "Obrazci Mail",
+                "crowdin_profile": "spamamail64",
+            },
+        ],
+    },
+    {
         "code": "sr",
         "name_en": "Serbian (Cyrillic)",
         "name": "Српски",
