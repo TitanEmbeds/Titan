@@ -127,7 +127,7 @@ class Titan(discord.Client):
         for member in guild.members:
             await self.database.update_guild_member(member, True, False)
         if guild.me.server_permissions.ban_members:
-            banned = await self.get_bans(message.server)
+            banned = await self.get_bans(guild)
             for ban in banned:
                 member = discord.Member(user={
                     "username": ban.name,
