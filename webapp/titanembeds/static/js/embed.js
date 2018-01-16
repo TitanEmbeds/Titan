@@ -1202,8 +1202,10 @@
             if (usr.avatar_url) {
                 parent.find(".authoravatar").prop("src", usr.avatar_url);
             }
+            if (usr.roles) {
+                parent.attr("discord_userroles", usr.roles.join(" "));
+            }
             parent.attr("discord_userid", usr.id);
-            parent.attr("discord_userroles", usr.roles.join(" "));
         }
         collapse_messages();
     }
