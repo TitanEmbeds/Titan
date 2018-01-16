@@ -164,6 +164,7 @@ class Gateway(Namespace):
             usr["color"] = self.get_user_color(guild_id, usr["id"])
             if (usr["avatar"]):
                 usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.jpg".format(usr["id"], usr["avatar"])
+            usr["roles"] = json.loads(member.roles)
             usr["stargazer"] = "star" in get_badges(member.user_id)
         else:
             member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.nickname == name, GuildMembers.discriminator == discriminator).first()
@@ -175,6 +176,7 @@ class Gateway(Namespace):
                 usr["color"] = self.get_user_color(guild_id, usr["id"])
                 if (usr["avatar"]):
                     usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.jpg".format(usr["id"], usr["avatar"])
+                usr["roles"] = json.loads(member.roles)
                 usr["stargazer"] = "star" in get_badges(member.user_id)
         emit("lookup_user_info", usr)
         self.teardown_db_session()
