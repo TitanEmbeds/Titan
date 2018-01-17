@@ -43,6 +43,7 @@
     var global_guest_icon = null; // Guest icon
     var notification_sound = null; // Sound Manager 2 demonstrative.mp3 object https://notificationsounds.com/message-tones/demonstrative-516
     var notification_sound_setting; // nothing, mentions, newmsgs - to control what new sound it makes
+    var display_richembeds; // true/false - if rich embeds should be displayed
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -268,6 +269,19 @@
             url: "/static/audio/demonstrative.mp3",
             volume: 8,
         });
+        
+        $("[name=richembed_toggle_radiobtn]").click(function (event) {
+            display_richembeds = event.target.value == "true";
+            localStorage.setItem("display_richembeds", display_richembeds);
+            $("[name=richembed_toggle_radiobtn][value=" + display_richembeds + "]").prop("checked", true);
+        });
+        var localstore_display_richembeds = localStorage.getItem("display_richembeds");
+        if (localstore_display_richembeds) {
+            display_richembeds = !(localstore_display_richembeds == "false");
+        } else {
+            display_richembeds = true;
+        }
+        $("[name=richembed_toggle_radiobtn][value=" + display_richembeds + "]").prop("checked", true);
         
         var dembed = discord_embed();
         dembed.done(function (data) {
@@ -998,28 +1012,30 @@
     
     function parse_message_embeds(embeds) {
         var emb = [];
-        for (var i = 0; i < embeds.length; i++) {
-            var disembed = embeds[i];
-            // if ($.inArray(disembed.type, ["rich", "link", "video"]) == -1) {
-            //     continue;
-            // }
-            disembed.toRenderFooter = false;
-            if (disembed.footer) {
-                disembed.toRenderFooter = true;
-            } else if (disembed.timestamp) {
-                disembed.toRenderFooter = true;
+        if (display_richembeds) {
+            for (var i = 0; i < embeds.length; i++) {
+                var disembed = embeds[i];
+                // if ($.inArray(disembed.type, ["rich", "link", "video"]) == -1) {
+                //     continue;
+                // }
+                disembed.toRenderFooter = false;
+                if (disembed.footer) {
+                    disembed.toRenderFooter = true;
+                } else if (disembed.timestamp) {
+                    disembed.toRenderFooter = true;
+                }
+                disembed.footerVerticalBar = disembed.footer && disembed.timestamp;
+                if (disembed.timestamp) {
+                    disembed.formatted_timestamp = moment(disembed.timestamp).format('ddd MMM Do, YYYY [at] h:mm A');
+                }
+                if (disembed.color) {
+                    disembed.hexColor = "#" + disembed.color.toString(16);
+                }
+                var template = $('#mustache_richembed').html();
+                Mustache.parse(template);
+                var rendered = Mustache.render(template, disembed);
+                emb.push(rendered);
             }
-            disembed.footerVerticalBar = disembed.footer && disembed.timestamp;
-            if (disembed.timestamp) {
-                disembed.formatted_timestamp = moment(disembed.timestamp).format('ddd MMM Do, YYYY [at] h:mm A');
-            }
-            if (disembed.color) {
-                disembed.hexColor = "#" + disembed.color.toString(16);
-            }
-            var template = $('#mustache_richembed').html();
-            Mustache.parse(template);
-            var rendered = Mustache.render(template, disembed);
-            emb.push(rendered);
         }
         return emb;
     }

@@ -171,6 +171,19 @@
             </span>
           </div>
         </div>
+        <h4>{{ _("Display Rich Embeds") }}</h4>
+        <div class="row">
+          <div class="col s12">
+            <span>
+              <input name="richembed_toggle_radiobtn" type="radio" id="richembed_toggle_radiobtn_enable" value="true" />
+              <label for="richembed_toggle_radiobtn_enable">{{ _("Enable") }}</label>
+            </span>
+            <span>
+              <input name="richembed_toggle_radiobtn" type="radio" id="richembed_toggle_radiobtn_disable" value="false" />
+              <label for="richembed_toggle_radiobtn_disable">{{ _("Disable") }}</label>
+            </span>
+          </div>
+        </div>
         <div class="row">
           <a id="logout_btn" class="waves-effect waves-light btn right" href="{{ url_for('user.logout', redirect=request.url) }}"><i class="material-icons">exit_to_app</i></a>
         </div>
