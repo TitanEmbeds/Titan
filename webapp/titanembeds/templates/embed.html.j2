@@ -316,9 +316,9 @@
             <div class="innercontent">
               {{#author}}
               <div class="author">
-                {{#author.icon_url}}
-                <img src="{{author.icon_url}}">
-                {{/author.icon_url}}
+                {{#author.proxy_icon_url}}
+                <img src="{{author.proxy_icon_url}}">
+                {{/author.proxy_icon_url}}
                 <a href="
                   {{#author.url}}{{author.url}}{{/author.url}}
                   {{^author.url}}#{{/author.url}}
@@ -349,21 +349,21 @@
             </div>
             {{#thumbnail}}
             <div class="thumbnail">
-              <img src="{{thumbnail.url}}">
+              <img src="{{thumbnail.proxy_url}}">
             </div>
             {{/thumbnail}}
           </div>
           {{#image}}
           <div class="image">
-            <img src="{{image.url}}">
+            <img src="{{image.proxy_url}}">
           </div>
           {{/image}}
           {{#toRenderFooter}}
           <div class="footer">
             {{#footer}}
-            {{#footer.icon_url}}
-            <img class="icon_url" src="{{footer.icon_url}}">
-            {{/footer.icon_url}}
+            {{#footer.proxy_icon_url}}
+            <img class="icon_url" src="{{footer.proxy_icon_url}}">
+            {{/footer.proxy_icon_url}}
             <span class="text">{{footer.text}}</span>
             {{/footer}}
             {{#footerVerticalBar}}
