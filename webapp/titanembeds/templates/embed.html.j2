@@ -27,7 +27,7 @@
       {% include "opengraph_tags.html.j2" %}
     {% endwith %}
 
-    <title>{{ guild['name'] }} - Embed - Titan Embeds for Discord</title>
+    <title>{{ guild['name']|e }} - Embed - Titan Embeds for Discord</title>
     {% include 'google_analytics.html.j2' %}
     <script src='https://www.google.com/recaptcha/api.js'></script>
     
