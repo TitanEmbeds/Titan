@@ -3,6 +3,7 @@ from flask_socketio import emit
 from functools import wraps
 from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS, AuthenticatedUsers
 from titanembeds.oauth import generate_guild_icon_url
+from titanembeds.utils import get_online_embed_user_keys
 import datetime
 import json
 from sqlalchemy import func
@@ -22,9 +23,9 @@ def is_admin(f):
     return decorator(f)
 
 def get_online_users_count():
-    time_past = (datetime.datetime.now() - datetime.timedelta(seconds = 15)).strftime('%Y-%m-%d %H:%M:%S')
-    unauths = db.session.query(func.count(UnauthenticatedUsers.id)).filter(UnauthenticatedUsers.last_timestamp > time_past, UnauthenticatedUsers.revoked == False).scalar()
-    auths = db.session.query(func.count(AuthenticatedUsers.id)).filter(AuthenticatedUsers.last_timestamp > time_past).scalar()
+    users = get_online_embed_user_keys()
+    auths = len(users["AuthenticatedUsers"])
+    unauths = len(users["UnauthenticatedUsers"])
     return {"authenticated": auths, "guest": unauths, "total": auths + unauths}
 
 @admin.route("/")
@@ -114,14 +115,13 @@ def cosmetics_patch():
 def prepare_guild_members_list(members, bans):
     all_users = []
     ip_pool = []
-    members = sorted(members, key=lambda k: datetime.datetime.strptime(str(k.last_timestamp.replace(tzinfo=None, microsecond=0)), "%Y-%m-%d %H:%M:%S"), reverse=True)
+    members = sorted(members, key=lambda k: k.id, reverse=True)
     for member in members:
         user = {
             "id": member.id,
             "username": member.username,
             "discrim": member.discriminator,
             "ip": member.ip_address,
-            "last_visit": member.last_timestamp,
             "kicked": member.revoked,
             "banned": False,
             "banned_timestamp": None,
@@ -164,7 +164,7 @@ def administrate_guild(guild_id):
     permissions.append("Manage Embed Settings")
     permissions.append("Ban Members")
     permissions.append("Kick Members")
-    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.last_timestamp).all()
+    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.id).all()
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
     dbguild_dict = {

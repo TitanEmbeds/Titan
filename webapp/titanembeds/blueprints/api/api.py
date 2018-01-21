@@ -1,6 +1,6 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, GuildMembers, Messages, get_channel_messages, list_all_guild_members, get_guild_member, get_administrators_list, get_badges
 from titanembeds.decorators import valid_session_required, discord_users_only, abort_if_guild_disabled
-from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles
+from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles, get_online_embed_user_keys
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 from flask import Blueprint, abort, jsonify, session, request, url_for
 from flask import current_app as app
@@ -111,9 +111,9 @@ def get_online_discord_users(guild_id, embed):
     return embed['members']
 
 def get_online_embed_users(guild_id):
-    time_past = (datetime.datetime.now() - datetime.timedelta(seconds = 15)).strftime('%Y-%m-%d %H:%M:%S')
-    unauths = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.last_timestamp > time_past, UnauthenticatedUsers.revoked == False, UnauthenticatedUsers.guild_id == guild_id).all()
-    auths = db.session.query(AuthenticatedUsers).filter(AuthenticatedUsers.last_timestamp > time_past, AuthenticatedUsers.guild_id == guild_id).all()
+    usrs = get_online_embed_user_keys(guild_id)
+    unauths = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.user_key.in_(usrs["UnauthenticatedUsers"]), UnauthenticatedUsers.revoked == False, UnauthenticatedUsers.guild_id == guild_id).all() if usrs["UnauthenticatedUsers"] else []
+    auths = db.session.query(AuthenticatedUsers).filter(AuthenticatedUsers.client_id.in_(usrs["AuthenticatedUsers"]), AuthenticatedUsers.guild_id == guild_id).all() if usrs["AuthenticatedUsers"] else []
     users = {'unauthenticated':[], 'authenticated':[]}
     for user in unauths:
         meta = {

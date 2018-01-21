@@ -12,7 +12,6 @@ class UnauthenticatedUsers(db.Model):
     discriminator = db.Column(db.Integer, nullable=False)           # The discriminator to distinguish unauth users with each other
     user_key = db.Column(db.Text(), nullable=False)                 # The secret key used to identify the user holder
     ip_address = db.Column(db.String(255), nullable=False)          # The IP Address of the user
-    last_timestamp = db.Column(db.TIMESTAMP, nullable=False)        # The timestamp of when the user has last sent the heartbeat
     revoked = db.Column(db.Boolean(), nullable=False)               # If the user's key has been revoked and a new one is required to be generated
 
     def __init__(self, guild_id, username, discriminator, ip_address):
@@ -21,11 +20,10 @@ class UnauthenticatedUsers(db.Model):
         self.discriminator = discriminator
         self.user_key = "".join(random.choice(string.ascii_letters) for _ in range(0, 32))
         self.ip_address = ip_address
-        self.last_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
         self.revoked = False
 
     def __repr__(self):
-        return '<UnauthenticatedUsers {0} {1} {2} {3} {4} {5} {6} {7}>'.format(self.id, self.guild_id, self.username, self.discriminator, self.user_key, self.ip_address, self.last_timestamp, self.revoked)
+        return '<UnauthenticatedUsers {0} {1} {2} {3} {4} {5} {6}>'.format(self.id, self.guild_id, self.username, self.discriminator, self.user_key, self.ip_address, self.revoked)
 
     def isRevoked(self):
         return self.revoked
@@ -39,8 +37,3 @@ class UnauthenticatedUsers(db.Model):
         self.revoked = True
         db.session.commit()
         return self.revoked
-
-    def bumpTimestamp(self):
-        self.last_timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-        db.session.commit()
-        return self.last_timestamp

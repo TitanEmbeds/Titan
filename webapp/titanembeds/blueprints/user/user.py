@@ -201,7 +201,7 @@ def administrate_guild(guild_id):
     if check_user_permission(guild_id, 1):
         permissions.append("Kick Members")
     cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
-    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.last_timestamp).all()
+    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.id).all()
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
     dbguild_dict = {
@@ -275,14 +275,13 @@ def add_bot(guild_id):
 def prepare_guild_members_list(members, bans):
     all_users = []
     ip_pool = []
-    members = sorted(members, key=lambda k: datetime.datetime.strptime(str(k.last_timestamp.replace(tzinfo=None, microsecond=0)), "%Y-%m-%d %H:%M:%S"), reverse=True)
+    members = sorted(members, key=lambda k: k.id, reverse=True)
     for member in members:
         user = {
             "id": member.id,
             "username": member.username,
             "discrim": member.discriminator,
             "ip": member.ip_address,
-            "last_visit": member.last_timestamp,
             "kicked": member.revoked,
             "banned": False,
             "banned_timestamp": None,

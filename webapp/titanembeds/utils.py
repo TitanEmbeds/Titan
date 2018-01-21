@@ -138,7 +138,7 @@ def update_user_status(guild_id, username, user_key=None):
             session['user_keys'].pop(guild_id, None)
             return status
         dbUser = UnauthenticatedUsers.query.filter(and_(UnauthenticatedUsers.guild_id == guild_id, UnauthenticatedUsers.user_key == user_key)).first()
-        dbUser.bumpTimestamp()
+        bump_user_presence_timestamp(guild_id, "UnauthenticatedUsers", user_key)
         if dbUser.username != username or dbUser.ip_address != ip_address:
             dbUser.username = username
             dbUser.ip_address = ip_address
@@ -161,9 +161,27 @@ def update_user_status(guild_id, username, user_key=None):
         dbMember = get_guild_member(guild_id, status["user_id"])
         if dbMember:
             status["nickname"] = dbMember.nickname
-        dbUser = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == status['user_id'])).first()
-        dbUser.bumpTimestamp()
+        bump_user_presence_timestamp(guild_id, "AuthenticatedUsers", status["user_id"])
     return status
+
+def bump_user_presence_timestamp(guild_id, user_type, client_key):
+    redis_key = "MemberPresence/{}/{}/{}".format(guild_id, user_type, client_key)
+    redis_store.set(redis_key, "", 15)
+
+def get_online_embed_user_keys(guild_id="*", user_type=None):
+    if not user_type:
+        user_type = ["AuthenticatedUsers", "UnauthenticatedUsers"]
+    else:
+        user_type = [user_type]
+    usrs = {}
+    for utype in user_type:
+        usrs[utype] = []
+        keys = redis_store.keys("MemberPresence/{}/{}/*".format(guild_id, utype))
+        for key in keys:
+            key = str(key, "utf-8")
+            client_key = key.split("/")[-1]
+            usrs[utype].append(client_key)
+    return usrs
 
 def check_user_in_guild(guild_id):
     if user_unauthenticated():
