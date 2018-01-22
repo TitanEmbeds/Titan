@@ -119,7 +119,6 @@ def new_custom_css_post():
         css = None
     css = UserCSS(name, user_id, variables_enabled, variables, css)
     db.session.add(css)
-    db.session.commit()
     return jsonify({"id": css.id})
 
 @user.route("/custom_css/edit/<css_id>", methods=["GET"])
@@ -165,7 +164,6 @@ def edit_custom_css_post(css_id):
     dbcss.css = css
     dbcss.css_variables = variables
     dbcss.css_var_bool = variables_enabled
-    db.session.commit()
     return jsonify({"id": dbcss.id})
 
 @user.route("/custom_css/edit/<css_id>", methods=["DELETE"])
@@ -180,7 +178,6 @@ def edit_custom_css_delete(css_id):
     if dbcss.user_id != session['user_id']:
         abort(403)
     db.session.delete(dbcss)
-    db.session.commit()
     return jsonify({})
 
 @user.route("/administrate_guild/<guild_id>", methods=["GET"])
@@ -250,7 +247,6 @@ def update_administrate_guild(guild_id):
         guest_icon = None
     db_guild.guest_icon = guest_icon
     
-    db.session.commit()
     emit("guest_icon_change", {"guest_icon": guest_icon if guest_icon else url_for('static', filename='img/titanembeds_square.png')}, room="GUILD_"+guild_id, namespace="/gateway")
     return jsonify(
         id=db_guild.id,
@@ -337,7 +333,6 @@ def ban_unauthenticated_user():
         db.session.delete(db_ban)
     db_ban = UnauthenticatedBans(guild_id, db_user.ip_address, db_user.username, db_user.discriminator, reason, session["user_id"])
     db.session.add(db_ban)
-    db.session.commit()
     return ('', 204)
 
 @user.route("/ban", methods=["DELETE"])
@@ -481,7 +476,6 @@ def donate_patch():
             entry = Cosmetics(session["user_id"])
         entry.guest_icon = True
     db.session.add(entry)
-    db.session.commit()
     return ('', 204)
 
 @user.route("/patreon")
@@ -561,7 +555,6 @@ def patreon_sync_post():
         dbpatreon = Patreon(usr["id"])
     dbpatreon.total_synced = usr["titan"]["total_cents_pledged"]
     db.session.add(dbpatreon)
-    db.session.commit()
     set_titan_token(session["user_id"], usr["titan"]["eligible_tokens"], "PATREON {} [{}]".format(usr["attributes"]["full_name"], usr["id"]))
     add_badge(session["user_id"], "supporter")
     session["tokens"] = get_titan_token(session["user_id"])

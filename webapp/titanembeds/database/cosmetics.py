@@ -39,7 +39,6 @@ def set_badges(user_id, badges):
         usr = Cosmetics(user_id)
     usr.badges = json.dumps(badges)
     db.session.add(usr)
-    db.session.commit()
 
 def get_badges(user_id):
     usr = db.session.query(Cosmetics).filter(Cosmetics.user_id == user_id).first()

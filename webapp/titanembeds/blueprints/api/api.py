@@ -313,7 +313,6 @@ def create_unauthenticated_user():
             session['user_id'] = random.randint(0,9999)
         user = UnauthenticatedUsers(guild_id, username, session['user_id'], ip_address)
         db.session.add(user)
-        db.session.commit()
         key = user.user_key
         if 'user_keys' not in session:
             session['user_keys'] = {guild_id: key}
@@ -353,7 +352,6 @@ def change_unauthenticated_username():
             session['user_id'] = random.randint(0,9999)
         user = UnauthenticatedUsers(guild_id, username, session['user_id'], ip_address)
         db.session.add(user)
-        db.session.commit()
         key = user.user_key
         session['user_keys'][guild_id] = key
         status = update_user_status(guild_id, username, key)
@@ -428,7 +426,6 @@ def create_authenticated_user():
             if not db_user:
                 db_user = AuthenticatedUsers(guild_id, session['user_id'])
                 db.session.add(db_user)
-                db.session.commit()
             status = update_user_status(guild_id, session['username'])
             return jsonify(status=status)
         else:

@@ -30,5 +30,4 @@ def set_titan_token(user_id, amt_change, action):
     db.session.add(transact)
     token_usr.tokens = new_token_count
     db.session.add(token_usr)
-    db.session.commit()
     return True

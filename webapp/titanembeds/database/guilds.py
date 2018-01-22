@@ -44,5 +44,4 @@ class Guilds(db.Model):
 
     def set_unauthUsersBool(self, value):
         self.unauth_users = value
-        db.session.commit()
         return self.unauth_users

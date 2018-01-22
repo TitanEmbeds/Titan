@@ -26,7 +26,6 @@ class UnauthenticatedBans(db.Model):
 
     def liftBan(self, lifter_id):
         self.lifter_id = lifter_id
-        db.session.commit()
         return self.lifter_id
 
     def __repr__(self):

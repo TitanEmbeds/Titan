@@ -30,10 +30,8 @@ class UnauthenticatedUsers(db.Model):
 
     def changeUsername(self, username):
         self.username = username
-        db.session.commit()
         return self.username
 
     def revokeUser(self):
         self.revoked = True
-        db.session.commit()
         return self.revoked
