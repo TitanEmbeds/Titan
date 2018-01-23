@@ -32,14 +32,14 @@ class Gateway(Namespace):
         if session.get("unauthenticated", True) and guild_id in session.get("user_keys", {}):
             join_room("IP_"+get_client_ipaddr())
         elif not session.get("unauthenticated", True):
-            join_room("USER_"+session["user_id"])
+            join_room("USER_"+str(session["user_id"]))
         visitor_mode = data["visitor_mode"]
         if not visitor_mode:
             if session["unauthenticated"]:
                 emit("embed_user_connect", {"unauthenticated": True, "username": session["username"], "discriminator": session["user_id"]}, room="GUILD_"+guild_id)
             else:
                 nickname = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == session["user_id"]).first().nickname
-                emit("embed_user_connect", {"unauthenticated": False, "id": session["user_id"], "nickname": nickname, "username": session["username"],"discriminator": session["discriminator"], "avatar_url": session["avatar"]}, room="GUILD_"+guild_id)
+                emit("embed_user_connect", {"unauthenticated": False, "id": str(session["user_id"]), "nickname": nickname, "username": session["username"],"discriminator": session["discriminator"], "avatar_url": session["avatar"]}, room="GUILD_"+guild_id)
         emit("identified")
         self.teardown_db_session()
     
@@ -51,7 +51,7 @@ class Gateway(Namespace):
         if session["unauthenticated"]:
             msg = {"unauthenticated": True, "username": session["username"], "discriminator": session["user_id"]}
         else:
-            msg = {"unauthenticated": False, "id": session["user_id"]}
+            msg = {"unauthenticated": False, "id": str(session["user_id"])}
         emit("embed_user_disconnect", msg, room="GUILD_"+guild_id)
         if guild_webhooks_enabled(guild_id): # Delete webhooks
             dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
@@ -111,7 +111,7 @@ class Gateway(Namespace):
                 'username': dbMember.username,
                 'nickname': dbMember.nickname,
                 'discriminator': dbMember.discriminator,
-                'user_id': session['user_id'],
+                'user_id': str(session['user_id']),
             }
             emit("current_user_info", usr)
         self.teardown_db_session()
@@ -157,7 +157,7 @@ class Gateway(Namespace):
         }
         member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.username == name, GuildMembers.discriminator == discriminator).first()
         if member:
-            usr["id"] = member.user_id
+            usr["id"] = str(member.user_id)
             usr["username"] = member.username
             usr["nickname"] = member.nickname
             usr["avatar"] = member.avatar
@@ -169,7 +169,7 @@ class Gateway(Namespace):
         else:
             member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.nickname == name, GuildMembers.discriminator == discriminator).first()
             if member:
-                usr["id"] = member.user_id
+                usr["id"] = str(member.user_id)
                 usr["username"] = member.username
                 usr["nickname"] = member.nickname
                 usr["avatar"] = member.avatar

@@ -54,9 +54,9 @@ class DatabaseInterface(object):
                         edit_ts = str(edit_ts)
 
                     msg = Messages(
-                        message.server.id,
-                        message.channel.id,
-                        message.id,
+                        int(message.server.id),
+                        int(message.channel.id),
+                        int(message.id),
                         message.content,
                         json.dumps(get_message_author(message)),
                         str(message.timestamp),
@@ -91,9 +91,9 @@ class DatabaseInterface(object):
             async with threadpool():
                 with self.get_session() as session:
                     msg = session.query(Messages) \
-                        .filter(Messages.guild_id == message.server.id) \
-                        .filter(Messages.channel_id == message.channel.id) \
-                        .filter(Messages.message_id == message.id).first()
+                        .filter(Messages.guild_id == int(message.server.id)) \
+                        .filter(Messages.channel_id == int(message.channel.id)) \
+                        .filter(Messages.message_id == int(message.id)).first()
                     if msg:
                         session.delete(msg)
                         session.commit()
@@ -108,13 +108,13 @@ class DatabaseInterface(object):
                 gui = session.query(Guilds).filter(Guilds.guild_id == guild.id).first()
                 if not gui:
                     gui = Guilds(
-                        guild.id,
+                        int(guild.id),
                         guild.name,
                         json.dumps(get_roles_list(guild.roles)),
                         json.dumps(get_channels_list(guild.channels)),
                         json.dumps(get_webhooks_list(server_webhooks)),
                         json.dumps(get_emojis_list(guild.emojis)),
-                        guild.owner_id,
+                        int(guild.owner_id),
                         guild.icon
                     )
                     session.add(gui)
@@ -124,7 +124,7 @@ class DatabaseInterface(object):
                     gui.channels = json.dumps(get_channels_list(guild.channels))
                     gui.webhooks = json.dumps(get_webhooks_list(server_webhooks))
                     gui.emojis = json.dumps(get_emojis_list(guild.emojis))
-                    gui.owner_id = guild.owner_id
+                    gui.owner_id = int(guild.owner_id)
                     gui.icon = guild.icon
                 session.commit()
 
@@ -137,7 +137,7 @@ class DatabaseInterface(object):
                     disguild = discord.utils.get(guilds, id=guild.guild_id)
                     if not disguild:
                         changed = True
-                        dbmsgs = session.query(Messages).filter(Messages.guild_id == guild.guild_id).all()
+                        dbmsgs = session.query(Messages).filter(Messages.guild_id == int(guild.guild_id)).all()
                         for msg in dbmsgs:
                             session.delete(msg)
                         session.delete(guild)
@@ -147,9 +147,9 @@ class DatabaseInterface(object):
     async def remove_guild(self, guild):
         async with threadpool():
             with self.get_session() as session:
-                gui = session.query(Guilds).filter(Guilds.guild_id == guild.id).first()
+                gui = session.query(Guilds).filter(Guilds.guild_id == int(guild.id)).first()
                 if gui:
-                    dbmsgs = session.query(Messages).filter(Messages.guild_id == guild.id).all()
+                    dbmsgs = session.query(Messages).filter(Messages.guild_id == int(guild.id)).all()
                     for msg in dbmsgs:
                         session.delete(msg)
                     session.delete(gui)
@@ -159,13 +159,13 @@ class DatabaseInterface(object):
         async with threadpool():
             with self.get_session() as session:
                 dbmember = session.query(GuildMembers) \
-                    .filter(GuildMembers.guild_id == member.server.id) \
-                    .filter(GuildMembers.user_id == member.id) \
-                    .order_by(GuildMembers.id).all()
+                    .filter(GuildMembers.guild_id == int(member.server.id)) \
+                    .filter(GuildMembers.user_id == int(member.id)) \
+                    .order_by(int(GuildMembers.id)).all()
                 if not dbmember:
                     dbmember = GuildMembers(
-                        member.server.id,
-                        member.id,
+                        int(member.server.id),
+                        int(member.id),
                         member.name,
                         member.discriminator,
                         member.nick,
@@ -193,8 +193,8 @@ class DatabaseInterface(object):
         async with threadpool():
             with self.get_session() as session:
                 dbmember = session.query(GuildMembers) \
-                    .filter(GuildMembers.guild_id == server.id) \
-                    .filter(GuildMembers.user_id == user.id).first()
+                    .filter(GuildMembers.guild_id == int(server.id)) \
+                    .filter(GuildMembers.user_id == int(user.id)).first()
                 if dbmember:
                     dbmember.banned = False
                     session.commit()
@@ -204,7 +204,7 @@ class DatabaseInterface(object):
             with self.get_session() as session:
                 changed = False
                 dbmembers = session.query(GuildMembers) \
-                    .filter(GuildMembers.guild_id == guild_id) \
+                    .filter(GuildMembers.guild_id == int(guild_id)) \
                     .filter(GuildMembers.active == True).all()
                 for member in dbmembers:
                     dismember = discord.utils.get(guild_members, id=member.user_id)
@@ -220,16 +220,16 @@ class DatabaseInterface(object):
                 changed = False
                 for usr in guildbans:
                     dbusr = session.query(GuildMembers) \
-                        .filter(GuildMembers.guild_id == guild_id) \
-                        .filter(GuildMembers.user_id == usr.id) \
+                        .filter(GuildMembers.guild_id == int(guild_id)) \
+                        .filter(GuildMembers.user_id == int(usr.id)) \
                         .filter(GuildMembers.active == False).first()
                     changed = True
                     if dbusr:
                         dbusr.banned = True
                     else:
                         dbusr = GuildMembers(
-                            guild_id,
-                            usr.id,
+                            int(guild_id),
+                            int(usr.id),
                             usr.name,
                             usr.discriminator,
                             None,
@@ -248,26 +248,26 @@ class DatabaseInterface(object):
                 dbuser = None
                 if discriminator:
                     dbuser = session.query(UnauthenticatedUsers) \
-                        .filter(UnauthenticatedUsers.guild_id == guild_id) \
+                        .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
                         .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
                         .filter(UnauthenticatedUsers.discriminator == discriminator) \
                         .order_by(UnauthenticatedUsers.id.desc()).first()
                 else:
                     dbuser = session.query(UnauthenticatedUsers) \
-                        .filter(UnauthenticatedUsers.guild_id == guild_id) \
+                        .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
                         .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
                         .order_by(UnauthenticatedUsers.id.desc()).first()
                 if not dbuser:
                     return "Ban error! Guest user cannot be found."
                 dbban = session.query(UnauthenticatedBans) \
-                    .filter(UnauthenticatedBans.guild_id == guild_id) \
+                    .filter(UnauthenticatedBans.guild_id == int(guild_id)) \
                     .filter(UnauthenticatedBans.last_username == dbuser.username) \
                     .filter(UnauthenticatedBans.last_discriminator == dbuser.discriminator).first()
                 if dbban is not None:
                     if dbban.lifter_id is None:
                         return "Ban error! Guest user, **{}#{}**, has already been banned.".format(dbban.last_username, dbban.last_discriminator)
                     session.delete(dbban)
-                dbban = UnauthenticatedBans(guild_id, dbuser.ip_address, dbuser.username, dbuser.discriminator, "", placer_id)
+                dbban = UnauthenticatedBans(int(guild_id), dbuser.ip_address, dbuser.username, dbuser.discriminator, "", int(placer_id))
                 session.add(dbban)
                 session.commit()
                 return "Guest user, **{}#{}**, has successfully been added to the ban list!".format(dbban.last_username, dbban.last_discriminator)
@@ -278,13 +278,13 @@ class DatabaseInterface(object):
                 dbuser = None
                 if discriminator:
                     dbuser = session.query(UnauthenticatedUsers) \
-                        .filter(UnauthenticatedUsers.guild_id == guild_id) \
+                        .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
                         .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
                         .filter(UnauthenticatedUsers.discriminator == discriminator) \
                         .order_by(UnauthenticatedUsers.id.desc()).first()
                 else:
                     dbuser = session.query(UnauthenticatedUsers) \
-                        .filter(UnauthenticatedUsers.guild_id == guild_id) \
+                        .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
                         .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
                         .order_by(UnauthenticatedUsers.id.desc()).first()
                 if not dbuser:
@@ -298,5 +298,5 @@ class DatabaseInterface(object):
     async def delete_all_messages_from_channel(self, channel_id):
         async with threadpool():
             with self.get_session() as session:
-                session.query(Messages).filter(Messages.channel_id == channel_id).delete()
+                session.query(Messages).filter(Messages.channel_id == int(channel_id)).delete()
                 session.commit()

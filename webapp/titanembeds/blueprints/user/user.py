@@ -41,7 +41,7 @@ def callback():
     session['unauthenticated'] = False
     session.permanent = True
     user = get_current_authenticated_user()
-    session['user_id'] = user['id']
+    session['user_id'] = int(user['id'])
     session['username'] = user['username']
     session['discriminator'] = user['discriminator']
     session['avatar'] = generate_avatar_url(user['id'], user['avatar'], user['discriminator'])

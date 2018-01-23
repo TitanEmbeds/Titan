@@ -3,8 +3,8 @@ from titanembeds.database import db, Base
 class GuildMembers(Base):
     __tablename__ = "guild_members"
     id = db.Column(db.Integer, primary_key=True)    # Auto incremented id
-    guild_id = db.Column(db.String(255))            # Discord guild id
-    user_id = db.Column(db.String(255))             # Discord user id
+    guild_id = db.Column(db.BigInteger)            # Discord guild id
+    user_id = db.Column(db.BigInteger)             # Discord user id
     username = db.Column(db.String(255))            # Name
     discriminator = db.Column(db.Integer)           # User discriminator
     nickname = db.Column(db.String(255))            # User nickname

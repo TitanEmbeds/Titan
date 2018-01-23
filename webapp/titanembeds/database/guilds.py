@@ -2,8 +2,7 @@ from titanembeds.database import db
 
 class Guilds(db.Model):
     __tablename__ = "guilds"
-    id = db.Column(db.Integer, primary_key=True)                                # Auto incremented id
-    guild_id = db.Column(db.String(255), nullable=False)                        # Discord guild id
+    guild_id = db.Column(db.BigInteger, nullable=False, primary_key=True)       # Discord guild id
     name = db.Column(db.String(255), nullable=False)                            # Name
     unauth_users = db.Column(db.Boolean(), nullable=False, default=1)           # If allowed unauth users
     visitor_view = db.Column(db.Boolean(), nullable=False, default=0)           # If users are automatically "signed in" and can view chat
@@ -17,7 +16,7 @@ class Guilds(db.Model):
     channels = db.Column(db.Text().with_variant(db.Text(4294967295), 'mysql'), nullable=False)                   # Guild channels
     webhooks = db.Column(db.Text().with_variant(db.Text(4294967295), 'mysql'), nullable=False)                   # Guild webhooks
     emojis = db.Column(db.Text().with_variant(db.Text(4294967295), 'mysql'), nullable=False)                     # Guild Emojis
-    owner_id = db.Column(db.String(255), nullable=False)                        # Snowflake of the owner
+    owner_id = db.Column(db.BigInteger, nullable=False)                        # Snowflake of the owner
     icon = db.Column(db.String(255))                                            # The icon string, null if none
     invite_link = db.Column(db.String(255))                                     # Custom Discord Invite Link
 

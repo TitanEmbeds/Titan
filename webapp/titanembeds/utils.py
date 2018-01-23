@@ -130,7 +130,7 @@ def update_user_status(guild_id, username, user_key=None):
             'nickname': None,
             'user_key': user_key,
             'guild_id': guild_id,
-            'user_id': session['user_id'],
+            'user_id': str(session['user_id']),
             'banned': checkUserBanned(guild_id, ip_address),
             'revoked': checkUserRevoke(guild_id, user_key),
         }
@@ -151,7 +151,7 @@ def update_user_status(guild_id, username, user_key=None):
             'nickname': None,
             'discriminator': session['discriminator'],
             'guild_id': guild_id,
-            'user_id': session['user_id'],
+            'user_id': str(session['user_id']),
             'banned': checkUserBanned(guild_id),
             'revoked': checkUserRevoke(guild_id)
         }

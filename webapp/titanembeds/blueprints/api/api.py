@@ -448,7 +448,7 @@ def user_info(guild_id, user_id):
     }
     member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == user_id).first()
     if member:
-        usr["id"] = member.user_id
+        usr["id"] = str(member.user_id)
         usr["username"] = member.username
         usr["nickname"] = member.nickname
         usr["discriminator"] = member.discriminator

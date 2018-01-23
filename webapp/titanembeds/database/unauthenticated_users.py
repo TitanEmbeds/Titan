@@ -7,7 +7,7 @@ import string
 class UnauthenticatedUsers(db.Model):
     __tablename__ = "unauthenticated_users"
     id = db.Column(db.Integer, primary_key=True, nullable=False)    # Auto increment id
-    guild_id = db.Column(db.String(255), nullable=False)            # Guild pretaining to the unauthenticated user
+    guild_id = db.Column(db.BigInteger, nullable=False)            # Guild pretaining to the unauthenticated user
     username = db.Column(db.String(255), nullable=False)            # The username of the user
     discriminator = db.Column(db.Integer, nullable=False)           # The discriminator to distinguish unauth users with each other
     user_key = db.Column(db.Text(), nullable=False)                 # The secret key used to identify the user holder

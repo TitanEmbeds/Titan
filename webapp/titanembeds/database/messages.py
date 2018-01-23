@@ -4,10 +4,9 @@ import json
 
 class Messages(db.Model):
     __tablename__ = "messages"
-    id = db.Column(db.Integer, primary_key=True)                    # Auto incremented id
-    guild_id = db.Column(db.String(255), nullable=False)            # Discord guild id
-    channel_id = db.Column(db.String(255), nullable=False)          # Channel id
-    message_id = db.Column(db.String(255), nullable=False)          # Message snowflake
+    message_id = db.Column(db.BigInteger, nullable=False, primary_key=True) # Message snowflake
+    guild_id = db.Column(db.BigInteger, nullable=False)            # Discord guild id
+    channel_id = db.Column(db.BigInteger, nullable=False)          # Channel id
     content = db.Column(db.Text(), nullable=False)                  # Message contents
     author = db.Column(db.Text(), nullable=False)                   # Author
     timestamp = db.Column(db.TIMESTAMP, nullable=False)             # Timestamp of when content is created
@@ -35,7 +34,7 @@ def get_channel_messages(guild_id, channel_id, after_snowflake=None):
     if not after_snowflake:
         q = db.session.query(Messages).filter(Messages.channel_id == channel_id).order_by(Messages.timestamp.desc()).limit(50)
     else:
-        q = db.session.query(Messages).filter(cast(Messages.channel_id, db.BigInteger) == int(channel_id)).filter(cast(Messages.message_id, db.BigInteger) > after_snowflake).order_by(Messages.timestamp.desc()).limit(50)
+        q = db.session.query(Messages).filter(Messages.channel_id == channel_id).filter(Messages.message_id > after_snowflake).order_by(Messages.timestamp.desc()).limit(50)
     msgs = []
     snowflakes = []
     for x in q:
@@ -48,11 +47,11 @@ def get_channel_messages(guild_id, channel_id, after_snowflake=None):
         message = {
             "attachments": json.loads(x.attachments),
             "timestamp": x.timestamp,
-            "id": x.message_id,
+            "id": str(x.message_id),
             "edited_timestamp": x.edited_timestamp,
             "author": json.loads(x.author),
             "content": x.content,
-            "channel_id": x.channel_id,
+            "channel_id": str(x.channel_id),
             "mentions": json.loads(x.mentions),
             "embeds": json.loads(embeds),
         }

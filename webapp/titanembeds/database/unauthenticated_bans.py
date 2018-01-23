@@ -5,14 +5,14 @@ import time
 class UnauthenticatedBans(db.Model):
     __tablename__ = "unauthenticated_bans"
     id = db.Column(db.Integer, primary_key=True)                    # Auto increment id
-    guild_id = db.Column(db.String(255), nullable=False)            # Guild pretaining to the unauthenticated user
+    guild_id = db.Column(db.BigInteger, nullable=False)            # Guild pretaining to the unauthenticated user
     ip_address = db.Column(db.String(255), nullable=False)          # The IP Address of the user
     last_username = db.Column(db.String(255), nullable=False)       # The username when they got banned
     last_discriminator = db.Column(db.Integer, nullable=False)      # The discrim when they got banned
     timestamp = db.Column(db.TIMESTAMP, nullable=False)             # The timestamp of when the user got banned
     reason = db.Column(db.Text())                                   # The reason of the ban set by the guild moderators
-    lifter_id = db.Column(db.String(255))                           # Discord Client ID of the user who lifted the ban
-    placer_id = db.Column(db.String(255), nullable=False)           # The id of who placed the ban
+    lifter_id = db.Column(db.BigInteger)                           # Discord Client ID of the user who lifted the ban
+    placer_id = db.Column(db.BigInteger, nullable=False)           # The id of who placed the ban
 
     def __init__(self, guild_id, ip_address, last_username, last_discriminator, reason, placer_id):
         self.guild_id = guild_id

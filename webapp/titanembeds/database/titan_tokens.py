@@ -2,8 +2,7 @@ from titanembeds.database import db
 
 class TitanTokens(db.Model):
     __tablename__ = "titan_tokens"
-    id = db.Column(db.Integer, primary_key=True)                    # Auto increment id
-    user_id = db.Column(db.String(255), nullable=False)             # Discord user id of user
+    user_id = db.Column(db.BigInteger, nullable=False, primary_key=True)             # Discord user id of user
     tokens = db.Column(db.Integer, nullable=False, default=0)       # Token amount
     
     def __init__(self, user_id, tokens):

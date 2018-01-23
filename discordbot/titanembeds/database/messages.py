@@ -2,10 +2,9 @@ from titanembeds.database import db, Base
 
 class Messages(Base):
     __tablename__ = "messages"
-    id = db.Column(db.Integer, primary_key=True)    # Auto incremented id
-    guild_id = db.Column(db.String(255))            # Discord guild id
-    channel_id = db.Column(db.String(255))          # Channel id
-    message_id = db.Column(db.String(255))          # Message snowflake
+    message_id = db.Column(db.BigInteger, primary_key=True)          # Message snowflake
+    guild_id = db.Column(db.BigInteger)            # Discord guild id
+    channel_id = db.Column(db.BigInteger)          # Channel id
     content = db.Column(db.Text())                  # Message contents
     author = db.Column(db.Text())                   # Author json
     timestamp = db.Column(db.TIMESTAMP)             # Timestamp of when content is created
