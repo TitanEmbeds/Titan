@@ -161,7 +161,7 @@ class DatabaseInterface(object):
                 dbmember = session.query(GuildMembers) \
                     .filter(GuildMembers.guild_id == int(member.server.id)) \
                     .filter(GuildMembers.user_id == int(member.id)) \
-                    .order_by(int(GuildMembers.id)).all()
+                    .order_by(GuildMembers.id).all()
                 if not dbmember:
                     dbmember = GuildMembers(
                         int(member.server.id),
