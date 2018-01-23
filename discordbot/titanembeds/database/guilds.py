@@ -16,7 +16,7 @@ class Guilds(Base):
     channels = db.Column(db.Text().with_variant(db.Text(length=4294967295), 'mysql'))# Guild channels
     webhooks = db.Column(db.Text().with_variant(db.Text(length=4294967295), 'mysql'))# Guild webhooks
     emojis = db.Column(db.Text().with_variant(db.Text(length=4294967295), 'mysql'))  # Guild Emojis
-    owner_id = db.Column(db.BigInteger            # Snowflake of the owner
+    owner_id = db.Column(db.BigInteger)            # Snowflake of the owner
     icon = db.Column(db.String(255))                # The icon string, null if none
     invite_link = db.Column(db.String(255))         # Custom Discord Invite Link
 
