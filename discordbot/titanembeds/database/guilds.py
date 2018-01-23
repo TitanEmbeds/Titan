@@ -2,7 +2,7 @@ from titanembeds.database import db, Base
 
 class Guilds(Base):
     __tablename__ = "guilds"
-    guild_id = db.Column(db.BigInteger, primary_key=True            # Discord guild id
+    guild_id = db.Column(db.BigInteger, primary_key=True)            # Discord guild id
     name = db.Column(db.String(255))                # Name
     unauth_users = db.Column(db.Boolean())          # If allowed unauth users
     visitor_view = db.Column(db.Boolean())          # If users are automatically "signed in" and can view chat
