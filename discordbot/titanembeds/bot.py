@@ -78,27 +78,27 @@ class Titan(discord.Client):
         self.botsDiscordPw = BotsDiscordPw(self.user.id, config.get("bots-discord-pw-token", None))
         await self.postStats()
 
-        if "no-init" not in sys.argv:
-            for server in self.servers:
-                await self.database.update_guild(server)
-                if server.large:
-                    await self.request_offline_members(server)
-                if server.me.server_permissions.ban_members:
-                    server_bans = await self.get_bans(server)
-                else:
-                    server_bans = []
-                for member in server.members:
-                    banned = member.id in [u.id for u in server_bans]
-                    await self.database.update_guild_member(
-                        member,
-                        True,
-                        banned
-                    )
-                await self.database.flag_unactive_guild_members(server.id, server.members)
-                await self.database.flag_unactive_bans(server.id, server_bans)
-            await self.database.remove_unused_guilds(self.servers)
-        else:
-            print("Skipping indexing server due to no-init flag")
+        # if "no-init" not in sys.argv:
+        #     for server in self.servers:
+        #         await self.database.update_guild(server)
+        #         if server.large:
+        #             await self.request_offline_members(server)
+        #         if server.me.server_permissions.ban_members:
+        #             server_bans = await self.get_bans(server)
+        #         else:
+        #             server_bans = []
+        #         for member in server.members:
+        #             banned = member.id in [u.id for u in server_bans]
+        #             await self.database.update_guild_member(
+        #                 member,
+        #                 True,
+        #                 banned
+        #             )
+        #         await self.database.flag_unactive_guild_members(server.id, server.members)
+        #         await self.database.flag_unactive_bans(server.id, server_bans)
+        #     await self.database.remove_unused_guilds(self.servers)
+        # else:
+        #     print("Skipping indexing server due to no-init flag")
 
     async def on_message(self, message):
         await self.database.push_message(message)
