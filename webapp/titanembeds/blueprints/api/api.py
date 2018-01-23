@@ -87,7 +87,7 @@ def get_online_discord_users(guild_id, embed):
     for role in guild_roles:
         guildroles_filtered[role["id"]] = role
     for member in embed['members']:
-        apimem = apimembers_filtered.get(member["id"])
+        apimem = apimembers_filtered.get(int(member["id"]))
         member["hoist-role"] = None
         member["color"] = None
         if apimem:
