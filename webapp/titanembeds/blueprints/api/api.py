@@ -125,7 +125,7 @@ def get_online_embed_users(guild_id):
         client_id = user.client_id
         usrdb = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == client_id).first()
         meta = {
-            'id': usrdb.user_id,
+            'id': str(usrdb.user_id),
             'username': usrdb.username,
             'nickname': usrdb.nickname,
             'discriminator': usrdb.discriminator,
