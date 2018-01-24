@@ -373,4 +373,5 @@ def new_custom_css_post():
         css = None
     css = UserCSS(name, user_id, variables_enabled, variables, css)
     db.session.add(css)
+    db.session.commit()
     return jsonify({"id": css.id})

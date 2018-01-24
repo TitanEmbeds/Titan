@@ -119,6 +119,7 @@ def new_custom_css_post():
         css = None
     css = UserCSS(name, user_id, variables_enabled, variables, css)
     db.session.add(css)
+    db.session.commit()
     return jsonify({"id": css.id})
 
 @user.route("/custom_css/edit/<css_id>", methods=["GET"])
@@ -130,7 +131,7 @@ def edit_custom_css_get(css_id):
     css = db.session.query(UserCSS).filter(UserCSS.id == css_id).first()
     if not css:
         abort(404)
-    if css.user_id != session['user_id']:
+    if str(css.user_id) != str(session['user_id']):
         abort(403)
     variables = css.css_variables
     if variables:
