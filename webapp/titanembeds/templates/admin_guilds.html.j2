@@ -18,7 +18,7 @@
         </div>
         <div class="col s7">
           <span class="black-text">
-            <p class="flow-text truncate">{{ server.name }}</p>
+            <p class="flow-text truncate">{{ server.name|e }}</p>
             <br>
             <a class="waves-effect waves-light btn" href="{{url_for('admin.administrate_guild', guild_id=server['guild_id'])}}">Modify</a>
           </span>

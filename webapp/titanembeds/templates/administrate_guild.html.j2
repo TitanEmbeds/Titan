@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>Administrating: {{ guild['name'] }}</h1>
+<h1>Administrating: {{ guild['name']|e }}</h1>
 <p class="flow-text">For this server, you are allowed the following actions:
   {% for permission in permissions %}
     {{ permission }}

@@ -24,7 +24,7 @@
 {% endset %}
 
 {% block content %}
-<h1>{% if new %}New{% else %}Editing {{ css.name }}{% endif %} - User Defined CSS</h1>
+<h1>{% if new %}New{% else %}Editing {{ css.name|e }}{% endif %} - User Defined CSS</h1>
 <p><strong>Note:</strong> This feature is only used for CSS. Any attempts to enter HTML or malicious CSS code
 will have CSS cosmetic privilages removed, if caught. Please don't, we check the databases often. Thanks!</p>
 
@@ -46,7 +46,7 @@ will have CSS cosmetic privilages removed, if caught. Please don't, we check the
   <div class="row">
     <div class="col s12">
         <p class="flow-text">Give your CSS a name</p>
-        <input placeholder="Some Lit CSS" id="css_name" type="text" {% if not new %}value="{{ css.name }}"{% endif %}>
+        <input placeholder="Some Lit CSS" id="css_name" type="text" {% if not new %}value="{{ css.name|e }}"{% endif %}>
         <label for="css_name">Name</label>
     </div>
     {% if admin %}
