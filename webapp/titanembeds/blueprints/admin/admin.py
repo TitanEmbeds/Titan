@@ -201,7 +201,6 @@ def update_administrate_guild(guild_id):
     db_guild.guest_icon = guest_icon
     emit("guest_icon_change", {"guest_icon": guest_icon if guest_icon else url_for('static', filename='img/titanembeds_square.png')}, room="GUILD_"+guild_id, namespace="/gateway")
     return jsonify(
-        id=db_guild.id,
         guild_id=db_guild.guild_id,
         unauth_users=db_guild.unauth_users,
         visitor_view=db_guild.visitor_view,
