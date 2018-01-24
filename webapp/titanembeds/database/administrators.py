@@ -8,5 +8,5 @@ def get_administrators_list():
     q = db.session.query(Administrators).all()
     their_ids = []
     for admin in q:
-        their_ids.append(admin.user_id)
+        their_ids.append(str(admin.user_id))
     return their_ids
