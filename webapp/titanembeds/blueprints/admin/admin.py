@@ -16,7 +16,7 @@ def is_admin(f):
         def decorated_function(*args, **kwargs):
             if 'user_id' not in session:
                 return redirect(url_for("index"))
-            if session['user_id'] not in get_administrators_list():
+            if str(session['user_id']) not in get_administrators_list():
                 return redirect(url_for("index"))
             return f(*args, **kwargs)
         return decorated_function
