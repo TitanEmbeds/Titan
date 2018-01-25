@@ -37,6 +37,7 @@ def get_channel_messages(guild_id, channel_id, after_snowflake=None):
         q = db.session.query(Messages).filter(Messages.channel_id == channel_id).filter(Messages.message_id > after_snowflake).order_by(Messages.timestamp.desc()).limit(50)
     msgs = []
     snowflakes = []
+    guild_members = {}
     for x in q:
         if x.message_id in snowflakes:
             continue
@@ -55,14 +56,28 @@ def get_channel_messages(guild_id, channel_id, after_snowflake=None):
             "mentions": json.loads(x.mentions),
             "embeds": json.loads(embeds),
         }
-        member = get_guild_member(guild_id, message["author"]["id"])
+        if message["author"]["id"] not in guild_members:
+            member = get_guild_member(guild_id, message["author"]["id"])
+            guild_members[message["author"]["id"]] = member
+        else:
+            member = guild_members[message["author"]["id"]]
         message["author"]["nickname"] = None
         if member:
             message["author"]["nickname"] = member.nickname
+            message["author"]["avatar"] = member.avatar
+            message["author"]["discriminator"] = member.discriminator
+            message["author"]["username"] = member.username
         for mention in message["mentions"]:
-            author = get_guild_member(guild_id, mention["id"])
+            if mention["id"] not in guild_members:
+                author = get_guild_member(guild_id, mention["id"])
+                guild_members[mention["id"]] = author
+            else:
+                author = guild_members[mention["id"]]
             mention["nickname"] = None
             if author:
                 mention["nickname"] = author.nickname
+                mention["avatar"] = author.avatar
+                mention["username"] = author.username
+                mention["discriminator"] = author.discriminator
         msgs.append(message)
     return msgs
