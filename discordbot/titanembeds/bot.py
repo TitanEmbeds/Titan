@@ -170,12 +170,14 @@ class Titan(discord.Client):
         await self.socketio.on_guild_role_update(roleafter)
 
     async def on_channel_delete(self, channel):
-        await self.database.update_guild(channel.server)
-        await self.socketio.on_channel_delete(channel)
+        if channel.server:
+            await self.database.update_guild(channel.server)
+            await self.socketio.on_channel_delete(channel)
 
     async def on_channel_create(self, channel):
-        await self.database.update_guild(channel.server)
-        await self.socketio.on_channel_create(channel)
+        if channel.server:
+            await self.database.update_guild(channel.server)
+            await self.socketio.on_channel_create(channel)
 
     async def on_channel_update(self, channelbefore, channelafter):
         await self.database.update_guild(channelafter.server)
