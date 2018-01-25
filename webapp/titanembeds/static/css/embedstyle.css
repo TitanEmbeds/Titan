@@ -895,6 +895,23 @@ p.mentioned span.chatmessage {
   background-color: red;
 }
 
+#message-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -30vh;
+  margin-left: -5vw;
+  display: none;
+}
+
+#message-spinner > div {
+  background-color: white;
+}
+
+#message-spinner.error > div {
+  background-color: pink;
+}
+
 /* CSS Variables */
 :root {
   /*--<var>: <value>*/

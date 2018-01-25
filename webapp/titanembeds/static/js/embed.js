@@ -1135,6 +1135,7 @@
         var channel_id = selected_channel;
         var fet;
         var jumpscroll;
+        $("#message-spinner").fadeIn();
         if (last_message_id == null) {
             $("#chatcontent").empty();
             fet = fetch(channel_id);
@@ -1167,6 +1168,8 @@
                 fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
                 $("#instant-inv").attr("href", guildobj.instant_invite);
             });
+            $("#message-spinner").removeClass("error");
+            $("#message-spinner").fadeOut();
         });
         fet.fail(function(data) {
             if (data.status == 403) {
@@ -1177,6 +1180,7 @@
                 Materialize.toast('Session expired! You have been logged out.', 10000);
             }
             setVisitorMode(true);
+            $("#message-spinner").addClass("error");
         });
     }
     
