@@ -1,0 +1,429 @@
+<!--
+  fullscreenwebapp=<boolean>
+    When the user adds the embed to his or her homescreen, the browser elements will be hidden, thus creating a full sreen app-like experience. Please note that authentication through Discord is unsupported in fullscreen mode and guest authentication will be enabled when this is set to true (your guest authentication preference in dashboard will be ignored).
+  Options:
+  true
+  false (default)
+
+  What has changed: added Javascript which adds CSS to hide the Discord button when a web app is displayed in fullscreen for iOS and Android. This change can be found in <head>.
+-->  
+
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-dark.min.css" integrity="sha256-90Y+fvi28WF+3jKH4tHEkoQ9WLeFKJjpvCPNOtU9ZvU=" crossorigin="anonymous" />
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/embedstyle.css') }}">
+    <link id="css-theme" type="text/css" rel="stylesheet" href="">
+    
+    <!--Check whether JavaScript is enabled, otherwise redirect to error page-->
+    <noscript>
+      <meta http-equiv="refresh" content="0; URL={{ url_for("embed.noscript") }}">
+    </noscript>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    {% include 'seo_meta.html.j2' %}
+    
+    <!--Provide default mobile metadata-->
+    <meta name="apple-mobile-web-app-title" content="{{ guild['name']|e }}">
+    <meta name="application-name" content="{{ guild['name']|e }}">
+    
+    {% with title="Visit " + guild['name'] + " embed", description="Visit " + guild['name'] + " on Titan Embeds and chat with your friends from the comfort of your own website. This page is 100% embeddable, iFrameable and looks good on any webpages. Titan is hassle free and designed as easy to setup!", image=generate_guild_icon( guild['id'], guild['icon']) %}
+      {% include "opengraph_tags.html.j2" %}
+    {% endwith %}
+
+    <title>{{ guild['name']|e }} - Embed - Titan Embeds for Discord</title>
+    {% include 'google_analytics.html.j2' %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    
+    <style id="user-defined-css">
+      {% if css is not none %}
+        {% if cssvariables is not none and css.css_var_bool %}{{ cssvariables|e }}{% endif %}
+        {% if css.css is not none %}{{ css.css }}{% endif %}
+      {% endif %}
+    </style>
+
+    <!--Disable unsupported Discord login on Safari-->
+    <script>
+    if (
+        ("standalone" in window.navigator) &&
+        !window.navigator.standalone
+        ){
+        document.getElementById(discordlogin_btn).style.display = "none";    
+    }
+    </script>
+    <!--Disable unnsuported Discord login on Android-->
+    <script>
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      document.getElementById(discordlogin_btn).style.display = "none";
+    }
+    </script>
+  </head>
+  <body>
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper">
+          <a href="#" data-activates="guild-nav" class="button-collapse" id="guild-btn"><i class="material-icons">menu</i></a>
+          <div class="container">
+            <a href="{{ url_for("index") }}" target="_blank" class="brand-logo"><img src="{{ url_for('static', filename='img/titanembeds_shield.png') }}" /><span class="brand-logo-text"><strong class="align-top">Titan</strong><span class="align-top">Embeds</span> <span class="betatag align-top">BETA</span></span></a>
+          </div>
+          <a href="#" data-activates="members-nav" class="button-collapse right" id="members-btn"><i class="material-icons">person</i></a>
+        </div>
+      </nav>
+    </div>
+    <main>
+      <div id="chatcontent" class="chatcontent"></div>
+    </main>
+
+      <ul id="guild-nav" class="side-nav">
+        <li>
+          <div class="userView">
+            <img id="guild_icon" class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}" {% if not guild['icon'] %}style="display: none;"{% endif %}>
+            <span id="guild_name" class="name">{{ guild['name']|e }}</span>
+          </div>
+        </li>
+
+        <li><a class="subheader">{{ _("Actions") }}</a></li>
+        <li><a href="{{ url_for("user.administrate_guild", guild_id=guild['id']) }}" class="waves-effect" target="_blank" id="administrate_link" style="display: none;">{{ _("Manage Guild Embed") }}</a></li>
+        <li><a id="instant-inv" href="#" class="waves-effect" target="_blank">{{ _("Open Server on Discordapp") }}</a></li>
+
+        <li><div class="divider"></div></li>
+
+        <li><a class="subheader">{{ _("Channel Topic") }}</a></li>
+        <div id="channeltopic"></div>
+
+        <li><div class="divider"></div></li>
+
+        <li><a class="subheader">{{ _("Channels") }}</a></li>
+        <span id="channels-list"></span>
+      </ul>
+
+      <ul id="members-nav" class="side-nav">
+        <li><a class="subheader">{{ _("Online Server Members") }} - <span id="discord-members-count"></span></a></li>
+        <span id="discord-members"></span>
+
+        <li><div class="divider"></div></li>
+
+        <li><a class="subheader">{{ _("Authenticated Embed Users") }} - <span id="embed-discord-members-count"></span></a></li>
+        <span id="embed-discord-members"></span>
+
+        <li><a class="subheader">{{ _("Guest Embed Users") }} - <span id="guest-members-count"></span></a></li>
+        <span id="embed-unauth-users"></span>
+      </ul>
+
+      <div id="loginmodal" class="modal">
+        <div class="modal-content">
+          <h4>{{ login_greeting }}</h4>
+          <div id="loginmodal-maincontent" class="row valign-wrap">
+            <div id="modal_guildinfobox" class="col s3 center-align">
+              {% if guild['icon'] %}
+              <img id="modal_guildiconcircle" class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}">
+              {% endif %}
+              <p id="modal_guildname"><strong>{{ guild['name']|e }}</strong></p>
+              {% if guild["invite_link"] %}
+              <a id="modal_invite_btn_invite_link" class="waves-effect waves-light btn" target="_blank" href="{{ guild["invite_link"]|e }}">{{ guild["invite_domain"]|e }}</a>
+              {% else %}
+              <a id="modal_invite_btn" class="waves-effect waves-light btn" target="_blank">discord.gg</a>
+              {% endif %}
+            </div>
+            <div id="authfields" class="col s9">
+              <p id="authfield-choosetxt" class="flow-text">{{ _("Please choose one of the following methods to authenticate!") }}</p>
+              <div class="progress" id="loginProgress" style="display: none;">
+                  <div class="indeterminate"></div>
+              </div>
+              <div class="row">
+                <div id="discordlogin_box" class="col s6 l4">
+                  <a id="discordlogin_btn" href="{% if not same_target %}{{ url_for("embed.login_discord", _external=True) }}{% else %}{{ url_for("user.login_authenticated", redirect=request.url+"&create_authenticated_user=true", _external=True) }}{% endif %}" class="waves-effect waves-light btn-large" {% if not same_target %}target="_blank"{% endif %}>{{ _("Discord Login") }}</a>
+                  <p id="discordlogin_btn_warn">*{{ _("You will be invited into this server.") }}</p>
+                </div>
+                {% if unauth_enabled %}
+                <div id="guestlogin_box" class="col s6 l8">
+                  <p id="guest_login_instr">{{ _("Of course, you also have the option to login by picking a temporary username for your current browsing session.") }}</p>
+                  <input id="custom_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% endif %}>
+                  <label id="custom_username_field_label" class="active" for="custom_username_field">{{ _("Username (Hit ENTER/RETURN key to confirm)") }}</label>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <div id="userembedmodal" class="modal">
+      <div class="modal-content">
+        {% if unauth_enabled %}
+        <h4>{{ _("Change Username") }}</h4>
+        <div class="row">
+            <div>
+              <p>({{ _("Guests Accounts Only") }})</p>
+              <input id="change_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% else %}disabled{% endif %}>
+              <label class="active" for="change_username_field">{{ _("Change your username (Hit ENTER/RETURN key to confirm)") }}</label>
+            </div>
+        </div>
+        {% endif %}
+        <h4>{{ _("Theme") }}</h4>
+        <div class="row">
+          <div class="col s12">
+            <select id="theme-selector">
+              <option value="" selected>Default</option>
+              <option value="DiscordDark">DiscordDark</option>
+              <option value="BetterTitan">BetterTitan</option>
+            </select>
+            <p>
+              <input type="checkbox" class="filled-in" id="overwrite_theme_custom_css_checkbox" checked="checked" />
+              <label for="overwrite_theme_custom_css_checkbox">{{ _("Overwrite Current Embed Theme w/ User CSS") }}</label>
+            </p>
+          </div>
+        </div>
+        <h4>{{ _("Notification Sound") }}</h4>
+        <div class="row">
+          <div class="col s12">
+            <span>
+              <input name="notification_sound_radiobtn" type="radio" id="notification_sound_radiobtn_newmsgs" value="newmsgs" />
+              <label for="notification_sound_radiobtn_newmsgs">{{ _("New Messages") }}</label>
+            </span>
+            <span>
+              <input name="notification_sound_radiobtn" type="radio" id="notification_sound_radiobtn_mentions" value="mentions" />
+              <label for="notification_sound_radiobtn_mentions">{{ _("Mentions") }}</label>
+            </span>
+            <span>
+              <input name="notification_sound_radiobtn" type="radio" id="notification_sound_radiobtn_nothing" value="nothing" />
+              <label for="notification_sound_radiobtn_nothing">{{ _("Nothing") }}</label>
+            </span>
+          </div>
+        </div>
+        <h4>{{ _("Display Rich Embeds") }}</h4>
+        <div class="row">
+          <div class="col s12">
+            <span>
+              <input name="richembed_toggle_radiobtn" type="radio" id="richembed_toggle_radiobtn_enable" value="true" />
+              <label for="richembed_toggle_radiobtn_enable">{{ _("Enable") }}</label>
+            </span>
+            <span>
+              <input name="richembed_toggle_radiobtn" type="radio" id="richembed_toggle_radiobtn_disable" value="false" />
+              <label for="richembed_toggle_radiobtn_disable">{{ _("Disable") }}</label>
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <a id="logout_btn" class="waves-effect waves-light btn right" href="{{ url_for('user.logout', redirect=request.url) }}"><i class="material-icons">exit_to_app</i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div id="recaptchamodal" class="modal">
+      <div class="modal-content">
+        <h4 class="center-align">{{ _("Just one more step...") }}</h4>
+        <div id="google-recaptcha" class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}" data-callback="submit_unauthenticated_captcha"></div>
+        <input type="hidden" id="submit-unauthenticated-captcha-btn" />
+      </div>
+    </div>
+    
+    <div id="usercard" class="modal bottom-sheet">
+      <div class="modal-content">
+        <div class="row">
+          <div class="col s12 m2">
+            <img class="circle avatar" src="">
+            <br>
+            <a class="waves-effect waves-light btn" id="usercard-mention-btn">{{ _("Mention") }}</a>
+          </div>
+          <div class="col s12 m10">
+            <h4 class="identity"><span class="username"></span><span class="hash">#</span><span class="discriminator"></span></h4> <span class="bottag">BOT</span>
+            <div class="badges">
+              <a class="administrator tooltipped" data-tooltip="{{ _("TitanEmbeds Administrator") }}" data-position="top" href="https://titanembeds.com/" target="_blank"><i class="material-icons">gavel</i></a>
+              <a class="partner tooltipped" data-tooltip="{{ _("TitanEmbeds Partner") }}" data-position="top" href="https://titanembeds.com/about" target="_blank"><i class="material-icons">person_pin</i></a>
+              <a class="supporter tooltipped" data-tooltip="{{ _("TitanEmbeds Supporter") }}" data-position="top" href="https://titanembeds.com/user/donate" target="_blank"><i class="material-icons">attach_money</i></a>
+              <a class="star tooltipped" data-tooltip="{{ _("GitHub Stargazer") }}" data-position="top" href="https://github.com/TitanEmbeds/Titan" target="_blank"><i class="material-icons">star</i></a>
+            </div>
+            <p class="offline-text">{{ _("User is offline in Discord.") }}</p>
+            <p class="game">{{ _("Playing") }} <span class="text"></span></p>
+            <p class="role">{{ _("Roles") }}: <span class="roles"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="emoji-picker">
+      <div id="emoji-picker-content">
+        <div class="row">
+          <h6>{{ _("Server Emoji") }}</h6>
+          <div id="emoji-picker-emojis"></div>
+        </div>
+      </div>
+    </div>
+
+    <footer id="footer" class="footer">
+      <div id="emoji-tray-toggle">
+        <a class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">tag_faces</i></a>
+      </div>
+      <div id="footercontainer" class="footercontainer">
+        <div class="currentuserchip" id="nameplate">
+          <div id="currentuserimage_parent"><img id="currentuserimage" src="" class="circle currentuserimage" style="display: none;"></div>
+          <div id="currentusername" class="currentusername"><span id="curuser_name">Titan</span><span id="curuser_discrim">#0001</span></div>
+        </div>
+        <div id="messageboxouter" class="input-field inline">
+          <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea" rows="1"></textarea>
+          <span id="visitor_mode_message" style="display:none;"><span id="visitor_mode_message_note">{{ _("Please login to post a message.") }}</span> <a id="visitor_login_btn" class="waves-effect waves-light btn">{{ _("Login") }}</a></span>
+        </div>
+      </div>
+    </footer>
+    
+    <!-- Electron fix -->
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;  
+      }
+    </script>
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js" integrity="sha256-uWtSXRErwH9kdJTIr1swfHFJn/d/WQ6s72gELOHXQGM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js" integrity="sha256-iaqfO5ue0VbSGcEiQn+OeXxnxAMK2+QgHXIDA5bWtGI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-linkify/2.1.4/linkify.min.js" integrity="sha256-/qh8j6L0/OTx+7iY8BAeLirxCDBsu3P15Ci5bo7BJaU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-linkify/2.1.4/linkify-jquery.min.js" integrity="sha256-BlSfVPlZijMLojgte2AtSget879chk1+8Z8bEH/L4Cs=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cheet.js/0.3.3/cheet.min.js" integrity="sha256-FxQrnIC3BX45JRzOyFUlKiM6dY3A/ZakV6w4WpYyfyA=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" integrity="sha256-sdmLD9jD1PIzq3KOQPNSGZYxjv76rds79Mnyk5JNp1M=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/2.5.0/2/twemoji.min.js" integrity="sha256-t5bxASdQ5tDbKQZy330h/YufCiZg82xG8PqIYzFpwhU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/soundmanager2/2.97a.20150601/script/soundmanager2-nodebug-jsmin.js" integrity="sha256-5KBL+8gS3BkWOs22YOrezN3Djl4pwodgZaPQY9hgu4Y=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js" integrity="sha256-THlgZSjqt7idNSdnUvGypTuXB5C4hV9kSuPYrbiq19o=" crossorigin="anonymous"></script>
+    
+    <script src="{{ url_for("static", filename="js/vendor/highlight.pack.js") }}"></script>
+
+    {% raw %}
+    <script id="mustache_channellistings" type="text/template">
+      <li><a class="waves-effect truncate" id="channel-{{channelid}}"><span class="channel-hash">#</span> {{channelname}}</a></li>
+    </script>
+
+    <script id="mustache_authedusers" type="text/template">
+      <li><a class="waves-effect truncate" id="discorduser-{{id}}"><img class="circle membercircle" src="{{avatar}}"> <span class="membername">{{username}}</span></a></li>
+    </script>
+
+    <script id="mustache_unauthedusers" type="text/template">
+      <li><a class="waves-effect truncate"><span class="membername">{{username}}#{{discriminator}}</span></a></li>
+    </script>
+    
+    <script id="mustache_usermessage" type="text/template">
+      <p><img class="authoravatar" src="{{avatar}}"> <span class="chatusername"><span class="authorname">{{username}}</span><span class="authorhash">#</span><span class="authordiscriminator">{{discriminator}}</span></span> <span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatmessage">{{{content}}}</span><span class="embeds"></span></p>
+    </script>
+
+    <script id="mustache_memberrole" type="text/template">
+      <li><a class="subheader role-title">{{name}}</a></li>
+    </script>
+    
+    <script id="mustache_channelcategory" type="text/template">
+      <li><a class="subheader channel-category">{{name}}</a></li>
+    </script>
+
+    <script id="mustache_message_emoji" type="text/template">
+      <img class="message_emoji tooltipped" src='https://cdn.discordapp.com/emojis/{{id}}.png' data-position="top" data-delay="200" data-tooltip=":{{name}}:" alt=":{{name}}:" />
+    </script>
+    
+    <script id="mustache_discordmention" type="text/template">
+      <span class="discordmention"><span class="atsign">@</span><span class="username">{{username}}</span><span class="hash">#</span><span class="discriminator">{{discriminator}}</span></span>
+    </script>
+    
+    <script id="mustache_richembed" type="text/template">
+      <div class="richembed">
+        {{#color}}
+        <div class="color" style="background-color: {{hexColor}}"></div>
+        {{/color}}
+        {{^color}}
+        <div class="color"></div>
+        {{/color}}
+        <div class="rich">
+          <div class="content">
+            <div class="innercontent">
+              {{#author}}
+              <div class="author">
+                {{#author.proxy_icon_url}}
+                <img src="{{author.proxy_icon_url}}">
+                {{/author.proxy_icon_url}}
+                <a href="
+                  {{#author.url}}{{author.url}}{{/author.url}}
+                  {{^author.url}}#{{/author.url}}
+                " class="name">{{author.name}}</a>
+              </div>
+              {{/author}}
+              {{#title}}
+              <div class="title">
+                <a href="
+                  {{#url}}{{url}}{{/url}}
+                  {{^url}}#{{/url}}
+                ">{{title}}</a>
+              </div>
+              {{/title}}
+              {{#description}}
+              <div class="description">{{description}}</div>
+              {{/description}}
+              {{#fields.length}}
+              <div class="fields">
+                {{#fields}}
+                <div class="field {{#inline}}inline{{/inline}}">
+                  <div class="field-name">{{name}}</div>
+                  <div class="field-content">{{value}}</div>
+                </div>
+                {{/fields}}
+              </div>
+              {{/fields.length}}
+            </div>
+            {{#thumbnail}}
+            <div class="thumbnail">
+              <img src="{{thumbnail.proxy_url}}">
+            </div>
+            {{/thumbnail}}
+          </div>
+          {{#image}}
+          <div class="image">
+            <img src="{{image.proxy_url}}">
+          </div>
+          {{/image}}
+          {{#toRenderFooter}}
+          <div class="footer">
+            {{#footer}}
+            {{#footer.proxy_icon_url}}
+            <img class="icon_url" src="{{footer.proxy_icon_url}}">
+            {{/footer.proxy_icon_url}}
+            <span class="text">{{footer.text}}</span>
+            {{/footer}}
+            {{#footerVerticalBar}}
+            |
+            {{/footerVerticalBar}}
+            {{#timestamp}}
+            <span class="timestamp">{{formatted_timestamp}}</span>
+            {{/timestamp}}
+          </div>
+          {{/toRenderFooter}}
+        </div>
+      </div>
+    </script>
+    
+    <script id="mustache_rolebubble" type="text/template">
+      <span class="bubble" {{#color}}style="color: {{color}};"{{/color}}><span class="color" {{#color}}style="background-color: {{color}};"{{/color}}></span> <span class="text">{{name}}</span></span>
+    </script>
+    {% endraw %}
+
+    <script>
+        const disabled = {{ disabled|tojson|safe }};
+        const guild_id = "{{ guild_id }}";
+        const bot_client_id = "{{ client_id }}";
+        const visitors_enabled = {% if visitors_enabled %}true{% else %}false{% endif %};
+        const unauth_captcha_enabled = {% if unauth_captcha_enabled %}true{% else %}false{% endif %}
+    </script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
+    
+    <!-- Electron fix -->
+    <script>
+      if (window.module) {
+        module = window.module;
+      }
+    </script>
+  </body>
+</html>
