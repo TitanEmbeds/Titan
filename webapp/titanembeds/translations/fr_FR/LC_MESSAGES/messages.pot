@@ -1,0 +1,199 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: titanembeds\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-01-27 20:46+0000\n"
+"PO-Revision-Date: 2018-01-27 16:40-0500\n"
+"Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: titanembeds\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /master/webapp/titanembeds/translations/messages.pot\n"
+"Language: fr_FR\n"
+
+#: titanembeds/blueprints/embed/embed.py:15
+msgid "Let's get to know each other! My name is Titan, what's yours?"
+msgstr "Faisons connaissance ! Je m'appelle Titan, et vous ?"
+
+#: titanembeds/blueprints/embed/embed.py:16
+msgid "Hello and welcome!"
+msgstr "Bonjour et bienvenue !"
+
+#: titanembeds/blueprints/embed/embed.py:17
+msgid "What brings you here today?"
+msgstr "Quel bon vent vous amène aujourd'hui ?"
+
+#: titanembeds/blueprints/embed/embed.py:18
+msgid "....what do you expect this text to say?"
+msgstr "...qu'attendez-vous de ce texte ?"
+
+#: titanembeds/blueprints/embed/embed.py:19
+msgid "Aha! ..made you look!"
+msgstr "Ah ! Je vous ai fait regarder !"
+
+#: titanembeds/blueprints/embed/embed.py:20
+msgid "Initiating launch sequence..."
+msgstr "Initialisation de la séquence de lancement..."
+
+#: titanembeds/blueprints/embed/embed.py:21
+msgid "Captain, what's your option?"
+msgstr "Capitaine, quelle est votre option ?"
+
+#: titanembeds/blueprints/embed/embed.py:22
+msgid "Alright, here's the usual~"
+msgstr "Très bien, voici l'habituel~"
+
+#: titanembeds/templates/embed.html.j2:71
+msgid "Actions"
+msgstr "Actions"
+
+#: titanembeds/templates/embed.html.j2:72
+msgid "Manage Guild Embed"
+msgstr "Gérer l'intégration de la guilde"
+
+#: titanembeds/templates/embed.html.j2:73
+msgid "Open Server on Discordapp"
+msgstr "Ouvrir le serveur sur l'application Discord"
+
+#: titanembeds/templates/embed.html.j2:77
+msgid "Channel Topic"
+msgstr "Sujet du salon"
+
+#: titanembeds/templates/embed.html.j2:82
+msgid "Channels"
+msgstr "Salons"
+
+#: titanembeds/templates/embed.html.j2:87
+msgid "Online Server Members"
+msgstr "Utilisateurs en ligne (serveur Discord)"
+
+#: titanembeds/templates/embed.html.j2:92
+msgid "Authenticated Embed Users"
+msgstr "Utilisateurs authentifiés en ligne (site)"
+
+#: titanembeds/templates/embed.html.j2:95
+msgid "Guest Embed Users"
+msgstr "Utilisateurs invités en ligne (site)"
+
+#: titanembeds/templates/embed.html.j2:115
+msgid "Please choose one of the following methods to authenticate!"
+msgstr "Veuillez choisir l'un des méthodes suivantes pour vous connecter !"
+
+#: titanembeds/templates/embed.html.j2:121
+msgid "Discord Login"
+msgstr "Connexion à Discord"
+
+#: titanembeds/templates/embed.html.j2:122
+msgid "You will be invited into this server."
+msgstr "Vous serez invité sur ce serveur."
+
+#: titanembeds/templates/embed.html.j2:126
+msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
+msgstr "Bien sûr, vous avez aussi la possibilité de vous connecter en choisissant un nom d'utilisateur temporaire pour cette session."
+
+#: titanembeds/templates/embed.html.j2:128
+msgid "Username (Hit ENTER/RETURN key to confirm)"
+msgstr "Nom d'utilisateur (Appuyer sur ENTRÉE pour confirmer)"
+
+#: titanembeds/templates/embed.html.j2:140
+msgid "Change Username"
+msgstr "Changer de nom d'utilisateur"
+
+#: titanembeds/templates/embed.html.j2:143
+msgid "Guests Accounts Only"
+msgstr "Utilisateurs invités uniquement"
+
+#: titanembeds/templates/embed.html.j2:145
+msgid "Change your username (Hit ENTER/RETURN key to confirm)"
+msgstr "Changer votre nom d'utilisateur (Appuyer sur ENTRÉE pour confirmer)"
+
+#: titanembeds/templates/embed.html.j2:149
+msgid "Theme"
+msgstr "Thème"
+
+#: titanembeds/templates/embed.html.j2:159
+msgid "Overwrite Current Embed Theme w/ User CSS"
+msgstr "Remplacer le thème actuel par un CSS utilisateur"
+
+#: titanembeds/templates/embed.html.j2:163
+msgid "Notification Sound"
+msgstr "Son des notifications"
+
+#: titanembeds/templates/embed.html.j2:168
+msgid "New Messages"
+msgstr "Nouveaux messages"
+
+#: titanembeds/templates/embed.html.j2:172
+msgid "Mentions"
+msgstr "Mentions"
+
+#: titanembeds/templates/embed.html.j2:176
+msgid "Nothing"
+msgstr "Rien"
+
+#: titanembeds/templates/embed.html.j2:180
+msgid "Display Rich Embeds"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:185
+msgid "Enable"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:189
+msgid "Disable"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:201
+msgid "Just one more step..."
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:213
+msgid "Mention"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:218
+msgid "TitanEmbeds Administrator"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:219
+msgid "TitanEmbeds Partner"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:220
+msgid "TitanEmbeds Supporter"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:221
+msgid "GitHub Stargazer"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:223
+msgid "User is offline in Discord."
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:224
+msgid "Playing"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:225
+msgid "Roles"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:234
+msgid "Server Emoji"
+msgstr "Émojis du serveur"
+
+#: titanembeds/templates/embed.html.j2:251
+msgid "Please login to post a message."
+msgstr "Connectez-vous pour poster un message."
+
+#: titanembeds/templates/embed.html.j2:251
+msgid "Login"
+msgstr "Connexion"
+
