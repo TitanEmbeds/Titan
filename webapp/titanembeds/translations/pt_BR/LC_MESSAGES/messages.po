@@ -5,7 +5,7 @@ msgstr ""
 "POT-Creation-Date: 2018-01-27 20:46+0000\n"
 "PO-Revision-Date: 2018-01-27 17:24-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
-"Language-Team: Swedish\n"
+"Language-Team: Portuguese, Brazilian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,105 +13,105 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: titanembeds\n"
-"X-Crowdin-Language: sv-SE\n"
+"X-Crowdin-Language: pt-BR\n"
 "X-Crowdin-File: /master/webapp/titanembeds/translations/messages.pot\n"
-"Language: sv_SE\n"
+"Language: pt_BR\n"
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Let's get to know each other! My name is Titan, what's yours?"
-msgstr "Låt oss få känna varandra! Mitt namn är Titan, vad är ditt?"
+msgstr "Vamos nos conhecer! Meu nome é Titan, o que é seu?"
 
 #: titanembeds/blueprints/embed/embed.py:16
 msgid "Hello and welcome!"
-msgstr "Hej och Välkommen!"
+msgstr "Olá e bem vindo!"
 
 #: titanembeds/blueprints/embed/embed.py:17
 msgid "What brings you here today?"
-msgstr "Varför kom du hit idag?"
+msgstr "Que te traz aqui hoje?"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "....what do you expect this text to say?"
-msgstr "....vad förväntar du dig att denna text säger?"
+msgstr "... o que você espera que este texto diga?"
 
 #: titanembeds/blueprints/embed/embed.py:19
 msgid "Aha! ..made you look!"
-msgstr "Aha! ..Fick dig att titta!"
+msgstr "Ah!... Fiz-te olhar!"
 
 #: titanembeds/blueprints/embed/embed.py:20
 msgid "Initiating launch sequence..."
-msgstr "Påbörjar start sekvensen..."
+msgstr "Iniciar sequência de lançamento..."
 
 #: titanembeds/blueprints/embed/embed.py:21
 msgid "Captain, what's your option?"
-msgstr "Kapten, vad väljer du?"
+msgstr "Capitão, qual é a sua opção?"
 
 #: titanembeds/blueprints/embed/embed.py:22
 msgid "Alright, here's the usual~"
-msgstr "Alright, här är de vanliga-"
+msgstr "Tudo bem, aqui é o habitual ~"
 
 #: titanembeds/templates/embed.html.j2:71
 msgid "Actions"
-msgstr "Åtgärder"
+msgstr "Ações"
 
 #: titanembeds/templates/embed.html.j2:72
 msgid "Manage Guild Embed"
-msgstr "Hantera guild inbäddning"
+msgstr "Gerenciar Incorporação de Guild"
 
 #: titanembeds/templates/embed.html.j2:73
 msgid "Open Server on Discordapp"
-msgstr "Öppna Server i Discordappen"
+msgstr "Servidor aberto em Discordapp"
 
 #: titanembeds/templates/embed.html.j2:77
 msgid "Channel Topic"
-msgstr "Kanal ämne"
+msgstr "Tópico do canal"
 
 #: titanembeds/templates/embed.html.j2:82
 msgid "Channels"
-msgstr "Kanaler"
+msgstr "Canais"
 
 #: titanembeds/templates/embed.html.j2:87
 msgid "Online Server Members"
-msgstr "Online Server medlemmar"
+msgstr "Membros do Servidor Online"
 
 #: titanembeds/templates/embed.html.j2:92
 msgid "Authenticated Embed Users"
-msgstr "Autentiserade inbäddna användare"
+msgstr "Autenticado usuários de incorporar"
 
 #: titanembeds/templates/embed.html.j2:95
 msgid "Guest Embed Users"
-msgstr "Gäst inbäddna användare"
+msgstr "Usuários do visitante incorporados"
 
 #: titanembeds/templates/embed.html.j2:115
 msgid "Please choose one of the following methods to authenticate!"
-msgstr "Välj en av följande metoder för att autentisera!"
+msgstr "Por favor, escolha um dos seguintes métodos para autenticar!"
 
 #: titanembeds/templates/embed.html.j2:121
 msgid "Discord Login"
-msgstr "Discord login"
+msgstr "Login Discord"
 
 #: titanembeds/templates/embed.html.j2:122
 msgid "You will be invited into this server."
-msgstr "Du kommer att bjudas in till denna server."
+msgstr "Você será convidado para este servidor."
 
 #: titanembeds/templates/embed.html.j2:126
 msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
-msgstr "Naturligtvis har du också möjlighet att logga in genom att använda ett tillfälligt användarnamn för den aktuella sessionen."
+msgstr "Claro, você também tem a opção de logon escolhendo um nome de usuário temporário para sua sessão de navegação atual."
 
 #: titanembeds/templates/embed.html.j2:128
 msgid "Username (Hit ENTER/RETURN key to confirm)"
-msgstr "Användarnamn (tryck ENTER/RETUR för att bekräfta)"
+msgstr "Nome de usuário (pressione a tecla ENTRAR/ RETORNAN para confirmar)"
 
 #: titanembeds/templates/embed.html.j2:140
 msgid "Change Username"
-msgstr "Ändra användarnamn"
+msgstr "Alterar nome de usuário"
 
 #: titanembeds/templates/embed.html.j2:143
 msgid "Guests Accounts Only"
-msgstr "Endast gäst-konton"
+msgstr "Somente contas de convidados"
 
 #: titanembeds/templates/embed.html.j2:145
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
-msgstr "Ändra ditt användarnamn (tryck ENTER/RETUR för att bekräfta)"
+msgstr "Mudar seu nome de usuário (pressione a tecla ENTRAR/ RETORNAN para confirmar)"
 
 #: titanembeds/templates/embed.html.j2:149
 msgid "Theme"
@@ -119,23 +119,23 @@ msgstr "Tema"
 
 #: titanembeds/templates/embed.html.j2:159
 msgid "Overwrite Current Embed Theme w/ User CSS"
-msgstr "Skriv över nuvarande inbäddnings tema med användar CSS"
+msgstr "Sobrescreva o tema de incorporação atual com usuário CSS"
 
 #: titanembeds/templates/embed.html.j2:163
 msgid "Notification Sound"
-msgstr "Meddelandeljud"
+msgstr "Som de notificação"
 
 #: titanembeds/templates/embed.html.j2:168
 msgid "New Messages"
-msgstr "Nya meddelanden"
+msgstr "Novas mensagens"
 
 #: titanembeds/templates/embed.html.j2:172
 msgid "Mentions"
-msgstr "Nämningar"
+msgstr "Menções"
 
 #: titanembeds/templates/embed.html.j2:176
 msgid "Nothing"
-msgstr "Ingenting"
+msgstr "Nada"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Display Rich Embeds"
@@ -187,13 +187,13 @@ msgstr ""
 
 #: titanembeds/templates/embed.html.j2:234
 msgid "Server Emoji"
-msgstr "Server Emoji"
+msgstr "Servidor Emoji"
 
 #: titanembeds/templates/embed.html.j2:251
 msgid "Please login to post a message."
-msgstr "Logga in för att skriva ett meddelande."
+msgstr "Faça o login para postar uma mensagem."
 
 #: titanembeds/templates/embed.html.j2:251
 msgid "Login"
-msgstr "Logga in"
+msgstr "Login"
 

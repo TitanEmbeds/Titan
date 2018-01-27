@@ -3,139 +3,139 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-27 20:46+0000\n"
-"PO-Revision-Date: 2018-01-27 17:24-0500\n"
+"PO-Revision-Date: 2018-01-27 18:07-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
-"Language-Team: Swedish\n"
+"Language-Team: Serbian (Cyrillic)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: titanembeds\n"
-"X-Crowdin-Language: sv-SE\n"
+"X-Crowdin-Language: sr\n"
 "X-Crowdin-File: /master/webapp/titanembeds/translations/messages.pot\n"
-"Language: sv_SE\n"
+"Language: sr_Cyrl\n"
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Let's get to know each other! My name is Titan, what's yours?"
-msgstr "Låt oss få känna varandra! Mitt namn är Titan, vad är ditt?"
+msgstr "Хајде да се упознамо! Ја се зовем Титан, а ти?"
 
 #: titanembeds/blueprints/embed/embed.py:16
 msgid "Hello and welcome!"
-msgstr "Hej och Välkommen!"
+msgstr "Здраво и добродошли!"
 
 #: titanembeds/blueprints/embed/embed.py:17
 msgid "What brings you here today?"
-msgstr "Varför kom du hit idag?"
+msgstr "Шта те данас доводи овде?"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "....what do you expect this text to say?"
-msgstr "....vad förväntar du dig att denna text säger?"
+msgstr "....шта очекујеш да овде треба да пише?"
 
 #: titanembeds/blueprints/embed/embed.py:19
 msgid "Aha! ..made you look!"
-msgstr "Aha! ..Fick dig att titta!"
+msgstr "Аха! ..погледао си!"
 
 #: titanembeds/blueprints/embed/embed.py:20
 msgid "Initiating launch sequence..."
-msgstr "Påbörjar start sekvensen..."
+msgstr "Започињемо секвенцу за лансирање..."
 
 #: titanembeds/blueprints/embed/embed.py:21
 msgid "Captain, what's your option?"
-msgstr "Kapten, vad väljer du?"
+msgstr "Капетане, шта ви мислите?"
 
 #: titanembeds/blueprints/embed/embed.py:22
 msgid "Alright, here's the usual~"
-msgstr "Alright, här är de vanliga-"
+msgstr "У реду, ево како обично бива -"
 
 #: titanembeds/templates/embed.html.j2:71
 msgid "Actions"
-msgstr "Åtgärder"
+msgstr "Акције"
 
 #: titanembeds/templates/embed.html.j2:72
 msgid "Manage Guild Embed"
-msgstr "Hantera guild inbäddning"
+msgstr "Управљање удруживањем еснафа"
 
 #: titanembeds/templates/embed.html.j2:73
 msgid "Open Server on Discordapp"
-msgstr "Öppna Server i Discordappen"
+msgstr "Отворите сервер на Discord апликацији"
 
 #: titanembeds/templates/embed.html.j2:77
 msgid "Channel Topic"
-msgstr "Kanal ämne"
+msgstr "Тема канала"
 
 #: titanembeds/templates/embed.html.j2:82
 msgid "Channels"
-msgstr "Kanaler"
+msgstr "Канали"
 
 #: titanembeds/templates/embed.html.j2:87
 msgid "Online Server Members"
-msgstr "Online Server medlemmar"
+msgstr "Чланови сервера на мрежи"
 
 #: titanembeds/templates/embed.html.j2:92
 msgid "Authenticated Embed Users"
-msgstr "Autentiserade inbäddna användare"
+msgstr "Овлашћени корисници задруге"
 
 #: titanembeds/templates/embed.html.j2:95
 msgid "Guest Embed Users"
-msgstr "Gäst inbäddna användare"
+msgstr "Корисници задруге - гости"
 
 #: titanembeds/templates/embed.html.j2:115
 msgid "Please choose one of the following methods to authenticate!"
-msgstr "Välj en av följande metoder för att autentisera!"
+msgstr "Одаберите једну од следећих метода за потврду идентитета!"
 
 #: titanembeds/templates/embed.html.j2:121
 msgid "Discord Login"
-msgstr "Discord login"
+msgstr "Пријава на Discord"
 
 #: titanembeds/templates/embed.html.j2:122
 msgid "You will be invited into this server."
-msgstr "Du kommer att bjudas in till denna server."
+msgstr "Бићеш позван на овај сервер."
 
 #: titanembeds/templates/embed.html.j2:126
 msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
-msgstr "Naturligtvis har du också möjlighet att logga in genom att använda ett tillfälligt användarnamn för den aktuella sessionen."
+msgstr "Наравно, можеш да се пријавиш са привременим корисничким именом само за тренутну сесију."
 
 #: titanembeds/templates/embed.html.j2:128
 msgid "Username (Hit ENTER/RETURN key to confirm)"
-msgstr "Användarnamn (tryck ENTER/RETUR för att bekräfta)"
+msgstr "Корисничко име (притисни ENTER или RETURN за потврду)"
 
 #: titanembeds/templates/embed.html.j2:140
 msgid "Change Username"
-msgstr "Ändra användarnamn"
+msgstr "Промени корисничко име"
 
 #: titanembeds/templates/embed.html.j2:143
 msgid "Guests Accounts Only"
-msgstr "Endast gäst-konton"
+msgstr "Само за налоге гостију"
 
 #: titanembeds/templates/embed.html.j2:145
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
-msgstr "Ändra ditt användarnamn (tryck ENTER/RETUR för att bekräfta)"
+msgstr "Промени корисничко име (притисни ENTER или RETURN за потврду)"
 
 #: titanembeds/templates/embed.html.j2:149
 msgid "Theme"
-msgstr "Tema"
+msgstr "Тема"
 
 #: titanembeds/templates/embed.html.j2:159
 msgid "Overwrite Current Embed Theme w/ User CSS"
-msgstr "Skriv över nuvarande inbäddnings tema med användar CSS"
+msgstr "Препиши тренутну тему прилагођеним CSS-ом"
 
 #: titanembeds/templates/embed.html.j2:163
 msgid "Notification Sound"
-msgstr "Meddelandeljud"
+msgstr "Звук обавештења"
 
 #: titanembeds/templates/embed.html.j2:168
 msgid "New Messages"
-msgstr "Nya meddelanden"
+msgstr "Нове поруке"
 
 #: titanembeds/templates/embed.html.j2:172
 msgid "Mentions"
-msgstr "Nämningar"
+msgstr "Помињања"
 
 #: titanembeds/templates/embed.html.j2:176
 msgid "Nothing"
-msgstr "Ingenting"
+msgstr "Ништа"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Display Rich Embeds"
@@ -151,49 +151,49 @@ msgstr ""
 
 #: titanembeds/templates/embed.html.j2:201
 msgid "Just one more step..."
-msgstr ""
+msgstr "Само још један корак..."
 
 #: titanembeds/templates/embed.html.j2:213
 msgid "Mention"
-msgstr ""
+msgstr "Ознака"
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "TitanEmbeds Administrator"
-msgstr ""
+msgstr "ТитанЕмбедс Администратор"
 
 #: titanembeds/templates/embed.html.j2:219
 msgid "TitanEmbeds Partner"
-msgstr ""
+msgstr "ТитанЕмбедс Партнер"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "TitanEmbeds Supporter"
-msgstr ""
+msgstr "ТитанЕмбедс Донатор"
 
 #: titanembeds/templates/embed.html.j2:221
 msgid "GitHub Stargazer"
-msgstr ""
+msgstr "ГитХуб Помоћник"
 
 #: titanembeds/templates/embed.html.j2:223
 msgid "User is offline in Discord."
-msgstr ""
+msgstr "Корисник није на Дискорду."
 
 #: titanembeds/templates/embed.html.j2:224
 msgid "Playing"
-msgstr ""
+msgstr "Игра"
 
 #: titanembeds/templates/embed.html.j2:225
 msgid "Roles"
-msgstr ""
+msgstr "Ранк"
 
 #: titanembeds/templates/embed.html.j2:234
 msgid "Server Emoji"
-msgstr "Server Emoji"
+msgstr "Емоџи сервера"
 
 #: titanembeds/templates/embed.html.j2:251
 msgid "Please login to post a message."
-msgstr "Logga in för att skriva ett meddelande."
+msgstr "Пријави се да би послао поруку."
 
 #: titanembeds/templates/embed.html.j2:251
 msgid "Login"
-msgstr "Logga in"
+msgstr "Пријава"
 
