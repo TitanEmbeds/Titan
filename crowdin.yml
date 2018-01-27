@@ -6,3 +6,5 @@ files:
       locale_with_underscore:
         zh-CN: zh_Hans_CN
         zh-TW: zh_Hant_TW
+        sr: sr_Cyrl
+        sr-CS: sr_Latn
