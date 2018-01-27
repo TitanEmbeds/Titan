@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-27 20:46+0000\n"
-"PO-Revision-Date: 2018-01-27 17:24-0500\n"
+"PO-Revision-Date: 2018-01-27 18:31-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -139,15 +139,15 @@ msgstr "Niets"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Display Rich Embeds"
-msgstr ""
+msgstr "Toon Rich Embeds"
 
 #: titanembeds/templates/embed.html.j2:185
 msgid "Enable"
-msgstr ""
+msgstr "Inschakelen"
 
 #: titanembeds/templates/embed.html.j2:189
 msgid "Disable"
-msgstr ""
+msgstr "Uitschakelen"
 
 #: titanembeds/templates/embed.html.j2:201
 msgid "Just one more step..."
