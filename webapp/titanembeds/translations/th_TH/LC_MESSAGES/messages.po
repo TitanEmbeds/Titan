@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-27 20:46+0000\n"
-"PO-Revision-Date: 2018-01-27 17:24-0500\n"
+"PO-Revision-Date: 2018-01-27 18:31-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Thai\n"
 "MIME-Version: 1.0\n"
@@ -151,39 +151,39 @@ msgstr ""
 
 #: titanembeds/templates/embed.html.j2:201
 msgid "Just one more step..."
-msgstr ""
+msgstr "อีกหนึ่งขั้นตอน..."
 
 #: titanembeds/templates/embed.html.j2:213
 msgid "Mention"
-msgstr ""
+msgstr "กล่าวถึง"
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "TitanEmbeds Administrator"
-msgstr ""
+msgstr "แอดมิน TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:219
 msgid "TitanEmbeds Partner"
-msgstr ""
+msgstr "ผู้ร่วมมือ TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "TitanEmbeds Supporter"
-msgstr ""
+msgstr "ผู้สนับสนุน TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:221
 msgid "GitHub Stargazer"
-msgstr ""
+msgstr "GitHub สตาร์กาเซอร์"
 
 #: titanembeds/templates/embed.html.j2:223
 msgid "User is offline in Discord."
-msgstr ""
+msgstr "ผู้ใช้ออพไลน์บน Discord อยู่ขณะนี้"
 
 #: titanembeds/templates/embed.html.j2:224
 msgid "Playing"
-msgstr ""
+msgstr "กำลังเล่น"
 
 #: titanembeds/templates/embed.html.j2:225
 msgid "Roles"
-msgstr ""
+msgstr "บทบาท"
 
 #: titanembeds/templates/embed.html.j2:234
 msgid "Server Emoji"
