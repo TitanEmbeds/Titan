@@ -1,7 +1,7 @@
 files:
   - source: /webapp/titanembeds/translations/messages.pot
     translation: >-
-      /webapp/titanembeds/translations/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
+      /webapp/titanembeds/translations/%locale_with_underscore%/LC_MESSAGES/%file_name%.po
     languages_mapping:
       locale_with_underscore:
         zh-CN: zh_Hans_CN
