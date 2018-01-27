@@ -1,0 +1,200 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: titanembeds\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-01-27 20:46+0000\n"
+"PO-Revision-Date: 2018-01-27 16:40-0500\n"
+"Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
+"Language-Team: Serbian (Latin)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: titanembeds\n"
+"X-Crowdin-Language: sr-CS\n"
+"X-Crowdin-File: /master/webapp/titanembeds/translations/messages.pot\n"
+"Language: sr_CS\n"
+
+#: titanembeds/blueprints/embed/embed.py:15
+msgid "Let's get to know each other! My name is Titan, what's yours?"
+msgstr "Hajde da se upoznamo! Ja se zovem Titan, a ti?"
+
+#: titanembeds/blueprints/embed/embed.py:16
+msgid "Hello and welcome!"
+msgstr "Pozdrav i dobrodošli!"
+
+#: titanembeds/blueprints/embed/embed.py:17
+msgid "What brings you here today?"
+msgstr "Šta te dovodi danas ovde?"
+
+#: titanembeds/blueprints/embed/embed.py:18
+msgid "....what do you expect this text to say?"
+msgstr "....šta očekuješ da ovde treba da piše?"
+
+#: titanembeds/blueprints/embed/embed.py:19
+msgid "Aha! ..made you look!"
+msgstr "Super! ..pogledao si!"
+
+#: titanembeds/blueprints/embed/embed.py:20
+msgid "Initiating launch sequence..."
+msgstr "Započnimo lansiranje..."
+
+#: titanembeds/blueprints/embed/embed.py:21
+msgid "Captain, what's your option?"
+msgstr "Kapetane, šta vi mislite?"
+
+#: titanembeds/blueprints/embed/embed.py:22
+msgid "Alright, here's the usual~"
+msgstr "U redu, ovako je obicno~"
+
+#: titanembeds/templates/embed.html.j2:71
+msgid "Actions"
+msgstr "Akcije"
+
+#: titanembeds/templates/embed.html.j2:72
+msgid "Manage Guild Embed"
+msgstr "Upravljanje zajednice"
+
+#: titanembeds/templates/embed.html.j2:73
+msgid "Open Server on Discordapp"
+msgstr "Otvorite Discord u aplikaciji"
+
+#: titanembeds/templates/embed.html.j2:77
+msgid "Channel Topic"
+msgstr "Tema kanala"
+
+#: titanembeds/templates/embed.html.j2:82
+msgid "Channels"
+msgstr "Kanali"
+
+#: titanembeds/templates/embed.html.j2:87
+msgid "Online Server Members"
+msgstr "Članovi na mreži"
+
+#: titanembeds/templates/embed.html.j2:92
+msgid "Authenticated Embed Users"
+msgstr "Ulogovani korisnici"
+
+#: titanembeds/templates/embed.html.j2:95
+msgid "Guest Embed Users"
+msgstr "Gosti korisnici"
+
+#: titanembeds/templates/embed.html.j2:115
+msgid "Please choose one of the following methods to authenticate!"
+msgstr "Odaberite jednu metodu kako bi se ulogovali!"
+
+#: titanembeds/templates/embed.html.j2:121
+msgid "Discord Login"
+msgstr "Prijava na Discord"
+
+#: titanembeds/templates/embed.html.j2:122
+msgid "You will be invited into this server."
+msgstr "Bićeš pozvan na ovaj server."
+
+#: titanembeds/templates/embed.html.j2:126
+msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
+msgstr "Naravno, možeš privremeno da se prijaviš birajući bilo koje ime za\n"
+"trenutnu sesiju."
+
+#: titanembeds/templates/embed.html.j2:128
+msgid "Username (Hit ENTER/RETURN key to confirm)"
+msgstr "Korisničko ime (pritisni ENTER ili RETURN kako bi potvrdio)"
+
+#: titanembeds/templates/embed.html.j2:140
+msgid "Change Username"
+msgstr "Promeni korisničko ime"
+
+#: titanembeds/templates/embed.html.j2:143
+msgid "Guests Accounts Only"
+msgstr "Samo nalozi gostiju"
+
+#: titanembeds/templates/embed.html.j2:145
+msgid "Change your username (Hit ENTER/RETURN key to confirm)"
+msgstr "Promeni korisničko ime (pritisni ENTER ili RETURN kako bi potvrdio)"
+
+#: titanembeds/templates/embed.html.j2:149
+msgid "Theme"
+msgstr "Tema"
+
+#: titanembeds/templates/embed.html.j2:159
+msgid "Overwrite Current Embed Theme w/ User CSS"
+msgstr "Omogući korisnički dizajn sa CSS-om"
+
+#: titanembeds/templates/embed.html.j2:163
+msgid "Notification Sound"
+msgstr "Zvuk za obaveštenja"
+
+#: titanembeds/templates/embed.html.j2:168
+msgid "New Messages"
+msgstr "Nove pruke"
+
+#: titanembeds/templates/embed.html.j2:172
+msgid "Mentions"
+msgstr "Oznake"
+
+#: titanembeds/templates/embed.html.j2:176
+msgid "Nothing"
+msgstr "Ništa"
+
+#: titanembeds/templates/embed.html.j2:180
+msgid "Display Rich Embeds"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:185
+msgid "Enable"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:189
+msgid "Disable"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:201
+msgid "Just one more step..."
+msgstr "Samo jedan kora više..."
+
+#: titanembeds/templates/embed.html.j2:213
+msgid "Mention"
+msgstr "Oznaka"
+
+#: titanembeds/templates/embed.html.j2:218
+msgid "TitanEmbeds Administrator"
+msgstr "TitanEmbeds Administrator"
+
+#: titanembeds/templates/embed.html.j2:219
+msgid "TitanEmbeds Partner"
+msgstr "TitanEmbeds Partner"
+
+#: titanembeds/templates/embed.html.j2:220
+msgid "TitanEmbeds Supporter"
+msgstr "TitanEmbeds Donator"
+
+#: titanembeds/templates/embed.html.j2:221
+msgid "GitHub Stargazer"
+msgstr "GitHub Pomoćnik"
+
+#: titanembeds/templates/embed.html.j2:223
+msgid "User is offline in Discord."
+msgstr "Korisnik je offline na Discord-u."
+
+#: titanembeds/templates/embed.html.j2:224
+msgid "Playing"
+msgstr "Igra"
+
+#: titanembeds/templates/embed.html.j2:225
+msgid "Roles"
+msgstr "Rank"
+
+#: titanembeds/templates/embed.html.j2:234
+msgid "Server Emoji"
+msgstr "Server smajliji"
+
+#: titanembeds/templates/embed.html.j2:251
+msgid "Please login to post a message."
+msgstr "Prijavi se da bi poslao/la poruku."
+
+#: titanembeds/templates/embed.html.j2:251
+msgid "Login"
+msgstr "Prijava"
+
