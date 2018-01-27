@@ -8,6 +8,9 @@ else:
 if len(sys.argv) != 2:
     print("usage: tr_init <language-code>")
     sys.exit(1)
-os.system(pybabel + ' extract -F babel.cfg -k lazy_gettext -o messages.pot titanembeds')
-os.system(pybabel + ' init -i messages.pot -d titanembeds/translations -l ' + sys.argv[1])
-os.unlink('messages.pot')
+try:
+    os.unlink('titanembeds/translations/messages.pot')
+except:
+    pass
+os.system(pybabel + ' extract -F babel.cfg -k lazy_gettext -o titanembeds/translations/messages.pot titanembeds')
+os.system(pybabel + ' init -i titanembeds/translations/messages.pot -d titanembeds/translations -l ' + sys.argv[1])
