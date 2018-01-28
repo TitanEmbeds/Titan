@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-01-27 20:46+0000\n"
-"PO-Revision-Date: 2018-01-27 17:24-0500\n"
+"POT-Creation-Date: 2018-01-28 00:45+0000\n"
+"PO-Revision-Date: 2018-01-27 19:51-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Hebrew\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.1\n"
+"Generated-By: Babel 2.5.3\n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3;\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: titanembeds\n"
@@ -153,47 +153,63 @@ msgstr ""
 msgid "Just one more step..."
 msgstr ""
 
+#: titanembeds/templates/embed.html.j2:209
+msgid "NSFW Channel"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:210
+msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:212
+msgid "Nope"
+msgstr ""
+
 #: titanembeds/templates/embed.html.j2:213
-msgid "Mention"
-msgstr ""
-
-#: titanembeds/templates/embed.html.j2:218
-msgid "TitanEmbeds Administrator"
-msgstr ""
-
-#: titanembeds/templates/embed.html.j2:219
-msgid "TitanEmbeds Partner"
-msgstr ""
-
-#: titanembeds/templates/embed.html.j2:220
-msgid "TitanEmbeds Supporter"
-msgstr ""
-
-#: titanembeds/templates/embed.html.j2:221
-msgid "GitHub Stargazer"
-msgstr ""
-
-#: titanembeds/templates/embed.html.j2:223
-msgid "User is offline in Discord."
+msgid "Continue"
 msgstr ""
 
 #: titanembeds/templates/embed.html.j2:224
-msgid "Playing"
+msgid "Mention"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:225
-msgid "Roles"
+#: titanembeds/templates/embed.html.j2:229
+msgid "TitanEmbeds Administrator"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:230
+msgid "TitanEmbeds Partner"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:231
+msgid "TitanEmbeds Supporter"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:232
+msgid "GitHub Stargazer"
 msgstr ""
 
 #: titanembeds/templates/embed.html.j2:234
+msgid "User is offline in Discord."
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:235
+msgid "Playing"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:236
+msgid "Roles"
+msgstr ""
+
+#: titanembeds/templates/embed.html.j2:245
 msgid "Server Emoji"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:251
+#: titanembeds/templates/embed.html.j2:262
 msgid "Please login to post a message."
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:251
+#: titanembeds/templates/embed.html.j2:262
 msgid "Login"
 msgstr ""
 
