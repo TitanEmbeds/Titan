@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-27 19:51-0500\n"
+"PO-Revision-Date: 2018-01-28 02:00-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -195,7 +195,7 @@ msgstr ""
 
 #: titanembeds/templates/embed.html.j2:235
 msgid "Playing"
-msgstr ""
+msgstr "Jouer"
 
 #: titanembeds/templates/embed.html.j2:236
 msgid "Roles"
