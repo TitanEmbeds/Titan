@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-27 19:51-0500\n"
+"PO-Revision-Date: 2018-01-28 13:22-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Catalan\n"
 "MIME-Version: 1.0\n"
@@ -139,15 +139,15 @@ msgstr "Res"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Display Rich Embeds"
-msgstr ""
+msgstr "Mostra insercions enriquides"
 
 #: titanembeds/templates/embed.html.j2:185
 msgid "Enable"
-msgstr ""
+msgstr "Activa"
 
 #: titanembeds/templates/embed.html.j2:189
 msgid "Disable"
-msgstr ""
+msgstr "Desactiva"
 
 #: titanembeds/templates/embed.html.j2:201
 msgid "Just one more step..."
@@ -155,19 +155,19 @@ msgstr "Només un pas més..."
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "NSFW Channel"
-msgstr ""
+msgstr "Canal NSFW"
 
 #: titanembeds/templates/embed.html.j2:210
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr ""
+msgstr "Has de tenir almenys divuit anys per veure aquest canal. Tens més de divuit anys i estàs disposat a veure contingut per adults?"
 
 #: titanembeds/templates/embed.html.j2:212
 msgid "Nope"
-msgstr ""
+msgstr "No"
 
 #: titanembeds/templates/embed.html.j2:213
 msgid "Continue"
-msgstr ""
+msgstr "Continua"
 
 #: titanembeds/templates/embed.html.j2:224
 msgid "Mention"
