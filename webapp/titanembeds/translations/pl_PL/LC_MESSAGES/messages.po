@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-27 19:51-0500\n"
+"PO-Revision-Date: 2018-01-28 13:24-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -139,15 +139,15 @@ msgstr "Wyłączony"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Display Rich Embeds"
-msgstr ""
+msgstr "Bogate Embedy"
 
 #: titanembeds/templates/embed.html.j2:185
 msgid "Enable"
-msgstr ""
+msgstr "Włączone"
 
 #: titanembeds/templates/embed.html.j2:189
 msgid "Disable"
-msgstr ""
+msgstr "Wyłączone"
 
 #: titanembeds/templates/embed.html.j2:201
 msgid "Just one more step..."
@@ -155,19 +155,19 @@ msgstr "Ostatni krok..."
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "NSFW Channel"
-msgstr ""
+msgstr "Kanał 18+"
 
 #: titanembeds/templates/embed.html.j2:210
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr ""
+msgstr "Musisz mieć 18+ lat aby zobaczyć ten kanał. Czy masz 18+ lat i odwagę zobaczyć P0RN?"
 
 #: titanembeds/templates/embed.html.j2:212
 msgid "Nope"
-msgstr ""
+msgstr "O nie!"
 
 #: titanembeds/templates/embed.html.j2:213
 msgid "Continue"
-msgstr ""
+msgstr "Pokaż mi ten P0RN"
 
 #: titanembeds/templates/embed.html.j2:224
 msgid "Mention"
