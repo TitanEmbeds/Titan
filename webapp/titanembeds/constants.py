@@ -76,7 +76,7 @@ QUERY_PARAMETERS = [
 
 LANGUAGES = [
     {
-        "code": "ca",
+        "code": "ca_ES",
         "name_en": "Catalan",
         "name": "Català",
         "translators": [
@@ -89,9 +89,23 @@ LANGUAGES = [
                 "crowdin_profile": "jmmartin_5",
             },
         ],
+    },{
+        "code": "cs_CZ",
+        "name_en": "Czech",
+        "name": "čeština",
+        "translators": [
+            {
+                "name": "Roman Hejč",
+                "crowdin_profile": "romanhejc",
+            },
+            {
+                "name": "Tom Silvestr",
+                "crowdin_profile": "rescool",
+            },
+        ],
     },
     {
-        "code": "da",
+        "code": "da_DK",
         "name_en": "Danish",
         "name": "Dansk",
         "translators": [
@@ -102,7 +116,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "de",
+        "code": "de_DE",
         "name_en": "German",
         "name": "Deutsche",
         "translators": [
@@ -117,7 +131,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "en",
+        "code": "en_US",
         "name_en": "English",
         "name": "English",
         "translators": [
@@ -147,7 +161,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "fr",
+        "code": "fr_FR",
         "name_en": "French",
         "name": "français",
         "translators": [
@@ -158,7 +172,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "hi",
+        "code": "hi_IN",
         "name_en": "Hindi",
         "name": "हिंदी",
         "translators": [
@@ -169,7 +183,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "hu",
+        "code": "hu_HU",
         "name_en": "Hungarian",
         "name": "Magyar",
         "translators": [
@@ -184,7 +198,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "id",
+        "code": "id_ID",
         "name_en": "Indonesian",
         "name": "bahasa Indonesia",
         "translators": [
@@ -199,7 +213,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "it",
+        "code": "it_IT",
         "name_en": "Italian",
         "name": "Italiano",
         "translators": [
@@ -210,7 +224,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "ja",
+        "code": "ja_JP",
         "name_en": "Japanese",
         "name": "日本語",
         "translators": [
@@ -221,7 +235,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "nl",
+        "code": "nl_NL",
         "name_en": "Dutch",
         "name": "Nederlands",
         "translators": [
@@ -240,7 +254,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "pl",
+        "code": "pl_PL",
         "name_en": "Polish",
         "name": "Polski",
         "translators": [
@@ -251,7 +265,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "pt_PT",
+        "code": "pt_BR",
         "name_en": "Portuguese",
         "name": "Português",
         "translators": [
@@ -262,7 +276,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "ro",
+        "code": "ro_RO",
         "name_en": "Romanian",
         "name": "Română",
         "translators": [
@@ -273,7 +287,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "sl",
+        "code": "sl_SI",
         "name_en": "Slovenian",
         "name": "Slovenščina",
         "translators": [
@@ -284,7 +298,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "sr",
+        "code": "sr_Cyrl",
         "name_en": "Serbian (Cyrillic)",
         "name": "Српски",
         "translators": [
@@ -299,7 +313,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "sr_CS",
+        "code": "sr_Latn",
         "name_en": "Serbian (Latin)",
         "name": "Српски",
         "translators": [
@@ -321,7 +335,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "th",
+        "code": "th_TH",
         "name_en": "Thai",
         "name": "ไทย",
         "translators": [
@@ -332,7 +346,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "tr",
+        "code": "tr_TR",
         "name_en": "Turkish",
         "name": "Türk",
         "translators": [
