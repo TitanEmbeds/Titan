@@ -891,8 +891,12 @@ p.mentioned span.chatmessage {
   width: 302px;
 }
 
-#logout_btn {
+#logout_btn, #proceed_nsfw_btn {
   background-color: red;
+}
+
+#nsfwmodal i {
+  color: yellow;
 }
 
 #message-spinner {

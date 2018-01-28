@@ -91,6 +91,7 @@ def get_channels_list(guildchannels):
                 "type": str(channel.type),
                 "permission_overwrites": overwrites,
                 "parent_id": parent,
+                "nsfw": channel.is_nsfw,
             })
     return channels
     

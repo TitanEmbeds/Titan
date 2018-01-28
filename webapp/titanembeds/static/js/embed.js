@@ -179,6 +179,12 @@
             inDuration: 400,
             outDuration: 400,
         });
+        $("#nsfwmodal").modal({
+            dismissible: true,
+            opacity: .3,
+            inDuration: 400,
+            outDuration: 400,
+        });
         $("#usercard").modal({
             opacity: .5,
         });
@@ -223,6 +229,17 @@
             if (emojipck_display != "none") {
                 $("#emoji-picker").fadeToggle();
             }
+        });
+        
+        $("#proceed_nsfw_btn").click(function () {
+            var channel_id = $("#proceed_nsfw_btn").attr("channel_id");
+            var should_animate = parseInt($("#proceed_nsfw_btn").attr("should_animate"));
+            $("#nsfwmodal").modal("close");
+            select_channel(channel_id, should_animate, true);
+        });
+        
+        $("#dismiss_nsfw_btn").click(function () {
+            $("#nsfwmodal").modal("close");
         });
         
         $( "#theme-selector" ).change(function () {
@@ -793,15 +810,21 @@
         element.css("opacity", opacity);
     }
 
-    function select_channel(channel_id, animate_it) {
+    function select_channel(channel_id, animate_it, acknowledge_nsfw) {
         if (selected_channel != channel_id && guild_channels[channel_id] && guild_channels[channel_id].read) {
+            if (guild_channels[channel_id].channel.nsfw && !acknowledge_nsfw) {
+                $("#proceed_nsfw_btn").attr("channel_id", channel_id);
+                $("#proceed_nsfw_btn").attr("should_animate", animate_it ? 1 : 0);
+                $("#nsfwmodal").modal("open");
+                return;
+            }
             if (animate_it) {
                 $("#guild-btn").sideNav("show");
                 $("#channel-"+channel_id)[0].scrollIntoView({behavior: "smooth"});
                 flashElement($("#channel-"+channel_id));
                 setTimeout(function () {
                     $("#guild-btn").sideNav("hide");
-                    select_channel(channel_id);
+                    select_channel(channel_id, false, true);
                 }, 1000);
                 return;
             }
