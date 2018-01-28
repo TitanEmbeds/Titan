@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-27 19:51-0500\n"
+"PO-Revision-Date: 2018-01-28 02:00-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Czech\n"
 "MIME-Version: 1.0\n"
@@ -139,15 +139,15 @@ msgstr "Nic"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Display Rich Embeds"
-msgstr ""
+msgstr "Zobrazit bohaté vložení"
 
 #: titanembeds/templates/embed.html.j2:185
 msgid "Enable"
-msgstr ""
+msgstr "Povolit"
 
 #: titanembeds/templates/embed.html.j2:189
 msgid "Disable"
-msgstr ""
+msgstr "Zakázat"
 
 #: titanembeds/templates/embed.html.j2:201
 msgid "Just one more step..."
