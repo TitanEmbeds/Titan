@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-27 19:51-0500\n"
+"PO-Revision-Date: 2018-01-28 13:42-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -155,19 +155,19 @@ msgstr "Nog één stap te gaan..."
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "NSFW Channel"
-msgstr ""
+msgstr "Pornografie kanaal"
 
 #: titanembeds/templates/embed.html.j2:210
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr ""
+msgstr "U moet ten minste achttien jaar oud zijn om de inhoud van dit kanaal te bekijken. Bent u achttien jaar of ouder en wilt u deze volwassen inhoud bekijken?"
 
 #: titanembeds/templates/embed.html.j2:212
 msgid "Nope"
-msgstr ""
+msgstr "Nope"
 
 #: titanembeds/templates/embed.html.j2:213
 msgid "Continue"
-msgstr ""
+msgstr "Doorgaan"
 
 #: titanembeds/templates/embed.html.j2:224
 msgid "Mention"
