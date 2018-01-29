@@ -11,5 +11,5 @@ def list_disabled_guilds():
     q = db.session.query(DisabledGuilds).all()
     their_ids = []
     for guild in q:
-        their_ids.append(guild.guild_id)
+        their_ids.append(str(guild.guild_id))
     return their_ids
