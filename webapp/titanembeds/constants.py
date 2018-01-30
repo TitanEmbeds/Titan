@@ -118,7 +118,7 @@ LANGUAGES = [
     {
         "code": "de_DE",
         "name_en": "German",
-        "name": "Deutsche",
+        "name": "Deutsch",
         "translators": [
             {
                 "name": "futureyess22",
