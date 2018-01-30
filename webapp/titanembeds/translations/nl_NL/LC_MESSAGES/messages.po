@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-28 13:42-0500\n"
+"PO-Revision-Date: 2018-01-29 21:51-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -27,11 +27,11 @@ msgstr "Hallo en welkom!"
 
 #: titanembeds/blueprints/embed/embed.py:17
 msgid "What brings you here today?"
-msgstr "Wat brengt u hier vandaag?"
+msgstr "Wat brengt je hier vandaag?"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "....what do you expect this text to say?"
-msgstr "...verwachtte je iets nuttigs van deze tekst?"
+msgstr "...wat verwachtte je van deze tekst?"
 
 #: titanembeds/blueprints/embed/embed.py:19
 msgid "Aha! ..made you look!"
@@ -95,7 +95,7 @@ msgstr "Je zult lid worden van deze server."
 
 #: titanembeds/templates/embed.html.j2:126
 msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
-msgstr "U heeft ook de optie om in te loggen door een tijdelijke gebruikersnaam voor uw huidige browsersessie te kiezen."
+msgstr "Uiteraard heb je ook de optie om in te loggen door een tijdelijke gebruikersnaam voor je huidige browsersessie te kiezen."
 
 #: titanembeds/templates/embed.html.j2:128
 msgid "Username (Hit ENTER/RETURN key to confirm)"
@@ -119,11 +119,11 @@ msgstr "Thema"
 
 #: titanembeds/templates/embed.html.j2:159
 msgid "Overwrite Current Embed Theme w/ User CSS"
-msgstr "Overschrijf huidige thema van embed met uw aangepaste CSS"
+msgstr "Overschrijf huidige thema van embed met jouw aangepaste CSS"
 
 #: titanembeds/templates/embed.html.j2:163
 msgid "Notification Sound"
-msgstr "Melding geluid"
+msgstr "Meldingsgeluid"
 
 #: titanembeds/templates/embed.html.j2:168
 msgid "New Messages"
@@ -139,7 +139,7 @@ msgstr "Niets"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Display Rich Embeds"
-msgstr "Toon Rich Embeds"
+msgstr "Toon Rijke Invoegsels"
 
 #: titanembeds/templates/embed.html.j2:185
 msgid "Enable"
@@ -155,15 +155,15 @@ msgstr "Nog één stap te gaan..."
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "NSFW Channel"
-msgstr "Pornografie kanaal"
+msgstr "Kanaal met aanstootgevende inhoud"
 
 #: titanembeds/templates/embed.html.j2:210
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr "U moet ten minste achttien jaar oud zijn om de inhoud van dit kanaal te bekijken. Bent u achttien jaar of ouder en wilt u deze volwassen inhoud bekijken?"
+msgstr "Je moet tenminste achttien jaar oud zijn om de inhoud van dit kanaal te bekijken. Ben je achttien jaar of ouder en wil je deze volwassen inhoud bekijken?"
 
 #: titanembeds/templates/embed.html.j2:212
 msgid "Nope"
-msgstr "Nope"
+msgstr "Nee"
 
 #: titanembeds/templates/embed.html.j2:213
 msgid "Continue"
@@ -187,7 +187,7 @@ msgstr "TitanEmbeds Supporter"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "GitHub Stargazer"
-msgstr "GitHub Stargazer"
+msgstr "GitHub Sterrenkijker"
 
 #: titanembeds/templates/embed.html.j2:234
 msgid "User is offline in Discord."
