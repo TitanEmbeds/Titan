@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-29 21:51-0500\n"
+"PO-Revision-Date: 2018-01-30 18:11-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgstr "Aha! Ik heb je aandacht!"
 
 #: titanembeds/blueprints/embed/embed.py:20
 msgid "Initiating launch sequence..."
-msgstr "Opstart process aan het voorbereiden..."
+msgstr "Opstartproces aan het voorbereiden..."
 
 #: titanembeds/blueprints/embed/embed.py:21
 msgid "Captain, what's your option?"
@@ -159,7 +159,7 @@ msgstr "Kanaal met aanstootgevende inhoud"
 
 #: titanembeds/templates/embed.html.j2:210
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr "Je moet tenminste achttien jaar oud zijn om de inhoud van dit kanaal te bekijken. Ben je achttien jaar of ouder en wil je deze volwassen inhoud bekijken?"
+msgstr "Je moet tenminste achttien jaar oud zijn om de inhoud van dit kanaal te bekijken. Ben je achttien jaar of ouder en wil je volwassen inhoud kunnen bekijken?"
 
 #: titanembeds/templates/embed.html.j2:212
 msgid "Nope"
@@ -207,7 +207,7 @@ msgstr "Server Emoji"
 
 #: titanembeds/templates/embed.html.j2:262
 msgid "Please login to post a message."
-msgstr "Log in om een bericht te plaatsen."
+msgstr "S. v. p. inloggen om een bericht te plaatsen."
 
 #: titanembeds/templates/embed.html.j2:262
 msgid "Login"
