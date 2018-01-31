@@ -15,7 +15,7 @@ QUERY_PARAMETERS = [
         "name": "lang",
         "type": "language",
         "description": "Is your users multilingual? No worries, Titan can speak multiple languages! Check the about page for a list of all language parameters Titan can support. <br> Wish Titan supported your language? Consider contributing to <a href=\"http://translate.titanembeds.com/\" target=\"_blank\">our CrowdIn project</a>!",
-        "example": "nl",
+        "example": "nl_NL",
         "input": "text",
     },
     {
