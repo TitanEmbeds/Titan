@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-30 18:11-0500\n"
+"PO-Revision-Date: 2018-01-31 20:11-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Let's get to know each other! My name is Titan, what's yours?"
-msgstr "Laten we elkaar leren kennen! Mijn naam is Titan, wat is de jouwe?"
+msgstr "Laten we elkaar leren kennen! Mijn naam is Titan, wat is die van jouw?"
 
 #: titanembeds/blueprints/embed/embed.py:16
 msgid "Hello and welcome!"
