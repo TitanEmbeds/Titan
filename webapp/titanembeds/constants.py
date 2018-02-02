@@ -72,6 +72,22 @@ QUERY_PARAMETERS = [
         "description": "Prefills the guest username field with the given username.",
         "example": "Rainbow%20Dash",
     },
+    {
+        "name": "userscalable",
+        "type": "boolean",
+        "description": "Enables pinch-to-zoom and auto zoom on input fields for most mobile browsers on touch-enabled devices. Disabling this will give your embed a more app-like experience. Keep in mind that disabling this might prevent accessibility features disabled people rely on from functioning.",
+        "example": "false",
+        "options": [
+            {
+                "name": "true",
+                "default": True,
+            },
+            {
+                "name": "false",
+                "default": False,
+            },
+        ],
+    },
 ]
 
 LANGUAGES = [

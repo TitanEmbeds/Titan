@@ -85,7 +85,8 @@ def guild_embed(guild_id):
             recaptcha_site_key=config["recaptcha-site-key"],
             css=customcss,
             cssvariables=parse_css_variable(customcss),
-            same_target=request.args.get("sametarget", False) == "true"
+            same_target=request.args.get("sametarget", False) == "true",
+            userscalable=request.args.get("userscalable", "True").lower().startswith("t")
         )
     abort(404)
 
