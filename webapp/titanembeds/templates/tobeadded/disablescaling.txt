@@ -1,0 +1,13 @@
+<!--
+  userscalable=<boolean>
+    Enables pinch-to-zoom and auto zoom on input fields for most mobile browsers on touch-enabled devices. Disabling this will give your embed a more app-like experience. Keep in mind that disabling this might prevent accessibility features disabled people rely on from functioning.
+  Options:
+  true (default)
+  false
+-->
+
+<head>
+  <!--Disable scaling on mobile browsers-->
+  meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="HandheldFriendly" content="true" />
+</head>
