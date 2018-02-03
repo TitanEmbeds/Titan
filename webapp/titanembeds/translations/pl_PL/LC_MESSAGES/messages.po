@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-28 13:24-0500\n"
+"PO-Revision-Date: 2018-02-03 13:40-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -159,7 +159,7 @@ msgstr "Kanał 18+"
 
 #: titanembeds/templates/embed.html.j2:210
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr "Musisz mieć 18+ lat aby zobaczyć ten kanał. Czy masz 18+ lat i odwagę zobaczyć P0RN?"
+msgstr "Musisz mieć 18+ lat aby zobaczyć ten kanał. Czy masz 18+ lat?"
 
 #: titanembeds/templates/embed.html.j2:212
 msgid "Nope"
