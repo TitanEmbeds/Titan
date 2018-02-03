@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-02-03 13:40-0500\n"
+"PO-Revision-Date: 2018-02-03 14:30-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -167,7 +167,7 @@ msgstr "O nie!"
 
 #: titanembeds/templates/embed.html.j2:213
 msgid "Continue"
-msgstr "Pokaż mi ten P0RN"
+msgstr "Tak mam 18+ lat"
 
 #: titanembeds/templates/embed.html.j2:224
 msgid "Mention"
