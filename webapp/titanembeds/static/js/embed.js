@@ -1098,6 +1098,7 @@
             if (replace == null) {
                 $("#chatcontent").append(rendered);
                 handle_last_message_mention();
+                $("#chatcontent p:last-child").attr("timestamp", message.timestamp);
                 $("#chatcontent p:last-child").find(".blockcode").find("br").remove(); // Remove excessive breaks in codeblocks
                 render_code_highlighting($("#chatcontent p:last-child").find(".blockcode"));
                 $("#chatcontent .chatusername").last().click(function () {
@@ -1258,7 +1259,7 @@
         for (var i = 1; i < allMessages.length; i++) {
             var last = $(allMessages[i - 1]);
             var current = $(allMessages[i]);
-            if (last.attr("discord_userid") == current.attr("discord_userid") && current.attr("discord_userid")) {
+            if (last.attr("discord_userid") == current.attr("discord_userid") && current.attr("discord_userid") && moment(current.attr("timestamp")).isSame(moment(last.attr("timestamp")), "hour")) {
                 current.addClass("collapsed");
             } else {
                 current.removeClass("collapsed");
