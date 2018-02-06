@@ -61,6 +61,12 @@
     String.prototype.replaceAll = function(target, replacement) {
         return this.split(target).join(replacement);
     };
+    
+    function zeroPad(discrim) {
+        var str = "" + discrim;
+        var pad = "0000";
+        return pad.substring(0, pad.length - str.length) + str;
+    }
 
     function query_guild() {
         var url = "/api/query_guild";
@@ -707,7 +713,7 @@
         $("#guest-members-count").html(users.length);
         for (var i = 0; i < users.length; i++) {
             var member = users[i];
-            var rendered = Mustache.render(template, {"username": member.username, "discriminator": member.discriminator});
+            var rendered = Mustache.render(template, {"username": member.username, "discriminator": zeroPad(member.discriminator)});
             $("#embed-unauth-users").append(rendered);
         }
         unauthenticated_users_list = users;
@@ -755,8 +761,8 @@
             }
             $("#usercard .avatar").attr("src", data.avatar_url);
             $("#usercard .identity .username").text(data.username);
-            $("#usercard .identity .discriminator").text(data.discriminator);
-            $("#usercard .identity .discriminator").text(data.discriminator);
+            $("#usercard .identity .discriminator").text(zeroPad(data.discriminator));
+            $("#usercard .identity .discriminator").text(zeroPad(data.discriminator));
             
             var template = $('#mustache_rolebubble').html();
             Mustache.parse(template);
@@ -846,7 +852,7 @@
             if (mention.nickname) {
                 username = mention.nickname;
             }
-            var rendered = Mustache.render(template, {"username": username, "discriminator": mention.discriminator}).trim();
+            var rendered = Mustache.render(template, {"username": username, "discriminator": zeroPad(mention.discriminator)}).trim();
             message.content = message.content.replace(new RegExp("&lt;@" + mention.id + "&gt;", 'g'), rendered);
             message.content = message.content.replace(new RegExp("&lt;@!" + mention.id + "&gt;", 'g'), rendered);
             message.content = message.content.replace("&lt;@&" + guild_id + "&gt;", "@everyone");
@@ -1094,7 +1100,7 @@
             if (message.author.nickname) {
                 username = message.author.nickname;
             }
-            var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": username, "discriminator": message.author.discriminator, "avatar": avatar, "content": nl2br(message.content)});
+            var rendered = Mustache.render(template, {"id": message.id, "full_timestamp": message.formatted_timestamp, "time": message.formatted_time, "username": username, "discriminator": zeroPad(message.author.discriminator), "avatar": avatar, "content": nl2br(message.content)});
             if (replace == null) {
                 $("#chatcontent").append(rendered);
                 handle_last_message_mention();
