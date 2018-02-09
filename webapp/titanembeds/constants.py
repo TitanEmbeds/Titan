@@ -64,6 +64,10 @@ QUERY_PARAMETERS = [
                 "name": "DiscordDark",
                 "default": False,
             },
+            {
+                "name": "MetroEdge",
+                "default": False,
+            },
         ],
     },
     {
