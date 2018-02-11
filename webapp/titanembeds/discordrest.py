@@ -54,10 +54,10 @@ class DiscordREST:
         for tries in range(5):
             curepoch = time.time()
             if self._get_bucket("global_limited") == "True":
-                time.sleep(int(self._get_bucket("global_limit_expire")) - curepoch)
+                time.sleep(int(float(self._get_bucket("global_limit_expire"))) - curepoch)
                 curepoch = time.time()
 
-            if self._bucket_contains(url) and int(self._get_bucket(url)) > curepoch:
+            if self._bucket_contains(url) and float(int(self._get_bucket(url))) > curepoch:
                 time.sleep(int(self._get_bucket(url)) - curepoch)
 
             url_formatted = _DISCORD_API_BASE + url
