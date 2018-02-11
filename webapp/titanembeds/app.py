@@ -1,14 +1,4 @@
 from config import config
-from .database import db
-from flask import Flask, render_template, request, session, url_for, redirect, jsonify
-from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, discord_api, socketio, babel, redis_store, language_code_list
-from .blueprints import api, user, admin, embed, gateway
-import os
-from titanembeds.database import get_administrators_list
-import titanembeds.constants as constants
-from datetime import timedelta
-
 try:
     import uwsgi
     from gevent import monkey
@@ -20,6 +10,16 @@ except:
     elif config.get("websockets-mode", None) == "gevent":
         from gevent import monkey
         monkey.patch_all()
+
+from .database import db
+from flask import Flask, render_template, request, session, url_for, redirect, jsonify
+from flask_sslify import SSLify
+from titanembeds.utils import rate_limiter, discord_api, socketio, babel, redis_store, language_code_list
+from .blueprints import api, user, admin, embed, gateway
+import os
+from titanembeds.database import get_administrators_list
+import titanembeds.constants as constants
+from datetime import timedelta
 
 os.chdir(config['app-location'])
 app = Flask(__name__, static_folder="static")
