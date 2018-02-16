@@ -101,8 +101,8 @@ class Titan(discord.Client):
         #     print("Skipping indexing server due to no-init flag")
 
     async def on_message(self, message):
-        await self.database.push_message(message)
         await self.socketio.on_message(message)
+        await self.database.push_message(message)
 
         msg_arr = message.content.split() # split the message
         if len(message.content.split()) > 1 and message.server: #making sure there is actually stuff in the message and have arguments and check if it is sent in server (not PM)
