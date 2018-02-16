@@ -50,7 +50,7 @@ def get_user_guilds():
         return cache.decode("utf-8")
     req = discordrest_from_user("/users/@me/guilds")
     if req.status_code != 200:
-        if getattr(request, "sid"):
+        if hasattr(request, "sid"):
             disconnect()
             return
         abort(req.status_code)
