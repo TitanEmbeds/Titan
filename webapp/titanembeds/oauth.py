@@ -59,7 +59,10 @@ def get_user_guilds():
     return req
 
 def get_user_managed_servers():
-    guilds = json.loads(get_user_guilds())
+    fetched = get_user_guilds()
+    if not fetched:
+        return []
+    guilds = json.loads(fetched)
     filtered = []
     for guild in guilds:
         permission = guild['permissions'] # Manage Server, Ban Members, Kick Members
