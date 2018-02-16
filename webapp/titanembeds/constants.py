@@ -73,7 +73,7 @@ QUERY_PARAMETERS = [
     {
         "name": "username",
         "type": "string",
-        "description": "Prefills the guest username field with the given username.",
+        "description": "Prefills the guest username field with the given username. If the guest captcha is disabled and that the user has not been logged in yet, it automatically logs the user in with the specified username.",
         "example": "Rainbow%20Dash",
     },
     {
