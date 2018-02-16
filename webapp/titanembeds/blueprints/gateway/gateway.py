@@ -74,6 +74,8 @@ class Gateway(Namespace):
         visitor_mode = data["visitor_mode"]
         if not visitor_mode:
             key = None
+            if "unauthenticated" not in session:
+                disconnect()
             if session["unauthenticated"]:
                 key = session["user_keys"][guild_id]
             status = update_user_status(guild_id, session["username"], key)

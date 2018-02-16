@@ -3,6 +3,7 @@ import json
 from requests_oauthlib import OAuth2Session
 from flask import session, abort, url_for
 from titanembeds.utils import redis_store, make_user_cache_key
+from flask_socketio import disconnect
 
 authorize_url = "https://discordapp.com/api/oauth2/authorize"
 token_url = "https://discordapp.com/api/oauth2/token"
@@ -49,6 +50,9 @@ def get_user_guilds():
         return cache.decode("utf-8")
     req = discordrest_from_user("/users/@me/guilds")
     if req.status_code != 200:
+        if getattr(request, sid):
+            disconnect()
+            return
         abort(req.status_code)
     req = json.dumps(req.json())
     redis_store.set("OAUTH/USERGUILDS/"+str(make_user_cache_key()), req, 250)
