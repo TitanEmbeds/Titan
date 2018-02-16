@@ -11,7 +11,7 @@ avatar_base_url = "https://cdn.discordapp.com/avatars/"
 guild_icon_url = "https://cdn.discordapp.com/icons/"
 
 def update_user_token(discord_token):
-    session['user_keys'] = discord_token
+    session['user_keys'] = discord_tokeidn
 
 def make_authenticated_session(token=None, state=None, scope=None):
     return OAuth2Session(
@@ -50,7 +50,7 @@ def get_user_guilds():
         return cache.decode("utf-8")
     req = discordrest_from_user("/users/@me/guilds")
     if req.status_code != 200:
-        if getattr(request, sid):
+        if getattr(request, "sid"):
             disconnect()
             return
         abort(req.status_code)
