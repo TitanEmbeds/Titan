@@ -46,27 +46,30 @@ class Gateway(Namespace):
     def on_disconnect(self):
         if "user_keys" not in session:
             return
-        guild_id = session["socket_guild_id"]
-        msg = {}
-        if session["unauthenticated"]:
-            msg = {"unauthenticated": True, "username": session["username"], "discriminator": session["user_id"]}
+        if "socket_guild_id" not in session:
+            disconnect()
         else:
-            msg = {"unauthenticated": False, "id": str(session["user_id"])}
-        emit("embed_user_disconnect", msg, room="GUILD_"+guild_id)
-        if guild_webhooks_enabled(guild_id): # Delete webhooks
-            dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-            guild_webhooks = json.loads(dbguild.webhooks)
-            name = "[Titan] "
-            username = session["username"]
-            if len(username) > 19:
-                username = username[:19]
+            guild_id = session["socket_guild_id"]
+            msg = {}
             if session["unauthenticated"]:
-                name = name + username + "#" + str(session["user_id"])
+                msg = {"unauthenticated": True, "username": session["username"], "discriminator": session["user_id"]}
             else:
-                name = name + username + "#" + str(session["discriminator"])
-            for webhook in guild_webhooks:
-                if webhook["name"] == name:
-                    discord_api.delete_webhook(webhook["id"], webhook["token"])
+                msg = {"unauthenticated": False, "id": str(session["user_id"])}
+            emit("embed_user_disconnect", msg, room="GUILD_"+guild_id)
+            if guild_webhooks_enabled(guild_id): # Delete webhooks
+                dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+                guild_webhooks = json.loads(dbguild.webhooks)
+                name = "[Titan] "
+                username = session["username"]
+                if len(username) > 19:
+                    username = username[:19]
+                if session["unauthenticated"]:
+                    name = name + username + "#" + str(session["user_id"])
+                else:
+                    name = name + username + "#" + str(session["discriminator"])
+                for webhook in guild_webhooks:
+                    if webhook["name"] == name:
+                        discord_api.delete_webhook(webhook["id"], webhook["token"])
         self.teardown_db_session()
         
     def on_heartbeat(self, data):
