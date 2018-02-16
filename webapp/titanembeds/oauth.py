@@ -11,7 +11,7 @@ avatar_base_url = "https://cdn.discordapp.com/avatars/"
 guild_icon_url = "https://cdn.discordapp.com/icons/"
 
 def update_user_token(discord_token):
-    session['user_keys'] = discord_tokeidn
+    session['user_keys'] = discord_token
 
 def make_authenticated_session(token=None, state=None, scope=None):
     return OAuth2Session(
