@@ -20,7 +20,10 @@ from titanembeds.discordrest import DiscordREST
 discord_api = DiscordREST(config['bot-token'])
 
 def get_client_ipaddr():
-    ip = request.remote_addr
+    if request.headers.getlist("X-Forwarded-For"):
+       ip = request.headers.getlist("X-Forwarded-For")[0]
+    else:
+       ip = request.remote_addr
     return hashlib.sha512((config['app-secret'] + ip).encode('utf-8')).hexdigest()[:15]
 
 def generate_session_key():
