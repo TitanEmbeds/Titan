@@ -97,14 +97,14 @@ def check_user_permission(guild_id, id):
 
 def generate_avatar_url(id, av, discrim="0000"):
     if av:
-        return avatar_base_url + str(id) + '/' + str(av) + '.jpg'
+        return avatar_base_url + str(id) + '/' + str(av) + '.png'
     else:
         default_av = [0, 1, 2, 3, 4]
         discrim = int(discrim)
         return "https://cdn.discordapp.com/embed/avatars/{}.png".format(default_av[int(discrim) % len(default_av)])
 
 def generate_guild_icon_url(id, hash):
-    return guild_icon_url + str(id) + "/" + str(hash) + ".jpg"
+    return guild_icon_url + str(id) + "/" + str(hash) + ".png"
 
 def generate_bot_invite_url(guild_id):
     url = "https://discordapp.com/oauth2/authorize?&client_id={}&scope=bot&permissions={}&guild_id={}".format(config['client-id'], '641195117', guild_id)
