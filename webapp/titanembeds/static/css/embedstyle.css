@@ -213,7 +213,7 @@ nav .brand-logo {
   cursor: pointer;
 }
 
-#chatcontent .chatusername.stargazer {
+#chatcontent .chatusername.discordbotsorgvoted {
   text-shadow: 2px 2px 10px yellow;
 }
 
@@ -883,7 +883,7 @@ p.mentioned span.chatmessage {
   font-weight: normal;
 }
 
-#usercard .badges .star {
+#usercard .badges .discordbotsorgvoted {
   color: yellow;
 }
 

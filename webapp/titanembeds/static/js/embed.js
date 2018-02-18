@@ -20,7 +20,7 @@
 
 (function () {
     const theme_options = ["DiscordDark", "MetroEdge", "BetterTitan"]; // All the avaliable theming names
-    const badges_options = ["administrator", "partner", "supporter", "star"]; // All badges avaliable
+    const badges_options = ["administrator", "partner", "supporter", "discordbotsorgvoted"]; // All badges avaliable
     
     var user_def_css; // Saves the user defined css
     var has_already_been_initially_resized = false; // keep track if the embed initially been resized
@@ -1249,8 +1249,8 @@
             } else {
                 parent.find(".chatusername").css("color", null);
             }
-            if (usr.stargazer) {
-                parent.find(".chatusername").addClass("stargazer");
+            if (usr.discordbotsorgvoted) {
+                parent.find(".chatusername").addClass("discordbotsorgvoted");
             }
             if (usr.avatar_url) {
                 parent.find(".authoravatar").prop("src", usr.avatar_url);
