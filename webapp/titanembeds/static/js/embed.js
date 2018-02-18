@@ -905,7 +905,7 @@
                 attach = " ";
             }
             if (message.attachments[i].url.endsWith(".png") || message.attachments[i].url.endsWith(".jpg") || message.attachments[i].url.endsWith(".jpeg") || message.attachments[i].url.endsWith(".gif")) {
-                attach += "<img class=\"attachment\" src=\"" + message.attachments[i].url + "\">";
+                attach += "<img class=\"attachment materialboxed\" src=\"" + message.attachments[i].url + "\">";
             } else {
                 attach += message.attachments[i].url;
             }
@@ -1159,6 +1159,7 @@
             target: "_blank"
         });
         $('.tooltipped').tooltip();
+        $('.materialboxed').materialbox();
         process_message_users_cache();
         return last;
     }

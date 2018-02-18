@@ -761,12 +761,21 @@ p.mentioned span.chatmessage {
   width: 100%;
 }
 
+.richembed .image img.materialboxed.active {
+  max-width: none;
+}
+
 #chatcontent img.attachment {
   width: 100%;
   max-width: 300px;
   max-height: 300px;
   object-fit: contain;
   display: block;
+}
+
+#chatcontent img.attachment.materialboxed.active {
+  max-width: none;
+  max-height: none;
 }
 
 #emoji-picker {
