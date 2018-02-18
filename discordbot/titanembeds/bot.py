@@ -137,12 +137,15 @@ class Titan(discord.Client):
                     "bot": ban.bot
                 })
                 await self.database.update_guild_member(member, False, True)
-        for channel in guild.channels:
+        for channel in list(guild.channels):
             chanperm = channel.permissions_for(channel.server.me)
             if not chanperm.read_messages or not chanperm.read_message_history:
                 continue
             async for message in self.logs_from(channel, limit=50, reverse=True):
-                await self.database.push_message(message)
+                try:
+                    await self.database.push_message(message)
+                except:
+                    pass
         await self.postStats()
 
     async def on_server_remove(self, guild):
