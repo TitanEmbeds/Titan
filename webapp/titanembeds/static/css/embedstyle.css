@@ -727,6 +727,10 @@ p.mentioned span.chatmessage {
   max-width: 170px;
 }
 
+.richembed .thumbnail img.materialboxed.active {
+  max-width: none;
+}
+
 .richembed .fields {
   display: flex;
   flex-direction: row;
