@@ -2,7 +2,7 @@ from titanembeds.database import db, Guilds, UnauthenticatedUsers, Unauthenticat
 from titanembeds.constants import LANGUAGES
 from flask import request, session
 from flask_limiter import Limiter
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, disconnect
 from flask_babel import Babel
 from flask_redis import FlaskRedis
 from config import config
@@ -325,3 +325,7 @@ def language_code_list():
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
 socketio = SocketIO()
 babel = Babel()
+
+@socketio.on_error_default  # disconnect on all errors
+def default_socketio_error_handler(e):
+    disconnect()

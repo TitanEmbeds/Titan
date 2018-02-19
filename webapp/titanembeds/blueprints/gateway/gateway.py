@@ -11,9 +11,6 @@ class Gateway(Namespace):
         db.session.commit()
         db.session.remove()
     
-    def on_error(self):
-        disconnect()
-    
     def on_connect(self):
         emit('hello')
     
