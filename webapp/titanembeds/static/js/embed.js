@@ -462,13 +462,37 @@
                 prepare_guild(data);
                 $('#loginmodal').modal('close');
                 unlock_login_fields();
+                setTimeout(displayDblAdvert, 1500);
             });
         } else {
             switch_to_default_channel(guildobj.channels);
             prepare_guild(guildobj);
             $('#loginmodal').modal('close');
             unlock_login_fields();
+            setTimeout(displayDblAdvert, 1500);
         }
+    }
+    
+    function displayDblAdvert() {
+        var hideDbl = localStorage.getItem("hideDiscordBotsOrgVoteAd") == "true";
+        if (hideDbl) {
+            return;
+        }
+        var dblAdContents = "<i class=\"material-icons right\">close</i></span><span id=\"dblBalloon\"><h6>Loving the Titan, the Discord server widget?</h6><br>Show your appreciation <strong>by voting for Titan</strong> on <a href=\"https://discordbots.org/bot/Titan/vote\" target=\"_blank\">Discord Bot List</a> and get a <span class=\"yellow-text\">golden</span> name!";
+        $(".brand-logo").showBalloon({
+            html: true,
+            position: "bottom",
+            contents: dblAdContents,
+            classname: "dblballoon",
+            showComplete: function () {
+                $(".dblballoon").css("top", $(".brand-logo").outerHeight() + "px").css("position", "fixed");
+                $(".dblballoon").find("i").click(function (event) {
+                    event.preventDefault();
+                    $(".brand-logo").hideBalloon();
+                    localStorage.setItem("hideDiscordBotsOrgVoteAd", "true");
+                }).css("cursor", "pointer");
+            }
+        });
     }
     
     function switch_to_default_channel(guildchannels) {
