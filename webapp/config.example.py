@@ -23,6 +23,7 @@ config = {
     'database-uri': "driver://username:password@host:port/database",
     'redis-uri': "redis://",
     'websockets-mode': "LITTERALLY None or eventlet or gevent",
+    'engineio-logging': False,
     
     # https://titanembeds.com/api/webhook/discordbotsorg/vote/<secret here>
     'discordbotsorg-webhook-secret': "Secret appended to the discord bots hook url",

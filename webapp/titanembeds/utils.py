@@ -323,7 +323,7 @@ def language_code_list():
     return codes
 
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
-socketio = SocketIO()
+socketio = SocketIO(engineio_logger=config.get("engineio-logging", False))
 babel = Babel()
 
 @socketio.on_error_default  # disconnect on all errors
