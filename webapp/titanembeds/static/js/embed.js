@@ -1459,7 +1459,7 @@
                 $("#messagebox").attr('readonly', false);
                 $("#messagebox").focus();
             });
-        } else if (event.keyCode == 13 && !shift_pressed && $(this).val().length <= 350) {
+        } else if (event.keyCode == 13 && !shift_pressed && $(this).val().length > 350) {
             Materialize.toast('You are sending messages too long! 350 characters limit.', 10000);
         }
     });
