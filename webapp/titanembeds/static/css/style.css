@@ -80,3 +80,21 @@ img.center-align {
   padding-top: 0px;
   padding-bottom: 0px;
 }
+
+#dblbanner {
+  background-color: darkblue;
+  text-align: center;
+  font-size: 12pt;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  display: none;
+}
+
+#dblbanner a {
+  transition: font-size 0.5s;
+  color: lightskyblue;
+}
+
+#dblbanner a:hover {
+  font-size: 14pt;
+}

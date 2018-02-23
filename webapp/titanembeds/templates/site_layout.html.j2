@@ -27,6 +27,13 @@
     {% include 'google_analytics.html.j2' %}
   </head>
   <body>
+    <div id="dblbanner">
+      <span>
+        <strong>Hey!</strong> Upvote us on <a href="https://discordbots.org/bot/Titan/vote" target="_blank">Discord Bots List</a> to show your
+        appreciation of the Titan Embeds project! (We'll provide you with a <em>royal
+        <span class="yellow-text">golden name</span></em> in return for your vote)
+      </span>
+    </div>
     <main>
       {% if session['unauthenticated'] is defined and not session['unauthenticated'] %}
       <ul id="menu_dropdown" class="dropdown-content">
@@ -85,6 +92,13 @@
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js" integrity="sha256-uWtSXRErwH9kdJTIr1swfHFJn/d/WQ6s72gELOHXQGM=" crossorigin="anonymous"></script>
+    
+    <script>
+      $(document).ready(function () {
+          $('#dblbanner').delay(1000).slideDown("slow");
+      });
+    </script>
+    
     {% block script %}{% endblock %}
   </body>
 </html>
