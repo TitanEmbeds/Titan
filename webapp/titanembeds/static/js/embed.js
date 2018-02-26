@@ -474,11 +474,16 @@
     }
     
     function displayDblAdvert() {
-        var hideDbl = localStorage.getItem("hideDiscordBotsOrgVoteAd") == "true";
-        if (hideDbl) {
-            return;
+        var hideDblUntil = localStorage.getItem("hideDiscordBotsOrgVoteAdUntil");
+        var now = moment();
+        var hideDblUntilMoment = null;
+        if (hideDblUntil) {
+            hideDblUntilMoment = moment(hideDblUntil);
+            if (hideDblUntilMoment.isValid() && hideDblUntilMoment > now) {
+                return;
+            }
         }
-        var dblAdContents = "<i class=\"material-icons right\">close</i></span><span id=\"dblBalloon\"><h6>Loving the Titan, the Discord server widget?</h6><br>Show your appreciation <strong>by voting for Titan</strong> on <a href=\"https://discordbots.org/bot/Titan/vote\" target=\"_blank\">Discord Bot List</a> and get a <span class=\"yellow-text\">golden</span> name!";
+        var dblAdContents = "<i class=\"material-icons right\">close</i></span><span id=\"dblBalloon\"><h6>Loving the Titan, the Discord server widget?</h6><br>Show your appreciation <em>by voting for Titan daily</em> on <a href=\"https://discordbots.org/bot/Titan/vote\" target=\"_blank\">Discord Bot List</a> and get a <span class=\"yellow-text\">golden</span> name!";
         $(".brand-logo").showBalloon({
             html: true,
             position: "bottom",
@@ -489,7 +494,7 @@
                 $(".dblballoon").find("i").click(function (event) {
                     event.preventDefault();
                     $(".brand-logo").hideBalloon();
-                    localStorage.setItem("hideDiscordBotsOrgVoteAd", "true");
+                    localStorage.setItem("hideDiscordBotsOrgVoteAdUntil", now.add(3, "days").toISOString());
                 }).css("cursor", "pointer");
             }
         });
