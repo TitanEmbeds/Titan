@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-02-18 17:50-0500\n"
+"PO-Revision-Date: 2018-02-26 02:45-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Catalan\n"
 "MIME-Version: 1.0\n"
@@ -187,7 +187,7 @@ msgstr "Simpatitzant de TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
-msgstr ""
+msgstr "He votat per Titan en bots de Discord avui!"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
