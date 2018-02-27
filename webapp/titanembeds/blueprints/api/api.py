@@ -477,7 +477,7 @@ def webhook_discordbotsorg_vote():
         abort(403)
     user_id = incoming.get("user")
     vote_type = incoming.get("type")
-    params = dict(parse_qsl(urlsplit(url).query))
+    params = dict(parse_qsl(urlsplit(incoming.get("query", "")).query))
     if vote_type == "upvote":
         redis_store.set("DiscordBotsOrgVoted/" + user_id, "voted", 86400)
     else:
