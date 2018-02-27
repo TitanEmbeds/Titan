@@ -15,6 +15,7 @@ from .titan_tokens import TitanTokens, get_titan_token
 from .token_transactions import TokenTransactions
 from .patreon import Patreon
 from .disabled_guilds import DisabledGuilds, list_disabled_guilds
+from .discordbotsorg_transactions import DiscordBotsOrgTransactions
 
 def set_titan_token(user_id, amt_change, action):
     token_count = get_titan_token(user_id)

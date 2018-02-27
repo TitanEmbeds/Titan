@@ -483,7 +483,7 @@
                 return;
             }
         }
-        var dblAdContents = "<i class=\"material-icons right\">close</i></span><span id=\"dblBalloon\"><h6>Loving the Titan, the Discord server widget?</h6><br>Show your appreciation <em>by voting for Titan daily</em> on <a href=\"https://discordbots.org/bot/Titan/vote\" target=\"_blank\">Discord Bot List</a> and get a <span class=\"yellow-text\">golden</span> name!";
+        var dblAdContents = "<i class=\"material-icons right\">close</i></span><span id=\"dblBalloon\"><h6>Loving the Titan, the Discord server widget?</h6><br>Show your appreciation <em>by voting for Titan daily</em> on <a href=\"https://titanembeds.com/vote\" target=\"_blank\">Discord Bot List</a> and get a <span class=\"yellow-text\">golden</span> name and other rewards!";
         $(".brand-logo").showBalloon({
             html: true,
             position: "bottom",

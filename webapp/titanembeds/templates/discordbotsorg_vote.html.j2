@@ -1,0 +1,34 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Vote for Titan on Discord Bots List!" %}
+
+{% block content %}
+<h1>Vote for Titan on Discord Bots List!</h1>
+<div class="row">
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+        <p class="flow-text">By voting for Titan, we'll be better known on DBL. Let's spread the word about the project!</p>
+        <p>You'll receive a <em class="orange-text">GOLDEN NAME</em> in chat and have <em>a chance to win</em> one of the <strong>heroic</strong> prizes!</p>
+        <p>Prizes include (but not limited to) Titan Tokens and $4.99 Discord Nitro (Paypal)! Vote often, and <strong>daily</strong>, to increase your chances of winning!</p>
+        <br>
+        <a class="waves-effect waves-light btn" href="https://discordbots.org/bot/Titan/vote" target="_blank">Visit Discord Bots!</a>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+        <p class="flow-text">It just doesn't end here! Invite your buddies to vote for Titan too!</p>
+        <p>Give your pals a personalized referral link and get rewarded for being a <em>great referrer</em>!</p>
+        <br>
+        {% if "user_id" in session and not session["unauthenticated"] %}
+        <input readonly value="https://discordbots.org/bot/Titan/vote?referrer={{ session["user_id"] }}" id="disabled" type="text" onClick="this.setSelectionRange(0, this.value.length)">
+        {% else %}
+        <p class="red-text">Please <a href="{{ url_for("user.login_authenticated", redirect=url_for("vote")) }}">Login</a> to view your personalized referral link.</p>
+        {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

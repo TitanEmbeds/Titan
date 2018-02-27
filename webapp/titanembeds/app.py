@@ -71,6 +71,10 @@ def terms():
 def privacy():
     return render_template("privacy_policy.html.j2")
 
+@app.route("/vote")
+def vote():
+    return render_template("discordbotsorg_vote.html.j2")
+
 @app.before_first_request
 def before_first_request():
     discord_api.init_discordrest()
