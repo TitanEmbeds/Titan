@@ -73,7 +73,7 @@ def privacy():
 
 @app.route("/vote")
 def vote():
-    return render_template("discordbotsorg_vote.html.j2")
+    return render_template("discordbotsorg_vote.html.j2", referrer=request.args.get("referrer", None))
 
 @app.before_first_request
 def before_first_request():
