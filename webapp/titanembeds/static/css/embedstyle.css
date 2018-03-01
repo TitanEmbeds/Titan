@@ -855,6 +855,7 @@ p.mentioned span.chatmessage {
   border: 1px solid;
   border-color: inherit;
   border-radius: 10px;
+  white-space: nowrap;
 }
 
 #usercard .role .text, #usercard .role .color {

@@ -803,6 +803,9 @@
             $("#usercard .role .roles").empty();
             for (var j = 0; j < data.roles.length; j++) {
                 var role = data.roles[j];
+                if (role.id == guild_id) {
+                    continue;
+                }
                 var color = null;
                 if (role.color) {
                     color = "#" + role.color.toString(16);
