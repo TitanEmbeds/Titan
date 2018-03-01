@@ -1006,6 +1006,8 @@
         }
         var rendered = Mustache.render(template, {"id": "$2", "name": "$1"}).trim();
         message.content = message.content.replace(/&lt;:(.*?):(.*?)&gt;/g, rendered);
+        rendered = Mustache.render(template, {"id": "$2", "name": "$1", "animated": true}).trim();
+        message.content = message.content.replace(/&lt;a:(.*?):(.*?)&gt;/g, rendered);
         message.content = twemoji.parse(message.content, {
             className: "message_emoji",
             callback: function(icon, options, variant) { // exclude special characters
