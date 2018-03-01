@@ -44,7 +44,8 @@ def get_emojis_list(guildemojis):
             "require_colons": emote.require_colons,
             "managed": emote.managed,
             "roles": list_role_ids(emote.roles),
-            "url": emote.url
+            "url": emote.url,
+            "animated": emote.animated
         })
     return emojis
 

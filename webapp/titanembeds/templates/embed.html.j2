@@ -322,7 +322,7 @@
     </script>
 
     <script id="mustache_message_emoji" type="text/template">
-      <img class="message_emoji tooltipped" src='https://cdn.discordapp.com/emojis/{{id}}.png' data-position="top" data-delay="200" data-tooltip=":{{name}}:" alt=":{{name}}:" />
+      <img class="message_emoji tooltipped" src='https://cdn.discordapp.com/emojis/{{id}}{{#animated}}.gif{{/animated}}{{^animated}}.png{{/animated}}' data-position="top" data-delay="200" data-tooltip=":{{name}}:" alt=":{{name}}:" />
     </script>
     
     <script id="mustache_discordmention" type="text/template">

@@ -212,7 +212,7 @@
             Mustache.parse(template);
             for (var i = 0; i < emoji_store.length; i++) {
                 var emoji = emoji_store[i];
-                var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name}).trim();
+                var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name, "animated": emoji.animated}).trim();
                 var jqueryed = $(rendered);
                 jqueryed.click(function () {
                     var emote_name = $(this).attr("data-tooltip");
@@ -995,8 +995,13 @@
         Mustache.parse(template);
         for (var i = 0; i < emoji_store.length; i++) {
             var emoji = emoji_store[i];
-            var emoji_format = "&lt;:" + emoji.name + ":" + emoji.id + "&gt;";
-            var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name}).trim();
+            var emoji_format = "";
+            if (emoji.animated) {
+                emoji_format = "&lt;a:" + emoji.name + ":" + emoji.id + "&gt;";
+            } else {
+                emoji_format = "&lt;:" + emoji.name + ":" + emoji.id + "&gt;";
+            }
+            var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name, "animated": emoji.animated}).trim();
             message.content = message.content.replaceAll(emoji_format, rendered);
         }
         var rendered = Mustache.render(template, {"id": "$2", "name": "$1"}).trim();

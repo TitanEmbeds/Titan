@@ -21,7 +21,11 @@ def parse_emoji(textToParse, guild_id):
     for gemoji in guild_emojis:
         emoji_name = gemoji["name"]
         emoji_id = gemoji["id"]
-        textToParse = textToParse.replace(":{}:".format(emoji_name), "<:{}:{}>".format(emoji_name, emoji_id))
+        emoji_animated = gemoji["animated"]
+        if emoji_animated:
+            textToParse = textToParse.replace(":{}:".format(emoji_name), "<a:{}:{}>".format(emoji_name, emoji_id))
+        else:
+            textToParse = textToParse.replace(":{}:".format(emoji_name), "<:{}:{}>".format(emoji_name, emoji_id))
     return textToParse
 
 
