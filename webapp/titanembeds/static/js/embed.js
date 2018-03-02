@@ -1137,6 +1137,8 @@
             message.content = parse_message_markdown(message.content);
             message = parse_channels_in_message(message);
             message = parse_emoji_in_message(message);
+            message.content = message.content.replace(/&lt;https:\/\/(.*?)&gt;/g, "https://$1");
+            message.content = message.content.replace(/&lt;http:\/\/(.*?)&gt;/g, "http://$1");
             var username = message.author.username;
             if (message.author.nickname) {
                 username = message.author.nickname;
