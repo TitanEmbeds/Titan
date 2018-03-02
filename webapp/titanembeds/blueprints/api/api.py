@@ -113,6 +113,12 @@ def get_online_discord_users(guild_id, embed):
                     member["hoist-role"]["name"] = role["name"]
                     member["hoist-role"]["id"] = role["id"]
                     member["hoist-role"]["position"] = role["position"]
+            if member.get("avatar", None):
+                member["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}".format(member["id"], member["avatar"])
+                if member["avatar"].startswith("a_"):
+                    member["avatar_url"] = member["avatar_url"] + ".gif"
+                else:
+                    member["avatar_url"] = member["avatar_url"] + ".png"
     return embed['members']
 
 def get_online_embed_users(guild_id):
