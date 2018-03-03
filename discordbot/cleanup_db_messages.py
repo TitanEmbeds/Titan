@@ -76,7 +76,7 @@ class Titan(discord.Client):
                 count = 0
                 for guild in guilds:
                     count += 1
-                    print("[{}] id-{} snowflake-{} name-{}".format(count, guild.id, guild.guild_id, guild.name))
+                    print("[{}] snowflake-{} name-{}".format(count, guild.guild_id, guild.name))
                     try:
                         channelsjson = json.loads(guild.channels)
                     except:
@@ -85,8 +85,8 @@ class Titan(discord.Client):
                     for channel in channelsjson:
                         chanid = channel["id"]
                         active_channels.append(chanid)
-                        keep_these = session.query(Messages.id).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).limit(50)
-                        d = session.query(Messages).filter(Messages.channel_id == chanid, ~Messages.id.in_(keep_these)).delete(synchronize_session=False)
+                        keep_these = session.query(Messages.message_id).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).limit(50)
+                        d = session.query(Messages).filter(Messages.channel_id == chanid, ~Messages.message_id.in_(keep_these)).delete(synchronize_session=False)
                         session.commit()
                         print("    --{} [{}]".format(channel["name"], d))
                     d = session.query(Messages).filter(Messages.guild_id == guild.guild_id, ~Messages.channel_id.in_(active_channels)).delete(synchronize_session=False)
