@@ -140,7 +140,7 @@ def get_online_embed_users(guild_id):
             'username': usrdb.username,
             'nickname': usrdb.nickname,
             'discriminator': usrdb.discriminator,
-            'avatar_url': generate_avatar_url(usrdb.user_id, usrdb.avatar),
+            'avatar_url': generate_avatar_url(usrdb.user_id, usrdb.avatar, "0000", True),
         }
         users['authenticated'].append(meta)
     return users

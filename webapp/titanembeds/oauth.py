@@ -95,8 +95,10 @@ def check_user_permission(guild_id, id):
             return user_has_permission(guild['permissions'], id) or guild['owner']
     return False
 
-def generate_avatar_url(id, av, discrim="0000"):
+def generate_avatar_url(id, av, discrim="0000", allow_animate=False):
     if av:
+        if allow_animate && str(av).startswith("a_"):
+            return avatar_base_url + str(id) + '/' + str(av) + '.gif'
         return avatar_base_url + str(id) + '/' + str(av) + '.png'
     else:
         default_av = [0, 1, 2, 3, 4]
