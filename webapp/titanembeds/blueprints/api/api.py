@@ -140,7 +140,7 @@ def get_online_embed_users(guild_id):
             'username': usrdb.username,
             'nickname': usrdb.nickname,
             'discriminator': usrdb.discriminator,
-            'avatar_url': generate_avatar_url(usrdb.user_id, usrdb.avatar, "0000", True),
+            'avatar_url': generate_avatar_url(usrdb.user_id, usrdb.avatar),
         }
         users['authenticated'].append(meta)
     return users
@@ -469,7 +469,7 @@ def user_info(guild_id, user_id):
         usr["nickname"] = member.nickname
         usr["discriminator"] = member.discriminator
         usr["avatar"] = member.avatar
-        usr["avatar_url"] = generate_avatar_url(usr["id"], usr["avatar"], usr["discriminator"])
+        usr["avatar_url"] = generate_avatar_url(usr["id"], usr["avatar"], usr["discriminator"], True)
         roles = get_member_roles(guild_id, user_id)
         dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
         guild_roles = json.loads(dbguild.roles)

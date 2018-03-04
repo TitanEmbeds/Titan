@@ -97,6 +97,8 @@ def check_user_permission(guild_id, id):
 
 def generate_avatar_url(id, av, discrim="0000", allow_animate=False):
     if av:
+        print(allow_animate)
+        print(str(av).startswith("a_"))
         if allow_animate and str(av).startswith("a_"):
             return avatar_base_url + str(id) + '/' + str(av) + '.gif'
         return avatar_base_url + str(id) + '/' + str(av) + '.png'
