@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-03-04 16:22-0500\n"
+"PO-Revision-Date: 2018-03-04 16:27-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
@@ -55,7 +55,7 @@ msgstr "Acties"
 
 #: titanembeds/templates/embed.html.j2:79
 msgid "Manage Guild Embed"
-msgstr "Beheer Server Embed"
+msgstr "Beheer Server-embed"
 
 #: titanembeds/templates/embed.html.j2:80
 msgid "Open Server on Discordapp"
@@ -171,11 +171,11 @@ msgstr "Doorgaan"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
-msgstr "Melding"
+msgstr "Vermeld"
 
 #: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
-msgstr "TitanEmbeds Administrator"
+msgstr "TitanEmbeds Beheerder"
 
 #: titanembeds/templates/embed.html.j2:238
 msgid "TitanEmbeds Partner"
