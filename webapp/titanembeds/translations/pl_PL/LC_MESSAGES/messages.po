@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-03-04 16:22-0500\n"
+"PO-Revision-Date: 2018-03-04 16:26-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -191,7 +191,7 @@ msgstr "Zagłosowałem na Discord Bots!"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
-msgstr "Urzytkownik się wylogował."
+msgstr "Urzytkownik jest wylogowany."
 
 #: titanembeds/templates/embed.html.j2:243
 msgid "Playing"
