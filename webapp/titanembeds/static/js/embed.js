@@ -803,17 +803,24 @@
                 return parseFloat(b.position) - parseFloat(a.position);
             });
             $("#usercard .role .roles").empty();
+            var rolecount = 0;
             for (var j = 0; j < data.roles.length; j++) {
                 var role = data.roles[j];
                 if (role.id == guild_id) {
                     continue;
                 }
+                rolecount++;
                 var color = null;
                 if (role.color) {
                     color = "#" + role.color.toString(16);
                 }
                 var rol = Mustache.render(template, {name: role.name, color: color});
                 $("#usercard .role .roles").append(rol);
+            }
+            if (rolecount) {
+                $("#usercard .role").show();
+            } else {
+                $("#usercard .role").hide();
             }
             
             $("#usercard-mention-btn").off("click");
