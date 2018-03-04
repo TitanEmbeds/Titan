@@ -159,6 +159,11 @@ class SocketIOInterface:
         rol = {
             "id": role.id,
             "guild_id": role.server.id,
+            "name": role.name,
+            "color": role.color.value,
+            "hoist": role.hoist,
+            "position": role.position,
+            "permissions": role.permissions.value,
         }
         return rol
     

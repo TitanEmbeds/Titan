@@ -44,6 +44,7 @@
     var notification_sound = null; // Sound Manager 2 demonstrative.mp3 object https://notificationsounds.com/message-tones/demonstrative-516
     var notification_sound_setting; // nothing, mentions, newmsgs - to control what new sound it makes
     var display_richembeds; // true/false - if rich embeds should be displayed
+    var guild_roles_list = []; // List of all guild roles
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -519,6 +520,7 @@
     function prepare_guild(guildobj) {
         global_guest_icon = guildobj.guest_icon;
         emoji_store = guildobj.emojis;
+        guild_roles_list = guildobj.roles;
         fill_channels(guildobj.channels);
         fill_discord_members(guildobj.discordmembers);
         fill_authenticated_users(guildobj.embedmembers.authenticated);
@@ -889,7 +891,18 @@
             var rendered = Mustache.render(template, {"username": username, "discriminator": zeroPad(mention.discriminator)}).trim();
             message.content = message.content.replace(new RegExp("&lt;@" + mention.id + "&gt;", 'g'), rendered);
             message.content = message.content.replace(new RegExp("&lt;@!" + mention.id + "&gt;", 'g'), rendered);
-            message.content = message.content.replace("&lt;@&" + guild_id + "&gt;", "@everyone");
+        }
+        
+        var template = $("#mustache_rolemention").html();
+        Mustache.parse(template);
+        for (var i = 0; i < guild_roles_list.length; i++) {
+            var role = guild_roles_list[i];
+            var roleobj = {"rolename": role.name};
+            if (role.color) {
+                roleobj.color = "#" + role.color.toString(16);
+            }
+            var rendered = Mustache.render(template, roleobj).trim();
+            message.content = message.content.replace("&lt;@&amp;" + role.id + "&gt;", rendered);
         }
         return message;
     }
@@ -1665,12 +1678,30 @@
             update_socket_channels();
         });
         
-        socket.on("GUILD_ROLE_UPDATE", function (chan) {
+        socket.on("GUILD_ROLE_CREATE", function (role) {
             update_socket_channels();
+            guild_roles_list.push(role);
         });
         
-        socket.on("GUILD_ROLE_DELETE", function (chan) {
+        socket.on("GUILD_ROLE_UPDATE", function (role) {
             update_socket_channels();
+            for (var i = 0; i < guild_roles_list.length; i++) {
+                if (guild_roles_list[i].id == role.id) {
+                    guild_roles_list.splice(i, 1);
+                    guild_roles_list.push(role);
+                    return;
+                }
+            }
+        });
+        
+        socket.on("GUILD_ROLE_DELETE", function (role) {
+            update_socket_channels();
+            for (var i = 0; i < guild_roles_list.length; i++) {
+                if (guild_roles_list[i].id == role.id) {
+                    guild_roles_list.splice(i, 1);
+                    return;
+                }
+            }
         });
         
         socket.on("channel_list", function (chans) {

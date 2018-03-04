@@ -654,14 +654,14 @@ p.mentioned span.chatmessage {
   margin-bottom: 3px;
 }
 
-.chatmessage .channellink, .chatmessage .discordmention {
+.chatmessage .channellink, .chatmessage .discordmention, .rolemention {
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.2);
   color: #82b1ff;
   cursor: pointer;
 }
 
-.chatmessage .channellink:hover, .chatmessage .discordmention:hover {
+.chatmessage .channellink:hover, .chatmessage .discordmention:hover, .rolemention:hover {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
 }

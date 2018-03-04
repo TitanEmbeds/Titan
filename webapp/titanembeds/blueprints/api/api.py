@@ -149,6 +149,10 @@ def get_guild_emojis(guild_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     return json.loads(dbguild.emojis)
 
+def get_guild_roles(guild_id):
+    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    return json.loads(dbguild.roles)
+
 # Returns webhook url if exists and can post w/webhooks, otherwise None
 def get_channel_webhook_url(guild_id, channel_id):
     if not guild_webhooks_enabled(guild_id):
@@ -387,11 +391,12 @@ def process_query_guild(guild_id, visitor=False):
         discordmembers = [{"id": 0, "color": "FFD6D6", "status": "dnd", "username": "Discord Server Widget is Currently Disabled"}]
     embedmembers = get_online_embed_users(guild_id)
     emojis = get_guild_emojis(guild_id)
+    roles = get_guild_roles(guild_id)
     guest_icon = get_guild_guest_icon(guild_id)
     if visitor:
         for channel in channels:
             channel["write"] = False
-    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, guest_icon=guest_icon, instant_invite=widget.get("instant_invite", None))
+    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, roles=roles, guest_icon=guest_icon, instant_invite=widget.get("instant_invite", None))
 
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)

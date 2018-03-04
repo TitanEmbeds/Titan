@@ -329,6 +329,10 @@
       <span class="discordmention"><span class="atsign">@</span><span class="username">{{username}}</span><span class="hash">#</span><span class="discriminator">{{discriminator}}</span></span>
     </script>
     
+    <script id="mustache_rolemention" type="text/template">
+      <span class="rolemention" {{#color}}style="color: {{color}}"{{/color}}><span class="atsign">@</span><span class="rolename">{{rolename}}</span></span>
+    </script>
+    
     <script id="mustache_richembed" type="text/template">
       <div class="richembed">
         {{#color}}
