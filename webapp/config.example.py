@@ -25,6 +25,6 @@ config = {
     'websockets-mode': "LITTERALLY None or eventlet or gevent",
     'engineio-logging': False,
     
-    # https://titanembeds.com/api/webhook/discordbotsorg/vote/<secret here>
-    'discordbotsorg-webhook-secret': "Secret appended to the discord bots hook url",
+    # https://titanembeds.com/api/webhook/discordbotsorg/vote
+    'discordbotsorg-webhook-secret': "Secret code used in the authorization header for DBL webhook",
 }
