@@ -792,7 +792,7 @@
                     $("#usercard .badges ." + badge).hide();
                 }
             }
-            $("#usercard .avatar").attr("src", data.avatar_url);
+            $("#usercard .avatar").attr("src", data.avatar_url + "?size=512");
             $("#usercard .identity .username").text(data.username);
             $("#usercard .identity .discriminator").text(zeroPad(data.discriminator));
             $("#usercard .identity .discriminator").text(zeroPad(data.discriminator));
