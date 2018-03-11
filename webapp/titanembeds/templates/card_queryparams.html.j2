@@ -28,7 +28,7 @@
                       <em>Eg: {{ param.name }}={{ param.example }}</em>
                       {% if "administrate_guild" in request.url %}
                       <br>
-                      <input class="queryparam" name="{{ param.name }}" type="text" style="background-color: #F9F8F6;">
+                      <input class="queryparam" name="{{ param.name }}" type="text" style="background-color: #F9F8F6;" placeholder="{{ param.example }}">
                       {% endif %}
                     </li>
                     {% endfor %}
