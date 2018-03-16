@@ -782,49 +782,34 @@ p.mentioned span.chatmessage {
   max-height: none;
 }
 
-#emoji-picker {
-  color: black;
+.wdt-emoji-popup {
   position: fixed;
-  bottom: 12%;
+  bottom: 5%;
   right: 1%;
   z-index: 500;
-  width: 350px;
-  height: 110px;
-  max-width: 80%;
-  max-height: 80%;
-  background-color: #eceff1;
-  border-radius: 5px;
-  display: none;
+  top: auto !important;
+  left: auto;
 }
 
-#emoji-picker-content {
-  overflow: auto;
-  height: 100%;
-  padding: 5px;
-  padding-top: 0;
+.wdt-emoji-picker {
+  bottom: 13px;
+  right: 10px;
 }
 
-#emoji-picker h6 {
-  font-weight: bold;
+#wdt-emoji-search, #wdt-emoji-search:focus {
+  padding: 2px;
 }
 
-#emoji-tray-toggle {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  top: 14px;
-  right: 30px;
+@media only screen and (max-device-width: 320px) {
+  .wdt-emoji-picker {
+      display: none;
+  }
 }
 
-#emoji-tray-toggle > .btn-floating {
-  width: 30px;
-  height: 30px;
-}
-
-#emoji-tray-toggle > .btn-floating > i {
-  line-height: 0;
-  position: relative;
-  top: -5px;
+@media only screen and (min-device-width: 321px) {
+  .wdt-emoji-picker {
+      display: block;
+  }
 }
 
 #usercard .avatar {

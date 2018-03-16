@@ -17,6 +17,8 @@
 /* global unauth_captcha_enabled */
 /* global soundManager */
 /* global disabled */
+/* global wdtEmojiBundle */
+/* global EmojiConvertor */
 
 (function () {
     const theme_options = ["DiscordDark", "MetroEdge", "BetterTitan"]; // All the avaliable theming names
@@ -204,40 +206,6 @@
             $("#loginmodal").modal("open");
         });
         
-        $("#emoji-tray-toggle").click(function () {
-            $("#emoji-picker").fadeToggle();
-            var offset = $("#emoji-tray-toggle").offset().top;
-            $("#emoji-picker").offset({"top": offset-120});
-            $("#emoji-picker-emojis").html("");
-            var template = $('#mustache_message_emoji').html();
-            Mustache.parse(template);
-            for (var i = 0; i < emoji_store.length; i++) {
-                var emoji = emoji_store[i];
-                var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name, "animated": emoji.animated}).trim();
-                var jqueryed = $(rendered);
-                jqueryed.click(function () {
-                    var emote_name = $(this).attr("data-tooltip");
-                    place_emoji(emote_name);
-                });
-                $("#emoji-picker-emojis").append(jqueryed);
-            }
-            $('.tooltipped').tooltip();
-        });
-        
-        $("#chatcontent").click(function () {
-            var emojipck_display = $('#emoji-picker').css('display');
-            if (emojipck_display != "none") {
-                $("#emoji-picker").fadeToggle();
-            }
-        });
-
-        $("#messagebox").click(function () {
-            var emojipck_display = $('#emoji-picker').css('display');
-            if (emojipck_display != "none") {
-                $("#emoji-picker").fadeToggle();
-            }
-        });
-        
         $("#proceed_nsfw_btn").click(function () {
             var channel_id = $("#proceed_nsfw_btn").attr("channel_id");
             var should_animate = parseInt($("#proceed_nsfw_btn").attr("should_animate"));
@@ -262,6 +230,16 @@
         
         hljs.configure({useBR: true});
         linkify.options.defaults.ignoreTags = ["code"];
+        
+        wdtEmojiBundle.defaults.emojiSheets = {
+            'apple': 'https://cdnjs.cloudflare.com/ajax/libs/wdt-emoji-bundle/0.2.1/sheets/sheet_apple_64_indexed_128.png',
+            'google': 'https://cdnjs.cloudflare.com/ajax/libs/wdt-emoji-bundle/0.2.1/sheets/sheet_google_64_indexed_128.png',
+            'twitter': 'https://cdnjs.cloudflare.com/ajax/libs/wdt-emoji-bundle/0.2.1/sheets/sheet_twitter_64_indexed_128.png',
+            'emojione': 'https://cdnjs.cloudflare.com/ajax/libs/wdt-emoji-bundle/0.2.1/sheets/sheet_emojione_64_indexed_128.png'
+        };
+        wdtEmojiBundle.defaults.pickerColors = ['gray'];
+        wdtEmojiBundle.defaults.emojiType = 'twitter';
+        wdtEmojiBundle.init('#messagebox');
         
         var themeparam = getParameterByName('theme');
         var localstore_theme = localStorage.getItem("theme");
@@ -520,6 +498,7 @@
     function prepare_guild(guildobj) {
         global_guest_icon = guildobj.guest_icon;
         emoji_store = guildobj.emojis;
+        update_emoji_picker();
         guild_roles_list = guildobj.roles;
         fill_channels(guildobj.channels);
         fill_discord_members(guildobj.discordmembers);
@@ -627,14 +606,24 @@
       }
     }
     
-    function place_emoji(emoji_name) {
-        if (!$('#messagebox').prop('disabled')) {
-            $('#messagebox').val( $('#messagebox').val() + emoji_name + " " );
-            $("#messagebox").focus();
+    function update_emoji_picker() {
+        var emojis = wdtEmojiBundle.listCustomEmojis();
+        var short_names = [];
+        for (var i = 0; i < emojis.length; i++) {
+            short_names.push(emojis.short_name);
         }
-        var emojipck_display = $('#emoji-picker').css('display');
-        if (emojipck_display != "none") {
-            $("#emoji-picker").fadeToggle();
+        for (var i = 0; i < short_names.length; i++) {
+            wdtEmojiBundle.removeCustomEmoji(short_names[i]);
+        }
+        for (var i = 0; i < emoji_store.length; i++) {
+            var emote = emoji_store[i];
+            var img_url = "https://cdn.discordapp.com/emojis/" + emote.id;
+            if (emote.animated) {
+                img_url += ".gif";
+            } else {
+                img_url += ".png";
+            }
+            wdtEmojiBundle.addCustomEmoji(emote.name, emote.name, img_url);
         }
     }
 
@@ -1475,7 +1464,12 @@
             $(this).val($.trim($(this).val()));
             $(this).blur();
             $("#messagebox").attr('readonly', true);
-            var funct = post(selected_channel, $(this).val());
+            var emojiConvertor = new EmojiConvertor();
+            emojiConvertor.init_env();
+            emojiConvertor.replace_mode = "unified";
+            emojiConvertor.allow_native = true;
+            var messageInput = emojiConvertor.replace_colons($(this).val());
+            var funct = post(selected_channel, messageInput);
             funct.done(function(data) {
                 $("#messagebox").val("");
             });
@@ -1654,6 +1648,7 @@
 
         socket.on("GUILD_EMOJIS_UPDATE", function (emo) {
             emoji_store = emo;
+            update_emoji_picker();
         });
         
         socket.on("GUILD_UPDATE", function (guil) {

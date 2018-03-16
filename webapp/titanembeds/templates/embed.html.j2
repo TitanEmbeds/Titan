@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" integrity="sha256-e22BQKCF7bb/h/4MFJ1a4lTRR2OuAe8Hxa/3tgU5Taw=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-dark.min.css" integrity="sha256-90Y+fvi28WF+3jKH4tHEkoQ9WLeFKJjpvCPNOtU9ZvU=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/2-double-bounce.min.css" integrity="sha256-EUobIj2z8wTjkWEwkjqubfq0NEqgOoNScgHP1oUSU7M=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/wdt-emoji-bundle/0.2.1/wdt-emoji-bundle.min.css" integrity="sha256-5+pPkh0iWNYFrqNU7G36rsHynAmXNpL4rq6/NI29mmk=" crossorigin="anonymous" />
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/embedstyle.css') }}">
     <link id="css-theme" type="text/css" rel="stylesheet" href="">
     
@@ -247,26 +248,52 @@
       </div>
     </div>
     
-    <div id="emoji-picker">
-      <div id="emoji-picker-content">
-        <div class="row">
-          <h6>{{ _("Server Emoji") }}</h6>
-          <div id="emoji-picker-emojis"></div>
+    <div class="wdt-emoji-popup">
+      <a href="#" class="wdt-emoji-popup-mobile-closer"> × </a>
+      <div class="wdt-emoji-menu-content">
+        <div id="wdt-emoji-menu-header">
+          <a class="wdt-emoji-tab active" data-group-name="Recent"></a>
+          <a class="wdt-emoji-tab" data-group-name="Custom"></a>
+          <a class="wdt-emoji-tab" data-group-name="People"></a>
+          <a class="wdt-emoji-tab" data-group-name="Nature"></a>
+          <a class="wdt-emoji-tab" data-group-name="Foods"></a>
+          <a class="wdt-emoji-tab" data-group-name="Activity"></a>
+          <a class="wdt-emoji-tab" data-group-name="Places"></a>
+          <a class="wdt-emoji-tab" data-group-name="Objects"></a>
+          <a class="wdt-emoji-tab" data-group-name="Symbols"></a>
+          <a class="wdt-emoji-tab" data-group-name="Flags"></a>
+        </div>
+        <div class="wdt-emoji-scroll-wrapper">
+          <div id="wdt-emoji-menu-items">
+            <input id="wdt-emoji-search" type="text" placeholder="Search">
+            <h3 id="wdt-emoji-search-result-title">Search Results</h3>
+            <div class="wdt-emoji-sections"></div>
+            <div id="wdt-emoji-no-result">No emoji found</div>
+          </div>
+        </div>
+        <div id="wdt-emoji-footer">
+          <div id="wdt-emoji-preview">
+            <span id="wdt-emoji-preview-img"></span>
+            <div id="wdt-emoji-preview-text">
+              <span id="wdt-emoji-preview-name"></span><br>
+              <span id="wdt-emoji-preview-aliases"></span>
+            </div>
+          </div>
+          <div id="wdt-emoji-preview-bundle">
+            <span>Pick-a-moji</span>
+          </div>
         </div>
       </div>
     </div>
 
     <footer id="footer" class="footer">
-      <div id="emoji-tray-toggle">
-        <a class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">tag_faces</i></a>
-      </div>
       <div id="footercontainer" class="footercontainer">
         <div class="currentuserchip" id="nameplate">
           <div id="currentuserimage_parent"><img id="currentuserimage" src="" class="circle currentuserimage" style="display: none;"></div>
           <div id="currentusername" class="currentusername"><span id="curuser_name">Titan</span><span id="curuser_discrim">#0001</span></div>
         </div>
         <div id="messageboxouter" class="input-field inline">
-          <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea" rows="1"></textarea>
+          <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea wdt-emoji-open-on-colon" rows="1"></textarea>
           <span id="visitor_mode_message" style="display:none;"><span id="visitor_mode_message_note">{{ _("Please login to post a message.") }}</span> <a id="visitor_login_btn" class="waves-effect waves-light btn">{{ _("Login") }}</a></span>
         </div>
       </div>
@@ -292,9 +319,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/2.5.0/2/twemoji.min.js" integrity="sha256-t5bxASdQ5tDbKQZy330h/YufCiZg82xG8PqIYzFpwhU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/soundmanager2/2.97a.20150601/script/soundmanager2-nodebug-jsmin.js" integrity="sha256-5KBL+8gS3BkWOs22YOrezN3Djl4pwodgZaPQY9hgu4Y=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js" integrity="sha256-THlgZSjqt7idNSdnUvGypTuXB5C4hV9kSuPYrbiq19o=" crossorigin="anonymous"></script>
-    
+
     <script src="{{ url_for("static", filename="js/vendor/highlight.pack.js") }}"></script>
     <script src="{{ url_for("static", filename="js/vendor/jquery.balloon.min.js") }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/emoji.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/wdt-emoji-bundle.min.js') }}"></script>
 
     {% raw %}
     <script id="mustache_channellistings" type="text/template">
