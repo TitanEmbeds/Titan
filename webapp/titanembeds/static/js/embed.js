@@ -1449,6 +1449,26 @@
         }
     });
     
+    function stringToDefaultEmote(input) {
+        var map = {
+            "<3": "\u2764\uFE0F",
+            "</3": "\uD83D\uDC94",
+            ":D": "\uD83D\uDE00",
+            ":)": "\uD83D\uDE03",
+            ";)": "\uD83D\uDE09",
+            ":(": "\uD83D\uDE12",
+            ":p": "\uD83D\uDE1B",
+            ";p": "\uD83D\uDE1C",
+            ":'(": "\uD83D\uDE22"
+        };
+        for (var i in map) {
+            var escaped = i.replace(/([()[{*+.$^\\|?])/g, '\\$1');
+            var regex = new RegExp(escaped, 'gim');
+            input = input.replace(regex, map[i]);
+        }
+        return input;
+    }
+    
     $("#chatcontent").bind("click", function () {
         $("#mention-picker").hide();
     });
@@ -1571,6 +1591,7 @@
             emojiConvertor.replace_mode = "unified";
             emojiConvertor.allow_native = true;
             var messageInput = emojiConvertor.replace_colons($(this).val());
+            messageInput = stringToDefaultEmote(messageInput);
             var funct = post(selected_channel, messageInput);
             funct.done(function(data) {
                 $("#messagebox").val("");
