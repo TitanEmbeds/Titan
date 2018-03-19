@@ -47,6 +47,7 @@
     var notification_sound_setting; // nothing, mentions, newmsgs - to control what new sound it makes
     var display_richembeds; // true/false - if rich embeds should be displayed
     var guild_roles_list = []; // List of all guild roles
+    var all_users = []; // List of all the users in guild
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -496,6 +497,7 @@
     }
 
     function prepare_guild(guildobj) {
+        all_users = guildobj.allusers;
         global_guest_icon = guildobj.guest_icon;
         emoji_store = guildobj.emojis;
         update_emoji_picker();
@@ -1471,12 +1473,12 @@
         var template = $('#mustache_usermentionchoices').html();
         Mustache.parse(template);
         var users = [];
-        for (var i = 0; i < discord_users_list.length; i++) {
-            var usr = discord_users_list[i];
-            if (usr.username.toLowerCase().indexOf(lastWord.toLowerCase()) > -1 || (usr.nick && usr.nick.toLowerCase().indexOf(lastWord.toLowerCase()) > -1)) {
+        for (var i = 0; i < all_users.length; i++) {
+            var usr = all_users[i];
+            if (usr.username.toLowerCase().indexOf(lastWord.toLowerCase()) > -1 || (usr.nickname && usr.nickname.toLowerCase().indexOf(lastWord.toLowerCase()) > -1)) {
                 var displayname = usr.username;
                 if (usr.nick) {
-                    displayname = usr.nick;
+                    displayname = usr.nickname;
                 }
                 users.push({
                     id: usr.id,
@@ -1715,12 +1717,33 @@
                 discord_users_list.push(usr);
                 fill_discord_members(discord_users_list);
             }
+            all_users.push({
+                "id": usr.id,
+                "avatar": usr.avatar,
+                "avatar_url": generate_avatar_url(usr.user_id, usr.avatar),
+                "username": usr.username,
+                "nickname": usr.nickname,
+                "discriminator": usr.discriminator
+            });
         });
         
         socket.on("GUILD_MEMBER_UPDATE", function (usr) {
             if (usr.id == current_user_discord_id) {
                 update_socket_channels();
                 socket.emit("current_user_info", {"guild_id": guild_id});
+            }
+            var updatedUser = false;
+            for (var i = 0; i < all_users.length; i++) {
+                if (usr.id == all_users[i].id) {
+                    var u = all_users[i];
+                    u.avatar = usr.avatar;
+                    u.avatar_url = generate_avatar_url(usr.user_id, usr.avatar);
+                    u.username = usr.username;
+                    u.nickname = usr.nickname;
+                    u.discriminator = usr.discriminator;
+                    updatedUser = true;
+                    break;
+                }
             }
             for (var i = 0; i < discord_users_list.length; i++) {
                 if (usr.id == discord_users_list[i].id) {
@@ -1734,14 +1757,30 @@
             }
             discord_users_list.push(usr);
             fill_discord_members(discord_users_list);
+            if (!updatedUser) {
+                all_users.push({
+                    "id": usr.id,
+                    "avatar": usr.avatar,
+                    "avatar_url": generate_avatar_url(usr.user_id, usr.avatar),
+                    "username": usr.username,
+                    "nickname": usr.nickname,
+                    "discriminator": usr.discriminator
+                });
+            }
         });
 
         socket.on("GUILD_MEMBER_REMOVE", function (usr) {
+            for (var i = 0; i < all_users.length; i++) {
+                if (usr.id == all_users[i].id) {
+                    all_users.splice(i, 1);
+                    break;
+                }
+            }
             for (var i = 0; i < discord_users_list.length; i++) {
                 if (usr.id == discord_users_list[i].id) {
                     discord_users_list.splice(i, 1);
                     fill_discord_members(discord_users_list);
-                    return;
+                    break;
                 }
             }
         });

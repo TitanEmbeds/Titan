@@ -176,6 +176,20 @@ def get_channel_webhook_url(guild_id, channel_id):
     webhook = discord_api.create_webhook(channel_id, name)
     return webhook["content"]
 
+def get_all_users(guild_id):
+    users = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.active == True).all()
+    mem = []
+    for u in users:
+        mem.append({
+            "id": str(u.user_id),
+            "avatar": u.avatar,
+            "avatar_url": generate_avatar_url(u.user_id, u.avatar, u.discriminator, True),
+            "username": u.username,
+            "nickname": u.nickname,
+            "discriminator": u.discriminator
+        })
+    return mem
+
 @api.route("/fetch", methods=["GET"])
 @valid_session_required(api=True)
 @abort_if_guild_disabled()
@@ -393,10 +407,11 @@ def process_query_guild(guild_id, visitor=False):
     emojis = get_guild_emojis(guild_id)
     roles = get_guild_roles(guild_id)
     guest_icon = get_guild_guest_icon(guild_id)
+    all_users = get_all_users(guild_id)
     if visitor:
         for channel in channels:
             channel["write"] = False
-    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, roles=roles, guest_icon=guest_icon, instant_invite=widget.get("instant_invite", None))
+    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, allusers=all_users, emojis=emojis, roles=roles, guest_icon=guest_icon, instant_invite=widget.get("instant_invite", None))
 
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)
