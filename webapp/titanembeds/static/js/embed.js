@@ -1447,6 +1447,72 @@
         }
     });
     
+    $("#chatcontent").bind("click", function () {
+        $("#mention-picker").hide();
+    });
+    
+    $('#messagebox').bind('input keydown click', function(event) {
+        if (event.type == "keydown" && (event.which == 38 || event.which == 40 || event.which == 13) && $("#mention-picker").is(":visible")) {
+            return;
+        }
+        var cursorAt = $(this).caret();
+        var input = $(this).val().substr(0, cursorAt);
+        var lastWord = input.match(/@\w+$/);
+        if (lastWord == null) {
+            $("#mention-picker").hide();
+            return;
+        }
+        lastWord = lastWord[0];
+        if (lastWord.charAt(0) != "@") {
+            $("#mention-picker").hide();
+            return;
+        }
+        lastWord = lastWord.substr(1);
+        var template = $('#mustache_usermentionchoices').html();
+        Mustache.parse(template);
+        var users = [];
+        for (var i = 0; i < discord_users_list.length; i++) {
+            var usr = discord_users_list[i];
+            if (usr.username.toLowerCase().indexOf(lastWord.toLowerCase()) > -1 || (usr.nick && usr.nick.toLowerCase().indexOf(lastWord.toLowerCase()) > -1)) {
+                var displayname = usr.username;
+                if (usr.nick) {
+                    displayname = usr.nick;
+                }
+                users.push({
+                    id: usr.id,
+                    avatar: usr.avatar_url,
+                    username: usr.username,
+                    discriminator: usr.discriminator,
+                    displayname: displayname
+                });
+            }
+        }
+        if (users.length == 0) {
+            $("#mention-picker").hide();
+            return;
+        }
+        $("#mention-picker").show();
+        $("#mention-picker-content").html("");
+        for (var i = 0; i < users.length; i++) {
+            var usr = users[i];
+            var rendered = $(Mustache.render(template, usr));
+            rendered.hover(function () {
+                $("#mention-picker .mention-choice.selected").removeClass("selected");
+                $(this).addClass("selected");
+            });
+            rendered.click(function () {
+                var usrid = $(this).attr("discorduserid");
+                var val = $("#messagebox").val().replace("@" + lastWord, "[@" + usrid + "] ");
+                $("#messagebox").val(val);
+                $("#mention-picker").hide();
+                $("#messagebox").focus();
+            });
+            $("#mention-picker-content").append(rendered);
+        }
+        $("#mention-picker .mention-choice.selected").removeClass("selected");
+        $("#mention-picker .mention-choice").first().addClass("selected");
+    });
+    
     $("#messagebox").keyup(function (event) {
         if (event.keyCode == 16) {
             shift_pressed = false;
@@ -1454,6 +1520,40 @@
     });
 
     $("#messagebox").keydown(function(event){
+        if ($("#mention-picker").is(":visible")) {
+            if ((event.which == 38 || event.which == 40)) {
+                event.preventDefault();
+                var choices = $("#mention-picker .mention-choice");
+                var selected = $("#mention-picker .mention-choice.selected");
+                var index = choices.index(selected);
+                selected.removeClass("selected");
+                if (event.which == 40) {
+                    if (index == choices.length - 1) {
+                        $(choices.get(0)).addClass("selected");
+                    } else {
+                        $(choices.get(index + 1)).addClass("selected");
+                    }
+                } else {
+                    if (index == 0) {
+                        $(choices.get(choices.length - 1)).addClass("selected");
+                    } else {
+                        $(choices.get(index - 1)).addClass("selected");
+                    }
+                }
+                $("#mention-picker .mention-choice.selected")[0].scrollIntoView();
+                return;
+            }
+            if (event.which == 13) {
+                event.preventDefault();
+                $("#mention-picker .mention-choice.selected").click();
+                return;
+            }
+            if (event.which == 27) {
+                $("#mention-picker").hide();
+            }
+        }
+        
+        
         if ($(this).val().length == 1) {
             $(this).val($.trim($(this).val()));
         }

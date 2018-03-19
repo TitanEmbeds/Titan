@@ -812,6 +812,61 @@ p.mentioned span.chatmessage {
   }
 }
 
+#mention-picker {
+  color: black;
+  position: fixed;
+  bottom: 7%;
+  right: 5%;
+  z-index: 500;
+  width: 90%;
+  max-width: 90%;
+  max-height: 120px;
+  min-height: 40px;
+  background-color: #eceff1;
+  border-radius: 5px;
+  overflow-y: scroll;
+  display: none;
+}
+
+#mention-picker-content {
+  overflow: auto;
+  height: 100%;
+  padding: 5px;
+  display: block;
+}
+
+#mention-picker .mention-choice {
+  padding: 5px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  cursor: pointer;
+}
+
+#mention-picker .mention-choice.selected {
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+#mention-picker img {
+  width: 25px;
+  height: 25px;
+}
+
+#mention-picker .displayname {
+  margin-left: 10px;
+}
+
+#mention-picker .realname {
+  margin-left: auto;
+}
+
+@media only screen and (max-device-width: 320px) {
+  #mention-picker .realname {
+    display: none;
+  }
+}
+
 #usercard .avatar {
   width: 100%;
   max-width: 120px;

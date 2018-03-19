@@ -285,6 +285,12 @@
         </div>
       </div>
     </div>
+    
+    <div id="mention-picker">
+      <div id="mention-picker-content">
+        
+      </div>
+    </div>
 
     <footer id="footer" class="footer">
       <div id="footercontainer" class="footercontainer">
@@ -319,6 +325,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/2.5.0/2/twemoji.min.js" integrity="sha256-t5bxASdQ5tDbKQZy330h/YufCiZg82xG8PqIYzFpwhU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/soundmanager2/2.97a.20150601/script/soundmanager2-nodebug-jsmin.js" integrity="sha256-5KBL+8gS3BkWOs22YOrezN3Djl4pwodgZaPQY9hgu4Y=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.3/es6-shim.min.js" integrity="sha256-THlgZSjqt7idNSdnUvGypTuXB5C4hV9kSuPYrbiq19o=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js" integrity="sha256-NfP6KWI/oETcPbLcLXVAamn8K2wJrYH8ZIRrOf1XNUE=" crossorigin="anonymous"></script>
 
     <script src="{{ url_for("static", filename="js/vendor/highlight.pack.js") }}"></script>
     <script src="{{ url_for("static", filename="js/vendor/jquery.balloon.min.js") }}"></script>
@@ -439,6 +446,16 @@
     
     <script id="mustache_rolebubble" type="text/template">
       <span class="bubble" {{#color}}style="color: {{color}};"{{/color}}><span class="color" {{#color}}style="background-color: {{color}};"{{/color}}></span> <span class="text">{{name}}</span></span>
+    </script>
+    
+    <script id="mustache_usermentionchoices" type="text/template">
+        <div class="mention-choice" discorduserid="{{ id }}">
+          <img src="{{ avatar }}" class="circle">
+          <span class="displayname">{{ displayname }}</span>
+          <span class="realname">
+            <span class="username">{{ username }}</span><span class="hash">#</span><span class="discriminator">{{ discriminator }}</span>
+          </span>
+        </div>
     </script>
     {% endraw %}
 
