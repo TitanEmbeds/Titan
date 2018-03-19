@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-02-18 17:50-0500\n"
+"PO-Revision-Date: 2018-03-19 05:05-0400\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Serbian (Latin)\n"
 "MIME-Version: 1.0\n"
@@ -140,15 +140,15 @@ msgstr "Ništa"
 
 #: titanembeds/templates/embed.html.j2:188
 msgid "Display Rich Embeds"
-msgstr ""
+msgstr "Prikaži Rich Embeds"
 
 #: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
-msgstr ""
+msgstr "Omogući"
 
 #: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
-msgstr ""
+msgstr "Onemogući"
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
@@ -156,19 +156,19 @@ msgstr "Samo jedan kora više..."
 
 #: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
-msgstr ""
+msgstr "NSFW kanal"
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr ""
+msgstr "Morate biti najmanje 18 godina stari kako biste videli ovaj kanal. Da li imate preko 18 godina i želite li pogledati sadržaj za odrasle?"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
-msgstr ""
+msgstr "Ne"
 
 #: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
-msgstr ""
+msgstr "Nastavi"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
@@ -188,7 +188,7 @@ msgstr "TitanEmbeds Donator"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
-msgstr ""
+msgstr "Danas sam glasao za Titan na Discord Bots!"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
