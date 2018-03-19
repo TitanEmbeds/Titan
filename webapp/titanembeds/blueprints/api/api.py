@@ -503,6 +503,6 @@ def webhook_discordbotsorg_vote():
             referrer = int(float(params["referrer"]))
         except:
             pass
-    DBLTrans = DiscordBotsOrgTransactions(int(float(user_id)), vote_type, referrer)
+    DBLTrans = DiscordBotsOrgTransactions(int(user_id), vote_type, referrer)
     db.session.add(DBLTrans)
     return ('', 204)

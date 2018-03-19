@@ -1,0 +1,103 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Voting Statistics" %}
+
+{% block content %}
+<h1>Viewing Vote Statistics</h1>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+        <p class="flow-text">Select Date/Time Range</p>
+      <table class="bordered striped">
+        <thead>
+          <tr>
+              <th>Start</th>
+              <th>End</th>
+              <th>Submit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+                <div class="input-field inline">
+                    <input id="datestart" type="text" class="datepicker" palceholder="Start Date">
+                </div>
+                <div class="input-field inline">
+                    <input id="timestart" type="text" class="timepicker" palceholder="Start Time">
+                </div>
+            </td>
+            <td>
+                <div class="input-field inline">
+                    <input id="dateend" type="text" class="datepicker" palceholder="End Date">
+                </div>
+                <div class="input-field inline">
+                    <input id="timeend" type="text" class="timepicker" palceholder="End Time">
+                </div>
+            </td>
+            <td>
+                <a class="waves-effect waves-light btn" id="submit">Submit</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>* Timezone will be whatever the server timezone is. Probably UTC.</p>
+    </div>
+  </div>
+  
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <h3>Best Voters</h3>
+      <table class="bordered striped">
+        <thead>
+          <tr>
+              <th>Place</th>
+              <th>User ID</th>
+              <th>Discord</th>
+              <th>Votes</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for usr in overall %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ usr.user_id }}</td>
+            <td>{{ usr.discord }}</td>
+            <td>{{ usr.votes }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <h3>Best Referrers</h3>
+      <table class="bordered striped">
+        <thead>
+          <tr>
+              <th>Place</th>
+              <th>User ID</th>
+              <th>Discord</th>
+              <th>Referrals Redeemed</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for usr in referrals %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ usr.user_id }}</td>
+            <td>{{ usr.discord }}</td>
+            <td>{{ usr.votes }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/admin_voting.js') }}"></script>
+{% endblock %}

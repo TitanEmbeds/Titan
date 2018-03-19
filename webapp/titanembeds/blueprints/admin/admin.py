@@ -1,12 +1,13 @@
 from flask import Blueprint, url_for, redirect, session, render_template, abort, request, jsonify
 from flask_socketio import emit
 from functools import wraps
-from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS, AuthenticatedUsers
+from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS, AuthenticatedUsers, DiscordBotsOrgTransactions, GuildMembers
 from titanembeds.oauth import generate_guild_icon_url
 from titanembeds.utils import get_online_embed_user_keys
 import datetime
 import json
 from sqlalchemy import func
+import operator
 
 admin = Blueprint("admin", __name__)
 
@@ -374,3 +375,74 @@ def new_custom_css_post():
     db.session.add(css)
     db.session.commit()
     return jsonify({"id": css.id})
+
+@admin.route("/voting", methods=["GET"])
+@is_admin
+def voting_get():
+    datestart = request.args.get("datestart")
+    timestart = request.args.get("timestart")
+    dateend = request.args.get("dateend")
+    timeend = request.args.get("timeend")
+    if not datestart or not timestart or not dateend or not timeend:
+        return render_template("admin_voting.html.j2")
+    start = datetime.datetime.strptime(datestart + " " + timestart, '%d %B, %Y %H:%M%p')
+    end = datetime.datetime.strptime(dateend + " " + timeend, '%d %B, %Y %H:%M%p')
+    users = db.session.query(DiscordBotsOrgTransactions).filter(DiscordBotsOrgTransactions.timestamp >= start, DiscordBotsOrgTransactions.timestamp <= end).order_by(DiscordBotsOrgTransactions.timestamp)
+    all_users = []
+    for u in users:
+        uid = u.user_id # Let's fix this OBO error
+        gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
+        if not gmember:
+            uid = u.user_id + 1
+        all_users.append({
+            "id": u.id,
+            "user_id": uid,
+            "timestamp": u.timestamp,
+            "action": u.action,
+            "referrer": u.referrer
+        })
+    overall_votes = {}
+    for u in all_users:
+        uid = u["user_id"]
+        action = u["action"]
+        if uid not in overall_votes:
+            overall_votes[uid] = 0
+        if action == "none":
+            overall_votes[uid] = overall_votes[uid] - 1
+        if action == "upvote":
+            overall_votes[uid] = overall_votes[uid] + 1
+    sorted_overall_votes = []
+    for uid, votes in sorted(overall_votes.items(), key=operator.itemgetter(1), reverse=True):
+        sorted_overall_votes.append(uid)
+    overall = []
+    for uid in sorted_overall_votes:
+        gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
+        u = {
+            "user_id": uid,
+            "votes": overall_votes[uid]
+        }
+        if gmember:
+            u["discord"] = gmember.username + "#" + str(gmember.discriminator)
+        overall.append(u)
+    referrer = {}
+    for u in all_users:
+        if not u["referrer"] or u["referrer"] == u["user_id"]:
+            continue
+        refer = u["referrer"]
+        if refer not in referrer:
+            referrer[refer] = 0
+        referrer[refer] = referrer[refer] + 1
+    sorted_referrers = []
+    for uid, votes in sorted(referrer.items(), key=operator.itemgetter(1), reverse=True):
+        sorted_referrers.append(uid)
+    referrals = []
+    for uid in sorted_referrers:
+        gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
+        u = {
+            "user_id": uid,
+            "votes": referrer[uid]
+        }
+        if gmember:
+            u["discord"] = gmember.username + "#" + str(gmember.discriminator)
+        referrals.append(u)
+    return render_template("admin_voting.html.j2", overall=overall, referrals=referrals)
