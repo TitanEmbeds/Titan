@@ -1477,7 +1477,7 @@
             var usr = all_users[i];
             if (usr.username.toLowerCase().indexOf(lastWord.toLowerCase()) > -1 || (usr.nickname && usr.nickname.toLowerCase().indexOf(lastWord.toLowerCase()) > -1)) {
                 var displayname = usr.username;
-                if (usr.nick) {
+                if (usr.nickname) {
                     displayname = usr.nickname;
                 }
                 users.push({
