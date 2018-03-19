@@ -1720,7 +1720,7 @@
             all_users.push({
                 "id": usr.id,
                 "avatar": usr.avatar,
-                "avatar_url": generate_avatar_url(usr.user_id, usr.avatar),
+                "avatar_url": generate_avatar_url(usr.id, usr.avatar),
                 "username": usr.username,
                 "nickname": usr.nickname,
                 "discriminator": usr.discriminator
@@ -1737,7 +1737,7 @@
                 if (usr.id == all_users[i].id) {
                     var u = all_users[i];
                     u.avatar = usr.avatar;
-                    u.avatar_url = generate_avatar_url(usr.user_id, usr.avatar);
+                    u.avatar_url = generate_avatar_url(usr.id, usr.avatar);
                     u.username = usr.username;
                     u.nickname = usr.nickname;
                     u.discriminator = usr.discriminator;
@@ -1761,7 +1761,7 @@
                 all_users.push({
                     "id": usr.id,
                     "avatar": usr.avatar,
-                    "avatar_url": generate_avatar_url(usr.user_id, usr.avatar),
+                    "avatar_url": generate_avatar_url(usr.id, usr.avatar),
                     "username": usr.username,
                     "nickname": usr.nickname,
                     "discriminator": usr.discriminator
