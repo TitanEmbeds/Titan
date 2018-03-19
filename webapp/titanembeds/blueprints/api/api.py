@@ -500,7 +500,7 @@ def webhook_discordbotsorg_vote():
     referrer = None
     if "referrer" in params:
         try:
-            referrer = int(float(params["referrer"]))
+            referrer = int(params["referrer"])
         except:
             pass
     DBLTrans = DiscordBotsOrgTransactions(int(user_id), vote_type, referrer)
