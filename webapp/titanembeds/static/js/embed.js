@@ -380,10 +380,12 @@
             $("#visitor_mode_message").show();
             $("#messagebox").hide();
             $("#emoji-tray-toggle").hide();
+            $(".wdt-emoji-picker").hide();
         } else {
             $("#visitor_mode_message").hide();
             $("#messagebox").show();
             $("#emoji-tray-toggle").show();
+            $(".wdt-emoji-picker").show();
         }
     }
 
