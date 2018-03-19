@@ -1540,7 +1540,7 @@
                         $(choices.get(index - 1)).addClass("selected");
                     }
                 }
-                $("#mention-picker .mention-choice.selected")[0].scrollIntoView();
+                $("#mention-picker .mention-choice.selected")[0].scrollIntoView({behavior: "instant", block: "center", inline: "center"});
                 return;
             }
             if (event.which == 13) {
