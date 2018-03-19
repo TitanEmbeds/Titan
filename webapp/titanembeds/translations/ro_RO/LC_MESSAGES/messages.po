@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-02-18 17:50-0500\n"
+"PO-Revision-Date: 2018-03-19 05:05-0400\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Romanian\n"
 "MIME-Version: 1.0\n"
@@ -139,7 +139,7 @@ msgstr "Nimic"
 
 #: titanembeds/templates/embed.html.j2:188
 msgid "Display Rich Embeds"
-msgstr ""
+msgstr "Afișați îmbinările bogate"
 
 #: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
