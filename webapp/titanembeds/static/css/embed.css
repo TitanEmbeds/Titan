@@ -815,7 +815,7 @@ p.mentioned span.chatmessage {
 #mention-picker {
   color: black;
   position: fixed;
-  bottom: 7%;
+  bottom: 40px;
   right: 5%;
   z-index: 500;
   width: 90%;
