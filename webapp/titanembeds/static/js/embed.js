@@ -1473,6 +1473,11 @@
     
     $("#chatcontent").bind("click", function () {
         $("#mention-picker").hide();
+        wdtEmojiBundle.close();
+    });
+    
+    $("#messagebox").bind("click", function () {
+        wdtEmojiBundle.close();
     });
     
     $('#messagebox').bind('input keydown click', function(event) {
