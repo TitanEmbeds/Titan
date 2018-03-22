@@ -76,7 +76,7 @@ class Titan(discord.Client):
             return
         if "server" == sys.argv[1]:
             server_id = sys.argv[2]
-            server = self.get_server(server_id)
+            server = self.get_guild(server_id)
             if not server:
                 print("Server not found")
                 await self.logout()
@@ -93,7 +93,7 @@ class Titan(discord.Client):
         for channel in all_channels:
             try:
                 if str(channel.type) == "text":
-                    print("Processing channel: ID-{} Name-'{}' ServerID-{} Server-'{}'".format(channel.id, channel.name, channel.server.id, channel.server.name))
+                    print("Processing channel: ID-{} Name-'{}' ServerID-{} Server-'{}'".format(channel.id, channel.name, channel.guild.id, channel.guild.name))
                     await self.database.delete_all_messages_from_channel(channel.id)
                     async for message in self.logs_from(channel, limit=50, reverse=True):
                         await self.database.push_message(message)

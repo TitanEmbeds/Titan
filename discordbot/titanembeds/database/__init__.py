@@ -16,7 +16,7 @@ from titanembeds.database.guild_members import GuildMembers
 from titanembeds.database.unauthenticated_users import UnauthenticatedUsers
 from titanembeds.database.unauthenticated_bans import UnauthenticatedBans
 
-from titanembeds.utils import get_message_author, get_message_mentions, get_webhooks_list, get_emojis_list, get_roles_list, get_channels_list, list_role_ids
+from titanembeds.utils import get_message_author, get_message_mentions, get_webhooks_list, get_emojis_list, get_roles_list, get_channels_list, list_role_ids, get_attachments_list, get_embeds_list
 
 class DatabaseInterface(object):
     # Courtesy of https://github.com/SunDwarf/Jokusoramame
@@ -44,54 +44,54 @@ class DatabaseInterface(object):
             session.close()
 
     async def push_message(self, message):
-        if message.server:
+        if message.guild:
             async with threadpool():
                 with self.get_session() as session:
-                    edit_ts = message.edited_timestamp
+                    edit_ts = message.edited_at
                     if not edit_ts:
                         edit_ts = None
                     else:
                         edit_ts = str(edit_ts)
 
                     msg = Messages(
-                        int(message.server.id),
+                        int(message.guild.id),
                         int(message.channel.id),
                         int(message.id),
                         message.content,
                         json.dumps(get_message_author(message)),
-                        str(message.timestamp),
+                        str(message.created_at),
                         edit_ts,
                         json.dumps(get_message_mentions(message.mentions)),
-                        json.dumps(message.attachments),
-                        json.dumps(message.embeds)
+                        json.dumps(get_attachments_list(message.attachments)),
+                        json.dumps(get_embeds_list(message.embeds))
                     )
                     session.add(msg)
                     session.commit()
 
     async def update_message(self, message):
-        if message.server:
+        if message.guild:
             async with threadpool():
                 with self.get_session() as session:
                     msg = session.query(Messages) \
-                        .filter(Messages.guild_id == message.server.id) \
+                        .filter(Messages.guild_id == message.guild.id) \
                         .filter(Messages.channel_id == message.channel.id) \
                         .filter(Messages.message_id == message.id).first()
                     if msg:
                         msg.content = message.content
-                        msg.timestamp = message.timestamp
-                        msg.edited_timestamp = message.edited_timestamp
+                        msg.timestamp = message.created_at
+                        msg.edited_timestamp = message.edited_at
                         msg.mentions = json.dumps(get_message_mentions(message.mentions))
-                        msg.attachments = json.dumps(message.attachments)
-                        msg.embeds = json.dumps(message.embeds)
+                        msg.attachments = json.dumps(get_attachments_list(message.attachments))
+                        msg.embeds = json.dumps(get_embeds_list(message.embeds))
                         msg.author = json.dumps(get_message_author(message))
                         session.commit()
 
     async def delete_message(self, message):
-        if message.server:
+        if message.guild:
             async with threadpool():
                 with self.get_session() as session:
                     msg = session.query(Messages) \
-                        .filter(Messages.guild_id == int(message.server.id)) \
+                        .filter(Messages.guild_id == int(message.guild.id)) \
                         .filter(Messages.channel_id == int(message.channel.id)) \
                         .filter(Messages.message_id == int(message.id)).first()
                     if msg:
@@ -99,8 +99,11 @@ class DatabaseInterface(object):
                         session.commit()
 
     async def update_guild(self, guild):
-        if guild.me.server_permissions.manage_webhooks:
-            server_webhooks = await self.bot.get_server_webhooks(guild)
+        if guild.me.guild_permissions.manage_webhooks:
+            try:
+                server_webhooks = await guild.webhooks()
+            except:
+                server_webhooks = []
         else:
             server_webhooks = []
         async with threadpool():
@@ -159,12 +162,12 @@ class DatabaseInterface(object):
         async with threadpool():
             with self.get_session() as session:
                 dbmember = session.query(GuildMembers) \
-                    .filter(GuildMembers.guild_id == int(member.server.id)) \
+                    .filter(GuildMembers.guild_id == int(member.guild.id)) \
                     .filter(GuildMembers.user_id == int(member.id)) \
                     .order_by(GuildMembers.id).all()
                 if not dbmember:
                     dbmember = GuildMembers(
-                        int(member.server.id),
+                        int(member.guild.id),
                         int(member.id),
                         member.name,
                         member.discriminator,

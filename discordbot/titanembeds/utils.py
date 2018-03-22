@@ -1,12 +1,14 @@
 import discord
 
 def get_message_author(message):
+    if not hasattr(message, "author"):
+        return {}
     author = message.author
     obj = {
         "username": author.name,
         "discriminator": author.discriminator,
         "bot": author.bot,
-        "id": author.id,
+        "id": str(author.id),
         "avatar": author.avatar
     }
     return obj
@@ -18,7 +20,7 @@ def get_message_mentions(mentions):
             "username": author.name,
             "discriminator": author.discriminator,
             "bot": author.bot,
-            "id": author.id,
+            "id": str(author.id),
             "avatar": author.avatar
         })
     return ments
@@ -27,9 +29,9 @@ def get_webhooks_list(guild_webhooks):
     webhooks = []
     for webhook in guild_webhooks:
         webhooks.append({
-            "id": webhook.id,
-            "guild_id": webhook.server.id,
-            "channel_id": webhook.channel.id,
+            "id": str(webhook.id),
+            "guild_id": str(webhook.guild.id),
+            "channel_id": str(webhook.channel.id),
             "name": webhook.name,
             "token": webhook.token,
         })
@@ -39,7 +41,7 @@ def get_emojis_list(guildemojis):
     emojis = []
     for emote in guildemojis:
         emojis.append({
-            "id": emote.id,
+            "id": str(emote.id),
             "name": emote.name,
             "require_colons": emote.require_colons,
             "managed": emote.managed,
@@ -53,7 +55,7 @@ def get_roles_list(guildroles):
     roles = []
     for role in guildroles:
         roles.append({
-            "id": role.id,
+            "id": str(role.id),
             "name": role.name,
             "color": role.color.value,
             "hoist": role.hoist,
@@ -65,8 +67,9 @@ def get_roles_list(guildroles):
 def get_channels_list(guildchannels):
     channels = []
     for channel in guildchannels:
-        if str(channel.type) in ["text", "category"]:
+        if isinstance(channel, discord.channel.TextChannel) or isinstance(channel, discord.channel.CategoryChannel):
             overwrites = []
+            isTextChannel = isinstance(channel, discord.channel.TextChannel)
             for target, overwrite in channel.overwrites:
                 if isinstance(target, discord.Role):
                     type = "role"
@@ -76,28 +79,51 @@ def get_channels_list(guildchannels):
                 allow = allow.value
                 deny = deny.value
                 overwrites.append({
-                    "id": target.id,
+                    "id": str(target.id),
                     "type": type,
                     "allow": allow,
                     "deny": deny,
                 })
-            parent = channel.parent
+            parent = channel.category
             if parent:
-                parent = parent.id
+                parent = str(parent.id)
             channels.append({
-                "id": channel.id,
+                "id": str(channel.id),
                 "name": channel.name,
-                "topic": channel.topic,
+                "topic": channel.topic if isTextChannel else None,
                 "position": channel.position,
-                "type": str(channel.type),
+                "type": "text" if isTextChannel else "category",
                 "permission_overwrites": overwrites,
                 "parent_id": parent,
-                "nsfw": channel.is_nsfw,
+                "nsfw": channel.is_nsfw(),
             })
     return channels
     
 def list_role_ids(usr_roles):
     ids = []
     for role in usr_roles:
-        ids.append(role.id)
+        ids.append(str(role.id))
     return ids
+
+def get_attachments_list(attachments):
+    attr = []
+    for attach in attachments:
+        a = {
+            "id": str(attach.id),
+            "size": attach.size,
+            "filename": attach.filename,
+            "url": attach.url,
+            "proxy_url": attach.proxy_url,
+        }
+        if attach.height:
+            a["height"] = attach.height
+        if attach.width:
+            a["width"] = attach.width
+        attr.append(a)
+    return attr
+
+def get_embeds_list(embeds):
+    em = []
+    for e in embeds:
+        em.append(e.to_dict())
+    return em
