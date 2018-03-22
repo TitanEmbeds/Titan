@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-03-21 22:34-0400\n"
+"PO-Revision-Date: 2018-03-21 22:37-0400\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Turkish\n"
 "MIME-Version: 1.0\n"
@@ -171,7 +171,7 @@ msgstr "Devam edin"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
-msgstr "Bahsedenler"
+msgstr "Bahset"
 
 #: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
