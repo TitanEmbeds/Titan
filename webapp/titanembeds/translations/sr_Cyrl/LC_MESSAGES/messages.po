@@ -15,7 +15,7 @@ msgstr ""
 "X-Crowdin-Project: titanembeds\n"
 "X-Crowdin-Language: sr\n"
 "X-Crowdin-File: /master/webapp/titanembeds/translations/messages.pot\n"
-"Language: sr_SP\n"
+"Language: sr_Cyrl\n"
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Let's get to know each other! My name is Titan, what's yours?"
