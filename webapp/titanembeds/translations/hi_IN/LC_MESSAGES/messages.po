@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-27 19:51-0500\n"
+"POT-Creation-Date: 2018-02-18 22:46+0000\n"
+"PO-Revision-Date: 2018-03-04 00:13-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Hindi\n"
 "MIME-Version: 1.0\n"
@@ -49,167 +49,167 @@ msgstr "कप्तान, विकल्प क्या है आपका?
 msgid "Alright, here's the usual~"
 msgstr "ठीक है, ये लो सामान्य~"
 
-#: titanembeds/templates/embed.html.j2:71
+#: titanembeds/templates/embed.html.j2:78
 msgid "Actions"
 msgstr "चाल"
 
-#: titanembeds/templates/embed.html.j2:72
+#: titanembeds/templates/embed.html.j2:79
 msgid "Manage Guild Embed"
 msgstr "संचालन करें संघ एम्बेड"
 
-#: titanembeds/templates/embed.html.j2:73
+#: titanembeds/templates/embed.html.j2:80
 msgid "Open Server on Discordapp"
 msgstr "सर्वर को खोले डिस्कॉर्ड पर"
 
-#: titanembeds/templates/embed.html.j2:77
+#: titanembeds/templates/embed.html.j2:84
 msgid "Channel Topic"
 msgstr "चैनल प्रसंग"
 
-#: titanembeds/templates/embed.html.j2:82
+#: titanembeds/templates/embed.html.j2:89
 msgid "Channels"
 msgstr "चैनल्स"
 
-#: titanembeds/templates/embed.html.j2:87
+#: titanembeds/templates/embed.html.j2:94
 msgid "Online Server Members"
 msgstr "ऑनलाइन सर्वर सदस्य"
 
-#: titanembeds/templates/embed.html.j2:92
+#: titanembeds/templates/embed.html.j2:99
 msgid "Authenticated Embed Users"
 msgstr "प्रमाणीकृत एम्बेड उपयोगकर्ता"
 
-#: titanembeds/templates/embed.html.j2:95
+#: titanembeds/templates/embed.html.j2:102
 msgid "Guest Embed Users"
 msgstr "मेहमान एम्बेड उपयोगकर्ता"
 
-#: titanembeds/templates/embed.html.j2:115
+#: titanembeds/templates/embed.html.j2:122
 msgid "Please choose one of the following methods to authenticate!"
 msgstr "कृपया निम्नलिखित तरीकों में से कोई एक चुनें प्रमाणित करने के लिए!"
 
-#: titanembeds/templates/embed.html.j2:121
+#: titanembeds/templates/embed.html.j2:128
 msgid "Discord Login"
 msgstr "डिस्कॉर्ड लॉगिन"
 
-#: titanembeds/templates/embed.html.j2:122
+#: titanembeds/templates/embed.html.j2:129
 msgid "You will be invited into this server."
 msgstr "आपको आमंत्रित किया जाएगा इस सर्वर में |"
 
-#: titanembeds/templates/embed.html.j2:126
+#: titanembeds/templates/embed.html.j2:133
 msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
 msgstr "जरूर, आपके पास लॉगिन करने का विकल्प अपने वर्तमान ब्राउज़िंग सत्र के लिए एक अस्थायी उपयोगकर्ता नाम चुनना भी है|"
 
-#: titanembeds/templates/embed.html.j2:128
+#: titanembeds/templates/embed.html.j2:135
 msgid "Username (Hit ENTER/RETURN key to confirm)"
 msgstr "उपयोगकर्ता नाम (एंटर / रिटर्न कुंजी दबाएं पुष्टि करने के लिए)"
 
-#: titanembeds/templates/embed.html.j2:140
+#: titanembeds/templates/embed.html.j2:147
 msgid "Change Username"
 msgstr "उपयोगकर्ता नाम परिवर्तन करें"
 
-#: titanembeds/templates/embed.html.j2:143
+#: titanembeds/templates/embed.html.j2:150
 msgid "Guests Accounts Only"
 msgstr "मेहमान खाते केवल"
 
-#: titanembeds/templates/embed.html.j2:145
+#: titanembeds/templates/embed.html.j2:152
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
 msgstr "अपना उपयोगकर्ता नाम परिवर्तन करें (एंटर / रिटर्न कुंजी दबाएं पुष्टि करने के लिए)"
 
-#: titanembeds/templates/embed.html.j2:149
+#: titanembeds/templates/embed.html.j2:156
 msgid "Theme"
 msgstr "थीम"
 
-#: titanembeds/templates/embed.html.j2:159
+#: titanembeds/templates/embed.html.j2:167
 msgid "Overwrite Current Embed Theme w/ User CSS"
 msgstr "मौजूदा एम्बेड थीम को ओवरराइट करें उपयोगकर्ता सीएसएस के साथ"
 
-#: titanembeds/templates/embed.html.j2:163
+#: titanembeds/templates/embed.html.j2:171
 msgid "Notification Sound"
 msgstr "अधिसूचना की आवाज़"
 
-#: titanembeds/templates/embed.html.j2:168
+#: titanembeds/templates/embed.html.j2:176
 msgid "New Messages"
 msgstr "नए संदेश"
 
-#: titanembeds/templates/embed.html.j2:172
+#: titanembeds/templates/embed.html.j2:180
 msgid "Mentions"
 msgstr "जिक्र"
 
-#: titanembeds/templates/embed.html.j2:176
+#: titanembeds/templates/embed.html.j2:184
 msgid "Nothing"
 msgstr "कुछ भी नहीं"
 
-#: titanembeds/templates/embed.html.j2:180
+#: titanembeds/templates/embed.html.j2:188
 msgid "Display Rich Embeds"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:185
+#: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:189
+#: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:201
+#: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
 msgstr "केवल एक और पदध्वनि..."
 
-#: titanembeds/templates/embed.html.j2:209
+#: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:210
+#: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:212
+#: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:213
+#: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:224
+#: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
 msgstr "ज़िक्र"
 
-#: titanembeds/templates/embed.html.j2:229
+#: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
 msgstr "टाइटनएमबेडस प्रशासक"
 
-#: titanembeds/templates/embed.html.j2:230
+#: titanembeds/templates/embed.html.j2:238
 msgid "TitanEmbeds Partner"
 msgstr "टाइटनएमबेडस जोड़ीदार"
 
-#: titanembeds/templates/embed.html.j2:231
+#: titanembeds/templates/embed.html.j2:239
 msgid "TitanEmbeds Supporter"
 msgstr "टाइटनएमबेडस समर्थक"
 
-#: titanembeds/templates/embed.html.j2:232
-msgid "GitHub Stargazer"
-msgstr "गिटहब स्टारगेज़र"
+#: titanembeds/templates/embed.html.j2:240
+msgid "I have voted for Titan on Discord Bots today!"
+msgstr ""
 
-#: titanembeds/templates/embed.html.j2:234
+#: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
 msgstr "उपयोगकर्ता ऑफलाइन है डिस्कॉर्ड मे"
 
-#: titanembeds/templates/embed.html.j2:235
+#: titanembeds/templates/embed.html.j2:243
 msgid "Playing"
 msgstr "खेल रहे हैं"
 
-#: titanembeds/templates/embed.html.j2:236
+#: titanembeds/templates/embed.html.j2:244
 msgid "Roles"
 msgstr "भूमिकाएँ"
 
-#: titanembeds/templates/embed.html.j2:245
+#: titanembeds/templates/embed.html.j2:253
 msgid "Server Emoji"
 msgstr "सर्वर इमोजी"
 
-#: titanembeds/templates/embed.html.j2:262
+#: titanembeds/templates/embed.html.j2:270
 msgid "Please login to post a message."
 msgstr "कृपया संदेश पोस्ट करने के लिए लॉगिन करें।"
 
-#: titanembeds/templates/embed.html.j2:262
+#: titanembeds/templates/embed.html.j2:270
 msgid "Login"
 msgstr "लॉगिन"
 

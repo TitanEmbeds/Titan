@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-27 19:51-0500\n"
+"POT-Creation-Date: 2018-02-18 22:46+0000\n"
+"PO-Revision-Date: 2018-03-04 00:13-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Chinese Traditional\n"
 "MIME-Version: 1.0\n"
@@ -49,167 +49,167 @@ msgstr "船長，你有什麼選擇？"
 msgid "Alright, here's the usual~"
 msgstr "好的，這裡是通常的〜"
 
-#: titanembeds/templates/embed.html.j2:71
+#: titanembeds/templates/embed.html.j2:78
 msgid "Actions"
 msgstr "操作"
 
-#: titanembeds/templates/embed.html.j2:72
+#: titanembeds/templates/embed.html.j2:79
 msgid "Manage Guild Embed"
 msgstr "管理公會嵌入"
 
-#: titanembeds/templates/embed.html.j2:73
+#: titanembeds/templates/embed.html.j2:80
 msgid "Open Server on Discordapp"
 msgstr "在Discordapp上打開服務器"
 
-#: titanembeds/templates/embed.html.j2:77
+#: titanembeds/templates/embed.html.j2:84
 msgid "Channel Topic"
 msgstr "頻道主題"
 
-#: titanembeds/templates/embed.html.j2:82
+#: titanembeds/templates/embed.html.j2:89
 msgid "Channels"
 msgstr "頻道"
 
-#: titanembeds/templates/embed.html.j2:87
+#: titanembeds/templates/embed.html.j2:94
 msgid "Online Server Members"
 msgstr "連線伺服器成員"
 
-#: titanembeds/templates/embed.html.j2:92
+#: titanembeds/templates/embed.html.j2:99
 msgid "Authenticated Embed Users"
 msgstr "身份驗證的嵌入用戶"
 
-#: titanembeds/templates/embed.html.j2:95
+#: titanembeds/templates/embed.html.j2:102
 msgid "Guest Embed Users"
 msgstr "來賓嵌入使用者"
 
-#: titanembeds/templates/embed.html.j2:115
+#: titanembeds/templates/embed.html.j2:122
 msgid "Please choose one of the following methods to authenticate!"
 msgstr "請選擇以下方法之一進行驗證！"
 
-#: titanembeds/templates/embed.html.j2:121
+#: titanembeds/templates/embed.html.j2:128
 msgid "Discord Login"
 msgstr "Discord 登錄"
 
-#: titanembeds/templates/embed.html.j2:122
+#: titanembeds/templates/embed.html.j2:129
 msgid "You will be invited into this server."
 msgstr "你將被邀請到這個服務器。"
 
-#: titanembeds/templates/embed.html.j2:126
+#: titanembeds/templates/embed.html.j2:133
 msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
 msgstr "當然，您也可以通過為當前瀏覽會話選擇一個臨時用戶名來進行登錄。"
 
-#: titanembeds/templates/embed.html.j2:128
+#: titanembeds/templates/embed.html.j2:135
 msgid "Username (Hit ENTER/RETURN key to confirm)"
 msgstr "用戶名（按ENTER / RETURN鍵確認）"
 
-#: titanembeds/templates/embed.html.j2:140
+#: titanembeds/templates/embed.html.j2:147
 msgid "Change Username"
 msgstr "更改使用者名"
 
-#: titanembeds/templates/embed.html.j2:143
+#: titanembeds/templates/embed.html.j2:150
 msgid "Guests Accounts Only"
 msgstr "僅來賓帳戶"
 
-#: titanembeds/templates/embed.html.j2:145
+#: titanembeds/templates/embed.html.j2:152
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
 msgstr "更改您的用戶名（按ENTER / RETURN鍵確認）"
 
-#: titanembeds/templates/embed.html.j2:149
+#: titanembeds/templates/embed.html.j2:156
 msgid "Theme"
 msgstr "主題"
 
-#: titanembeds/templates/embed.html.j2:159
+#: titanembeds/templates/embed.html.j2:167
 msgid "Overwrite Current Embed Theme w/ User CSS"
 msgstr "用戶CSS覆蓋當前嵌入主題"
 
-#: titanembeds/templates/embed.html.j2:163
+#: titanembeds/templates/embed.html.j2:171
 msgid "Notification Sound"
 msgstr "通知聲音"
 
-#: titanembeds/templates/embed.html.j2:168
+#: titanembeds/templates/embed.html.j2:176
 msgid "New Messages"
 msgstr "新消息"
 
-#: titanembeds/templates/embed.html.j2:172
+#: titanembeds/templates/embed.html.j2:180
 msgid "Mentions"
 msgstr "提到"
 
-#: titanembeds/templates/embed.html.j2:176
+#: titanembeds/templates/embed.html.j2:184
 msgid "Nothing"
 msgstr "沒有"
 
-#: titanembeds/templates/embed.html.j2:180
+#: titanembeds/templates/embed.html.j2:188
 msgid "Display Rich Embeds"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:185
+#: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:189
+#: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:201
+#: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
 msgstr "再來一步..。"
 
-#: titanembeds/templates/embed.html.j2:209
+#: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:210
+#: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:212
+#: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:213
+#: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
 msgstr ""
 
-#: titanembeds/templates/embed.html.j2:224
+#: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
 msgstr "提到"
 
-#: titanembeds/templates/embed.html.j2:229
+#: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
 msgstr "TitanEmbeds 管理員"
 
-#: titanembeds/templates/embed.html.j2:230
+#: titanembeds/templates/embed.html.j2:238
 msgid "TitanEmbeds Partner"
 msgstr "TitanEmbeds 合作夥伴"
 
-#: titanembeds/templates/embed.html.j2:231
+#: titanembeds/templates/embed.html.j2:239
 msgid "TitanEmbeds Supporter"
 msgstr "TitanEmbeds 合作夥伴"
 
-#: titanembeds/templates/embed.html.j2:232
-msgid "GitHub Stargazer"
-msgstr "GitHub 占星"
+#: titanembeds/templates/embed.html.j2:240
+msgid "I have voted for Titan on Discord Bots today!"
+msgstr ""
 
-#: titanembeds/templates/embed.html.j2:234
+#: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
 msgstr "用戶在Discord中離線。"
 
-#: titanembeds/templates/embed.html.j2:235
+#: titanembeds/templates/embed.html.j2:243
 msgid "Playing"
 msgstr "播放"
 
-#: titanembeds/templates/embed.html.j2:236
+#: titanembeds/templates/embed.html.j2:244
 msgid "Roles"
 msgstr "角色"
 
-#: titanembeds/templates/embed.html.j2:245
+#: titanembeds/templates/embed.html.j2:253
 msgid "Server Emoji"
 msgstr "伺服器表情"
 
-#: titanembeds/templates/embed.html.j2:262
+#: titanembeds/templates/embed.html.j2:270
 msgid "Please login to post a message."
 msgstr "請登錄後發送郵件。"
 
-#: titanembeds/templates/embed.html.j2:262
+#: titanembeds/templates/embed.html.j2:270
 msgid "Login"
 msgstr "登錄"
 

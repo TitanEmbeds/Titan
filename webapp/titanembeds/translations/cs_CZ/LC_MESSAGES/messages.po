@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-01-28 00:45+0000\n"
-"PO-Revision-Date: 2018-01-28 13:32-0500\n"
+"POT-Creation-Date: 2018-02-18 22:46+0000\n"
+"PO-Revision-Date: 2018-03-04 00:13-0500\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Czech\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: titanembeds\n"
 "X-Crowdin-Language: cs\n"
@@ -49,167 +49,167 @@ msgstr "Kapitáne, váš názor?"
 msgid "Alright, here's the usual~"
 msgstr "Dobře, tady je obvyklé ~"
 
-#: titanembeds/templates/embed.html.j2:71
+#: titanembeds/templates/embed.html.j2:78
 msgid "Actions"
 msgstr "Akce"
 
-#: titanembeds/templates/embed.html.j2:72
+#: titanembeds/templates/embed.html.j2:79
 msgid "Manage Guild Embed"
 msgstr "Správa vkládání guildy"
 
-#: titanembeds/templates/embed.html.j2:73
+#: titanembeds/templates/embed.html.j2:80
 msgid "Open Server on Discordapp"
 msgstr "Otevřít server v Discord aplikaci"
 
-#: titanembeds/templates/embed.html.j2:77
+#: titanembeds/templates/embed.html.j2:84
 msgid "Channel Topic"
 msgstr "Téma kanálu"
 
-#: titanembeds/templates/embed.html.j2:82
+#: titanembeds/templates/embed.html.j2:89
 msgid "Channels"
 msgstr "Kanály"
 
-#: titanembeds/templates/embed.html.j2:87
+#: titanembeds/templates/embed.html.j2:94
 msgid "Online Server Members"
 msgstr "Aktivní uživatelé"
 
-#: titanembeds/templates/embed.html.j2:92
+#: titanembeds/templates/embed.html.j2:99
 msgid "Authenticated Embed Users"
 msgstr "Ověření vložení uživatelé"
 
-#: titanembeds/templates/embed.html.j2:95
+#: titanembeds/templates/embed.html.j2:102
 msgid "Guest Embed Users"
 msgstr "Hosté vložení uživatelé"
 
-#: titanembeds/templates/embed.html.j2:115
+#: titanembeds/templates/embed.html.j2:122
 msgid "Please choose one of the following methods to authenticate!"
 msgstr "Prosím zvolte si jednu z následujících metod pro ověření!"
 
-#: titanembeds/templates/embed.html.j2:121
+#: titanembeds/templates/embed.html.j2:128
 msgid "Discord Login"
 msgstr "Discord přihlášení"
 
-#: titanembeds/templates/embed.html.j2:122
+#: titanembeds/templates/embed.html.j2:129
 msgid "You will be invited into this server."
 msgstr "Budeš pozván na tento server."
 
-#: titanembeds/templates/embed.html.j2:126
+#: titanembeds/templates/embed.html.j2:133
 msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
 msgstr "Samozřejmě máš také možnost přihlásit se pomocí výběru dočasného uživatelského jména pro aktuální relaci."
 
-#: titanembeds/templates/embed.html.j2:128
+#: titanembeds/templates/embed.html.j2:135
 msgid "Username (Hit ENTER/RETURN key to confirm)"
 msgstr "Uživatelské jméno (Stiskni ENTER pro potvrzení)"
 
-#: titanembeds/templates/embed.html.j2:140
+#: titanembeds/templates/embed.html.j2:147
 msgid "Change Username"
 msgstr "Změnit uživatelské jméno"
 
-#: titanembeds/templates/embed.html.j2:143
+#: titanembeds/templates/embed.html.j2:150
 msgid "Guests Accounts Only"
 msgstr "Pouze účty hostů"
 
-#: titanembeds/templates/embed.html.j2:145
+#: titanembeds/templates/embed.html.j2:152
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
 msgstr "Změn svoje uživatelské jméno (Stiskni ENTER pro potvrzení)"
 
-#: titanembeds/templates/embed.html.j2:149
+#: titanembeds/templates/embed.html.j2:156
 msgid "Theme"
 msgstr "Téma"
 
-#: titanembeds/templates/embed.html.j2:159
+#: titanembeds/templates/embed.html.j2:167
 msgid "Overwrite Current Embed Theme w/ User CSS"
 msgstr "Přepsat aktuální vložené téma s uživatelem CSS"
 
-#: titanembeds/templates/embed.html.j2:163
+#: titanembeds/templates/embed.html.j2:171
 msgid "Notification Sound"
 msgstr "Zvuk upozornění"
 
-#: titanembeds/templates/embed.html.j2:168
+#: titanembeds/templates/embed.html.j2:176
 msgid "New Messages"
 msgstr "Nové zprávy"
 
-#: titanembeds/templates/embed.html.j2:172
+#: titanembeds/templates/embed.html.j2:180
 msgid "Mentions"
 msgstr "Zmínky"
 
-#: titanembeds/templates/embed.html.j2:176
+#: titanembeds/templates/embed.html.j2:184
 msgid "Nothing"
 msgstr "Nic"
 
-#: titanembeds/templates/embed.html.j2:180
+#: titanembeds/templates/embed.html.j2:188
 msgid "Display Rich Embeds"
 msgstr "Zobrazit bohaté vložení"
 
-#: titanembeds/templates/embed.html.j2:185
+#: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
 msgstr "Povolit"
 
-#: titanembeds/templates/embed.html.j2:189
+#: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
 msgstr "Zakázat"
 
-#: titanembeds/templates/embed.html.j2:201
+#: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
 msgstr "Ještě jeden krok..."
 
-#: titanembeds/templates/embed.html.j2:209
+#: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
 msgstr "NSFW kanál"
 
-#: titanembeds/templates/embed.html.j2:210
+#: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
 msgstr "Musí být starší osmnácti let zobrazit tento kanál. Jste starší osmnácti let a ochotni vidět obsah jen pro dospělé?"
 
-#: titanembeds/templates/embed.html.j2:212
+#: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
 msgstr "Ne"
 
-#: titanembeds/templates/embed.html.j2:213
+#: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
 msgstr "Pokračovat"
 
-#: titanembeds/templates/embed.html.j2:224
+#: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
 msgstr "Zmínka"
 
-#: titanembeds/templates/embed.html.j2:229
+#: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
 msgstr "Správce TitanEmbeds"
 
-#: titanembeds/templates/embed.html.j2:230
+#: titanembeds/templates/embed.html.j2:238
 msgid "TitanEmbeds Partner"
 msgstr "Partner TitanEmbeds"
 
-#: titanembeds/templates/embed.html.j2:231
+#: titanembeds/templates/embed.html.j2:239
 msgid "TitanEmbeds Supporter"
 msgstr "Podporovatel TitanEmbeds"
 
-#: titanembeds/templates/embed.html.j2:232
-msgid "GitHub Stargazer"
-msgstr "GitHub Stargazer"
+#: titanembeds/templates/embed.html.j2:240
+msgid "I have voted for Titan on Discord Bots today!"
+msgstr ""
 
-#: titanembeds/templates/embed.html.j2:234
+#: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
 msgstr "Discord uživatel je offline."
 
-#: titanembeds/templates/embed.html.j2:235
+#: titanembeds/templates/embed.html.j2:243
 msgid "Playing"
 msgstr "Hraje"
 
-#: titanembeds/templates/embed.html.j2:236
+#: titanembeds/templates/embed.html.j2:244
 msgid "Roles"
 msgstr "Role"
 
-#: titanembeds/templates/embed.html.j2:245
+#: titanembeds/templates/embed.html.j2:253
 msgid "Server Emoji"
 msgstr "Serverový smajlík"
 
-#: titanembeds/templates/embed.html.j2:262
+#: titanembeds/templates/embed.html.j2:270
 msgid "Please login to post a message."
 msgstr "Prosím přihlašte se pro odeslání zprávy."
 
-#: titanembeds/templates/embed.html.j2:262
+#: titanembeds/templates/embed.html.j2:270
 msgid "Login"
 msgstr "Přihlášení"
 
