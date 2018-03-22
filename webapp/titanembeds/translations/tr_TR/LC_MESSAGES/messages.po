@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-03-04 00:13-0500\n"
+"PO-Revision-Date: 2018-03-21 22:34-0400\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Turkish\n"
 "MIME-Version: 1.0\n"
@@ -139,67 +139,67 @@ msgstr "Hicbir sey"
 
 #: titanembeds/templates/embed.html.j2:188
 msgid "Display Rich Embeds"
-msgstr ""
+msgstr "Zengin Görüntüleri Göster"
 
 #: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
-msgstr ""
+msgstr "Etkinleştir"
 
 #: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
-msgstr ""
+msgstr "Devre dışı bırak"
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
-msgstr ""
+msgstr "Bir adım daha..."
 
 #: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
-msgstr ""
+msgstr "NSFW Kanalı"
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr ""
+msgstr "Bu kanalı görmek için en az 18 yaşında olmanız gerekir. On sekiz yaşının üzerinde olduğunuzu onaylıyor ve yetişkin içeriğini görmek istiyor musunuz?"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
-msgstr ""
+msgstr "Hayır"
 
 #: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
-msgstr ""
+msgstr "Devam edin"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
-msgstr ""
+msgstr "Bahsedenler"
 
 #: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
-msgstr ""
+msgstr "TitanEmbeds yöneticisi"
 
 #: titanembeds/templates/embed.html.j2:238
 msgid "TitanEmbeds Partner"
-msgstr ""
+msgstr "TitanEmbeds ortağı"
 
 #: titanembeds/templates/embed.html.j2:239
 msgid "TitanEmbeds Supporter"
-msgstr ""
+msgstr "TitanEmbeds destekçisi"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
-msgstr ""
+msgstr "Bugün Discord Botları arasından Titan'a oy verdim!"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
-msgstr ""
+msgstr "Kullanıcı Discord'da çevrimdışı."
 
 #: titanembeds/templates/embed.html.j2:243
 msgid "Playing"
-msgstr ""
+msgstr "Oynuyor"
 
 #: titanembeds/templates/embed.html.j2:244
 msgid "Roles"
-msgstr ""
+msgstr "Roller"
 
 #: titanembeds/templates/embed.html.j2:253
 msgid "Server Emoji"
