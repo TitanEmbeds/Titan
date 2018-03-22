@@ -205,9 +205,13 @@ class Titan(discord.AutoShardedClient):
 
             if len(msg) >= 4:
                 if msg[-4:] == b'\x00\x00\xff\xff':
-                    msg = self.zlib_obj.decompress(self.buffer_arr)
-                    msg = msg.decode('utf-8')
-                    self.buffer_arr = bytearray()
+                    try:
+                        msg = self.zlib_obj.decompress(self.buffer_arr)
+                        msg = msg.decode('utf-8')
+                    except:
+                        return
+                    finally:
+                        self.buffer_arr = bytearray()
                 else:
                     return
             else:
