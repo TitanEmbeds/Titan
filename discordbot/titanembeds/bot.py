@@ -218,19 +218,20 @@ class Titan(discord.AutoShardedClient):
             return
         action = msg["t"]
         if action == "MESSAGE_UPDATE":
-            if not self.in_messages_cache(msg["d"]["id"]):
-                channel = self.get_channel(msg["d"]["channel_id"])
-                message = await self.get_message(channel, msg["d"]["id"])
+            if not self.in_messages_cache(int(msg["d"]["id"])):
+                channel = self.get_channel(int(msg["d"]["channel_id"]))
+                message = await channel.get_message(channel, int(msg["d"]["id"]))
                 await self.on_message_edit(None, message)
         if action == "MESSAGE_DELETE":
-            if not self.in_messages_cache(msg["d"]["id"]):
+            if not self.in_messages_cache(int(msg["d"]["id"])):
                 await asyncio.sleep(1)
-                await self.process_raw_message_delete(msg["d"]["id"], msg["d"]["channel_id"])
+                await self.process_raw_message_delete(int(msg["d"]["id"]), int(msg["d"]["channel_id"]))
         if action == "MESSAGE_DELETE_BULK":
             await asyncio.sleep(1)
             for msgid in msg["d"]["ids"]:
+                msgid = int(msgid)
                 if not self.in_messages_cache(msgid):
-                    await self.process_raw_message_delete(msgid, msg["d"]["channel_id"])
+                    await self.process_raw_message_delete(msgid, int(msg["d"]["channel_id"]))
     
     async def process_raw_message_delete(self, msg_id, channel_id):
         if msg_id in self.delete_list:
