@@ -2,6 +2,7 @@ import socketio
 from titanembeds.utils import get_message_author, get_message_mentions, get_roles_list, get_attachments_list, get_embeds_list
 import time
 from email import utils as emailutils
+import discord
 
 class SocketIOInterface:
     def __init__(self, bot, redis_uri):
@@ -155,7 +156,7 @@ class SocketIOInterface:
         await self.io.emit('CHANNEL_CREATE', data=chan, room=str("GUILD_"+str(channel.guild.id)), namespace='/gateway')
     
     async def on_channel_update(self, channel):
-        if str(channel.type) not in ["text", "category"]:
+        if not isinstance(channel, discord.channel.TextChannel) and not isinstance(channel, discord.channel.CategoryChannel):
             return
         chan = self.get_formatted_channel(channel)
         await self.io.emit('CHANNEL_UPDATE', data=chan, room=str("GUILD_"+str(channel.guild.id)), namespace='/gateway')

@@ -162,7 +162,7 @@ class Titan(discord.AutoShardedClient):
             await self.database.update_guild(channel.guild)
             await self.socketio.on_channel_create(channel)
 
-    async def on_channel_update(self, channelbefore, channelafter):
+    async def on_guild_channel_update(self, channelbefore, channelafter):
         await self.database.update_guild(channelafter.guild)
         await self.socketio.on_channel_update(channelafter)
 
