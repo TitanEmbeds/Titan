@@ -58,11 +58,6 @@ background-color: var(--chatbox);
 background:transparent!important;
 margin-left:10px
 }
-#chatcontent > p > span.chatusername,
-#curuser_discrim,
-#curuser_name {
-display:block
-}
 #curuser_discrim {
 font-size:50%;
 color: #7D8386;
@@ -76,11 +71,9 @@ margin-top:-2px
 margin-top:4px;
 margin-right:4px
 }
-#chatcontent > p { display: table; }
-#chatcontent > p > span { display: table-row }
 /*#chatcontent > p > span:nth-child(1):before { content:"Today at " }*/
 /*#chatcontent > p > span.chatusername { display: table-header-group }*/
-#chatcontent > p > span.chatmessage { display: table-footer-group;display:inline-block!important;color:#C3C4C5;color:var(--chatmessage); }
+#chatcontent > p > span.chatmessage { display: block; color:#C3C4C5;color:var(--chatmessage); }
 #chatcontent {
 background: #36393E;
 background:var(--main)
