@@ -20,8 +20,8 @@ logging.getLogger('sqlalchemy')
 ###########################
 
 class Titan(discord.Client):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, shard_id=None, shard_count=None):
+        super().__init__(shard_id=shard_id, shard_count=shard_count)
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
@@ -71,11 +71,11 @@ class Titan(discord.Client):
         print("working on this...")
         all_channels = []
         if len(sys.argv) < 2:
-            print("fetch_last_messages.py <server/all> [server_id]")
+            print("fetch_last_messages.py <server/all> [server_id] [shard_id] [shard_count]")
             await self.logout()
             return
         if "server" == sys.argv[1]:
-            server_id = sys.argv[2]
+            server_id = int(sys.argv[2])
             server = self.get_guild(server_id)
             if not server:
                 print("Server not found")
@@ -87,12 +87,12 @@ class Titan(discord.Client):
             print("Getting all channels")
             all_channels = list(self.get_all_channels())
         else:
-            print("fetch_last_messages.py <server/all> [server_id]")
+            print("fetch_last_messages.py <server/all> [server_id] [shard_id] [shard_count]")
             await self.logout()
             return
         for channel in all_channels:
             try:
-                if str(channel.type) == "text":
+                if isinstance(channel, discord.channel.TextChannel):
                     print("Processing channel: ID-{} Name-'{}' ServerID-{} Server-'{}'".format(channel.id, channel.name, channel.guild.id, channel.guild.name))
                     await self.database.delete_all_messages_from_channel(channel.id)
                     async for message in self.logs_from(channel, limit=50, reverse=True):
@@ -104,7 +104,15 @@ class Titan(discord.Client):
 
 def main():
     print("Starting...")
-    te = Titan()
+    try:
+        shard_id = sys.argv[3]
+        shard_count = sys.argv[4]
+        print("Running on shard {} of total {} shards.".format(shard_id, shard_count))
+    except:
+        shard_id = None
+        shard_count = None
+        print("Running on no sharding support.")
+    te = Titan(shard_id, shard_count)
     te.run()
     gc.collect()
 

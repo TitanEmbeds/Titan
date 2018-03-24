@@ -39,3 +39,5 @@ class Commands():
     async def server(self, message):
         await message.channel.send("Join the Titan Embeds Discord server! https://discord.gg/pFDDtcN")
         
+    async def shard(self, message):
+        await message.channel.send("This instance of Titan Embeds Discord Bot is running on shard **{}**. There are **{}** shards in total.".format(self.client.shard_id, self.client.shard_count))
