@@ -10,7 +10,6 @@ import asyncio
 import sys
 import logging
 import json
-import zlib
 logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 handler = logging.FileHandler(config.get("logging-location", "titanbot.log"))
 logging.getLogger('TitanBot')
@@ -27,8 +26,6 @@ class Titan(discord.AutoShardedClient):
         self.socketio = SocketIOInterface(self, config["redis-uri"])
         
         self.delete_list = deque(maxlen=100) # List of msg ids to prevent duplicate delete
-        self.zlib_obj = zlib.decompressobj()
-        self.buffer_arr = bytearray()
         
         self.discordBotsOrg = None
         self.botsDiscordPw = None
@@ -198,44 +195,24 @@ class Titan(discord.AutoShardedClient):
             
     async def on_webhooks_update(self, guild, channel):
         await self.database.update_guild(guild)
-
-    async def on_socket_raw_receive(self, msg):
-        if isinstance(msg, bytes):
-            self.buffer_arr.extend(msg)
-
-            if len(msg) >= 4:
-                if msg[-4:] == b'\x00\x00\xff\xff':
-                    try:
-                        msg = self.zlib_obj.decompress(self.buffer_arr)
-                        msg = msg.decode('utf-8')
-                    except:
-                        return
-                    finally:
-                        self.buffer_arr = bytearray()
-                else:
-                    return
-            else:
-                return
-
-        msg = json.loads(msg)
-        if msg["op"] != 0:
-            return
-        action = msg["t"]
-        if action == "MESSAGE_UPDATE":
-            if not self.in_messages_cache(int(msg["d"]["id"])):
-                channel = self.get_channel(int(msg["d"]["channel_id"]))
-                message = await channel.get_message(channel, int(msg["d"]["id"]))
-                await self.on_message_edit(None, message)
-        if action == "MESSAGE_DELETE":
-            if not self.in_messages_cache(int(msg["d"]["id"])):
-                await asyncio.sleep(1)
-                await self.process_raw_message_delete(int(msg["d"]["id"]), int(msg["d"]["channel_id"]))
-        if action == "MESSAGE_DELETE_BULK":
+        
+    async def on_raw_message_edit(self, message_id, data):
+        if not self.in_messages_cache(int(message_id)):
+            channel = self.get_channel(int(data["channel_id"]))
+            message = await channel.get_message(int(message_id))
+            await self.on_message_edit(None, message)
+    
+    async def on_raw_message_delete(self, message_id, channel_id):
+        if not self.in_messages_cache(int(message_id)):
             await asyncio.sleep(1)
-            for msgid in msg["d"]["ids"]:
-                msgid = int(msgid)
-                if not self.in_messages_cache(msgid):
-                    await self.process_raw_message_delete(msgid, int(msg["d"]["channel_id"]))
+            await self.process_raw_message_delete(int(message_id), int(channel_id))
+    
+    async def raw_bulk_message_delete(self, message_ids, channel_id):
+        await asyncio.sleep(1)
+        for msgid in message_ids:
+            msgid = int(msgid)
+            if not self.in_messages_cache(msgid):
+                await self.process_raw_message_delete(msgid, int(channel_id))
     
     async def process_raw_message_delete(self, msg_id, channel_id):
         if msg_id in self.delete_list:
