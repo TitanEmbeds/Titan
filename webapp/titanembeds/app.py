@@ -20,6 +20,7 @@ import os
 from titanembeds.database import get_administrators_list
 import titanembeds.constants as constants
 from datetime import timedelta
+import datetime
 
 os.chdir(config['app-location'])
 app = Flask(__name__, static_folder="static")
@@ -81,4 +82,4 @@ def before_first_request():
 
 @app.context_processor
 def context_processor():
-    return {"devs": get_administrators_list(), "constants": constants}
+    return {"devs": get_administrators_list(), "constants": constants, "af_mode_enabled": datetime.datetime.now().date() == datetime.date(datetime.datetime.now().year, 4, 1)}

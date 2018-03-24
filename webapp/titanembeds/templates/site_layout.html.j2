@@ -99,6 +99,10 @@
       });
     </script>
     
+    {% if af_mode_enabled %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/site.af.sausage.js') }}"></script>
+    {% endif %}
+    
     {% block script %}{% endblock %}
   </body>
 </html>

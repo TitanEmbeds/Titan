@@ -469,6 +469,11 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
     
+    {% if af_mode_enabled %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/embed.af.directmessage.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/site.af.sausage.js') }}"></script>
+    {% endif %}
+    
     <!-- Electron fix -->
     <script>
       if (window.module) {

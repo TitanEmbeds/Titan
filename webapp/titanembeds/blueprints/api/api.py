@@ -521,3 +521,12 @@ def webhook_discordbotsorg_vote():
     DBLTrans = DiscordBotsOrgTransactions(int(user_id), vote_type, referrer)
     db.session.add(DBLTrans)
     return ('', 204)
+
+@api.route("/af/direct_message", methods=["POST"])
+def af_direct_message_post():
+    cs = request.form.get('cs', None)
+    input = request.form.get('input')
+    cleverbot_url = "http://www.cleverbot.com/getreply"
+    payload = {'key': config["cleverbot-api-key"], 'cs': cs, 'input': input}
+    r = requests.get(cleverbot_url, params=payload)
+    return jsonify(r.json())
