@@ -158,13 +158,19 @@ class DatabaseInterface(object):
                     session.delete(gui)
                     session.commit()
 
-    async def update_guild_member(self, member, active=True, banned=False):
+    async def update_guild_member(self, member, active=True, banned=False, guild=None):
         async with threadpool():
             with self.get_session() as session:
-                dbmember = session.query(GuildMembers) \
-                    .filter(GuildMembers.guild_id == int(member.guild.id)) \
-                    .filter(GuildMembers.user_id == int(member.id)) \
-                    .order_by(GuildMembers.id).all()
+                if guild:
+                    dbmember = session.query(GuildMembers) \
+                        .filter(GuildMembers.guild_id == int(guild.id)) \
+                        .filter(GuildMembers.user_id == int(member.id)) \
+                        .order_by(GuildMembers.id).all()
+                else:
+                    dbmember = session.query(GuildMembers) \
+                        .filter(GuildMembers.guild_id == int(member.guild.id)) \
+                        .filter(GuildMembers.user_id == int(member.id)) \
+                        .order_by(GuildMembers.id).all()
                 if not dbmember:
                     dbmember = GuildMembers(
                         int(member.guild.id),

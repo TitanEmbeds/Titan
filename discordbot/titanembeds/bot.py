@@ -180,10 +180,10 @@ class Titan(discord.AutoShardedClient):
                 await self.database.update_guild_member(memberafter)
             await self.socketio.on_guild_member_update(memberafter)
 
-    async def on_member_ban(self, member):
-        if self.user.id == member.id:
+    async def on_member_ban(self, guild, user):
+        if self.user.id == user.id:
             return
-        await self.database.update_guild_member(member, active=False, banned=True)
+        await self.database.update_guild_member(user, active=False, banned=True, guild=guild)
 
     async def on_member_unban(self, guild, user):
         await self.database.unban_server_user(user, guild)
