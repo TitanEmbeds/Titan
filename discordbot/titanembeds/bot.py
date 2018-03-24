@@ -90,8 +90,8 @@ class Titan(discord.AutoShardedClient):
                 msg_cmd = msg_arr[1].lower() # get command
                 cmd = getattr(self.command, msg_cmd, None) #check if cmd exist, if not its none
                 if cmd: # if cmd is not none...
-                    await self.send_typing(message.channel) #this looks nice
-                    await getattr(self.command, msg_cmd)(message) #actually run cmd, passing in msg obj
+                    async with message.channel.typing(): #this looks nice
+                        await getattr(self.command, msg_cmd)(message) #actually run cmd, passing in msg obj
 
     async def on_message_edit(self, message_before, message_after):
         await self.database.update_message(message_after)
