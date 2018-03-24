@@ -95,7 +95,7 @@ class Titan(discord.Client):
                 if isinstance(channel, discord.channel.TextChannel):
                     print("Processing channel: ID-{} Name-'{}' ServerID-{} Server-'{}'".format(channel.id, channel.name, channel.guild.id, channel.guild.name))
                     await self.database.delete_all_messages_from_channel(channel.id)
-                    async for message in self.logs_from(channel, limit=50, reverse=True):
+                    async for message in channel.history(limit=50, reverse=True):
                         await self.database.push_message(message)
             except:
                 continue
