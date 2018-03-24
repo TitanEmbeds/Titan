@@ -17,8 +17,7 @@ logging.getLogger('sqlalchemy')
 
 class Titan(discord.AutoShardedClient):
     def __init__(self):
-        game = discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.com/")
-        super().__init__(max_messages=20000, game=game)
+        super().__init__(max_messages=20000)
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
@@ -64,6 +63,9 @@ class Titan(discord.AutoShardedClient):
         print('------')
         print("Shard count: " + str(self.shard_count))
         print("------")
+        
+        game = discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.com/")
+        await self.change_presence(status=discord.Status.online, activity=game)
 
         try:
             await self.database.connect(config["database-uri"])
