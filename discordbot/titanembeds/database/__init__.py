@@ -152,9 +152,7 @@ class DatabaseInterface(object):
             with self.get_session() as session:
                 gui = session.query(Guilds).filter(Guilds.guild_id == int(guild.id)).first()
                 if gui:
-                    dbmsgs = session.query(Messages).filter(Messages.guild_id == int(guild.id)).all()
-                    for msg in dbmsgs:
-                        session.delete(msg)
+                    dbmsgs = session.query(Messages).filter(Messages.guild_id == int(guild.id)).delete()
                     session.delete(gui)
                     session.commit()
 
