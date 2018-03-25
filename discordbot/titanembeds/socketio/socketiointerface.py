@@ -68,7 +68,7 @@ class SocketIOInterface:
             "discriminator": user.discriminator,
             "game": None,
             "hoist-role": None,
-            "id": user.id,
+            "id": str(user.id),
             "status": str(user.status),
             "username": user.name,
             "nick": None,
@@ -79,9 +79,9 @@ class SocketIOInterface:
         #     userobj["avatar_url"] = userobj["avatar_url"][:len(userobj["avatar_url"])-14] + ".jpg"
         if user.nick:
             userobj["nick"] = user.nick
-        if hasattr(user, "game"):
-            userobj["game"] = {
-                "name": user.game.name
+        if hasattr(user, "activity") and user.activity:
+            userobj["activity"] = {
+                "name": user.activity.name
             }
         roles = sorted(user.roles, key=lambda k: k.position, reverse=True)
         for role in roles:
