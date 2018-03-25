@@ -174,10 +174,8 @@ class Titan(discord.AutoShardedClient):
         await self.socketio.on_guild_member_remove(member)
 
     async def on_member_update(self, memberbefore, memberafter):
-        if set(memberbefore.roles) != set(memberafter.roles) or memberbefore.avatar != memberafter.avatar or memberbefore.nick != memberafter.nick or memberbefore.name != memberafter.name or memberbefore.discriminator != memberafter.discriminator or memberbefore.status != memberafter.status:
-            if memberbefore.status == memberafter.status:
-                await self.database.update_guild_member(memberafter)
-            await self.socketio.on_guild_member_update(memberafter)
+        await self.database.update_guild_member(memberafter)
+        await self.socketio.on_guild_member_update(memberafter)
 
     async def on_member_ban(self, guild, user):
         if self.user.id == user.id:

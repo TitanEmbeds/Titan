@@ -187,13 +187,14 @@ class DatabaseInterface(object):
                         for mem in dbmember[1:]:
                             session.delete(mem)
                     dbmember = dbmember[0]
-                    dbmember.banned = banned
-                    dbmember.active = active
-                    dbmember.username = member.name
-                    dbmember.discriminator = member.discriminator
-                    dbmember.nickname = member.nick
-                    dbmember.avatar = member.avatar
-                    dbmember.roles = json.dumps(list_role_ids(member.roles))
+                    if dbmember.banned != banned or dbmember.active != active or dbmember.username != member.name or dbmember.discriminator != int(member.discriminator) or dbmember.nickname != member.nick or dbmember.avatar != member.avatar or set(json.loads(dbmember.roles)) != set(list_role_ids(member.roles)):
+                        dbmember.banned = banned
+                        dbmember.active = active
+                        dbmember.username = member.name
+                        dbmember.discriminator = member.discriminator
+                        dbmember.nickname = member.nick
+                        dbmember.avatar = member.avatar
+                        dbmember.roles = json.dumps(list_role_ids(member.roles))
                 session.commit()
 
     async def unban_server_user(self, user, server):
