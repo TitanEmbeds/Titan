@@ -40,6 +40,8 @@ class DatabaseInterface(object):
         except:
             session.rollback()
             raise
+        finally:
+            session.close()
 
     async def push_message(self, message):
         if message.guild:
