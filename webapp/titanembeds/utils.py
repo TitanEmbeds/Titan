@@ -213,7 +213,7 @@ def get_guild_channels(guild_id, force_everyone=False):
     result_channels = []
     for channel in guild_channels:
         if channel['type'] in ["text", "category"]:
-            result = get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_roles, session.get("user_id"), force_everyone)
+            result = get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_roles, str(session.get("user_id")), force_everyone)
             bot_result = get_channel_permission(channel, guild_id, guild_owner, guild_roles, bot_member_roles, config["client-id"], False)
             if not bot_result["read"]:
                 result["read"] = False
@@ -227,7 +227,7 @@ def get_guild_channels(guild_id, force_everyone=False):
 def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_roles, user_id=None, force_everyone=False):
     result = {"channel": channel, "read": False, "write": False, "mention_everyone": False}
     if not user_id:
-        user_id = session.get("user_id")
+        user_id = str(session.get("user_id"))
     if guild_owner == user_id:
         result["read"] = True
         result["write"] = True
