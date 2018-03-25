@@ -33,12 +33,7 @@ class DatabaseInterface(object):
 
     @contextmanager
     def get_session(self) -> Session:
-        session = None
-        while session == None:
-            try:
-                session = self._sessionmaker()  # type: Session
-            except:
-                pass
+        session = self._sessionmaker()  # type: Session
         try:
             yield session
             session.commit()
