@@ -38,6 +38,11 @@ def format_post_content(guild_id, channel_id, message, dbUser):
 
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
 
+    max_len = get_post_content_max_len(guild_id)
+    if len(message) > max_len:
+        illegal_post = True
+        illegal_reasons.append("Exceeded the following message length: {} characters".format(max_len))
+
     links = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
     if not dbguild.chat_links and len(links) > 0:
         illegal_post = True
@@ -244,10 +249,35 @@ def fetch_visitor():
     response.status_code = status_code
     return response
 
+def get_guild_specific_post_limit():
+    guild_id = request.form.get("guild_id", None)
+    try:
+        guild_id = int(guild_id)
+    except:
+        guild_id = None
+    seconds = 5
+    if guild_id:
+        dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+        if dbguild:
+            seconds = dbguild.post_timeout
+    return "1 per {} second".format(seconds)
+
+def get_post_content_max_len(guild_id):
+    try:
+        guild_id = int(guild_id)
+    except:
+        guild_id = None
+    length = 350
+    if guild_id:
+        dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+        if dbguild:
+            length = dbguild.max_message_length
+    return length
+
 @api.route("/post", methods=["POST"])
 @valid_session_required(api=True)
 @abort_if_guild_disabled()
-@rate_limiter.limit("1 per 5 second", key_func = channel_ratelimit_key)
+@rate_limiter.limit(get_guild_specific_post_limit, key_func = channel_ratelimit_key)
 def post():
     guild_id = request.form.get("guild_id")
     channel_id = request.form.get('channel_id')

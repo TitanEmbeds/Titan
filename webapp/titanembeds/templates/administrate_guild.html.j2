@@ -134,6 +134,18 @@
             
             <br>
             
+            <p class="flow-text">Send Message Timeout</p>
+            <p>(0 seconds to have no limit - enter to submit)</p>
+            <input id="post_timeout" type="number" value="{{ guild['post_timeout'] }}">
+            
+            <br>
+            
+            <p class="flow-text">Maximum Message Length</p>
+            <p>(No more than 2000 characters - enter to submit)</p>
+            <input id="max_message_length" type="number" value="{{ guild['max_message_length'] }}">
+            
+            <br>
+            
             <p class="flow-text">Custom Invite Link</p>
             <p>Have a permanent invite that you really want to use? Something like discord.io on your mind? Enter your custom invite link here to replace the default one on the embed!</p>
             <p>(Leave blank if none - enter to submit)</p>

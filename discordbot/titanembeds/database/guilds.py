@@ -19,6 +19,8 @@ class Guilds(Base):
     owner_id = db.Column(db.BigInteger)            # Snowflake of the owner
     icon = db.Column(db.String(255))                # The icon string, null if none
     invite_link = db.Column(db.String(255))         # Custom Discord Invite Link
+    post_timeout = db.Column(db.Integer, nullable=False, server_default="5")    # Seconds to elapse before another message can be posted from the widget
+    max_message_length = db.Column(db.Integer, nullable=False, server_default="300") # Chars length the message should be before being rejected by the server
 
     def __init__(self, guild_id, name, roles, channels, webhooks, emojis, owner_id, icon):
         self.guild_id = guild_id

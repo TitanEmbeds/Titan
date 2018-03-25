@@ -178,6 +178,8 @@ def administrate_guild(guild_id):
         "icon": db_guild.icon,
         "invite_link": db_guild.invite_link if db_guild.invite_link != None else "",
         "guest_icon": db_guild.guest_icon if db_guild.guest_icon != None else "",
+        "post_timeout": db_guild.post_timeout,
+        "max_message_length": db_guild.max_message_length,
     }
     return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics)
 
@@ -192,6 +194,8 @@ def update_administrate_guild(guild_id):
     db_guild.bracket_links = request.form.get("bracket_links", db_guild.bracket_links) in ["true", True]
     db_guild.mentions_limit = request.form.get("mentions_limit", db_guild.mentions_limit)
     db_guild.unauth_captcha = request.form.get("unauth_captcha", db_guild.unauth_captcha) in ["true", True]
+    db_guild.post_timeout = request.form.get("post_timeout", db_guild.post_timeout)
+    db_guild.max_message_length = request.form.get("max_message_length", db_guild.max_message_length)
     invite_link = request.form.get("invite_link", db_guild.invite_link)
     if invite_link != None and invite_link.strip() == "":
         invite_link = None
@@ -212,6 +216,8 @@ def update_administrate_guild(guild_id):
         invite_link=db_guild.invite_link,
         guest_icon=db_guild.guest_icon,
         unauth_captcha=db_guild.unauth_captcha,
+        post_timeout=db_guild.post_timeout,
+        max_message_length=db_guild.max_message_length,
     )
 
 @admin.route("/guilds")

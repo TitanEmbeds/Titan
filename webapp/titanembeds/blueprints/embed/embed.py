@@ -70,6 +70,7 @@ def guild_embed(guild_id):
             "icon": guild.icon,
             "invite_link": guild.invite_link,
             "invite_domain": parse_url_domain(guild.invite_link),
+            "post_timeout": guild.post_timeout,
         }
         customcss = get_custom_css()
         return render_template("embed.html.j2",

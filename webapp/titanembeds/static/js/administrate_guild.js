@@ -54,6 +54,28 @@ $("#mentions_limit").keyup(function(event){
     }
 });
 
+$("#post_timeout").keyup(function(event){
+    if(event.keyCode == 13){
+      var pathname = window.location.pathname;
+      var value = $("#post_timeout").val()
+      var payload = {"post_timeout": value}
+      $.post(pathname, payload, function(data) {
+        Materialize.toast('Updated post timeout setting!', 2000)
+      });
+    }
+});
+
+$("#max_message_length").keyup(function(event){
+    if(event.keyCode == 13){
+      var pathname = window.location.pathname;
+      var value = $("#max_message_length").val()
+      var payload = {"max_message_length": value}
+      $.post(pathname, payload, function(data) {
+        Materialize.toast('Updated max message length setting!', 2000)
+      });
+    }
+});
+
 $("#invite_link").keyup(function(event){
     if(event.keyCode == 13){
       var pathname = window.location.pathname;

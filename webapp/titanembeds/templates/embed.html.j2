@@ -463,6 +463,7 @@
         const disabled = {{ disabled|tojson|safe }};
         const guild_id = "{{ guild_id }}";
         const bot_client_id = "{{ client_id }}";
+        const post_timeout = {{ guild["post_timeout"]|tojson|safe }};
         const visitors_enabled = {% if visitors_enabled %}true{% else %}false{% endif %};
         const unauth_captcha_enabled = {% if unauth_captcha_enabled %}true{% else %}false{% endif %};
     </script>

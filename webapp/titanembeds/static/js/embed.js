@@ -19,6 +19,7 @@
 /* global disabled */
 /* global wdtEmojiBundle */
 /* global EmojiConvertor */
+/* global post_timeout */
 
 (function () {
     const theme_options = ["DiscordDark", "MetroEdge", "BetterTitan"]; // All the avaliable theming names
@@ -1589,7 +1590,7 @@
         if (event.keyCode == 16) {
             shift_pressed = true;
         }
-        if(event.keyCode == 13 && !shift_pressed && $(this).val().length >= 1 && $(this).val().length <= 350) {
+        if(event.keyCode == 13 && !shift_pressed && $(this).val().length >= 1) {
             $(this).val($.trim($(this).val()));
             $(this).blur();
             $("#messagebox").attr('readonly', true);
@@ -1613,15 +1614,13 @@
             });
             funct.catch(function(data) {
                 if (data.status == 429) {
-                    Materialize.toast('You are sending messages too fast! 1 message per 5 seconds', 10000);
+                    Materialize.toast('You are sending messages too fast! 1 message per ' + post_timeout + ' seconds', 10000);
                 }
             });
             funct.always(function() {
                 $("#messagebox").attr('readonly', false);
                 $("#messagebox").focus();
             });
-        } else if (event.keyCode == 13 && !shift_pressed && $(this).val().length > 350) {
-            Materialize.toast('You are sending messages too long! 350 characters limit.', 10000);
         }
     });
 
