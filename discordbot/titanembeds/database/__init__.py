@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 import sqlalchemy as db
 from sqlalchemy.engine import Engine, create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker, Session, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
 import json
@@ -24,21 +24,23 @@ class DatabaseInterface(object):
 
         self.engine = None  # type: Engine
         self._sessionmaker = None  # type: sessionmaker
+        self.session = None
 
     def connect(self, dburi):
         self.engine = create_engine(dburi, pool_recycle=10)
 
     @contextmanager
     def get_session(self):
-        Session = sessionmaker(bind=self.engine)
+        SessionMaker = sessionmaker(bind=self.engine)
+        Session = scoped_session(SessionMaker)
         session = Session()
         try:
             yield session
-            session.commit()
         except:
             session.rollback()
         finally:
-            session.close()
+            session.commit()
+            Session.remove()
 
     async def push_message(self, message):
         if message.guild:
