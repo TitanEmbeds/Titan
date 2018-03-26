@@ -34,10 +34,11 @@ class DatabaseInterface(object):
         session = Session()
         try:
             yield session
+            session.commit()
         except:
             session.rollback()
         finally:
-            session.commit()
+            session.close()
 
     async def push_message(self, message):
         if message.guild:
