@@ -398,9 +398,14 @@ def voting_get():
     for u in users:
         uid = u.user_id # Let's fix this OBO error
         gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
+        count = 0
         if not gmember:
-            uid = u.user_id + 1
-        gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
+            uid = uid - 10
+            while uid < u.user_id + 10:
+                gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
+                if gmember:
+                    break
+                uid = uid + 1
         if not gmember:
             uid = u.user_id - 1
         all_users.append({
