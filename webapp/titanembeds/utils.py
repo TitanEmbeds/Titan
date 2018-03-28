@@ -322,6 +322,13 @@ def language_code_list():
         codes.append(lang["code"])
     return codes
 
+def is_int(specimen):
+    try:
+        int(specimen)
+        return True
+    except:
+        return False
+
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
 socketio = SocketIO(engineio_logger=config.get("engineio-logging", False))
 babel = Babel()

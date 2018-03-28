@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, redirect, url_for, session, request
 from flask_babel import gettext
-from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled
+from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled, is_int
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
 from titanembeds.database import db, Guilds, UserCSS, list_disabled_guilds
 from config import config
@@ -25,6 +25,8 @@ def get_logingreeting():
 
 def get_custom_css():
     css = request.args.get("css", None)
+    if not is_int(css):
+        css = None
     if css:
         css = db.session.query(UserCSS).filter(UserCSS.id == css).first()
     return css
@@ -59,7 +61,7 @@ def parse_url_domain(url):
         return parsed.netloc
     return url
 
-@embed.route("/<string:guild_id>")
+@embed.route("/<int:guild_id>")
 def guild_embed(guild_id):
     if check_guild_existance(guild_id):
         guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
