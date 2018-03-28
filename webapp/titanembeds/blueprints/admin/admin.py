@@ -400,6 +400,9 @@ def voting_get():
         gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
         if not gmember:
             uid = u.user_id + 1
+        gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
+        if not gmember:
+            uid = u.user_id - 1
         all_users.append({
             "id": u.id,
             "user_id": uid,
