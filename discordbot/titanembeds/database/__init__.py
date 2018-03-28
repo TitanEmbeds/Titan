@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 import sqlalchemy as db
 from sqlalchemy.engine import Engine, create_engine
-from sqlalchemy.orm import sessionmaker, Session, scoped_session
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 
 import json
@@ -24,15 +24,13 @@ class DatabaseInterface(object):
 
         self.engine = None  # type: Engine
         self._sessionmaker = None  # type: sessionmaker
-        self.session = None
 
     def connect(self, dburi):
         self.engine = create_engine(dburi, pool_recycle=10)
 
     @contextmanager
     def get_session(self):
-        SessionMaker = sessionmaker(bind=self.engine)
-        Session = scoped_session(SessionMaker)
+        Session = sessionmaker(bind=self.engine)
         session = Session()
         try:
             yield session
@@ -40,9 +38,11 @@ class DatabaseInterface(object):
             session.rollback()
         finally:
             session.commit()
-            Session.remove()
 
     async def push_message(self, message):
+        self.bot.loop.run_in_executor(None, self._push_message, message)
+    
+    def _push_message(self, message):
         if message.guild:
             with self.get_session() as session:
                 edit_ts = message.edited_at
@@ -65,8 +65,11 @@ class DatabaseInterface(object):
                 )
                 session.add(msg)
                 session.commit()
-
+                
     async def update_message(self, message):
+        self.bot.loop.run_in_executor(None, self._update_message, message)
+
+    def _update_message(self, message):
         if message.guild:
             with self.get_session() as session:
                 msg = session.query(Messages) \
@@ -84,6 +87,9 @@ class DatabaseInterface(object):
                     session.commit()
 
     async def delete_message(self, message):
+        self.bot.loop.run_in_executor(None, self._delete_message, message)
+    
+    async def _delete_message(self, message):
         if message.guild:
             with self.get_session() as session:
                 msg = session.query(Messages) \
@@ -93,7 +99,7 @@ class DatabaseInterface(object):
                 if msg:
                     session.delete(msg)
                     session.commit()
-
+    
     async def update_guild(self, guild):
         if guild.me.guild_permissions.manage_webhooks:
             try:
@@ -102,6 +108,9 @@ class DatabaseInterface(object):
                 server_webhooks = []
         else:
             server_webhooks = []
+        self.bot.loop.run_in_executor(None, self._update_guild, guild, server_webhooks)
+
+    def _update_guild(self, guild, server_webhooks):
         with self.get_session() as session:
             gui = session.query(Guilds).filter(Guilds.guild_id == guild.id).first()
             if not gui:
@@ -127,6 +136,9 @@ class DatabaseInterface(object):
             session.commit()
 
     async def remove_unused_guilds(self, guilds):
+        self.bot.loop.run_in_executor(None, self._remove_unused_guilds, guilds)
+
+    def _remove_unused_guilds(self, guilds):
         with self.get_session() as session:
             dbguilds = session.query(Guilds).all()
             changed = False
@@ -142,14 +154,20 @@ class DatabaseInterface(object):
                 session.commit()
 
     async def remove_guild(self, guild):
+        self.bot.loop.run_in_executor(None, self._remove_guild, guild)
+
+    def _remove_guild(self, guild):
         with self.get_session() as session:
             gui = session.query(Guilds).filter(Guilds.guild_id == int(guild.id)).first()
             if gui:
                 dbmsgs = session.query(Messages).filter(Messages.guild_id == int(guild.id)).delete()
                 session.delete(gui)
                 session.commit()
-
+    
     async def update_guild_member(self, member, active=True, banned=False, guild=None):
+        self.bot.loop.run_in_executor(None, self._update_guild_member, member, active, banned, guild)
+
+    def _update_guild_member(self, member, active=True, banned=False, guild=None):
         with self.get_session() as session:
             if guild:
                 dbmember = session.query(GuildMembers) \
@@ -188,8 +206,11 @@ class DatabaseInterface(object):
                     dbmember.avatar = member.avatar
                     dbmember.roles = json.dumps(list_role_ids(member.roles))
             session.commit()
-
+    
     async def unban_server_user(self, user, server):
+        self.bot.loop.run_in_executor(None, self._unban_server_user, user, server)
+
+    def _unban_server_user(self, user, server):
         with self.get_session() as session:
             dbmember = session.query(GuildMembers) \
                 .filter(GuildMembers.guild_id == int(server.id)) \
@@ -199,6 +220,9 @@ class DatabaseInterface(object):
                 session.commit()
 
     async def flag_unactive_guild_members(self, guild_id, guild_members):
+        self.bot.loop.run_in_executor(None, self._flag_unactive_guild_members, guild_id, guild_members)
+
+    def _flag_unactive_guild_members(self, guild_id, guild_members):
         with self.get_session() as session:
             changed = False
             dbmembers = session.query(GuildMembers) \
@@ -213,6 +237,9 @@ class DatabaseInterface(object):
                 session.commit()
 
     async def flag_unactive_bans(self, guild_id, guildbans):
+        self.bot.loop.run_in_executor(None, self._flag_unactive_bans, guild_id, guildbans)
+
+    def _flag_unactive_bans(self, guild_id, guildbans):
         with self.get_session() as session:
             changed = False
             for usr in guildbans:
@@ -238,8 +265,11 @@ class DatabaseInterface(object):
                     session.add(dbusr)
             if changed:
                 session.commit()
-
+                
     async def ban_unauth_user_by_query(self, guild_id, placer_id, username, discriminator):
+        self.bot.loop.run_in_executor(None, self._ban_unauth_user_by_query, guild_id, placer_id, username, discriminator)
+
+    def _ban_unauth_user_by_query(self, guild_id, placer_id, username, discriminator):
         with self.get_session() as session:
             dbuser = None
             if discriminator:
@@ -269,6 +299,9 @@ class DatabaseInterface(object):
             return "Guest user, **{}#{}**, has successfully been added to the ban list!".format(dbban.last_username, dbban.last_discriminator)
 
     async def revoke_unauth_user_by_query(self, guild_id, username, discriminator):
+        self.bot.loop.run_in_executor(None, self._revoke_unauth_user_by_query, guild_id, username, discriminator)
+
+    def _revoke_unauth_user_by_query(self, guild_id, username, discriminator):
         with self.get_session() as session:
             dbuser = None
             if discriminator:
@@ -289,8 +322,11 @@ class DatabaseInterface(object):
             dbuser.revoked = True
             session.commit()
             return "Successfully kicked **{}#{}**!".format(dbuser.username, dbuser.discriminator)
-                
+    
     async def delete_all_messages_from_channel(self, channel_id):
+        self.bot.loop.run_in_executor(None, self._delete_all_messages_from_channel, channel_id)            
+    
+    def _delete_all_messages_from_channel(self, channel_id):
         with self.get_session() as session:
             session.query(Messages).filter(Messages.channel_id == int(channel_id)).delete()
             session.commit()
