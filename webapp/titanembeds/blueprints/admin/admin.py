@@ -406,8 +406,6 @@ def voting_get():
                 if gmember:
                     break
                 uid = uid + 1
-        if not gmember:
-            uid = u.user_id - 1
         all_users.append({
             "id": u.id,
             "user_id": uid,
