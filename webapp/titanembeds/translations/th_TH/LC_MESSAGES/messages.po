@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-02-18 17:50-0500\n"
+"PO-Revision-Date: 2018-03-30 14:38-0400\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Thai\n"
 "MIME-Version: 1.0\n"
@@ -139,15 +139,15 @@ msgstr "ไม่มีอะไร"
 
 #: titanembeds/templates/embed.html.j2:188
 msgid "Display Rich Embeds"
-msgstr ""
+msgstr "เเสดงผล Rich Embeds"
 
 #: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
-msgstr ""
+msgstr "เปิดการใช้งาน"
 
 #: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
-msgstr ""
+msgstr "ปิดการใช้งาน"
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
@@ -155,19 +155,19 @@ msgstr "อีกหนึ่งขั้นตอน..."
 
 #: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
-msgstr ""
+msgstr "เนื้อหาสำหรับผู้ใหญ่ "
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr ""
+msgstr "คุณต้องมีอายุมากกว่า 18 ปีเพื่อที่จะเข้าไปดูช่องนี้ คุณมีอายุมากกว่า 18 ปีเเละยินดีที่จะเห็นเนื้อหาสำหรับผู้ใหญ่หรือไม่"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
-msgstr ""
+msgstr "ม่าย"
 
 #: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
-msgstr ""
+msgstr "ดำเนินต่อ"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
@@ -187,7 +187,7 @@ msgstr "ผู้สนับสนุน TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
-msgstr ""
+msgstr "ฉันได้โหวตให้กับ Titan ใน Discord Bots วันนี้เเล้ว!"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
