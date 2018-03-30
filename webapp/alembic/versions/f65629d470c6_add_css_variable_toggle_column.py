@@ -50,8 +50,7 @@ def upgrade():
     op.alter_column('guilds', 'mentions_limit',
                existing_type=sa.BIGINT(),
                type_=sa.Integer(),
-               existing_nullable=False,
-               existing_server_default=sa.text('(-1)::bigint'))
+               existing_nullable=False)
     op.alter_column('keyvalue_properties', 'expiration',
                existing_type=postgresql.TIMESTAMP(timezone=True),
                type_=sa.TIMESTAMP(),
