@@ -1733,11 +1733,11 @@
                 return;
             }
             $("#discordmessage_"+msg.id).parent().remove();
-            var lastelem = $("#chatcontent").find("[id^=discordmessage_]").last();
-            if (!lastelem.length) {
-                last_message_id = null;
+            var lastelem = $("#chatcontent").find("[id^=discordmessage_]");
+            if (lastelem.length) {
+                last_message_id = lastelem.last().attr('id').substring(15);
             } else {
-                last_message_id = lastelem.attr('id').substring(15);
+                last_message_id = null;
             }
         });
         
