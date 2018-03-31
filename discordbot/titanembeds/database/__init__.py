@@ -89,7 +89,7 @@ class DatabaseInterface(object):
     async def delete_message(self, message):
         self.bot.loop.run_in_executor(None, self._delete_message, message)
     
-    async def _delete_message(self, message):
+    def _delete_message(self, message):
         if message.guild:
             with self.get_session() as session:
                 msg = session.query(Messages) \
