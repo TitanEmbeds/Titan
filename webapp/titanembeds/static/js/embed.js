@@ -1230,7 +1230,10 @@
             jumpscroll = true;
         } else {
             fet = fetch(channel_id, last_message_id);
-            jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent());
+            jumpscroll = false;
+            if (last_message_id) {
+                jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent());
+            }
         }
         fet.done(function(data) {
             var status = data.status;
@@ -1717,7 +1720,10 @@
             if (selected_channel != thismsgchan) {
                 return;
             }
-            var jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent());
+            var jumpscroll = false;
+            if (last_message_id) {
+                jumpscroll = element_in_view($('#discordmessage_'+last_message_id).parent());
+            }
             last_message_id = fill_discord_messages([msg], jumpscroll);
         });
         
@@ -1727,7 +1733,12 @@
                 return;
             }
             $("#discordmessage_"+msg.id).parent().remove();
-            last_message_id = $("#chatcontent").find("[id^=discordmessage_]").last().attr('id').substring(15);
+            var lastelem = $("#chatcontent").find("[id^=discordmessage_]").last();
+            if (!lastelem.length) {
+                last_message_id = null;
+            } else {
+                last_message_id = lastelem.attr('id').substring(15);
+            }
         });
         
         socket.on("MESSAGE_UPDATE", function (msg) {
