@@ -121,6 +121,8 @@ nav .brand-logo {
 #guild-nav {
   background-color: #607D8B;
   background-color: var(--leftsidebar);
+  height: 100%;
+  padding-bottom: 0px;
 }
 
 .side-nav div.divider {
