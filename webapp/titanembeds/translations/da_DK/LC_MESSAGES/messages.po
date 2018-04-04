@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-03-04 00:13-0500\n"
+"PO-Revision-Date: 2018-04-02 13:35-0400\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Danish\n"
 "MIME-Version: 1.0\n"
@@ -111,7 +111,7 @@ msgstr "Gæste Kontier Kun"
 
 #: titanembeds/templates/embed.html.j2:152
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
-msgstr "Skift dit brugernavn (tryk ENTER/Tilbage tasten for at bekræfte)"
+msgstr "Skift dit brugernavn (tryk ENTER/Retur tasten for at bekræfte)"
 
 #: titanembeds/templates/embed.html.j2:156
 msgid "Theme"
@@ -151,7 +151,7 @@ msgstr "Deaktiver"
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
-msgstr "Bare et mere skridt..."
+msgstr "Bare et skridt til..."
 
 #: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
@@ -187,7 +187,7 @@ msgstr "TitanEmbeds Støtter"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
-msgstr ""
+msgstr "Jeg har stemt på Titan idag, på Discord Bots!"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
