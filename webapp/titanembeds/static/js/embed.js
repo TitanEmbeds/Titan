@@ -398,7 +398,7 @@
             unlock_login_fields();
             if (data.status == 403 && getParameterByName("create_authenticated_user") == "true" && getParameterByName("sametarget") == "true") {
                 wait_for_discord_login();
-            } else if (!unauth_captcha_enabled && $("#custom_username_field").val().trim() !== "") {
+            } else if (!unauth_captcha_enabled && $("#custom_username_field").length !== 0 && $("#custom_username_field").val().trim() !== "") {
                 $("#custom_username_field").trigger(jQuery.Event("keyup", { keyCode: 13 } ));
             } else if (visitors_enabled) {
                 setVisitorMode(true);
