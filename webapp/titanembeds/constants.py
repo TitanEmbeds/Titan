@@ -285,7 +285,7 @@ LANGUAGES = [
         ],
     },
     {
-        "code": "pt_BR",
+        "code": "pt_PT",
         "name_en": "Portuguese",
         "name": "Português",
         "translators": [
