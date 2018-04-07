@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-02-18 17:50-0500\n"
+"PO-Revision-Date: 2018-04-07 12:41-0400\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -143,15 +143,15 @@ msgstr ""
 
 #: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
-msgstr ""
+msgstr "Ativar"
 
 #: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
-msgstr ""
+msgstr "Desativar"
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
-msgstr ""
+msgstr "Só mais uma etapa..."
 
 #: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
@@ -159,19 +159,19 @@ msgstr ""
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr ""
+msgstr "Deves ter mais do que dezoito anos para ver este canal. Confirmas que és maior de idade e que estás disposto a ver conteúdo adulto?"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
-msgstr ""
+msgstr "Não"
 
 #: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
-msgstr ""
+msgstr "Continuar"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
-msgstr ""
+msgstr "Menção"
 
 #: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
@@ -191,15 +191,15 @@ msgstr ""
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
-msgstr ""
+msgstr "O utilizador está offline no Discord."
 
 #: titanembeds/templates/embed.html.j2:243
 msgid "Playing"
-msgstr ""
+msgstr "A jogar"
 
 #: titanembeds/templates/embed.html.j2:244
 msgid "Roles"
-msgstr ""
+msgstr "Cargos"
 
 #: titanembeds/templates/embed.html.j2:253
 msgid "Server Emoji"
