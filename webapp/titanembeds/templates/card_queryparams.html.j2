@@ -36,7 +36,7 @@
             </div>
             {% if "administrate_guild" in request.url %}
             <div class="col s12 black-text">
-              <p class="flow-text">Copy this URL for your iFrame src (or as a direct link) after entering the parameters in the form.</p>
+              <p class="flow-text">Copy these URL/iframe code after entering the parameters in the form.</p>
               <ul class="collection">
                 <li class="collection-item">
                   <strong>Embed/Server ID</strong>
@@ -44,7 +44,11 @@
                 </li>
                 <li class="collection-item">
                   Embed URL after query parameters appled
-                  <input id="queryparam_url" readonly value="{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}" id="disabled" type="text" onclick="this.setSelectionRange(0, this.value.length)">
+                  <input id="queryparam_url" readonly value="{{ url_for("embed.guild_embed", guild_id=guild['id'], _external=True) }}" type="text" onclick="this.setSelectionRange(0, this.value.length)">
+                </li>
+                <li class="collection-item">
+                  Embed iFrame after query parameters appled
+                  <input id="queryparam_iframe" readonly type="text" onclick="this.setSelectionRange(0, this.value.length)">
                 </li>
               </ul>
             </div>

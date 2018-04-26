@@ -20,10 +20,12 @@
             url += `${name}=${value}`;
         }
         $("#queryparam_url").val(url);
+        $("#queryparam_iframe").val("<iframe src=\"" + url + "\" height=\"600\" width=\"800\" frameborder=\"0\"></iframe>");
     }
     
     $(function () {
         $("input.queryparam").change(updateQueryParameters);
         $("#queryparam_guildid").change(updateQueryParameters);
+        updateQueryParameters();
     });
 })();

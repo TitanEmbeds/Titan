@@ -8,7 +8,7 @@ QUERY_PARAMETERS = [
     {
         "name": "defaultchannel",
         "type": "snowflake",
-        "description": "Instead of having the top channel as the first channel your users see, you may change it. Enable Discord's Developer mode in the Appearances tab of the User Settings and copy the channel ID.",
+        "description": "Instead of having the top channel as the first channel your users see, you may change it. Enable Discord's Developer mode in the Appearances tab of the User Settings and copy the channel ID. Here is a <a href=\"https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-server-ID-\" target=\"_blank\">tutorial</a> on obtaining the channel ID.",
         "example": "1234567890",
     },
     {
