@@ -11,22 +11,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <title>{{ title|e }} - Titan Embeds for Discord</title>
-    
+
     <!--Provide default mobile metadata-->
     <meta name="apple-mobile-web-app-title" content="Titan Embeds">
     <meta name="application-name" content="Titan Embeds">
-    
+
     {% include 'seo_meta.html.j2' %}
-    
+
     {% with title=title, description="Embed your Discord server in any website. Titan is hassle free and designed as easy to setup." %}
       {% include "opengraph_tags.html.j2" %}
     {% endwith %}
-    
+
     {% block additional_head_elements %}{% endblock %}
 
     {% include 'google_analytics.html.j2' %}
   </head>
   <body>
+    <!-- Change menu depending on availability of JavaScript -->
+    <noscript>
+      <style>
+          .noscript {
+            display: none;
+          }
+      </style>
+      <span>
+        <strong>Hey!</strong> It looks like <em>JavaScript<em> isn't working. Titan requires JavaScript in order to function. Please enable it or upgrade your browser.
+      </span>
+    </noscript>
+
     <div id="dblbanner">
       <span>
         <strong>Hey!</strong> Upvote us on <a href="{{ url_for("vote") }}">Discord Bots List</a> to show your
@@ -61,13 +73,13 @@
           <ul id="nav-mobile" class="right">
             <li><a href="{{url_for("about")}}" class="waves-effect hide-on-large-only">About</a></li>
             <li><a href="{{url_for("about")}}" class="waves-effect btn z-depth-3 hide-on-med-and-down">About</a></li>
-            
-            <li><a data-activates="visitus_dropdown" class="waves-effect hide-on-large-only dropdown-button">Visit Us!</a></li>
-            <li><a data-activates="visitus_dropdown" class="waves-effect btn z-depth-3 hide-on-med-and-down dropdown-button">Visit Us!</a></li>
+
+            <li><a data-activates="visitus_dropdown" class="waves-effect hide-on-large-only dropdown-button noscript">Visit Us!</a></li>
+            <li><a data-activates="visitus_dropdown" class="waves-effect btn z-depth-3 hide-on-med-and-down dropdown-button noscript">Visit Us!</a></li>
             {% if session['unauthenticated'] is defined and not session['unauthenticated'] %}
-            <li><a id="menu_drop" data-activates="menu_dropdown" class="waves-effect btn z-depth-3 btn-floating dropdown-button avatar_menu" style='background-image: url("  {{ session['avatar'] }}  ")'></a></li>
+            <li><a id="menu_drop" data-activates="menu_dropdown" class="waves-effect btn z-depth-3 btn-floating dropdown-button avatar_menu noscript" style='background-image: url("  {{ session['avatar'] }}  ")'></a></li>
             {% else %}
-            <li><a href="{{ url_for('user.login_authenticated') }}" class="waves-effect btn z-depth-3">Login</a></li>
+            <li><a href="{{ url_for('user.login_authenticated') }}" class="waves-effect btn z-depth-3 noscript">Login</a></li>
             {% endif %}
           </ul>
         </div>
@@ -92,17 +104,17 @@
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js" integrity="sha256-uWtSXRErwH9kdJTIr1swfHFJn/d/WQ6s72gELOHXQGM=" crossorigin="anonymous"></script>
-    
+
     <script>
       $(document).ready(function () {
           $('#dblbanner').delay(1000).slideDown("slow");
       });
     </script>
-    
+
     {% if af_mode_enabled %}
     <script type="text/javascript" src="{{ url_for('static', filename='js/site.af.sausage.js') }}"></script>
     {% endif %}
-    
+
     {% block script %}{% endblock %}
   </body>
 </html>
