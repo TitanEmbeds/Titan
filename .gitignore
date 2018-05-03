@@ -87,6 +87,9 @@ ENV/
 # Rope project settings
 .ropeproject
 
+# macOS Finder cache files
+.DS_Store
+
 # Project specifc
 config.py
 redislite.db
