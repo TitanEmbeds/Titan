@@ -20,18 +20,18 @@
           <tr>
             <td>
                 <div class="input-field inline">
-                    <input id="datestart" type="text" class="datepicker" palceholder="Start Date">
+                    <input id="datestart" type="text" class="datepicker" palceholder="Start Date" {% if datestart %}value="{{ datestart }}"{% endif %}>
                 </div>
                 <div class="input-field inline">
-                    <input id="timestart" type="text" class="timepicker" palceholder="Start Time">
+                    <input id="timestart" type="text" class="timepicker" palceholder="Start Time" {% if timestart %}value="{{ timestart }}"{% endif %}>
                 </div>
             </td>
             <td>
                 <div class="input-field inline">
-                    <input id="dateend" type="text" class="datepicker" palceholder="End Date">
+                    <input id="dateend" type="text" class="datepicker" palceholder="End Date" {% if dateend %}value="{{ dateend }}"{% endif %}>
                 </div>
                 <div class="input-field inline">
-                    <input id="timeend" type="text" class="timepicker" palceholder="End Time">
+                    <input id="timeend" type="text" class="timepicker" palceholder="End Time" {% if timeend %}value="{{ timeend }}"{% endif %}>
                 </div>
             </td>
             <td>

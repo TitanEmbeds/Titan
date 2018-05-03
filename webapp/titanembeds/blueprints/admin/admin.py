@@ -457,4 +457,4 @@ def voting_get():
         if gmember:
             u["discord"] = gmember.username + "#" + str(gmember.discriminator)
         referrals.append(u)
-    return render_template("admin_voting.html.j2", overall=overall, referrals=referrals)
+    return render_template("admin_voting.html.j2", overall=overall, referrals=referrals, datestart=datestart, timestart=timestart, dateend=dateend, timeend=timeend)
