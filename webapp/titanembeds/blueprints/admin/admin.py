@@ -391,8 +391,8 @@ def voting_get():
     timeend = request.args.get("timeend")
     if not datestart or not timestart or not dateend or not timeend:
         return render_template("admin_voting.html.j2")
-    start = datetime.datetime.strptime(datestart + " " + timestart, '%d %B, %Y %H:%M%p')
-    end = datetime.datetime.strptime(dateend + " " + timeend, '%d %B, %Y %H:%M%p')
+    start = datetime.datetime.strptime(datestart + " " + timestart, '%d %B, %Y %I:%M%p')
+    end = datetime.datetime.strptime(dateend + " " + timeend, '%d %B, %Y %I:%M%p')
     users = db.session.query(DiscordBotsOrgTransactions).filter(DiscordBotsOrgTransactions.timestamp >= start, DiscordBotsOrgTransactions.timestamp <= end).order_by(DiscordBotsOrgTransactions.timestamp)
     all_users = []
     for u in users:
