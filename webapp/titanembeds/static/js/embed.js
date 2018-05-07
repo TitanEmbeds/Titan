@@ -862,13 +862,21 @@
                 return;
             }
             if (animate_it) {
-                $("#guild-btn").sideNav("show");
+                if ($("#guild-btn").is(":visible")) {
+                    $("#guild-btn").sideNav("show");
+                }
                 $("#channel-"+channel_id)[0].scrollIntoView({behavior: "smooth"});
                 flashElement($("#channel-"+channel_id));
+                var timeout = 400;
+                if ($("#guild-btn").is(":visible")) {
+                    timeout = 1000;
+                }
                 setTimeout(function () {
-                    $("#guild-btn").sideNav("hide");
+                    if ($("#guild-btn").is(":visible")) {
+                        $("#guild-btn").sideNav("hide");
+                    }
                     select_channel(channel_id, false, true);
-                }, 1000);
+                }, timeout);
                 return;
             }
             selected_channel = channel_id;
