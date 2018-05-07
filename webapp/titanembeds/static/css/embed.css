@@ -33,6 +33,21 @@ html {
   font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
+@media (min-width: 992px) {
+  body.fixed-sidenav #overall-main-content, body.fixed-sidenav #overall-main-content nav, body.fixed-sidenav #overall-main-content footer {
+    margin-left: auto;
+    width: calc(100% - 300px);
+  }
+  
+  body.fixed-sidenav #overall-main-content #message-spinner {
+    left: calc(50% + 150px);
+  }
+  
+  body.fixed-sidenav #guild-nav {
+    z-index: 995;
+  }
+}
+
 main {
   min-height: calc(100vh - 80px);
   overflow-x: hidden;

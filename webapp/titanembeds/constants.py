@@ -12,6 +12,22 @@ QUERY_PARAMETERS = [
         "example": "1234567890",
     },
     {
+        "name": "fixedsidenav",
+        "type": "boolean",
+        "description": "Always show the left server navigation sidebar on large screens.",
+        "example": "true",
+        "options": [
+            {
+                "name": "true",
+                "default": False,
+            },
+            {
+                "name": "false",
+                "default": True,
+            },
+        ],
+    },
+    {
         "name": "lang",
         "type": "language",
         "description": "Are your users multilingual? No worries, Titan can speak multiple languages! Check the about page for a list of all language parameters Titan can support. <br> Wish Titan supported your language? Consider contributing to <a href=\"http://translate.titanembeds.com/\" target=\"_blank\">our CrowdIn project</a>!",

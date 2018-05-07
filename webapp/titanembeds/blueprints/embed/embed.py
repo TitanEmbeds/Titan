@@ -89,7 +89,8 @@ def guild_embed(guild_id):
             css=customcss,
             cssvariables=parse_css_variable(customcss),
             same_target=request.args.get("sametarget", False) == "true",
-            userscalable=request.args.get("userscalable", "True").lower().startswith("t")
+            userscalable=request.args.get("userscalable", "True").lower().startswith("t"),
+            fixed_sidenav=request.args.get("fixedsidenav", "False").lower().startswith("t")
         )
     abort(404)
 

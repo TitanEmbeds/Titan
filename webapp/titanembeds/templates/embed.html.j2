@@ -47,28 +47,43 @@
       {% endif %}
     </style>
   </head>
-  <body>
-    <div class="navbar-fixed">
-      <nav>
-        <div class="nav-wrapper">
-          <a href="#" data-activates="guild-nav" class="button-collapse" id="guild-btn"><i class="material-icons">menu</i></a>
-          <div class="container">
-            <a href="{{ url_for("index") }}" target="_blank" class="brand-logo"><img src="{{ url_for('static', filename='img/titanembeds_shield.png') }}" /><span class="brand-logo-text"><strong class="align-top">Titan</strong><span class="align-top">Embeds</span> <span class="betatag align-top">BETA</span></span></a>
+  <body {% if fixed_sidenav %}class="fixed-sidenav"{% endif %}>
+    <div id="overall-main-content">
+      <div class="navbar-fixed">
+        <nav>
+          <div class="nav-wrapper">
+            <a href="#" data-activates="guild-nav" class="button-collapse {% if fixed_sidenav %}hide-on-large-only{% endif %}" id="guild-btn"><i class="material-icons">menu</i></a>
+            <div class="container">
+              <a href="{{ url_for("index") }}" target="_blank" class="brand-logo"><img src="{{ url_for('static', filename='img/titanembeds_shield.png') }}" /><span class="brand-logo-text"><strong class="align-top">Titan</strong><span class="align-top">Embeds</span> <span class="betatag align-top">BETA</span></span></a>
+            </div>
+            <a href="#" data-activates="members-nav" class="button-collapse right" id="members-btn"><i class="material-icons">people</i></a>
           </div>
-          <a href="#" data-activates="members-nav" class="button-collapse right" id="members-btn"><i class="material-icons">people</i></a>
-        </div>
-      </nav>
-    </div>
-    <main>
-      <div id="message-spinner" class="sk-double-bounce">
-        <div class="sk-child sk-double-bounce1"></div>
-        <div class="sk-child sk-double-bounce2"></div>
+        </nav>
       </div>
+      <main>
+        <div id="message-spinner" class="sk-double-bounce">
+          <div class="sk-child sk-double-bounce1"></div>
+          <div class="sk-child sk-double-bounce2"></div>
+        </div>
+        
+        <div id="chatcontent" class="chatcontent"></div>
+      </main>
       
-      <div id="chatcontent" class="chatcontent"></div>
-    </main>
+      <footer id="footer" class="footer">
+        <div id="footercontainer" class="footercontainer">
+          <div class="currentuserchip" id="nameplate">
+            <div id="currentuserimage_parent"><img id="currentuserimage" src="" class="circle currentuserimage" style="display: none;"></div>
+            <div id="currentusername" class="currentusername"><span id="curuser_name">Titan</span><span id="curuser_discrim">#0001</span></div>
+          </div>
+          <div id="messageboxouter" class="input-field inline">
+            <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea wdt-emoji-open-on-colon" rows="1"></textarea>
+            <span id="visitor_mode_message" style="display:none;"><span id="visitor_mode_message_note">{{ _("Please login to post a message.") }}</span> <a id="visitor_login_btn" class="waves-effect waves-light btn">{{ _("Login") }}</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
 
-      <ul id="guild-nav" class="side-nav">
+      <ul id="guild-nav" class="side-nav {% if fixed_sidenav %}fixed{% endif %}">
         <li>
           <div class="userView">
             <img id="guild_icon" class="circle" src="{{ generate_guild_icon( guild['id'], guild['icon']  ) }}" {% if not guild['icon'] %}style="display: none;"{% endif %}>
@@ -291,19 +306,6 @@
         
       </div>
     </div>
-
-    <footer id="footer" class="footer">
-      <div id="footercontainer" class="footercontainer">
-        <div class="currentuserchip" id="nameplate">
-          <div id="currentuserimage_parent"><img id="currentuserimage" src="" class="circle currentuserimage" style="display: none;"></div>
-          <div id="currentusername" class="currentusername"><span id="curuser_name">Titan</span><span id="curuser_discrim">#0001</span></div>
-        </div>
-        <div id="messageboxouter" class="input-field inline">
-          <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea wdt-emoji-open-on-colon" rows="1"></textarea>
-          <span id="visitor_mode_message" style="display:none;"><span id="visitor_mode_message_note">{{ _("Please login to post a message.") }}</span> <a id="visitor_login_btn" class="waves-effect waves-light btn">{{ _("Login") }}</a></span>
-        </div>
-      </div>
-    </footer>
     
     <!-- Electron fix -->
     <script>
