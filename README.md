@@ -37,3 +37,8 @@ Visit us over at our [CrowdIn project](http://translate.titanembeds.com/) and te
 This project is never to be used as a replacement for Discord app. It is used in conjunction for a quick and dirty Discord embed for websites. Some uses are via shoutboxes, etc.
 
 [![alt text](https://discordbots.org/api/widget/299403260031139840.png "Upvote us on DiscordBots.org!")](https://discordbots.org/bot/299403260031139840)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTitanEmbeds%2FTitan.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FTitanEmbeds%2FTitan?ref=badge_shield)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTitanEmbeds%2FTitan.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FTitanEmbeds%2FTitan?ref=badge_large)
