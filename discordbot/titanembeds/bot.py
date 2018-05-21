@@ -87,6 +87,8 @@ class Titan(discord.AutoShardedClient):
         if len(message.content.split()) > 1 and message.guild: #making sure there is actually stuff in the message and have arguments and check if it is sent in server (not PM)
             if msg_arr[0] == "<@{}>".format(self.user.id) or msg_arr[0] == "<@!{}>".format(self.user.id): #make sure it is mention
                 msg_cmd = msg_arr[1].lower() # get command
+                if msg_cmd == "__init__":
+                    return
                 cmd = getattr(self.command, msg_cmd, None) #check if cmd exist, if not its none
                 if cmd: # if cmd is not none...
                     async with message.channel.typing(): #this looks nice
