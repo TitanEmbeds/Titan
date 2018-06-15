@@ -7,7 +7,7 @@
 <a class="waves-effect waves-light btn btn-large center_content" href="{{ url_for('user.dashboard') }}">Start here!</a>
 <br /><br />
 <div style="display: flex;align-items: center;">
-	<video preload="true" autoplay loop style="width:100%; border-radius: 10px;">
+	<video preload="true" autoplay loop mute style="width:100%; border-radius: 10px;">
 		<source src="{{url_for('static', filename='video/v2/titanembeds.mp4')}}" type="video/mp4">
 		<source src="{{url_for('static', filename='video/v2/titanembeds.webm')}}" type="video/webm; codecs=vp8, vorbis">
 		<source type="video/ogg; codecs=theora, vorbis" src="{{url_for('static', filename='video/v2/titanembeds.ogg')}}">
