@@ -330,6 +330,7 @@ def post():
             else:
                 message = discord_api.create_message(channel_id, content)
             status_code = message['code']
+    db.session.commit()
     response = jsonify(message=message.get('content', message), status=status, illegal_reasons=illegal_reasons)
     response.status_code = status_code
     return response
@@ -366,6 +367,7 @@ def create_unauthenticated_user():
         captcha_response = request.form['captcha_response']
         if not verify_captcha_request(captcha_response, request.remote_addr):
             abort(412)
+    final_response = None
     if not checkUserBanned(guild_id, ip_address):
         session['username'] = username
         if 'user_id' not in session or len(str(session["user_id"])) > 4:
@@ -379,12 +381,14 @@ def create_unauthenticated_user():
             session['user_keys'][guild_id] = key
         session.permanent = False
         status = update_user_status(guild_id, username, key)
-        return jsonify(status=status)
+        final_response = jsonify(status=status)
     else:
         status = {'banned': True}
         response = jsonify(status=status)
         response.status_code = 403
-        return response
+        final_response = response
+    db.session.commit()
+    return final_response
 
 @api.route("/change_unauthenticated_username", methods=["POST"])
 @rate_limiter.limit("1 per 10 minute", key_func=guild_ratelimit_key)
@@ -402,6 +406,7 @@ def change_unauthenticated_username():
         abort(404)
     if not guild_query_unauth_users_bool(guild_id):
         abort(401)
+    final_response = None
     if not checkUserBanned(guild_id, ip_address):
         if 'user_keys' not in session or guild_id not in session['user_keys'] or not session['unauthenticated']:
             abort(424)
@@ -415,12 +420,14 @@ def change_unauthenticated_username():
         session['user_keys'][guild_id] = key
         status = update_user_status(guild_id, username, key)
         emit("embed_user_disconnect", emitmsg, room="GUILD_"+guild_id, namespace="/gateway")
-        return jsonify(status=status)
+        final_response = jsonify(status=status)
     else:
         status = {'banned': True}
         response = jsonify(status=status)
         response.status_code = 403
-        return response
+        final_response = response
+    db.session.commit()
+    return final_response
 
 def get_guild_guest_icon(guild_id):
     guest_icon = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().guest_icon
@@ -487,6 +494,7 @@ def create_authenticated_user():
             if not db_user:
                 db_user = AuthenticatedUsers(guild_id, session['user_id'])
                 db.session.add(db_user)
+                db.session.commit()
             status = update_user_status(guild_id, session['username'])
             return jsonify(status=status)
         else:
@@ -550,6 +558,7 @@ def webhook_discordbotsorg_vote():
             pass
     DBLTrans = DiscordBotsOrgTransactions(int(user_id), vote_type, referrer)
     db.session.add(DBLTrans)
+    db.session.commit()
     return ('', 204)
 
 @api.route("/af/direct_message", methods=["POST"])

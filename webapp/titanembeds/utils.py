@@ -145,6 +145,7 @@ def update_user_status(guild_id, username, user_key=None):
         if dbUser.username != username or dbUser.ip_address != ip_address:
             dbUser.username = username
             dbUser.ip_address = ip_address
+            db.session.commit()
     else:
         status = {
             'authenticated': True,

@@ -68,6 +68,7 @@ def cosmetics_post():
             badges = []
         user.badges = json.dumps(badges)
     db.session.add(user)
+    db.session.commit()
     return ('', 204)
 
 @admin.route("/cosmetics", methods=["DELETE"])
@@ -80,6 +81,7 @@ def cosmetics_delete():
     if not entry:
         abort(409)
     db.session.delete(entry)
+    db.session.commit()
     return ('', 204)
 
 @admin.route("/cosmetics", methods=["PATCH"])
@@ -108,6 +110,7 @@ def cosmetics_patch():
         if badges == [""]:
             badges = []
         entry.badges = json.dumps(badges)
+    db.session.commit()
     return ('', 204)
     
 def prepare_guild_members_list(members, bans):
@@ -204,6 +207,7 @@ def update_administrate_guild(guild_id):
     if guest_icon != None and guest_icon.strip() == "":
         guest_icon = None
     db_guild.guest_icon = guest_icon
+    db.session.commit()
     emit("guest_icon_change", {"guest_icon": guest_icon if guest_icon else url_for('static', filename='img/titanembeds_square.png')}, room="GUILD_"+guild_id, namespace="/gateway")
     return jsonify(
         guild_id=db_guild.guild_id,
@@ -262,6 +266,7 @@ def post_titan_tokens():
     if get_titan_token(user_id) != -1:
         abort(409)
     set_titan_token(user_id, amount, "NEW VIA ADMIN [{}]".format(str(reason)))
+    db.session.commit()
     return ('', 204)
 
 @admin.route("/tokens", methods=["PATCH"])
@@ -275,6 +280,7 @@ def patch_titan_tokens():
     if get_titan_token(user_id) == -1:
         abort(409)
     set_titan_token(user_id, amount, "MODIFY VIA ADMIN [{}]".format(str(reason)))
+    db.session.commit()
     return ('', 204)
 
 @admin.route("/disabled_guilds", methods=["GET"])
@@ -290,6 +296,7 @@ def post_disabled_guilds():
         abort(409)
     guild = DisabledGuilds(guild_id)
     db.session.add(guild)
+    db.session.commit()
     return ('', 204)
 
 @admin.route("/disabled_guilds", methods=["DELETE"])
@@ -300,6 +307,7 @@ def delete_disabled_guilds():
         abort(409)
     guild = db.session.query(DisabledGuilds).filter(DisabledGuilds.guild_id == guild_id).first()
     db.session.delete(guild)
+    db.session.commit()
     return ('', 204)
 
 @admin.route("/custom_css", methods=["GET"])
@@ -344,6 +352,7 @@ def edit_custom_css_post(css_id):
     dbcss.css = css
     dbcss.css_variables = variables
     dbcss.css_var_bool = variables_enabled
+    db.session.commit()
     return jsonify({"id": dbcss.id})
     
 @admin.route("/custom_css/edit/<css_id>", methods=["DELETE"])
@@ -353,6 +362,7 @@ def edit_custom_css_delete(css_id):
     if not dbcss:
         abort(404)
     db.session.delete(dbcss)
+    db.session.commit()
     return jsonify({})
 
 @admin.route("/custom_css/new", methods=["GET"])
