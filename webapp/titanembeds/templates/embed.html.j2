@@ -382,6 +382,14 @@
         <div class="rich">
           <div class="content">
             <div class="innercontent">
+              {{#provider}}
+              <div class="provider">
+                <a href="
+                  {{#provider.url}}{{provider.url}}{{/provider.url}}
+                  {{^provider.url}}#{{/provider.url}}
+                " target="_blank" class="name">{{provider.name}}</a>
+              </div>
+              {{/provider}}
               {{#author}}
               <div class="author">
                 {{#author.proxy_icon_url}}

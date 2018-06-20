@@ -705,6 +705,14 @@ p.mentioned span.chatmessage {
   border-radius: 5px;
 }
 
+.richembed .provider .name {
+  color: #87909c;
+}
+
+.richembed .author .name {
+  color: white;
+}
+
 .richembed .author img, .richembed .footer img {
   width: 20px;
   border-radius: 100px;
