@@ -401,9 +401,14 @@
                 " target="_blank">{{title}}</a>
               </div>
               {{/title}}
+              {{^isVideo}}
               {{#description}}
               <div class="description">{{description}}</div>
               {{/description}}
+              {{/isVideo}}
+              {{#isVideo}}
+              <iframe class="video" src="{{video.url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              {{/isVideo}}
               {{#fields.length}}
               <div class="fields">
                 {{#fields}}
@@ -415,11 +420,11 @@
               </div>
               {{/fields.length}}
             </div>
-            {{#thumbnail}}
+            {{#thumbnail}}{{^isVideo}}
             <div class="thumbnail">
               <img src="{{thumbnail.proxy_url}}" class="materialboxed">
             </div>
-            {{/thumbnail}}
+            {{/isVideo}}{{/thumbnail}}
           </div>
           {{#image}}
           <div class="image">

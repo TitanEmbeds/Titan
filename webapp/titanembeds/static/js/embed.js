@@ -1110,6 +1110,11 @@
                 // if ($.inArray(disembed.type, ["rich", "link", "video"]) == -1) {
                 //     continue;
                 // }
+                
+                disembed.isVideo = false;
+                if (disembed.type == "video") {
+                    disembed.isVideo = true;
+                }
                 disembed.toRenderFooter = false;
                 if (disembed.footer) {
                     disembed.toRenderFooter = true;
