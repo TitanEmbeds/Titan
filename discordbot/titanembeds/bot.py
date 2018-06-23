@@ -3,6 +3,7 @@ from titanembeds.database import DatabaseInterface
 from titanembeds.commands import Commands
 from titanembeds.socketio import SocketIOInterface
 from titanembeds.poststats import DiscordBotsOrg, BotsDiscordPw
+from titanembeds.cleanup_db import CleanupDatabase
 from collections import deque
 import discord
 import aiohttp
@@ -23,6 +24,7 @@ class Titan(discord.AutoShardedClient):
         self.database = DatabaseInterface(self)
         self.command = Commands(self, self.database)
         self.socketio = SocketIOInterface(self, config["redis-uri"])
+        self.cleanup_db = CleanupDatabase(self, self.database)
         
         self.delete_list = deque(maxlen=100) # List of msg ids to prevent duplicate delete
         
@@ -78,6 +80,7 @@ class Titan(discord.AutoShardedClient):
         self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
         self.botsDiscordPw = BotsDiscordPw(self.user.id, config.get("bots-discord-pw-token", None))
         await self.postStats()
+        await self.cleanup_db.start_cleanup()
 
     async def on_message(self, message):
         await self.socketio.on_message(message)
