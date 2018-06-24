@@ -34,7 +34,7 @@ class Commands():
         await message.channel.send(message.author.mention + " " + reason)
 
     async def invite(self, message):
-        await message.channel.send("You can invite Titan to your server by visiting this link: https://discordapp.com/oauth2/authorize?&client_id=299403260031139840&scope=bot&permissions=641195117")
+        await message.channel.send("You can invite Titan to your server by visiting this link: https://titanembeds.com/user/dashboard")
         
     async def server(self, message):
         await message.channel.send("Join the Titan Embeds Discord server! https://discord.gg/pFDDtcN")
