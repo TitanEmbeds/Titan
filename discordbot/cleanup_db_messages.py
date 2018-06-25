@@ -8,6 +8,7 @@ import sys
 import logging
 import json
 import gc
+import random
 from asyncio_extras import threadpool
 logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 logging.getLogger('TitanBot')
@@ -27,6 +28,18 @@ class Titan(discord.AutoShardedClient):
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
         self.command = Commands(self, self.database)
+        self.logger = logging.getLogger("titan_cleanupdb")
+        self.logger.setLevel(logging.DEBUG)
+        fh = logging.FileHandler("titan_cleanupdb.log")
+        fh.setLevel(logging.DEBUG)
+        session_id = str(random.randrange(100))
+        formatter = logging.Formatter("%(asctime)s - {0} - %(levelname)s - %(message)s".format(session_id))
+        fh.setFormatter(formatter)
+        self.logger.addHandler(fh)
+        consoleHandler = logging.StreamHandler()
+        consoleHandler.setFormatter(formatter)
+        self.logger.addHandler(consoleHandler)
+        self.logger.info("Initialized Database Cleaning Class with session id of " + session_id)
 
     def _cleanup(self):
         try:
@@ -65,7 +78,7 @@ class Titan(discord.AutoShardedClient):
         await self.change_presence(status=discord.Status.do_not_disturb, activity=game)
 
         try:
-            await self.database.connect(config["database-uri"])
+            self.database.connect(config["database-uri"])
         except Exception:
             self.logger.error("Unable to connect to specified database!")
             traceback.print_exc()
@@ -73,30 +86,31 @@ class Titan(discord.AutoShardedClient):
             return
 
         print("working on this...")
-        async with threadpool():
-            with self.database.get_session() as session:
-                guilds = session.query(Guilds).all()
-                count = 0
-                for guild in guilds:
-                    count += 1
-                    print("[{}] snowflake-{} name-{}".format(count, guild.guild_id, guild.name))
-                    try:
-                        channelsjson = json.loads(guild.channels)
-                    except:
-                        continue
-                    active_channels = []
-                    for channel in channelsjson:
-                        chanid = channel["id"]
-                        active_channels.append(chanid)
-                        keep_these = session.query(Messages.message_id).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).limit(50)
-                        d = session.query(Messages).filter(Messages.channel_id == chanid, ~Messages.message_id.in_(keep_these)).delete(synchronize_session=False)
-                        session.commit()
-                        print("    --{} [{}]".format(channel["name"], d))
-                    d = session.query(Messages).filter(Messages.guild_id == guild.guild_id, ~Messages.channel_id.in_(active_channels)).delete(synchronize_session=False)
+        self.loop.run_in_executor(None, self.start_cleanup)
+
+    def start_cleanup(self):
+        with self.database.get_session() as session:
+            guilds = session.query(Guilds).all()
+            count = 0
+            for guild in guilds:
+                count += 1
+                self.logger.info("[{}] snowflake-{} name-{}".format(count, guild.guild_id, guild.name))
+                try:
+                    channelsjson = json.loads(guild.channels)
+                except:
+                    continue
+                active_channels = []
+                for channel in channelsjson:
+                    chanid = channel["id"]
+                    active_channels.append(chanid)
+                    keep_these = session.query(Messages.message_id).filter(Messages.channel_id == chanid).order_by(Messages.timestamp.desc()).limit(50)
+                    d = session.query(Messages).filter(Messages.channel_id == chanid, ~Messages.message_id.in_(keep_these)).delete(synchronize_session=False)
                     session.commit()
-                    print("    INACTIVE {}".format(d))
-        print("done!")
-        await self.logout()
+                    self.logger.info("    --{} [{}]".format(channel["name"], d))
+                d = session.query(Messages).filter(Messages.guild_id == guild.guild_id, ~Messages.channel_id.in_(active_channels)).delete(synchronize_session=False)
+                session.commit()
+                self.logger.info("    INACTIVE {}".format(d))
+        self.logger.info("done!")
 
 def main():
     print("Starting...")
