@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-03-04 16:26-0500\n"
+"PO-Revision-Date: 2018-06-25T00:20:40+0000\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.3\n"
-"Plural-Forms: nplurals=4; plural=((n == 1) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || n%10 == 1 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 12 && n%100 <= 14)) ? 2 : 3));\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: titanembeds\n"
 "X-Crowdin-Language: pl\n"
@@ -127,11 +127,11 @@ msgstr "Dźwięk powiadomienia"
 
 #: titanembeds/templates/embed.html.j2:176
 msgid "New Messages"
-msgstr "Na nowe wiadomości"
+msgstr "Nowe wiadomości"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Mentions"
-msgstr "Na wspomnienia ciebie"
+msgstr "Wzmianki"
 
 #: titanembeds/templates/embed.html.j2:184
 msgid "Nothing"
@@ -159,7 +159,7 @@ msgstr "Kanał 18+"
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr "Musisz mieć 18+ lat aby zobaczyć ten kanał. Czy masz 18+ lat?"
+msgstr "Musisz mieć 18+ lat, aby zobaczyć ten kanał. Czy masz 18+ lat?"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
@@ -171,7 +171,7 @@ msgstr "Tak mam 18+ lat"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
-msgstr "Wspomnij"
+msgstr "Wzmianka"
 
 #: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
@@ -207,7 +207,7 @@ msgstr "Emoji serwera"
 
 #: titanembeds/templates/embed.html.j2:270
 msgid "Please login to post a message."
-msgstr "Zaloguj się aby wysłać wiadomość."
+msgstr "Zaloguj się, aby wysłać wiadomość."
 
 #: titanembeds/templates/embed.html.j2:270
 msgid "Login"

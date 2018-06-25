@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-03-04 00:13-0500\n"
+"PO-Revision-Date: 2018-06-25T00:20:35+0000\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "MIME-Version: 1.0\n"
@@ -155,19 +155,19 @@ msgstr "Hanya satu langkah lagi..."
 
 #: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
-msgstr ""
+msgstr "Kanal NSFW"
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr ""
+msgstr "Anda harus berusia setidaknya delapan belas tahun untuk melihat kanal ini. Apakah Anda berusia lebih dari delapan belas dan berkenan melihat konten dewasa?"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
-msgstr ""
+msgstr "Ngga"
 
 #: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
-msgstr ""
+msgstr "Lanjutkan"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
@@ -187,7 +187,7 @@ msgstr "TitanEmbeds Supporter"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
-msgstr ""
+msgstr "Hari ini saya telah mengambil suara untuk Titan di Discord Bots!"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."

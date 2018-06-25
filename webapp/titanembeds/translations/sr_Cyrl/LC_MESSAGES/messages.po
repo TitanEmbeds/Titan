@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-03-30 14:38-0400\n"
+"PO-Revision-Date: 2018-06-25T00:20:41+0000\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Serbian (Cyrillic)\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Crowdin-Project: titanembeds\n"
 "X-Crowdin-Language: sr\n"
 "X-Crowdin-File: /master/webapp/titanembeds/translations/messages.pot\n"
-"Language: sr_Cyrl\n"
+"Language: sr_SP\n"
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Let's get to know each other! My name is Titan, what's yours?"
@@ -139,15 +139,15 @@ msgstr "Ништа"
 
 #: titanembeds/templates/embed.html.j2:188
 msgid "Display Rich Embeds"
-msgstr ""
+msgstr "Прикажи Рич Ембед"
 
 #: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
-msgstr ""
+msgstr "Омогући"
 
 #: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
-msgstr ""
+msgstr "Онемогући"
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
@@ -155,19 +155,19 @@ msgstr "Само још један корак..."
 
 #: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
-msgstr ""
+msgstr "НСФВ канал"
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr ""
+msgstr "Мораш имати бар 16 година како би видео овај канал.Да ли имаш 18 и да ли желиш приступ овом каналу?"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
-msgstr ""
+msgstr "Не"
 
 #: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
-msgstr ""
+msgstr "Настави"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
@@ -187,7 +187,7 @@ msgstr "ТитанЕмбедс Донатор"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
-msgstr ""
+msgstr "Гласао/ла сам за Титана на Дискорд ботс сајт данас!"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
