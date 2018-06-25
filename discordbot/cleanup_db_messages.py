@@ -110,7 +110,7 @@ class Titan(discord.AutoShardedClient):
                 d = session.query(Messages).filter(Messages.guild_id == guild.guild_id, ~Messages.channel_id.in_(active_channels)).delete(synchronize_session=False)
                 session.commit()
                 self.logger.info("    INACTIVE {}".format(d))
-        self.logger.info("done!")
+            self.logger.info("done!")
 
 def main():
     print("Starting...")
