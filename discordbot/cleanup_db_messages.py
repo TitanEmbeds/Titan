@@ -20,7 +20,7 @@ logging.getLogger('sqlalchemy')
 # messages store          #
 ###########################
 
-class Titan(discord.Client):
+class Titan(discord.AutoShardedClient):
     def __init__(self):
         super().__init__()
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
