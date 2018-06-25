@@ -60,6 +60,9 @@ class Titan(discord.AutoShardedClient):
         print(self.user.name)
         print(self.user.id)
         print('------')
+        
+        game = discord.Game(name="Titan is currently down for database maintenances. Bookmark https://TitanEmbeds.com/ for later access to our services!")
+        await self.change_presence(status=discord.Status.do_not_disturb, activity=game)
 
         try:
             await self.database.connect(config["database-uri"])
