@@ -86,9 +86,9 @@ class Titan(discord.AutoShardedClient):
             return
 
         print("working on this...")
-        self.loop.run_in_executor(None, self.start_cleanup)
+        self.loop.create_task(self.start_cleanup())
 
-    def start_cleanup(self):
+    async def start_cleanup(self):
         with self.database.get_session() as session:
             guilds = session.query(Guilds).all()
             count = 0
