@@ -91,8 +91,11 @@ class Titan(discord.AutoShardedClient):
     async def start_cleanup(self):
         with self.database.get_session() as session:
             guilds = session.query(Guilds).all()
+            guilds_new = []
             count = 0
             for guild in guilds:
+                guilds_new.append(guild)
+            for guild in guilds_new:
                 count += 1
                 self.logger.info("[{}] snowflake-{} name-{}".format(count, guild.guild_id, guild.name))
                 try:
