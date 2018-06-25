@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-06-25T00:20:37+0000\n"
+"PO-Revision-Date: 2018-06-25 18:21\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Chinese Simplified\n"
 "MIME-Version: 1.0\n"
@@ -28,7 +28,7 @@ msgstr "您好, 欢迎您!"
 
 #: titanembeds/blueprints/embed/embed.py:17
 msgid "What brings you here today?"
-msgstr "你今天干嘛呢？"
+msgstr "你今天要做什么？"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "....what do you expect this text to say?"
@@ -44,11 +44,11 @@ msgstr "启动发射序列..."
 
 #: titanembeds/blueprints/embed/embed.py:21
 msgid "Captain, what's your option?"
-msgstr "船长，你有什么选择？"
+msgstr "老板，你要选什么？"
 
 #: titanembeds/blueprints/embed/embed.py:22
 msgid "Alright, here's the usual~"
-msgstr "好的，这里是通常的〜"
+msgstr "好的，这是通常的情况〜"
 
 #: titanembeds/templates/embed.html.j2:78
 msgid "Actions"
@@ -72,7 +72,7 @@ msgstr "频道"
 
 #: titanembeds/templates/embed.html.j2:94
 msgid "Online Server Members"
-msgstr "联机服务器成员"
+msgstr "在线服务器成员"
 
 #: titanembeds/templates/embed.html.j2:99
 msgid "Authenticated Embed Users"
@@ -92,11 +92,11 @@ msgstr "Discord 登录"
 
 #: titanembeds/templates/embed.html.j2:129
 msgid "You will be invited into this server."
-msgstr "您将被邀请进入此服务器。"
+msgstr "您将被邀请进此服务器。"
 
 #: titanembeds/templates/embed.html.j2:133
 msgid "Of course, you also have the option to login by picking a temporary username for your current browsing session."
-msgstr "当然，您也可以通过为当前浏览会话选择一个临时用户名来进行登录。"
+msgstr "当然了，您也可以进行登录由选择一个临时用户名在当前浏览器会话期间使用。"
 
 #: titanembeds/templates/embed.html.j2:135
 msgid "Username (Hit ENTER/RETURN key to confirm)"
@@ -120,7 +120,7 @@ msgstr "主题"
 
 #: titanembeds/templates/embed.html.j2:167
 msgid "Overwrite Current Embed Theme w/ User CSS"
-msgstr "用户CSS覆盖当前嵌入主题"
+msgstr "用用户CSS来覆盖当前嵌入主题"
 
 #: titanembeds/templates/embed.html.j2:171
 msgid "Notification Sound"
@@ -136,7 +136,7 @@ msgstr "提及"
 
 #: titanembeds/templates/embed.html.j2:184
 msgid "Nothing"
-msgstr "没有"
+msgstr "无声"
 
 #: titanembeds/templates/embed.html.j2:188
 msgid "Display Rich Embeds"
@@ -152,7 +152,7 @@ msgstr "停用"
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
-msgstr "再来一步..。"
+msgstr "之剩一步..."
 
 #: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
@@ -172,7 +172,7 @@ msgstr "继续"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
-msgstr "提及"
+msgstr "只有 @被提到"
 
 #: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
@@ -184,7 +184,7 @@ msgstr "TitanEmbeds 合作伙伴"
 
 #: titanembeds/templates/embed.html.j2:239
 msgid "TitanEmbeds Supporter"
-msgstr "TitanEmbeds 支持"
+msgstr "TitanEmbeds 支持人"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
@@ -192,15 +192,15 @@ msgstr "我今天有在 Discord Bots 上面给 Titan 投票！"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
-msgstr "用户在Discord中离线。"
+msgstr "用户在Discord上已经离线了。"
 
 #: titanembeds/templates/embed.html.j2:243
 msgid "Playing"
-msgstr "播放"
+msgstr "正在玩"
 
 #: titanembeds/templates/embed.html.j2:244
 msgid "Roles"
-msgstr "角色"
+msgstr "身份"
 
 #: titanembeds/templates/embed.html.j2:253
 msgid "Server Emoji"
@@ -208,7 +208,7 @@ msgstr "服务器表情"
 
 #: titanembeds/templates/embed.html.j2:270
 msgid "Please login to post a message."
-msgstr "请登录后发送邮件。"
+msgstr "请登录后发送消息。"
 
 #: titanembeds/templates/embed.html.j2:270
 msgid "Login"
