@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-06-19T06:10:39+0000\n"
+"PO-Revision-Date: 2018-06-25T00:20:40+0000\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -127,11 +127,11 @@ msgstr "Dźwięk powiadomienia"
 
 #: titanembeds/templates/embed.html.j2:176
 msgid "New Messages"
-msgstr "Na nowe wiadomości"
+msgstr "Nowe wiadomości"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Mentions"
-msgstr "Na wspomnienia ciebie"
+msgstr "Wzmianki"
 
 #: titanembeds/templates/embed.html.j2:184
 msgid "Nothing"
@@ -159,7 +159,7 @@ msgstr "Kanał 18+"
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr "Musisz mieć 18+ lat aby zobaczyć ten kanał. Czy masz 18+ lat?"
+msgstr "Musisz mieć 18+ lat, aby zobaczyć ten kanał. Czy masz 18+ lat?"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
@@ -171,7 +171,7 @@ msgstr "Tak mam 18+ lat"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
-msgstr "Wspomnij"
+msgstr "Wzmianka"
 
 #: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
@@ -207,7 +207,7 @@ msgstr "Emoji serwera"
 
 #: titanembeds/templates/embed.html.j2:270
 msgid "Please login to post a message."
-msgstr "Zaloguj się aby wysłać wiadomość."
+msgstr "Zaloguj się, aby wysłać wiadomość."
 
 #: titanembeds/templates/embed.html.j2:270
 msgid "Login"
