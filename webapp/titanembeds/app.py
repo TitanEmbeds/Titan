@@ -81,4 +81,9 @@ def before_first_request():
 
 @app.context_processor
 def context_processor():
-    return {"devs": get_administrators_list(), "constants": constants, "af_mode_enabled": datetime.datetime.now().date() == datetime.date(datetime.datetime.now().year, 4, 1)}
+    return {
+        "devs": get_administrators_list(),
+        "constants": constants,
+        "af_mode_enabled": datetime.datetime.now().date() == datetime.date(datetime.datetime.now().year, 4, 1),
+        "dbl_voted": session.get("unauthenticated", True) == False and bool(redis_store.get("DiscordBotsOrgVoted/" + str(session.get("user_id", -1))))
+    }
