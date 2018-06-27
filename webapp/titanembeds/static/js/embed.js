@@ -1111,6 +1111,12 @@
                 //     continue;
                 // }
                 
+                if (disembed.type == "image") {
+                    var img = "<img class=\"image attachment materialboxed\" src=\"" + disembed.thumbnail.proxy_url + "\">";
+                    emb.push(img);
+                    continue;
+                }
+                
                 disembed.isVideo = false;
                 if (disembed.type == "video") {
                     disembed.isVideo = true;
