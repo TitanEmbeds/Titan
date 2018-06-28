@@ -37,6 +37,8 @@
     var current_user_discord_id; // Current user discord snowflake id, eg mine is 140252024666062848
     var visitor_mode = false; // Keep track of if using the visitor mode or authenticate mode
     var socket = null; // Socket.io object
+    var socket_last_ack = null; // Socket.io last acknowledgement Moment obj
+    var socket_error_should_refetch = false; // If true, the next ack will trigger a http refetch if socket connected
     var authenticated_users_list = []; // List of all authenticated users
     var unauthenticated_users_list = []; // List of all guest users
     var discord_users_list = []; // List of all discord users that are probably online
@@ -1255,6 +1257,7 @@
             }
         }
         fet.done(function(data) {
+            socket_error_should_refetch = false;
             var status = data.status;
             if (visitor_mode) {
                 update_embed_userchip(false, null, "Titan", null, "0001", null);
@@ -1929,6 +1932,13 @@
         socket.on("guest_icon_change", function (icon) {
             global_guest_icon = icon.guest_icon;
         });
+        
+        socket.on("ack", function () {
+            socket_last_ack = moment();
+            if (socket && socket_error_should_refetch) {
+                run_fetch_routine();
+            }
+        });
     }
     
     function update_socket_channels() {
@@ -1939,6 +1949,17 @@
     }
     
     function send_socket_heartbeat() {
+        if (socket_last_ack) {
+            var now = moment();
+            var duration = moment.duration(now.diff(socket_last_ack)).minutes();
+            if (socket && duration >= 1) { // server must hanged, lets reconnect
+                socket_error_should_refetch = true;
+                socket.disconnect();
+                socket = null;
+                initiate_websockets();
+            }
+        }
+        
         if (socket) {
             socket.emit("heartbeat", {"guild_id": guild_id, "visitor_mode": visitor_mode});
         }

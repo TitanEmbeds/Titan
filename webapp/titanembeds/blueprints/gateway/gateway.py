@@ -86,6 +86,8 @@ class Gateway(Namespace):
                 emit("revoke")
                 time.sleep(1000)
                 disconnect()
+            else:
+                emit("ack")
         else:
             if not guild_accepts_visitors(guild_id):
                 disconnect()
