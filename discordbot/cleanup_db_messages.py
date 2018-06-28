@@ -1,8 +1,5 @@
 from config import config
 from titanembeds.database import DatabaseInterface, Guilds, Messages
-from titanembeds.commands import Commands
-import discord
-import aiohttp
 import asyncio
 import sys
 import logging
@@ -21,13 +18,11 @@ logging.getLogger('sqlalchemy')
 # messages store          #
 ###########################
 
-class Titan(discord.AutoShardedClient):
+class TitanCleanupDB:
     def __init__(self):
         super().__init__()
-        self.aiosession = aiohttp.ClientSession(loop=self.loop)
-        self.http.user_agent += ' TitanEmbeds-Bot'
+        self.loop = asyncio.get_event_loop()
         self.database = DatabaseInterface(self)
-        self.command = Commands(self, self.database)
         self.logger = logging.getLogger("titan_cleanupdb")
         self.logger.setLevel(logging.DEBUG)
         fh = logging.FileHandler("titan_cleanupdb.log")
@@ -57,9 +52,9 @@ class Titan(discord.AutoShardedClient):
 
     def run(self):
         try:
-            self.loop.run_until_complete(self.start(config["bot-token"]))
-        except discord.errors.LoginFailure:
-            print("Invalid bot token in config!")
+            self.loop.run_until_complete(self.on_ready())
+        except Exception as e:
+            print("Error!", e)
         finally:
             try:
                 self._cleanup()
@@ -69,20 +64,13 @@ class Titan(discord.AutoShardedClient):
 
     async def on_ready(self):
         print('Titan [DiscordBot] [UTILITY: Cleanup database messages]')
-        print('Logged in as the following user:')
-        print(self.user.name)
-        print(self.user.id)
         print('------')
-        
-        game = discord.Game(name="Titan is currently down for database maintenances. Bookmark https://TitanEmbeds.com/ for later access to our services!")
-        await self.change_presence(status=discord.Status.do_not_disturb, activity=game)
 
         try:
             self.database.connect(config["database-uri"])
         except Exception:
             self.logger.error("Unable to connect to specified database!")
             traceback.print_exc()
-            await self.logout()
             return
 
         print("working on this...")
@@ -117,7 +105,7 @@ class Titan(discord.AutoShardedClient):
 
 def main():
     print("Starting...")
-    te = Titan()
+    te = TitanCleanupDB()
     te.run()
     gc.collect()
 
