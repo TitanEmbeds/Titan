@@ -52,7 +52,7 @@ class TitanCleanupDB:
 
     def run(self):
         try:
-            self.loop.run_until_complete(self.on_ready())
+            self.loop.run_until_complete(self.start_cleanup())
         except Exception as e:
             print("Error!", e)
         finally:
@@ -62,7 +62,7 @@ class TitanCleanupDB:
                 print("Error in cleanup:", e)
             self.loop.close()
 
-    async def on_ready(self):
+    async def start_cleanup(self):
         print('Titan [DiscordBot] [UTILITY: Cleanup database messages]')
         print('------')
 
@@ -74,9 +74,6 @@ class TitanCleanupDB:
             return
 
         print("working on this...")
-        self.loop.create_task(self.start_cleanup())
-
-    async def start_cleanup(self):
         with self.database.get_session() as session:
             guilds = session.query(Guilds).all()
             guilds_new = []
