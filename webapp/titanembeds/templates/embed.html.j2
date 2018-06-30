@@ -415,7 +415,14 @@
               {{/description}}
               {{/isVideo}}
               {{#isVideo}}
-              <iframe class="video" src="{{video.url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <div class="video">
+                {{#video.proxy_url}}
+                <video class="player" src="{{video.url}}" frameborder="0" allow="encrypted-media" allowfullscreen controls preload poster="{{thumbnail.proxy_url}}"></video>
+                {{/video.proxy_url}}
+                {{^video.proxy_url}}
+                <iframe class="player" src="{{video.url}}" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                {{/video.proxy_url}}
+              </div>
               {{/isVideo}}
               {{#fields.length}}
               <div class="fields">

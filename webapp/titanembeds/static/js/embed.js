@@ -962,6 +962,8 @@
             }
             if (message.attachments[i].url.endsWith(".png") || message.attachments[i].url.endsWith(".jpg") || message.attachments[i].url.endsWith(".jpeg") || message.attachments[i].url.endsWith(".gif")) {
                 attach += "<img class=\"attachment materialboxed\" src=\"" + message.attachments[i].url + "\">";
+            } else if (message.attachments[i].url.endsWith(".mp4")) {
+                attach += "<video class=\"player\" src=\"" + message.attachments[i].url + "\" frameborder=\"0\" allow=\"encrypted-media\" allowfullscreen controls preload poster=\"" + message.attachments[i].proxy_url + "?format=png\"></video>";
             } else {
                 attach += message.attachments[i].url;
             }

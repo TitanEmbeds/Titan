@@ -782,6 +782,11 @@ p.mentioned span.chatmessage {
   max-width: none;
 }
 
+.richembed .video {
+  width: 100%;
+  max-width: 450px;
+}
+
 #chatcontent img.attachment {
   width: 100%;
   max-width: 300px;
@@ -793,6 +798,11 @@ p.mentioned span.chatmessage {
 #chatcontent img.attachment.materialboxed.active {
   max-width: none;
   max-height: none;
+}
+
+#chatcontent .player {
+  width: 100%;
+  max-width: 400px;
 }
 
 .wdt-emoji-popup {
