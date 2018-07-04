@@ -1,0 +1,175 @@
+/* Ice Wyvern theme by Jelle Z. @ https://gitlab.com/jelle619 */
+
+label {
+    color: black;
+}
+
+.modal-content {
+  color: black
+}
+
+#modal_guildname {
+  color: black
+}
+
+#modal_guildinfobox {
+    background-color: rgba(220,220,220);
+}
+
+input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]), input[type=password]:not(.browser-default):focus:not([readonly]), input[type=email]:not(.browser-default):focus:not([readonly]), input[type=url]:not(.browser-default):focus:not([readonly]), input[type=time]:not(.browser-default):focus:not([readonly]), input[type=date]:not(.browser-default):focus:not([readonly]), input[type=datetime]:not(.browser-default):focus:not([readonly]), input[type=datetime-local]:not(.browser-default):focus:not([readonly]), input[type=tel]:not(.browser-default):focus:not([readonly]), input[type=number]:not(.browser-default):focus:not([readonly]), input[type=search]:not(.browser-default):focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #039be5;
+    -webkit-box-shadow: 0 1px 0 0 #039be5;
+    box-shadow: 0 1px 0 0 #039be5;
+}
+
+input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-default):focus:not([readonly])+label, input[type=password]:not(.browser-default):focus:not([readonly])+label, input[type=email]:not(.browser-default):focus:not([readonly])+label, input[type=url]:not(.browser-default):focus:not([readonly])+label, input[type=time]:not(.browser-default):focus:not([readonly])+label, input[type=date]:not(.browser-default):focus:not([readonly])+label, input[type=datetime]:not(.browser-default):focus:not([readonly])+label, input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label, input[type=tel]:not(.browser-default):focus:not([readonly])+label, input[type=number]:not(.browser-default):focus:not([readonly])+label, input[type=search]:not(.browser-default):focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label {
+    color: #039be5;
+}
+
+
+.btn{
+  background-color: #039be5
+}
+.btn:visited{
+  background-color: #039be5
+}
+.btn:hover {
+  background-color: #42c1ff
+}
+.btn:active{
+  background-color: #007dbc;
+}
+.btn:focus {
+  background-color: #039be5
+}
+.btn-large{
+  background-color: #039be5
+}
+.btn-large:visited{
+  background-color: #039be5
+}
+.btn-large:hover {
+  background-color: #42c1ff
+}
+.btn-large:active{
+  background-color: #007dbc;
+}
+.btn-large:focus {
+  background-color: #039be5
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #039be5;
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #039be5;
+}
+
+[type="checkbox"].filled-in:checked+label:after {
+    border: 2px solid #039be5;
+    background-color: #039be5;
+}
+
+[type="checkbox"].filled-in:not(:checked)+label:after {
+    background-color: transparent;
+    border: 2px solid #5a5a5a;
+}
+
+#guild-nav {
+  background-color: rgba(255,255,255,0.9)
+}
+
+#guild-nav span {
+  color: black
+}
+
+#guild-nav a {
+  color: black
+}
+
+#members-nav {
+  background-color: rgba(255,255,255,0.9)
+}
+
+#channeltopic {
+  color: black
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: light;
+    font-weight: 300;
+    src: url("../font/roboto_light.woff") format("woff")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    src: url("../font/roboto_normal.woff") format("woff")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: medium;
+    font-weight: 600;
+    src: url("../font/roboto_medium.woff") format("woff")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: bold;
+    font-weight: 700;
+    src: url("../font/roboto_bold.woff") format("woff")
+}
+
+* {
+font-family: Helvetica Neue, Roboto, Helvetica, Arial, sans-serif;
+}
+
+#footer {
+  background-color: rgba(255,255,255,0.9)
+}
+
+#footercontainer span {
+  color: rgba(100,100,100)
+}
+
+#footercontainer {
+  border: 0px
+}
+
+.footercontainer {
+  margin: 6.5px
+}
+
+#messageboxouter textarea {
+  color: black
+}
+
+nav a {
+  color: #039be5
+}
+
+.brand-logo-text {
+  color: black
+}
+
+.brand-logo-text [class="betatag align-top"]{
+  color: rgba(100,100,100)
+}
+
+.nav-wrapper {
+  background-color: rgba(255,255,255,0.9)
+}
+
+[src="/static/img/titanembeds_shield.png"]{
+  display: none
+}
+:root {
+    --modal: rgba(240,240,240);
+    --noroleusers: rgba(100,100,100);
+    --main: rgba(240,240,240);
+    --chatmessage: rgba(10,10,10);
+    --discrim: rgba(100,100,100)

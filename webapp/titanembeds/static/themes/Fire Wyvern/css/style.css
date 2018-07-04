@@ -1,0 +1,151 @@
+/* Fire Wyvern theme by Jelle Z. @ https://gitlab.com/jelle619 */
+
+.btn{
+  background-color: rgba(255,95,20);
+}
+.btn-large{
+  background-color: rgba(255,95,20);
+}
+.btn:visited{
+  background-color: rgba(255,95,20);
+}
+.btn:hover {
+  background-color: orange
+}
+.btn:active{
+  background-color: red
+}
+.btn:focus {
+  background-color: rgba(255,95,20);
+}
+
+input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]), input[type=password]:not(.browser-default):focus:not([readonly]), input[type=email]:not(.browser-default):focus:not([readonly]), input[type=url]:not(.browser-default):focus:not([readonly]), input[type=time]:not(.browser-default):focus:not([readonly]), input[type=date]:not(.browser-default):focus:not([readonly]), input[type=datetime]:not(.browser-default):focus:not([readonly]), input[type=datetime-local]:not(.browser-default):focus:not([readonly]), input[type=tel]:not(.browser-default):focus:not([readonly]), input[type=number]:not(.browser-default):focus:not([readonly]), input[type=search]:not(.browser-default):focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid rgba(255,95,20);
+    -webkit-box-shadow: 0 1px 0 0 rgba(255,95,20);
+    box-shadow: 0 1px 0 0 rgba(255,95,20);
+}
+
+input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-default):focus:not([readonly])+label, input[type=password]:not(.browser-default):focus:not([readonly])+label, input[type=email]:not(.browser-default):focus:not([readonly])+label, input[type=url]:not(.browser-default):focus:not([readonly])+label, input[type=time]:not(.browser-default):focus:not([readonly])+label, input[type=date]:not(.browser-default):focus:not([readonly])+label, input[type=datetime]:not(.browser-default):focus:not([readonly])+label, input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label, input[type=tel]:not(.browser-default):focus:not([readonly])+label, input[type=number]:not(.browser-default):focus:not([readonly])+label, input[type=search]:not(.browser-default):focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label {
+    color: rgba(255,95,20);
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: rgba(255,95,20);
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid rgba(255,95,20);
+}
+
+#guild-nav {
+  background-color: rgba(0,0,0,0.9)
+}
+
+#guild-nav span {
+  color: white
+}
+
+#guild-nav a {
+  color: white
+}
+
+#members-nav {
+  background-color: rgba(0,0,0,0.9)
+}
+
+#channeltopic {
+  color: rgba(255,255,255)
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: light;
+    font-weight: 300;
+    src: url("../font/roboto_light.woff") format("woff")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    src: url("../font/roboto_normal.woff") format("woff")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: medium;
+    font-weight: 600;
+    src: url("../font/roboto_medium.woff") format("woff")
+}
+
+@font-face {
+    font-family: Roboto;
+    font-style: bold;
+    font-weight: 700;
+    src: url("../font/roboto_bold.woff") format("woff")
+}
+
+* {
+font-family: Helvetica Neue, Roboto, Helvetica, Arial, sans-serif;
+}
+
+#footer {
+  background-color: rgba(0,0,0,0.9)
+}
+
+#footercontainer span {
+  color: rgba(175,175,175)
+}
+
+#footercontainer {
+  border: 0px
+}
+
+.footercontainer {
+  margin: 6.5px
+}
+
+#messageboxouter textarea {
+  color: rgba(255,255,255)
+}
+
+nav a {
+  color: rgba(255,95,20)
+}
+
+.btn:focus{
+  background-color: rgba(255,95,20)
+}
+
+.brand-logo-text {
+  color: white
+}
+
+.brand-logo-text [class="betatag align-top"]{
+  color: rgba(175,175,175)
+}
+
+.nav-wrapper {
+  background-color: rgba(0,0,0,0.9)
+}
+
+[src="/static/img/titanembeds_shield.png"]{
+  display: none
+}
+
+[type="checkbox"].filled-in:checked+label:after {
+    border: 2px solid rgb(255,95,20);
+    background-color: rgb(255,95,20);
+}
+
+[type="checkbox"].filled-in:not(:checked)+label:after {
+    background-color: transparent;
+    border: 2px solid #5a5a5a;
+}
+
+:root {
+    --modal: rgba(20,20,20);
+    --noroleusers: rgba(100,100,100);
+    --main: rgba(20,20,20);
+    --chatmessage: rgba(255,255,255);
+    --discrim: rgba(100,100,100)
