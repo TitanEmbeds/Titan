@@ -13,7 +13,7 @@ label {
 }
 
 #modal_guildinfobox {
-    background-color: rgba(220,220,220);
+    background-color: rgb(220,220,220);
 }
 
 input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]), input[type=password]:not(.browser-default):focus:not([readonly]), input[type=email]:not(.browser-default):focus:not([readonly]), input[type=url]:not(.browser-default):focus:not([readonly]), input[type=time]:not(.browser-default):focus:not([readonly]), input[type=date]:not(.browser-default):focus:not([readonly]), input[type=datetime]:not(.browser-default):focus:not([readonly]), input[type=datetime-local]:not(.browser-default):focus:not([readonly]), input[type=tel]:not(.browser-default):focus:not([readonly]), input[type=number]:not(.browser-default):focus:not([readonly]), input[type=search]:not(.browser-default):focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
@@ -89,6 +89,7 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-def
 }
 
 #members-nav {
+  background-color: rgb(255,255,255);
   background-color: rgba(255,255,255,0.9)
 }
 
@@ -129,11 +130,12 @@ font-family: Helvetica Neue, Roboto, Helvetica, Arial, sans-serif;
 }
 
 #footer {
+  background-color: rgb(255,255,255);
   background-color: rgba(255,255,255,0.9)
 }
 
 #footercontainer span {
-  color: rgba(100,100,100)
+  color: rgb(100,100,100)
 }
 
 #footercontainer {
@@ -157,10 +159,11 @@ nav a {
 }
 
 .brand-logo-text [class="betatag align-top"]{
-  color: rgba(100,100,100)
+  color: rgb(100,100,100)
 }
 
 .nav-wrapper {
+  background-color: rgb(255,255,255);
   background-color: rgba(255,255,255,0.9)
 }
 
@@ -168,8 +171,8 @@ nav a {
   display: none
 }
 :root {
-    --modal: rgba(240,240,240);
-    --noroleusers: rgba(100,100,100);
-    --main: rgba(240,240,240);
-    --chatmessage: rgba(10,10,10);
-    --discrim: rgba(100,100,100)
+    --modal: rgb(240,240,240);
+    --noroleusers: rgb(100,100,100);
+    --main: rgb(240,240,240);
+    --chatmessage: rgb(10,10,10);
+    --discrim: rgb(100,100,100)
