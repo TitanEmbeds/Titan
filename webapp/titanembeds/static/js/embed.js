@@ -22,7 +22,7 @@
 /* global post_timeout */
 
 (function () {
-    const theme_options = ["DiscordDark", "MetroEdge", "BetterTitan"]; // All the avaliable theming names
+    const theme_options = ["DiscordDark", "FireWyvern", "IceWyvern", "MetroEdge", "BetterTitan"]; // All the avaliable theming names
     const badges_options = ["administrator", "partner", "supporter", "discordbotsorgvoted"]; // All badges avaliable
     
     var user_def_css; // Saves the user defined css
