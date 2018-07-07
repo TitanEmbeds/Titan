@@ -1,90 +1,98 @@
 /* Fire Wyvern theme by Jelle Z. @ https://gitlab.com/jelle619 */
 
+input:not([type]):disabled, input:not([type])[readonly="readonly"], input[type=text]:not(.browser-default):disabled, input[type=text]:not(.browser-default)[readonly="readonly"], input[type=password]:not(.browser-default):disabled, input[type=password]:not(.browser-default)[readonly="readonly"], input[type=email]:not(.browser-default):disabled, input[type=email]:not(.browser-default)[readonly="readonly"], input[type=url]:not(.browser-default):disabled, input[type=url]:not(.browser-default)[readonly="readonly"], input[type=time]:not(.browser-default):disabled, input[type=time]:not(.browser-default)[readonly="readonly"], input[type=date]:not(.browser-default):disabled, input[type=date]:not(.browser-default)[readonly="readonly"], input[type=datetime]:not(.browser-default):disabled, input[type=datetime]:not(.browser-default)[readonly="readonly"], input[type=datetime-local]:not(.browser-default):disabled, input[type=datetime-local]:not(.browser-default)[readonly="readonly"], input[type=tel]:not(.browser-default):disabled, input[type=tel]:not(.browser-default)[readonly="readonly"], input[type=number]:not(.browser-default):disabled, input[type=number]:not(.browser-default)[readonly="readonly"], input[type=search]:not(.browser-default):disabled, input[type=search]:not(.browser-default)[readonly="readonly"], textarea.materialize-textarea:disabled, textarea.materialize-textarea[readonly="readonly"] {
+  border-bottom: 1px dotted rgb(158,158,158);
+}
+
+input:not([type]):disabled+label, input:not([type])[readonly="readonly"]+label, input[type=text]:not(.browser-default):disabled+label, input[type=text]:not(.browser-default)[readonly="readonly"]+label, input[type=password]:not(.browser-default):disabled+label, input[type=password]:not(.browser-default)[readonly="readonly"]+label, input[type=email]:not(.browser-default):disabled+label, input[type=email]:not(.browser-default)[readonly="readonly"]+label, input[type=url]:not(.browser-default):disabled+label, input[type=url]:not(.browser-default)[readonly="readonly"]+label, input[type=time]:not(.browser-default):disabled+label, input[type=time]:not(.browser-default)[readonly="readonly"]+label, input[type=date]:not(.browser-default):disabled+label, input[type=date]:not(.browser-default)[readonly="readonly"]+label, input[type=datetime]:not(.browser-default):disabled+label, input[type=datetime]:not(.browser-default)[readonly="readonly"]+label, input[type=datetime-local]:not(.browser-default):disabled+label, input[type=datetime-local]:not(.browser-default)[readonly="readonly"]+label, input[type=tel]:not(.browser-default):disabled+label, input[type=tel]:not(.browser-default)[readonly="readonly"]+label, input[type=number]:not(.browser-default):disabled+label, input[type=number]:not(.browser-default)[readonly="readonly"]+label, input[type=search]:not(.browser-default):disabled+label, input[type=search]:not(.browser-default)[readonly="readonly"]+label, textarea.materialize-textarea:disabled+label, textarea.materialize-textarea[readonly="readonly"]+label {
+  color: white
+}
+
 .btn{
-  background-color: rgb(255,95,20);
+background-color: rgb(255,95,20);
 }
 .btn-large{
-  background-color: rgb(255,95,20);
+background-color: rgb(255,95,20);
 }
 .btn:visited{
-  background-color: rgb(255,95,20);
+background-color: rgb(255,95,20);
 }
 .btn:hover {
-  background-color: orange
+background-color: orange
 }
 .btn:active{
-  background-color: red
+background-color: red
 }
 .btn:focus {
-  background-color: rgb(255,95,20);
+background-color: rgb(255,95,20);
 }
 
 input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]), input[type=password]:not(.browser-default):focus:not([readonly]), input[type=email]:not(.browser-default):focus:not([readonly]), input[type=url]:not(.browser-default):focus:not([readonly]), input[type=time]:not(.browser-default):focus:not([readonly]), input[type=date]:not(.browser-default):focus:not([readonly]), input[type=datetime]:not(.browser-default):focus:not([readonly]), input[type=datetime-local]:not(.browser-default):focus:not([readonly]), input[type=tel]:not(.browser-default):focus:not([readonly]), input[type=number]:not(.browser-default):focus:not([readonly]), input[type=search]:not(.browser-default):focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
-    border-bottom: 1px solid rgb(255,95,20);
-    -webkit-box-shadow: 0 1px 0 0 rgb(255,95,20);
-    box-shadow: 0 1px 0 0 rgb(255,95,20);
+  border-bottom: 1px solid rgb(255,95,20);
+  -webkit-box-shadow: 0 1px 0 0 rgb(255,95,20);
+  box-shadow: 0 1px 0 0 rgb(255,95,20);
 }
 
 input:not([type]):focus:not([readonly])+label, input[type=text]:not(.browser-default):focus:not([readonly])+label, input[type=password]:not(.browser-default):focus:not([readonly])+label, input[type=email]:not(.browser-default):focus:not([readonly])+label, input[type=url]:not(.browser-default):focus:not([readonly])+label, input[type=time]:not(.browser-default):focus:not([readonly])+label, input[type=date]:not(.browser-default):focus:not([readonly])+label, input[type=datetime]:not(.browser-default):focus:not([readonly])+label, input[type=datetime-local]:not(.browser-default):focus:not([readonly])+label, input[type=tel]:not(.browser-default):focus:not([readonly])+label, input[type=number]:not(.browser-default):focus:not([readonly])+label, input[type=search]:not(.browser-default):focus:not([readonly])+label, textarea.materialize-textarea:focus:not([readonly])+label {
-    color: rgb(255,95,20);
+  color: rgb(255,95,20);
 }
 
 [type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
-    background-color: rgb(255,95,20);
+  background-color: rgb(255,95,20);
 }
 
 [type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
-    border: 2px solid rgb(255,95,20);
+  border: 2px solid rgb(255,95,20);
 }
 
 #guild-nav {
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.9)
+background-color: rgb(0,0,0);
+background-color: rgba(0,0,0,0.9)
 }
 
 #guild-nav span {
-  color: white
+color: white
 }
 
 #guild-nav a {
-  color: white
+color: white
 }
 
 #members-nav {
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.9)
+background-color: rgb(0,0,0);
+background-color: rgba(0,0,0,0.9)
 }
 
 #channeltopic {
-  color: rgb(255,255,255)
+color: rgb(255,255,255)
 }
 
 @font-face {
-    font-family: Roboto;
-    font-style: light;
-    font-weight: 300;
-    src: url("../font/roboto_light.woff") format("woff")
+  font-family: Roboto;
+  font-style: light;
+  font-weight: 300;
+  src: url("../font/roboto_light.woff") format("woff")
 }
 
 @font-face {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    src: url("../font/roboto_normal.woff") format("woff")
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  src: url("../font/roboto_normal.woff") format("woff")
 }
 
 @font-face {
-    font-family: Roboto;
-    font-style: medium;
-    font-weight: 600;
-    src: url("../font/roboto_medium.woff") format("woff")
+  font-family: Roboto;
+  font-style: medium;
+  font-weight: 600;
+  src: url("../font/roboto_medium.woff") format("woff")
 }
 
 @font-face {
-    font-family: Roboto;
-    font-style: bold;
-    font-weight: 700;
-    src: url("../font/roboto_bold.woff") format("woff")
+  font-family: Roboto;
+  font-style: bold;
+  font-weight: 700;
+  src: url("../font/roboto_bold.woff") format("woff")
 }
 
 * {
@@ -92,64 +100,64 @@ font-family: Helvetica Neue, Roboto, Helvetica, Arial, sans-serif;
 }
 
 #footer {
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.9)
+background-color: rgb(0,0,0);
+background-color: rgba(0,0,0,0.9)
 }
 
 #footercontainer span {
-  color: rgb(175,175,175)
+color: rgb(175,175,175)
 }
 
 #footercontainer {
-  border: 0px
+border: 0px
 }
 
 .footercontainer {
-  margin: 6.5px
+margin: 6.5px
 }
 
 #messageboxouter textarea {
-  color: rgb(255,255,255)
+color: rgb(255,255,255)
 }
 
 nav a {
-  color: rgb(255,95,20)
+color: rgb(255,95,20)
 }
 
 .btn:focus{
-  background-color: rgb(255,95,20)
+background-color: rgb(255,95,20)
 }
 
 .brand-logo-text {
-  color: white
+color: white
 }
 
 .brand-logo-text [class="betatag align-top"]{
-  color: rgb(175,175,175)
+color: rgb(175,175,175)
 }
 
 .nav-wrapper {
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.9)
+background-color: rgb(0,0,0);
+background-color: rgba(0,0,0,0.9)
 }
 
 [src="/static/img/titanembeds_shield.png"]{
-  display: none
+display: none
 }
 
 [type="checkbox"].filled-in:checked+label:after {
-    border: 2px solid rgb(255,95,20);
-    background-color: rgb(255,95,20);
+  border: 2px solid rgb(255,95,20);
+  background-color: rgb(255,95,20);
 }
 
 [type="checkbox"].filled-in:not(:checked)+label:after {
-    background-color: transparent;
-    border: 2px solid #5a5a5a;
+  background-color: transparent;
+  border: 2px solid #5a5a5a;
 }
 
 :root {
-    --modal: rgb(20,20,20);
-    --noroleusers: rgb(100,100,100);
-    --main: rgb(20,20,20);
-    --chatmessage: rgb(255,255,255);
-    --discrim: rgb(100,100,100)
+  --modal: rgb(20,20,20);
+  --noroleusers: rgb(100,100,100);
+  --main: rgb(20,20,20);
+  --chatmessage: rgb(255,255,255);
+  --discrim: rgb(100,100,100)
