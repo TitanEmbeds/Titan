@@ -124,6 +124,11 @@ class DiscordREST:
         _endpoint = "/guilds/{guild_id}/embed".format(guild_id=guild_id)
         r = self.request("GET", _endpoint)
         return r
+    
+    def get_guild_member(self, guild_id, user_id):
+        _endpoint = "/guilds/{guild_id}/members/{user_id}".format(guild_id=guild_id, user_id=user_id)
+        r = self.request("GET", _endpoint)
+        return r
 
     def modify_guild_embed(self, guild_id, **kwargs):
         _endpoint = "/guilds/{guild_id}/embed".format(guild_id=guild_id)

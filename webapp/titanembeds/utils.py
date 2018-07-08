@@ -195,7 +195,17 @@ def check_user_in_guild(guild_id):
 
 def get_member_roles(guild_id, user_id):
     q = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == user_id).first()
-    return json.loads(q.roles)
+    roles = [guild_id]
+    if not q:
+        member = discord_api.get_guild_member(guild_id, user_id)
+        if member["success"]:
+            roles = list(map(int, member["content"]["roles"]))
+            member = GuildMembers(guild_id, user_id, member["content"]["user"]["username"], int(member["content"]["user"]["discriminator"]), member["content"].get("nick", None), member["content"]["user"]["avatar"], True, False, roles)
+            db.session.add(member)
+            db.session.commit()
+    else:
+        roles = json.loads(q.roles)
+    return roles
 
 def get_guild_channels(guild_id, force_everyone=False):
     if user_unauthenticated() or force_everyone:
