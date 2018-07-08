@@ -200,7 +200,7 @@ def get_member_roles(guild_id, user_id):
         member = discord_api.get_guild_member(guild_id, user_id)
         if member["success"]:
             roles = list(map(int, member["content"]["roles"]))
-            member = GuildMembers(guild_id, user_id, member["content"]["user"]["username"], int(member["content"]["user"]["discriminator"]), member["content"].get("nick", None), member["content"]["user"]["avatar"], True, False, roles)
+            member = GuildMembers(guild_id, user_id, member["content"]["user"]["username"], int(member["content"]["user"]["discriminator"]), member["content"].get("nick", None), member["content"]["user"]["avatar"], True, False, json.dumps(roles))
             db.session.add(member)
             db.session.commit()
     else:
