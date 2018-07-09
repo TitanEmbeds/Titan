@@ -219,6 +219,9 @@ def administrate_guild(guild_id):
         "guest_icon": db_guild.guest_icon if db_guild.guest_icon != None else "",
         "post_timeout": db_guild.post_timeout,
         "max_message_length": db_guild.max_message_length,
+        "banned_words_enabled": db_guild.banned_words_enabled,
+        "banned_words_global_included": db_guild.banned_words_global_included,
+        "banned_words": json.loads(db_guild.banned_words),
     }
     return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics, disabled=(guild_id in list_disabled_guilds()))
 
@@ -243,6 +246,8 @@ def update_administrate_guild(guild_id):
     db_guild.unauth_captcha = request.form.get("unauth_captcha", db_guild.unauth_captcha) in ["true", True]
     db_guild.post_timeout = request.form.get("post_timeout", db_guild.post_timeout)
     db_guild.max_message_length = request.form.get("max_message_length", db_guild.max_message_length)
+    db_guild.banned_words_enabled = request.form.get("banned_words_enabled", db_guild.banned_words_enabled) in ["true", True]
+    db_guild.banned_words_global_included = request.form.get("banned_words_global_included", db_guild.banned_words_global_included) in ["true", True]
     
     invite_link = request.form.get("invite_link", db_guild.invite_link)
     if invite_link != None and invite_link.strip() == "":
@@ -253,6 +258,16 @@ def update_administrate_guild(guild_id):
     if guest_icon != None and guest_icon.strip() == "":
         guest_icon = None
     db_guild.guest_icon = guest_icon
+    
+    banned_word = request.form.get("banned_word", None)
+    if banned_word:
+        delete_banned_word = request.form.get("delete_banned_word", False) in ["true", True]
+        banned_words = set(json.loads(db_guild.banned_words))
+        if delete_banned_word:
+            banned_words.discard(banned_word)
+        else:
+            banned_words.add(banned_word)
+        db_guild.banned_words = json.dumps(list(banned_words))
     
     db.session.commit()
     emit("guest_icon_change", {"guest_icon": guest_icon if guest_icon else url_for('static', filename='img/titanembeds_square.png')}, room="GUILD_"+guild_id, namespace="/gateway")
@@ -269,6 +284,9 @@ def update_administrate_guild(guild_id):
         unauth_captcha=db_guild.unauth_captcha,
         post_timeout=db_guild.post_timeout,
         max_message_length=db_guild.max_message_length,
+        banned_words_enabled=db_guild.banned_words_enabled,
+        banned_words_global_included=db_guild.banned_words_global_included,
+        banned_words=json.loads(db_guild.banned_words),
     )
 
 @user.route("/add-bot/<guild_id>")

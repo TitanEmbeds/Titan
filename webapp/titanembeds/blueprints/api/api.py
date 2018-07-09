@@ -2,6 +2,7 @@ from titanembeds.database import db, Guilds, UnauthenticatedUsers, Unauthenticat
 from titanembeds.decorators import valid_session_required, discord_users_only, abort_if_guild_disabled
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles, get_online_embed_user_keys, redis_store
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
+import titanembeds.constants as constants
 from flask import Blueprint, abort, jsonify, session, request, url_for
 from flask import current_app as app
 from flask_socketio import emit
@@ -60,6 +61,17 @@ def format_post_content(guild_id, channel_id, message, dbUser):
     for match in all_mentions:
         mention = "<@" + match[2: len(match) - 1] + ">"
         message = message.replace(match, mention, 1)
+    
+    if dbguild.banned_words_enabled:
+        banned_words = set(json.loads(dbguild.banned_words))
+        if dbguild.banned_words_global_included:
+            banned_words = banned_words.union(set(constants.GLOBAL_BANNED_WORDS))
+        for word in banned_words:
+            word_boundaried = r"\b%s\b" % word
+            regex = re.compile(word_boundaried, re.IGNORECASE)
+            if regex.match(message):
+                illegal_post = True
+                illegal_reasons.append("The following word is prohibited: " + word)
     
     if not guild_webhooks_enabled(guild_id):
         if (session['unauthenticated']):

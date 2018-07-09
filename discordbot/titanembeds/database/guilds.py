@@ -21,6 +21,9 @@ class Guilds(Base):
     invite_link = db.Column(db.String(255))         # Custom Discord Invite Link
     post_timeout = db.Column(db.Integer, nullable=False, server_default="5")    # Seconds to elapse before another message can be posted from the widget
     max_message_length = db.Column(db.Integer, nullable=False, server_default="300") # Chars length the message should be before being rejected by the server
+    banned_words_enabled = db.Column(db.Boolean(), nullable=False, server_default="0") # If banned words are enforced
+    banned_words_global_included = db.Column(db.Boolean(), nullable=False, server_default="0") # Add global banned words to the list
+    banned_words = db.Column(db.Text(), nullable=False, server_default="[]")    # JSON list of strings to block from sending
 
     def __init__(self, guild_id, name, roles, channels, webhooks, emojis, owner_id, icon):
         self.guild_id = guild_id

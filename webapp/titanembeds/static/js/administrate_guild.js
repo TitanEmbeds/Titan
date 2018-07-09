@@ -1,3 +1,5 @@
+$('.chips').material_chip();
+
 $('#unauth_users').change(function() {
     var pathname = window.location.pathname;
     var checked = $(this).is(':checked')
@@ -106,6 +108,51 @@ $('#unauth_captcha').change(function() {
       Materialize.toast('Updated Guest User Captcha setting!', 2000)
     });
 });
+
+$('#banned_words_enabled').change(function() {
+    var pathname = window.location.pathname;
+    var checked = $(this).is(':checked')
+    var payload = {"banned_words_enabled": checked}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated Banned Words setting!', 2000)
+    });
+});
+
+$('#banned_words_global_included').change(function() {
+    var pathname = window.location.pathname;
+    var checked = $(this).is(':checked')
+    var payload = {"banned_words_global_included": checked}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated Banned Words Global setting!', 2000)
+    });
+});
+
+var banned_words_data = [];
+for (var i = 0; i < BANNED_WORDS.length; i++) {
+  banned_words_data.push({
+    tag: BANNED_WORDS[i]
+  });
+}
+
+$('#banned_words').material_chip({
+  data: banned_words_data,
+});
+
+$('#banned_words').on('chip.add', function(e, chip){
+  add_delete_banned_words("add", chip.tag);
+});
+
+$('#banned_words').on('chip.delete', function(e, chip){
+  add_delete_banned_words("delete", chip.tag);
+});
+
+function add_delete_banned_words(action, word) {
+    var pathname = window.location.pathname;
+    var payload = {"banned_word": word, "delete_banned_word": action == "delete"}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated Banned Words list!', 2000)
+    });
+}
 
 function initiate_ban(guild_id, user_id) {
   var reason = prompt("Please enter your reason for ban");

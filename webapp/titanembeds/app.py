@@ -75,6 +75,10 @@ def privacy():
 def vote():
     return render_template("discordbotsorg_vote.html.j2", referrer=request.args.get("referrer", None))
 
+@app.route("/global_banned_words")
+def global_banned_words():
+    return render_template("global_banned_words.html.j2")
+
 @app.before_first_request
 def before_first_request():
     discord_api.init_discordrest()

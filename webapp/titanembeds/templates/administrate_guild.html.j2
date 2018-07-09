@@ -161,6 +161,31 @@
             <p class="red lighten-4"><strong>Your user account does not have access to change guest avatar url. Please visit the Titan Tokens shop to activate this cosmetic item.</strong></p>
             {% endif %}
             <input id="guest_icon" value="{{ guild['guest_icon'] }}" {% if not cosmetics.guest_icon %}disabled{% endif %}>
+          
+            <br>
+            
+            <p class="flow-text">Banned Words
+              <span class="switch">
+                <label>
+                  Disable
+                  <input type="checkbox" id="banned_words_enabled" name="banned_words_enabled" {% if guild['banned_words_enabled'] %}checked{% endif %}  >
+                  <span class="lever"></span>
+                  Enable
+                </label>
+              </span>
+            </p>
+            <p>Prevent users from sending messages from the embed containing these words.</p>
+            <div class="switch">
+              <span>Include <a href="{{ url_for("global_banned_words") }}" target="_blank">Global Banned Words</a> to the list</span>
+              <label>
+                Disable
+                <input type="checkbox" id="banned_words_global_included" name="banned_words_global_included" {% if guild['banned_words_global_included'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
+            <p>(Hit enter after each word to add to list)</p>
+            <div id="banned_words" class="chips"></div>
           </div>
         </div>
       </div>
@@ -240,5 +265,8 @@
 
 {% endblock %}
 {% block script %}
+<script>
+  const BANNED_WORDS = {{ guild["banned_words"]|tojson|safe }};
+</script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/administrate_guild.js') }}"></script>
 {% endblock %}

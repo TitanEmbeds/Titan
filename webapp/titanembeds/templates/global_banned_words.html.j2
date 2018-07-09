@@ -1,0 +1,25 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Global Banned Words" %}
+
+{% block content %}
+<h1>Global Banned Words</h1>
+<p class="flow-text">These following words are predefined as the global banned words for those who want a sqeaky clean server.</p>
+<div class="row">
+    <div class="col s12">
+        <div class="card horizontal black-text indigo lighten-5 z-depth-3 hoverable">
+            <div class="card-stacked">
+                <div class="card-content">
+                    <p>Upon enforcing banned words along with the <strong>global</strong> banned words (both are enabled in your server dashboard), any messages sent via the embeds that contain these words will be prevented to be sent.</p>
+                    <p>If you have any suggestions on adding more profane words to the global list, feel free to open a pull request and modify <a href="https://github.com/TitanEmbeds/Titan/blob/master/webapp/titanembeds/constants.py" target="_blank">this file.</a></p>
+                    <hr>
+                    <ol>
+                        {% for word in constants.GLOBAL_BANNED_WORDS %}
+                        <li>{{ word }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
