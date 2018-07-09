@@ -198,18 +198,24 @@ class Titan(discord.AutoShardedClient):
     async def on_webhooks_update(self, guild, channel):
         await self.database.update_guild(guild)
         
-    async def on_raw_message_edit(self, message_id, data):
+    async def on_raw_message_edit(self, payload):
+        message_id = payload.message_id
+        data = payload.data
         if not self.in_messages_cache(int(message_id)):
             channel = self.get_channel(int(data["channel_id"]))
             message = await channel.get_message(int(message_id))
             await self.on_message_edit(None, message)
     
-    async def on_raw_message_delete(self, message_id, channel_id):
+    async def on_raw_message_delete(self, payload):
+        message_id = payload.message_id
+        channel_id = payload.channel_id
         if not self.in_messages_cache(int(message_id)):
             await asyncio.sleep(1)
             await self.process_raw_message_delete(int(message_id), int(channel_id))
     
-    async def raw_bulk_message_delete(self, message_ids, channel_id):
+    async def raw_bulk_message_delete(self, payload):
+        message_ids = payload.message_ids
+        channel_ids = payload.channel_id
         await asyncio.sleep(1)
         for msgid in message_ids:
             msgid = int(msgid)
