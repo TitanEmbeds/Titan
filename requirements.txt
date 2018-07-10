@@ -14,3 +14,4 @@ Flask-Babel
 patreon
 flask-redis
 gino
+sqlalchemy==1.2.8
