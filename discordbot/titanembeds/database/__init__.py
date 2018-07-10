@@ -1,6 +1,7 @@
 from gino import Gino
 import json
 import discord
+import datetime
 
 db = Gino()
 
@@ -21,19 +22,14 @@ class DatabaseInterface(object):
 
     async def push_message(self, message):
         if message.guild:
-            edit_ts = message.edited_at
-            if not edit_ts:
-                edit_ts = None
-            else:
-                edit_ts = str(edit_ts)
             await Messages.create(
                 message_id = int(message.id),
                 guild_id = int(message.guild.id),
                 channel_id = int(message.channel.id),
                 content = message.content,
                 author = json.dumps(get_message_author(message)),
-                timestamp = str(message.created_at),
-                edited_timestamp = edit_ts,
+                timestamp = message.created_at,
+                edited_timestamp = message.edited_at,
                 mentions = json.dumps(get_message_mentions(message.mentions)),
                 attachments = json.dumps(get_attachments_list(message.attachments)),
                 embeds = json.dumps(get_embeds_list(message.embeds))
@@ -41,7 +37,7 @@ class DatabaseInterface(object):
                 
     async def update_message(self, message):
         if message.guild:
-            await Messages.get(int(message.id)).update(
+            await Messages.update.values(
                 content = message.content,
                 timestamp = message.created_at,
                 edited_timestamp = message.edited_at,
@@ -49,11 +45,11 @@ class DatabaseInterface(object):
                 attachments = json.dumps(get_attachments_list(message.attachments)),
                 embeds = json.dumps(get_embeds_list(message.embeds)),
                 author = json.dumps(get_message_author(message))
-            ).apply()
+            ).where(Messages.message_id == int(message.id)).gino.status()
 
     async def delete_message(self, message):
         if message.guild:
-            await Messages.get(int(message.id)).delete()
+            await Messages.delete.where(Messages.message_id == int(message.id)).gino.status()
     
     async def update_guild(self, guild):
         if guild.me.guild_permissions.manage_webhooks:
@@ -123,7 +119,7 @@ class DatabaseInterface(object):
                 guild_id = int(member.guild.id),
                 user_id = int(member.id),
                 username = member.name,
-                discriminator = member.discriminator,
+                discriminator = int(member.discriminator),
                 nickname = member.nick,
                 avatar = member.avatar,
                 active = active,
@@ -134,23 +130,24 @@ class DatabaseInterface(object):
             if len(dbmember) > 1:
                 for mem in dbmember[1:]:
                     await mem.delete()
-                dbmember = dbmember[0]
+            dbmember = dbmember[0]
             if dbmember.banned != banned or dbmember.active != active or dbmember.username != member.name or dbmember.discriminator != int(member.discriminator) or dbmember.nickname != member.nick or dbmember.avatar != member.avatar or set(json.loads(dbmember.roles)) != set(list_role_ids(member.roles)):
                 await dbmember.update(
                     banned = banned,
                     active = active,
                     username = member.name,
-                    discriminator = member.discriminator,
+                    discriminator = int(member.discriminator),
                     nickname = member.nick,
                     avatar = member.avatar,
                     roles = json.dumps(list_role_ids(member.roles))
                 ).apply()
     
     async def unban_server_user(self, user, server):
-        await GuildMembers.query \
+        await GuildMembers.update.values(banned = False) \
             .where(GuildMembers.guild_id == int(server.id)) \
             .where(GuildMembers.user_id == int(user.id)) \
-            .update(banned = False).apply()
+            .gino.status()
+
 
     async def flag_unactive_guild_members(self, guild_id, guild_members):
         async with db.transaction():
@@ -174,7 +171,7 @@ class DatabaseInterface(object):
                     guild_id = int(guild_id),
                     user_id = int(usr.id),
                     username = usr.name,
-                    discriminator = usr.discriminator,
+                    discriminator = int(usr.discriminator),
                     nickname = None,
                     avatar = usr.avatar,
                     active = False,
@@ -183,61 +180,59 @@ class DatabaseInterface(object):
                 )
                 
     async def ban_unauth_user_by_query(self, guild_id, placer_id, username, discriminator):
-        self.bot.loop.run_in_executor(None, self._ban_unauth_user_by_query, guild_id, placer_id, username, discriminator)
-
-    def _ban_unauth_user_by_query(self, guild_id, placer_id, username, discriminator):
-        with self.get_session() as session:
-            dbuser = None
-            if discriminator:
-                dbuser = session.query(UnauthenticatedUsers) \
-                    .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
-                    .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
-                    .filter(UnauthenticatedUsers.discriminator == discriminator) \
-                    .order_by(UnauthenticatedUsers.id.desc()).first()
-            else:
-                dbuser = session.query(UnauthenticatedUsers) \
-                    .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
-                    .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
-                    .order_by(UnauthenticatedUsers.id.desc()).first()
-            if not dbuser:
-                return "Ban error! Guest user cannot be found."
-            dbban = session.query(UnauthenticatedBans) \
-                .filter(UnauthenticatedBans.guild_id == int(guild_id)) \
-                .filter(UnauthenticatedBans.last_username == dbuser.username) \
-                .filter(UnauthenticatedBans.last_discriminator == dbuser.discriminator).first()
-            if dbban is not None:
-                if dbban.lifter_id is None:
-                    return "Ban error! Guest user, **{}#{}**, has already been banned.".format(dbban.last_username, dbban.last_discriminator)
-                session.delete(dbban)
-            dbban = UnauthenticatedBans(int(guild_id), dbuser.ip_address, dbuser.username, dbuser.discriminator, "", int(placer_id))
-            session.add(dbban)
-            session.commit()
-            return "Guest user, **{}#{}**, has successfully been added to the ban list!".format(dbban.last_username, dbban.last_discriminator)
+        dbuser = None
+        if discriminator:
+            dbuser = await UnauthenticatedUsers.query \
+                .where(UnauthenticatedUsers.guild_id == int(guild_id)) \
+                .where(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+                .where(UnauthenticatedUsers.discriminator == discriminator) \
+                .order_by(UnauthenticatedUsers.id.desc()).gino.first()
+        else:
+            dbuser = await UnauthenticatedUsers.query \
+                .where(UnauthenticatedUsers.guild_id == int(guild_id)) \
+                .where(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+                .order_by(UnauthenticatedUsers.id.desc()).gino.first()
+        if not dbuser:
+            return "Ban error! Guest user cannot be found."
+        dbban = await UnauthenticatedBans.query \
+            .where(UnauthenticatedBans.guild_id == int(guild_id)) \
+            .where(UnauthenticatedBans.last_username == dbuser.username) \
+            .where(UnauthenticatedBans.last_discriminator == dbuser.discriminator).gino.first()
+        if dbban is not None:
+            if dbban.lifter_id is None:
+                return "Ban error! Guest user, **{}#{}**, has already been banned.".format(dbban.last_username, dbban.last_discriminator)
+            await dbban.delete()
+        dbban = await UnauthenticatedBans.create(
+            guild_id = int(guild_id),
+            ip_address = dbuser.ip_address,
+            last_username = dbuser.username,
+            last_discriminator = dbuser.discriminator,
+            timestamp = datetime.datetime.now(),
+            reason = "",
+            lifter_id = None,
+            placer_id = int(placer_id)
+        )
+        return "Guest user, **{}#{}**, has successfully been added to the ban list!".format(dbban.last_username, dbban.last_discriminator)
 
     async def revoke_unauth_user_by_query(self, guild_id, username, discriminator):
-        self.bot.loop.run_in_executor(None, self._revoke_unauth_user_by_query, guild_id, username, discriminator)
+        dbuser = None
+        if discriminator:
+            dbuser = await UnauthenticatedUsers.query \
+                .where(UnauthenticatedUsers.guild_id == int(guild_id)) \
+                .where(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+                .where(UnauthenticatedUsers.discriminator == discriminator) \
+                .order_by(UnauthenticatedUsers.id.desc()).gino.first()
+        else:
+            dbuser = await UnauthenticatedUsers.query \
+                .where(UnauthenticatedUsers.guild_id == int(guild_id)) \
+                .where(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+                .order_by(UnauthenticatedUsers.id.desc()).gino.first()
+        if not dbuser:
+            return "Kick error! Guest user cannot be found."
+        elif dbuser.revoked:
+            return "Kick error! Guest user **{}#{}** has already been kicked!".format(dbuser.username, dbuser.discriminator)
+        await dbuser.update(revoked = True).apply()
+        return "Successfully kicked **{}#{}**!".format(dbuser.username, dbuser.discriminator)
 
-    def _revoke_unauth_user_by_query(self, guild_id, username, discriminator):
-        with self.get_session() as session:
-            dbuser = None
-            if discriminator:
-                dbuser = session.query(UnauthenticatedUsers) \
-                    .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
-                    .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
-                    .filter(UnauthenticatedUsers.discriminator == discriminator) \
-                    .order_by(UnauthenticatedUsers.id.desc()).first()
-            else:
-                dbuser = session.query(UnauthenticatedUsers) \
-                    .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
-                    .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
-                    .order_by(UnauthenticatedUsers.id.desc()).first()
-            if not dbuser:
-                return "Kick error! Guest user cannot be found."
-            elif dbuser.revoked:
-                return "Kick error! Guest user **{}#{}** has already been kicked!".format(dbuser.username, dbuser.discriminator)
-            dbuser.revoked = True
-            session.commit()
-            return "Successfully kicked **{}#{}**!".format(dbuser.username, dbuser.discriminator)
-    
     async def delete_all_messages_from_channel(self, channel_id):
         await Messages.delete.where(Messages.channel_id == int(channel_id)).gino.status()

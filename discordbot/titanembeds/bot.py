@@ -45,7 +45,7 @@ class Titan(discord.AutoShardedClient):
 
     def run(self):
         try:
-            self.loop.run_until_complete(self.start(config["bot-token"]))
+            self.loop.run_until_complete(self.start())
         except discord.errors.LoginFailure:
             print("Invalid bot token in config!")
         finally:
@@ -54,6 +54,10 @@ class Titan(discord.AutoShardedClient):
             except Exception as e:
                 print("Error in cleanup:", e)
             self.loop.close()
+    
+    async def start(self):
+        await self.database.connect(config["database-uri"])
+        await super().start(config["bot-token"])
 
     async def on_ready(self):
         print('Titan [DiscordBot]')
@@ -66,14 +70,6 @@ class Titan(discord.AutoShardedClient):
         
         game = discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.com/")
         await self.change_presence(status=discord.Status.online, activity=game)
-
-        try:
-            await self.database.connect(config["database-uri"])
-        except Exception:
-            self.logger.error("Unable to connect to specified database!")
-            traceback.print_exc()
-            await self.logout()
-            return
         
         self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
         self.botsDiscordPw = BotsDiscordPw(self.user.id, config.get("bots-discord-pw-token", None))
