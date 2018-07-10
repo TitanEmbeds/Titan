@@ -13,3 +13,4 @@ aioredis
 Flask-Babel
 patreon
 flask-redis
+gino
