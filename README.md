@@ -20,6 +20,7 @@ If you happen to have a copy of Ubuntu on your server, you may head onto our [An
 
 # Database installation
 To set up the database for it to work with the webapp and the discordbot, one must use **alembic** to *migrate* their databases to the current database state. To do so, please follow these instructions.
+**PostgreSQL supports proper indexing and suitable for Titan needs. For this reason, Titan only supports using a PostgreSQL database.**
 1. Install alembic with **Python 3.5's pip** `pip install alembic`
 2. Change your directory to the webapp where the alembic files are located `cd webapp`
 3. Clone `alembic.example.ini` into your own `alembic.ini` file to find and edit the following line `sqlalchemy.url` to equal your database uri. [See here](http://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls) if you need help understanding how database uri works in SQLalchemy.

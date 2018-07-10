@@ -23,8 +23,8 @@ sed -i '32s/.*/sqlalchemy.url =  postgresql:\/\/\/titan/' ~/workspace/webapp/ale
 alembic upgrade head
 
 echo "[C9Setup] Setting database uri for discordbot/config.py"
-#'database-uri': "mysql+psycopg2:///titan?client_encoding=utf8",
-sed -i "4s/.*/\'database-uri\': \"postgresql+psycopg2:\/\/\/titan?client_encoding=utf8\",/" ~/workspace/discordbot/config.py
+#'database-uri': "postgresql:///titan",
+sed -i "4s/.*/\'database-uri\': \"postgresql:\/\/\/titan\",/" ~/workspace/discordbot/config.py
 
 echo "[C9Setup] Setting database uri and app location for webapp/config.py"
 sed -i "19s/.*/\'database-uri\': \"postgresql+psycopg2:\/\/\/titan?client_encoding=utf8\",/" ~/workspace/webapp/config.py

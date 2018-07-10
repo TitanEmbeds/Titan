@@ -1,6 +1,6 @@
-from titanembeds.database import db, Base
+from titanembeds.database import db
 
-class Guilds(Base):
+class Guilds(db.Model):
     __tablename__ = "guilds"
     guild_id = db.Column(db.BigInteger, primary_key=True)            # Discord guild id
     name = db.Column(db.String(255))                # Name
@@ -24,24 +24,3 @@ class Guilds(Base):
     banned_words_enabled = db.Column(db.Boolean(), nullable=False, server_default="0") # If banned words are enforced
     banned_words_global_included = db.Column(db.Boolean(), nullable=False, server_default="0") # Add global banned words to the list
     banned_words = db.Column(db.Text(), nullable=False, server_default="[]")    # JSON list of strings to block from sending
-
-    def __init__(self, guild_id, name, roles, channels, webhooks, emojis, owner_id, icon):
-        self.guild_id = guild_id
-        self.name = name
-        self.unauth_users = True # defaults to true
-        self.visitor_view = False
-        self.webhook_messages = False
-        self.guest_icon = None
-        self.chat_links = True
-        self.bracket_links = True
-        self.unauth_captcha = True
-        self.mentions_limit = -1 # -1 = unlimited mentions
-        self.roles = roles
-        self.channels = channels
-        self.webhooks = webhooks
-        self.emojis = emojis
-        self.owner_id = owner_id
-        self.icon = icon
-
-    def __repr__(self):
-        return '<Guilds {0} {1}>'.format(self.id, self.guild_id)
