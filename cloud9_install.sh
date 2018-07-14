@@ -10,6 +10,11 @@ cp ~/workspace/webapp/config.example.py ~/workspace/webapp/config.py
 cp ~/workspace/discordbot/config.example.py ~/workspace/discordbot/config.py
 cp ~/workspace/webapp/alembic.example.ini ~/workspace/webapp/alembic.ini
 
+echo "[C9Setup] Updating Python3.5"
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install python3.5
+
 echo "[C9Setup] Installing Titan dependencies"
 cd ~/workspace/
 sudo python3.5 -m pip install --upgrade pip
@@ -27,11 +32,11 @@ echo "[C9Setup] Setting database uri for discordbot/config.py"
 sed -i "4s/.*/\'database-uri\': \"postgresql:\/\/\/titan\",/" ~/workspace/discordbot/config.py
 
 echo "[C9Setup] Setting database uri and app location for webapp/config.py"
-sed -i "19s/.*/\'database-uri\': \"postgresql+psycopg2:\/\/\/titan?client_encoding=utf8\",/" ~/workspace/webapp/config.py
+sed -i "23s/.*/\'database-uri\': \"postgresql+psycopg2:\/\/\/titan?client_encoding=utf8\",/" ~/workspace/webapp/config.py
 #'app-location': "/home/ubuntu/workspace/webapp/",
-sed -i "16s/.*/\'app-location\': \"\/home\/ubuntu\/workspace\/webapp\/\",/" ~/workspace/webapp/config.py
+sed -i "20s/.*/\'app-location\': \"\/home\/ubuntu\/workspace\/webapp\/\",/" ~/workspace/webapp/config.py
 #'webosockets-mode': "eventlet",
-sed -i "21s/.*/\'websockets-mode\': \"eventlet\",/" ~/workspace/webapp/config.py
+sed -i "25s/.*/\'websockets-mode\': \"eventlet\",/" ~/workspace/webapp/config.py
 
 echo "[C9Setup] Making sure everything can be ran"
 cd ~/workspace/
