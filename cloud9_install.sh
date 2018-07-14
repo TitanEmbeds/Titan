@@ -18,6 +18,7 @@ sudo apt-get install python3.5
 echo "[C9Setup] Installing Titan dependencies"
 cd ~/workspace/
 sudo python3.5 -m pip install --upgrade pip
+sudo python3.5 -m pip install --upgrade setuptools
 sudo python3.5 -m pip install -U -r requirements.txt
 sudo python3.5 -m pip install -U alembic psycopg2 eventlet
 
