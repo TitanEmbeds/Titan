@@ -16,7 +16,7 @@ There was a time when Discord doesn't support embedding the chat on a webpage. B
 Would you like to run your own copy of Titan Embeds? There are two parts that integrate nicely together. The webapp (website) handles the frontend and communication with the database to retrieve server messages, etc. The discordbot (bot) handles the communcation
 between Discord's websockets and pushing out the data to the database for the webapp. Check out the respective folder for their installation instructions.
 
-If you happen to have a copy of Ubuntu on your server, you may head onto our [Ansible Playbooks](https://github.com/TitanEmbeds/ansible-playbooks) repository and perform a **near-to-automatic** installation of TitanEmbeds.
+If you happen to have a copy of Ubuntu on your server, you may head onto our [Ansible Playbooks](https://github.com/TitanEmbeds/ansible-playbooks) repository and perform a **automatic** installation of TitanEmbeds.
 
 # Database installation
 To set up the database for it to work with the webapp and the discordbot, one must use **alembic** to *migrate* their databases to the current database state. To do so, please follow these instructions.
