@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "[C9Setup] Installing PostGreSQL, redis, and creating titan db table"
+echo "[C9Setup] Installing postgresql, redis, and creating titan db table"
 cd ~/workspace/
 sudo service postgresql start
 psql -c "CREATE DATABASE titan WITH ENCODING 'UTF8' TEMPLATE template0"
