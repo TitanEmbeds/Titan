@@ -6,6 +6,7 @@ import datetime
 db = Gino()
 
 from titanembeds.database.guilds import Guilds
+from titanembeds.database.messages import Messages
 from titanembeds.database.guild_members import GuildMembers
 from titanembeds.database.unauthenticated_users import UnauthenticatedUsers
 from titanembeds.database.unauthenticated_bans import UnauthenticatedBans
@@ -18,6 +19,37 @@ class DatabaseInterface(object):
 
     async def connect(self, dburi):
         await db.set_bind(dburi)
+
+    async def push_message(self, message):
+        if message.guild:
+            await Messages.create(
+                message_id = int(message.id),
+                guild_id = int(message.guild.id),
+                channel_id = int(message.channel.id),
+                content = message.content,
+                author = json.dumps(get_message_author(message)),
+                timestamp = message.created_at,
+                edited_timestamp = message.edited_at,
+                mentions = json.dumps(get_message_mentions(message.mentions)),
+                attachments = json.dumps(get_attachments_list(message.attachments)),
+                embeds = json.dumps(get_embeds_list(message.embeds))
+            )
+                
+    async def update_message(self, message):
+        if message.guild:
+            await Messages.update.values(
+                content = message.content,
+                timestamp = message.created_at,
+                edited_timestamp = message.edited_at,
+                mentions = json.dumps(get_message_mentions(message.mentions)),
+                attachments = json.dumps(get_attachments_list(message.attachments)),
+                embeds = json.dumps(get_embeds_list(message.embeds)),
+                author = json.dumps(get_message_author(message))
+            ).where(Messages.message_id == int(message.id)).gino.status()
+
+    async def delete_message(self, message):
+        if message.guild:
+            await Messages.delete.where(Messages.message_id == int(message.id)).gino.status()
     
     async def update_guild(self, guild):
         if guild.me.guild_permissions.manage_webhooks:

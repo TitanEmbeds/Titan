@@ -50,7 +50,6 @@ def get_formatted_user(user):
         "status": str(user.status),
         "username": user.name,
         "nick": None,
-        "bot": user.bot
     }
     if userobj["color"] == "000000":
         userobj["color"] = None
