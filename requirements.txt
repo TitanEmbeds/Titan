@@ -15,3 +15,4 @@ patreon
 flask-redis
 gino
 sqlalchemy==1.2.8
+asyncio_redis

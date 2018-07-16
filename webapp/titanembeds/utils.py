@@ -13,11 +13,13 @@ import hashlib
 import time
 import json
 
-redis_store = FlaskRedis()
+redis_store = FlaskRedis(charset="utf-8", decode_responses=True)
 
 from titanembeds.discordrest import DiscordREST
+from titanembeds.redisqueue import RedisQueue
 
 discord_api = DiscordREST(config['bot-token'])
+redisqueue = RedisQueue()
 
 def get_client_ipaddr():
     if request.headers.getlist("X-Forwarded-For"):
@@ -181,7 +183,6 @@ def get_online_embed_user_keys(guild_id="*", user_type=None):
         usrs[utype] = []
         keys = redis_store.keys("MemberPresence/{}/{}/*".format(guild_id, utype))
         for key in keys:
-            key = str(key, "utf-8")
             client_key = key.split("/")[-1]
             usrs[utype].append(client_key)
     return usrs

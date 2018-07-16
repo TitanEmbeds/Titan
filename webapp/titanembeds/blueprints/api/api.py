@@ -1,6 +1,6 @@
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, GuildMembers, Messages, get_channel_messages, list_all_guild_members, get_guild_member, get_administrators_list, get_badges, DiscordBotsOrgTransactions
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, GuildMembers, Messages, list_all_guild_members, get_guild_member, get_administrators_list, get_badges, DiscordBotsOrgTransactions
 from titanembeds.decorators import valid_session_required, discord_users_only, abort_if_guild_disabled
-from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles, get_online_embed_user_keys, redis_store
+from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles, get_online_embed_user_keys, redis_store, redisqueue
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 import titanembeds.constants as constants
 from flask import Blueprint, abort, jsonify, session, request, url_for
@@ -214,7 +214,7 @@ def get_all_users(guild_id):
 def fetch():
     guild_id = request.args.get("guild_id")
     channel_id = request.args.get('channel_id')
-    after_snowflake = request.args.get('after', None, type=int)
+    after_snowflake = request.args.get('after', 0, type=int)
     if user_unauthenticated():
         key = session['user_keys'][guild_id]
     else:
@@ -233,7 +233,7 @@ def fetch():
         if not chan.get("read") or chan["channel"]["type"] != "text":
             status_code = 401
         else:
-            messages = get_channel_messages(guild_id, channel_id, after_snowflake)
+            messages = redisqueue.get_channel_messages(guild_id, channel_id, after_snowflake)
             status_code = 200
     response = jsonify(messages=messages, status=status)
     response.status_code = status_code
@@ -245,7 +245,7 @@ def fetch():
 def fetch_visitor():
     guild_id = request.args.get("guild_id")
     channel_id = request.args.get('channel_id')
-    after_snowflake = request.args.get('after', None, type=int)
+    after_snowflake = request.args.get('after', 0, type=int)
     if not guild_accepts_visitors(guild_id):
         abort(403)
     messages = {}
@@ -255,7 +255,7 @@ def fetch_visitor():
     if not chan.get("read") or chan["channel"]["type"] != "text":
         status_code = 401
     else:
-        messages = get_channel_messages(guild_id, channel_id, after_snowflake)
+        messages = redisqueue.get_channel_messages(guild_id, channel_id, after_snowflake)
         status_code = 200
     response = jsonify(messages=messages)
     response.status_code = status_code

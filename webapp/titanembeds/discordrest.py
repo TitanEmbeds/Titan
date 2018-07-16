@@ -27,7 +27,7 @@ class DiscordREST:
     def _get_bucket(self, key):
         value = redis_store.get(self.global_redis_prefix + key)
         if value:
-            value = value.decode("utf-8")
+            value = value
         return value
 
     def _set_bucket(self, key, value):

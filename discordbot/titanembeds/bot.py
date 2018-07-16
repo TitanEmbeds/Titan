@@ -1,5 +1,6 @@
 from config import config
 from titanembeds.database import DatabaseInterface
+from titanembeds.redisqueue import RedisQueue
 from titanembeds.commands import Commands
 from titanembeds.socketio import SocketIOInterface
 from titanembeds.poststats import DiscordBotsOrg, BotsDiscordPw
@@ -21,6 +22,7 @@ class Titan(discord.AutoShardedClient):
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.database = DatabaseInterface(self)
+        self.redisqueue = RedisQueue(self, config["redis-uri"])
         self.command = Commands(self, self.database)
         self.socketio = SocketIOInterface(self, config["redis-uri"])
         
@@ -57,6 +59,8 @@ class Titan(discord.AutoShardedClient):
     
     async def start(self):
         await self.database.connect(config["database-uri"])
+        await self.redisqueue.connect()
+        self.loop.create_task(self.redisqueue.subscribe())
         await super().start(config["bot-token"])
 
     async def on_ready(self):
@@ -78,6 +82,7 @@ class Titan(discord.AutoShardedClient):
     async def on_message(self, message):
         await self.socketio.on_message(message)
         await self.database.push_message(message)
+        await self.redisqueue.push_message(message)
 
         msg_arr = message.content.split() # split the message
         if len(message.content.split()) > 1 and message.guild: #making sure there is actually stuff in the message and have arguments and check if it is sent in server (not PM)
@@ -92,11 +97,13 @@ class Titan(discord.AutoShardedClient):
 
     async def on_message_edit(self, message_before, message_after):
         await self.database.update_message(message_after)
+        await self.redisqueue.update_message(message_after)
         await self.socketio.on_message_update(message_after)
 
     async def on_message_delete(self, message):
         self.delete_list.append(message.id)
         await self.database.delete_message(message)
+        await self.redisqueue.delete_message(message)
         await self.socketio.on_message_delete(message)
 
     async def on_guild_join(self, guild):

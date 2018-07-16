@@ -47,7 +47,7 @@ def user_has_permission(permission, index):
 def get_user_guilds():
     cache = redis_store.get("OAUTH/USERGUILDS/"+str(make_user_cache_key()))
     if cache:
-        return cache.decode("utf-8")
+        return cache
     req = discordrest_from_user("/users/@me/guilds")
     if req.status_code != 200:
         if hasattr(request, "sid"):
