@@ -1,18 +1,18 @@
 config = {
     # Create an app over here https://discordapp.com/developers/applications/me
     # and fill these fields out
-    'client-id': "Your app client id",
-    'client-secret': "Your discord client secret",
-    'bot-token': "Discord bot token",
-    
+    'client-id': "Bot - Client ID",
+    'client-secret': "Bot - Secret",
+    'bot-token': "Bot - Token",
+
     # Rest API in https://developer.paypal.com/developer/applications
     'paypal-client-id': "Paypal client id",
     'paypal-client-secret': "Paypal client secret",
-    
+
     # V2 reCAPTCHA from https://www.google.com/recaptcha/admin
     'recaptcha-site-key': "reCAPTCHA v2 Site Key",
     'recaptcha-secret-key': "reCAPTCHA v2 Secret Key",
-    
+
     # Patreon
     'patreon-client-id': "Patreon client id",
     'patreon-client-secret': "Patreon client secret",
@@ -24,7 +24,7 @@ config = {
     'redis-uri': "redis://",
     'websockets-mode': "LITTERALLY None or eventlet or gevent",
     'engineio-logging': False,
-    
+
     # https://titanembeds.com/api/webhook/discordbotsorg/vote
-    'discordbotsorg-webhook-secret': "Secret code used in the authorization header for DBL webhook",
+    'discordbotsorg-webhook-secret': "Secret Code - Authencation Header",
 }

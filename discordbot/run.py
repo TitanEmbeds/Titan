@@ -2,7 +2,7 @@ from titanembeds import Titan
 import gc
 
 def main():
-    print("Starting...")
+    print("Starting bot...")
     te = Titan()
     te.run()
     gc.collect()
