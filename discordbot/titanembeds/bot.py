@@ -81,7 +81,6 @@ class Titan(discord.AutoShardedClient):
 
     async def on_message(self, message):
         await self.socketio.on_message(message)
-        await self.database.push_message(message)
         await self.redisqueue.push_message(message)
 
         msg_arr = message.content.split() # split the message
@@ -96,13 +95,11 @@ class Titan(discord.AutoShardedClient):
                         await getattr(self.command, msg_cmd)(message) #actually run cmd, passing in msg obj
 
     async def on_message_edit(self, message_before, message_after):
-        await self.database.update_message(message_after)
         await self.redisqueue.update_message(message_after)
         await self.socketio.on_message_update(message_after)
 
     async def on_message_delete(self, message):
         self.delete_list.append(message.id)
-        await self.database.delete_message(message)
         await self.redisqueue.delete_message(message)
         await self.socketio.on_message_delete(message)
 

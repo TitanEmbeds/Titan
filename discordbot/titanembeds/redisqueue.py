@@ -1,4 +1,4 @@
-from titanembeds.utils import get_formatted_message
+from titanembeds.utils import get_formatted_message, get_formatted_user
 from urllib.parse import urlparse
 import asyncio_redis
 import json
@@ -108,3 +108,12 @@ class RedisQueue:
     async def update_message(self, message):
         await self.delete_message(message)
         await self.push_message(message)
+    
+    async def on_get_guild_member(self, key, params):
+        member = self.bot.get_guild(int(params["guild_id"])).get_member(int(params["user_id"]))
+        if not member:
+            await self.connection.set(key, "")
+            return
+        await self.connection.delete([key])
+        user = get_formatted_user(member)
+        await self.connection.set(key, json.dumps(user))
