@@ -25,9 +25,9 @@ class Titan(discord.AutoShardedClient):
         self.redisqueue = RedisQueue(self, config["redis-uri"])
         self.command = Commands(self, self.database)
         self.socketio = SocketIOInterface(self, config["redis-uri"])
-        
+
         self.delete_list = deque(maxlen=100) # List of msg ids to prevent duplicate delete
-        
+
         self.discordBotsOrg = None
         self.botsDiscordPw = None
 
@@ -49,14 +49,14 @@ class Titan(discord.AutoShardedClient):
         try:
             self.loop.run_until_complete(self.start())
         except discord.errors.LoginFailure:
-            print("Invalid bot token in config!")
+            print("Invalid bot token inside of the config!")
         finally:
             try:
                 self._cleanup()
             except Exception as e:
                 print("Error in cleanup:", e)
             self.loop.close()
-    
+
     async def start(self):
         await self.database.connect(config["database-uri"])
         await self.redisqueue.connect()
@@ -71,10 +71,10 @@ class Titan(discord.AutoShardedClient):
         print('------')
         print("Shard count: " + str(self.shard_count))
         print("------")
-        
+
         game = discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.com/")
         await self.change_presence(status=discord.Status.online, activity=game)
-        
+
         self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
         self.botsDiscordPw = BotsDiscordPw(self.user.id, config.get("bots-discord-pw-token", None))
         await self.postStats()
@@ -181,7 +181,7 @@ class Titan(discord.AutoShardedClient):
 
     async def on_member_unban(self, guild, user):
         await self.database.unban_server_user(user, guild)
-    
+
     async def on_guild_emojis_update(self, guild, before, after):
         if len(after) == 0:
             await self.database.update_guild(guild)
@@ -189,10 +189,10 @@ class Titan(discord.AutoShardedClient):
         else:
             await self.database.update_guild(guild)
             await self.socketio.on_guild_emojis_update(after)
-            
+
     async def on_webhooks_update(self, guild, channel):
         await self.database.update_guild(guild)
-        
+
     async def on_raw_message_edit(self, payload):
         message_id = payload.message_id
         data = payload.data
@@ -200,14 +200,14 @@ class Titan(discord.AutoShardedClient):
             channel = self.get_channel(int(data["channel_id"]))
             message = await channel.get_message(int(message_id))
             await self.on_message_edit(None, message)
-    
+
     async def on_raw_message_delete(self, payload):
         message_id = payload.message_id
         channel_id = payload.channel_id
         if not self.in_messages_cache(int(message_id)):
             await asyncio.sleep(1)
             await self.process_raw_message_delete(int(message_id), int(channel_id))
-    
+
     async def raw_bulk_message_delete(self, payload):
         message_ids = payload.message_ids
         channel_ids = payload.channel_id
@@ -216,7 +216,7 @@ class Titan(discord.AutoShardedClient):
             msgid = int(msgid)
             if not self.in_messages_cache(msgid):
                 await self.process_raw_message_delete(msgid, int(channel_id))
-    
+
     async def process_raw_message_delete(self, msg_id, channel_id):
         if msg_id in self.delete_list:
             self.delete_list.remove(msg_id)
@@ -225,13 +225,13 @@ class Titan(discord.AutoShardedClient):
         data = {'content': "What fun is there in making sense?", 'type': 0, 'edited_timestamp': None, 'id': msg_id, 'channel_id': channel_id, 'timestamp': '2017-01-15T02:59:58+00:00'}
         msg = discord.Message(channel=channel, state=self._connection, data=data) # Procreate a fake message object
         await self.on_message_delete(msg)
-    
+
     def in_messages_cache(self, msg_id):
         for msg in self._connection._messages:
             if msg.id == msg_id:
                 return True
         return False
-        
+
     async def postStats(self):
         count = len(self.guilds)
         shard_count = self.shard_count

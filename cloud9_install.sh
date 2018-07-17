@@ -10,7 +10,7 @@ cp ~/workspace/webapp/config.example.py ~/workspace/webapp/config.py
 cp ~/workspace/discordbot/config.example.py ~/workspace/discordbot/config.py
 cp ~/workspace/webapp/alembic.example.ini ~/workspace/webapp/alembic.ini
 
-echo "[C9Setup] Updating Python3.5"
+echo "[C9Setup] Updating Python 3.5"
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get install python3.5
@@ -39,7 +39,7 @@ sed -i "20s/.*/\'app-location\': \"\/home\/ubuntu\/workspace\/webapp\/\",/" ~/wo
 #'webosockets-mode': "eventlet",
 sed -i "25s/.*/\'websockets-mode\': \"eventlet\",/" ~/workspace/webapp/config.py
 
-echo "[C9Setup] Making sure everything can be ran"
+echo "[C9Setup] Testing..."
 cd ~/workspace/
 sudo chmod -R 777 *
 
