@@ -1,5 +1,5 @@
-from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api, check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled, redis_store
-from titanembeds.database import db, GuildMembers, get_guild_member, Guilds
+from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api, check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled, redis_store, redisqueue
+from titanembeds.database import db, Guilds
 from flask_socketio import Namespace, emit, disconnect, join_room, leave_room
 import functools
 from flask import request, session
@@ -38,7 +38,7 @@ class Gateway(Namespace):
             if session["unauthenticated"]:
                 emit("embed_user_connect", {"unauthenticated": True, "username": session["username"], "discriminator": session["user_id"]}, room="GUILD_"+guild_id)
             else:
-                nickname = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == session["user_id"]).first().nickname
+                nickname = redisqueue.get_guild_member(guild_id, session["user_id"]).get("nickname")
                 emit("embed_user_connect", {"unauthenticated": False, "id": str(session["user_id"]), "nickname": nickname, "username": session["username"],"discriminator": session["discriminator"], "avatar_url": session["avatar"]}, room="GUILD_"+guild_id)
         emit("identified")
         self.teardown_db_session()
@@ -125,17 +125,17 @@ class Gateway(Namespace):
         
     def get_user_color(self, guild_id, user_id):
         color = None
-        member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == user_id).first()
+        member = redisqueue.get_guild_member(guild_id, user_id)
         if not member:
             return None
         guild_roles = json.loads(db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().roles)
         guildroles_filtered = {}
         for role in guild_roles:
             guildroles_filtered[role["id"]] = role
-        member_roleids = json.loads(member.roles)
+        member_roleids = member["roles"]
         member_roles = []
         for roleid in member_roleids:
-            role = guildroles_filtered.get(roleid)
+            role = guildroles_filtered.get(str(roleid))
             if not role:
                 continue
             member_roles.append(role)
@@ -148,6 +148,7 @@ class Gateway(Namespace):
         return color
     
     def on_lookup_user_info(self, data):
+        print("test")
         guild_id = data["guild_id"]
         name = data["name"]
         discriminator = data["discriminator"]
@@ -162,28 +163,36 @@ class Gateway(Namespace):
             "avatar_url": None,
             "discordbotsorgvoted": False,
         }
-        member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.username == name, GuildMembers.discriminator == discriminator).first()
+        member = redisqueue.get_guild_member_named(guild_id, "{}#{}".format(name, discriminator))
+        print("test1")
         if member:
-            usr["id"] = str(member.user_id)
-            usr["username"] = member.username
-            usr["nickname"] = member.nickname
-            usr["avatar"] = member.avatar
+            print("test1.5")
+            usr["id"] = str(member["id"])
+            usr["username"] = member["username"]
+            usr["nickname"] = member["nick"]
+            usr["avatar"] = member["avatar"]
+            print("test1.54")
             usr["color"] = self.get_user_color(guild_id, usr["id"])
+            print("test1.55")
             if (usr["avatar"]):
                 usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.png".format(usr["id"], usr["avatar"])
-            usr["roles"] = json.loads(member.roles)
-            usr["discordbotsorgvoted"] = bool(redis_store.get("DiscordBotsOrgVoted/" + str(member.user_id)))
+            usr["roles"] = member["roles"]
+            usr["discordbotsorgvoted"] = bool(redis_store.get("DiscordBotsOrgVoted/" + str(member["id"])))
+            print("test1.6")
         else:
-            member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.nickname == name, GuildMembers.discriminator == discriminator).first()
+            print("test2")
+            member = redisqueue.get_guild_member_named(guild_id, name)
+            print("test3")
             if member:
-                usr["id"] = str(member.user_id)
-                usr["username"] = member.username
-                usr["nickname"] = member.nickname
-                usr["avatar"] = member.avatar
+                usr["id"] = str(member["id"])
+                usr["username"] = member["username"]
+                usr["nickname"] = member["nick"]
+                usr["avatar"] = member["avatar"]
                 usr["color"] = self.get_user_color(guild_id, usr["id"])
                 if (usr["avatar"]):
                     usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.png".format(usr["id"], usr["avatar"])
-                usr["roles"] = json.loads(member.roles)
-                usr["discordbotsorgvoted"] = bool(redis_store.get("DiscordBotsOrgVoted/" + str(member.user_id)))
+                usr["roles"] = member["roles"]
+                usr["discordbotsorgvoted"] = bool(redis_store.get("DiscordBotsOrgVoted/" + str(member["id"])))
+        print("test4")
         emit("lookup_user_info", usr)
         self.teardown_db_session()

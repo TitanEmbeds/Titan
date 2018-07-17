@@ -1,4 +1,4 @@
-from titanembeds.utils import get_formatted_message
+from titanembeds.utils import get_formatted_message, get_formatted_user
 from urllib.parse import urlparse
 import asyncio_redis
 import json
@@ -77,6 +77,15 @@ class RedisQueue:
                     break
         return (unformatted_item, formatted_item)
     
+    async def enforce_expiring_key(self, key):
+        ttl = await self.connection.ttl(key)
+        newttl = 0
+        if ttl == -1:
+            newttl = 60 * 5 # 5 minutes
+        if ttl >= 0:
+            newttl = ttl
+        await self.connection.expire(key, newttl)
+    
     async def on_get_channel_messages(self, key, params):
         channel = self.bot.get_channel(int(params["channel_id"]))
         if not channel or not isinstance(channel, discord.channel.TextChannel):
@@ -86,7 +95,7 @@ class RedisQueue:
         async for message in channel.history(limit=50):
             formatted = get_formatted_message(message)
             messages.append(json.dumps(formatted))
-        await self.connection.sadd(key, messages)
+        await self.connection.sadd(key, [""] + messages)
     
     async def push_message(self, message):
         if message.guild:
@@ -108,3 +117,64 @@ class RedisQueue:
     async def update_message(self, message):
         await self.delete_message(message)
         await self.push_message(message)
+
+    async def on_get_guild_member(self, key, params):
+        member = self.bot.get_guild(int(params["guild_id"])).get_member(int(params["user_id"]))
+        if not member:
+            await self.connection.set(key, "")
+            return
+        user = get_formatted_user(member)
+        await self.enforce_expiring_key(key)
+        await self.connection.set(key, json.dumps(user))
+    
+    async def on_get_guild_member_named(self, key, params):
+        guild = self.bot.get_guild(int(params["guild_id"]))
+        query = params["query"]
+        result = None
+        members = guild.members
+        if len(query) > 5 and query[-5] == '#':
+            potential_discriminator = query[-4:]
+            result = discord.utils.get(members, name=query[:-5], discriminator=potential_discriminator)
+            if not result:
+                result = discord.utils.get(members, nick=query[:-5], discriminator=potential_discriminator)
+        if not result:
+            result = ""
+        else:
+            result_id = result.id
+            result = json.dumps({"user_id": result_id})
+            get_guild_member_key = "Queue/guilds/{}/members/{}".format(guild.id, result_id)
+            get_guild_member_param = {"guild_id": guild.id, "user_id": result_id}
+            await self.on_get_guild_member(get_guild_member_key, get_guild_member_param)
+        await self.connection.set(key, result)
+    
+    async def on_list_guild_members(self, key, params):
+        guild = self.bot.get_guild(int(params["guild_id"]))
+        members = guild.members
+        member_ids = []
+        for member in members:
+            member_ids.append(json.dumps({"user_id": member.id}))
+            get_guild_member_key = "Queue/guilds/{}/members/{}".format(guild.id, member.id)
+            get_guild_member_param = {"guild_id": guild.id, "user_id": member.id}
+            await self.on_get_guild_member(get_guild_member_key, get_guild_member_param)
+        await self.connection.sadd(key, member_ids)
+    
+    async def add_member(self, member):
+        key = "Queue/guilds/{}/members".format(member.guild.id)
+        exists = await self.connection.exists(key)
+        if exists:
+            await self.connection.sadd(key, [json.dumps({"user_id": member.id})])
+    
+    async def remove_member(self, member, guild=None):
+        if not guild:
+            guild = member.guild
+        guild_member_key = "Queue/guilds/{}/members/{}".format(guild.id, member.id)
+        list_members_key = "Queue/guilds/{}/members".format(guild.id)
+        await self.connection.srem(list_members_key, [json.dumps({"user_id": member.id})])
+        await self.connection.delete([guild_member_key])
+    
+    async def update_member(self, member):
+        await self.remove_member(member)
+        await self.add_member(member)
+
+    async def ban_member(self, guild, user):
+        await self.remove_member(user, guild)

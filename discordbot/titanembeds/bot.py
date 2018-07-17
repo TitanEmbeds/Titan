@@ -105,23 +105,6 @@ class Titan(discord.AutoShardedClient):
 
     async def on_guild_join(self, guild):
         await self.database.update_guild(guild)
-        for member in guild.members:
-            await self.database.update_guild_member(member, True, False)
-        if guild.me.guild_permissions.ban_members:
-            banned = await guild.bans()
-            for ban in banned:
-                member = discord.Member(user={
-                    "username": ban.name,
-                    "id": ban.id,
-                    "discriminator": ban.discriminator,
-                    "avatar": ban.avatar,
-                    "bot": ban.bot
-                })
-                await self.database.update_guild_member(member, False, True)
-        for channel in list(guild.channels):
-            chanperm = channel.permissions_for(channel.guild.me)
-            if not chanperm.read_messages or not chanperm.read_message_history or not isinstance(channel, discord.channel.TextChannel):
-                continue
         await self.postStats()
 
     async def on_guild_remove(self, guild):
@@ -163,24 +146,21 @@ class Titan(discord.AutoShardedClient):
         await self.socketio.on_channel_update(channelafter)
 
     async def on_member_join(self, member):
-        await self.database.update_guild_member(member, active=True, banned=False)
+        await self.redisqueue.add_member(member)
         await self.socketio.on_guild_member_add(member)
 
     async def on_member_remove(self, member):
-        await self.database.update_guild_member(member, active=False, banned=False)
+        await self.redisqueue.remove_member(member)
         await self.socketio.on_guild_member_remove(member)
 
     async def on_member_update(self, memberbefore, memberafter):
-        await self.database.update_guild_member(memberafter)
+        await self.redisqueue.update_member(memberafter)
         await self.socketio.on_guild_member_update(memberafter)
 
     async def on_member_ban(self, guild, user):
         if self.user.id == user.id:
             return
-        await self.database.update_guild_member(user, active=False, banned=True, guild=guild)
-
-    async def on_member_unban(self, guild, user):
-        await self.database.unban_server_user(user, guild)
+        await self.redisqueue.ban_member(guild, user)
     
     async def on_guild_emojis_update(self, guild, before, after):
         if len(after) == 0:

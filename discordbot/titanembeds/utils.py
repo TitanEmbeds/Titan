@@ -50,6 +50,8 @@ def get_formatted_user(user):
         "status": str(user.status),
         "username": user.name,
         "nick": None,
+        "bot": user.bot,
+        "roles": []
     }
     if userobj["color"] == "000000":
         userobj["color"] = None
@@ -63,13 +65,13 @@ def get_formatted_user(user):
         }
     roles = sorted(user.roles, key=lambda k: k.position, reverse=True)
     for role in roles:
-        if role.hoist:
+        userobj["roles"].append(role.id)
+        if role.hoist and userobj["hoist-role"] == None:
             userobj["hoist-role"] = {
                 "id": str(role.id),
                 "name": role.name,
                 "position": role.position,
             }
-            break
     return userobj
 
 def get_message_author(message):

@@ -1,4 +1,4 @@
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, GuildMembers, list_all_guild_members, get_guild_member, get_administrators_list, get_badges, DiscordBotsOrgTransactions
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, get_administrators_list, get_badges, DiscordBotsOrgTransactions
 from titanembeds.decorators import valid_session_required, discord_users_only, abort_if_guild_disabled
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles, get_online_embed_user_keys, redis_store, redisqueue
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
@@ -79,8 +79,8 @@ def format_post_content(guild_id, channel_id, message, dbUser):
         else:
             username = session['username']
             if dbUser:
-                if dbUser.nickname:
-                    username = dbUser.nickname
+                if dbUser["nick"]:
+                    username = dbUser["nick"]
             message = u"**<{}#{}>** {}".format(username, session['discriminator'], message) # I would like to do a @ mention, but i am worried about notify spam
     return (message, illegal_post, illegal_reasons)
 
@@ -100,10 +100,10 @@ def filter_guild_channel(guild_id, channel_id, force_everyone=False):
     return None
 
 def get_online_discord_users(guild_id, embed):
-    apimembers = list_all_guild_members(guild_id)
+    apimembers = redisqueue.list_guild_members(guild_id)
     apimembers_filtered = {}
     for member in apimembers:
-        apimembers_filtered[member["user"]["id"]] = member
+        apimembers_filtered[member["id"]] = member
     guild_roles = json.loads(db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().roles)
     guildroles_filtered = {}
     for role in guild_roles:
@@ -151,13 +151,13 @@ def get_online_embed_users(guild_id):
         users['unauthenticated'].append(meta)
     for user in auths:
         client_id = user.client_id
-        usrdb = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == client_id).first()
+        usrdb = redisqueue.get_guild_member(guild_id, client_id)
         meta = {
-            'id': str(usrdb.user_id),
-            'username': usrdb.username,
-            'nickname': usrdb.nickname,
-            'discriminator': usrdb.discriminator,
-            'avatar_url': generate_avatar_url(usrdb.user_id, usrdb.avatar),
+            'id': str(usrdb["id"]),
+            'username': usrdb["username"],
+            'nickname': usrdb["nick"],
+            'discriminator': usrdb["discriminator"],
+            'avatar_url': generate_avatar_url(usrdb["id"], usrdb["avatar"]),
         }
         users['authenticated'].append(meta)
     return users
@@ -194,16 +194,16 @@ def get_channel_webhook_url(guild_id, channel_id):
     return webhook["content"]
 
 def get_all_users(guild_id):
-    users = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.active == True).all()
+    users = redisqueue.list_guild_members(guild_id)
     mem = []
     for u in users:
         mem.append({
-            "id": str(u.user_id),
-            "avatar": u.avatar,
-            "avatar_url": generate_avatar_url(u.user_id, u.avatar, u.discriminator, True),
-            "username": u.username,
-            "nickname": u.nickname,
-            "discriminator": u.discriminator
+            "id": str(u["id"]),
+            "avatar": u["avatar"],
+            "avatar_url": generate_avatar_url(u["id"], u["avatar"], u["discriminator"], True),
+            "username": u["username"],
+            "nickname": u["nick"],
+            "discriminator": u["discriminator"]
         })
     return mem
 
@@ -295,7 +295,7 @@ def post():
     channel_id = request.form.get('channel_id')
     content = request.form.get('content')
     if "user_id" in session:
-        dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == str(session['user_id'])).first()
+        dbUser = redisqueue.get_guild_member(guild_id, session["user_id"])
     else:
         dbUser = None
     if user_unauthenticated():
@@ -331,8 +331,8 @@ def post():
                 else:
                     username = session["username"]
                     if dbUser:
-                        if dbUser.nickname:
-                            username = dbUser.nickname
+                        if dbUser["nick"]:
+                            username = dbUser["nick"]
                     # if content.startswith("(Titan Dev) "):
                     #     content = content[12:]
                     #     username = "(Titan Dev) " + username
@@ -527,13 +527,13 @@ def user_info(guild_id, user_id):
         "roles": [],
         "badges": [],
     }
-    member = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id, GuildMembers.user_id == user_id).first()
+    member = redisqueue.get_guild_member(guild_id, user_id)
     if member:
-        usr["id"] = str(member.user_id)
-        usr["username"] = member.username
-        usr["nickname"] = member.nickname
-        usr["discriminator"] = member.discriminator
-        usr["avatar"] = member.avatar
+        usr["id"] = str(member["id"])
+        usr["username"] = member["username"]
+        usr["nickname"] = member["nick"]
+        usr["discriminator"] = member["discriminator"]
+        usr["avatar"] = member["avatar"]
         usr["avatar_url"] = generate_avatar_url(usr["id"], usr["avatar"], usr["discriminator"], True)
         roles = get_member_roles(guild_id, user_id)
         dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
@@ -543,7 +543,7 @@ def user_info(guild_id, user_id):
                 if gr["id"] == r:
                     usr["roles"].append(gr)
         usr["badges"] = get_badges(user_id)
-        if redis_store.get("DiscordBotsOrgVoted/" + str(member.user_id)):
+        if redis_store.get("DiscordBotsOrgVoted/" + str(member["id"])):
             usr["badges"].append("discordbotsorgvoted")
     return jsonify(usr)
     

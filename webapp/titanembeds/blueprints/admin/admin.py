@@ -1,9 +1,9 @@
 from flask import Blueprint, url_for, redirect, session, render_template, abort, request, jsonify
 from flask_socketio import emit
 from functools import wraps
-from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS, AuthenticatedUsers, DiscordBotsOrgTransactions, GuildMembers
+from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS, AuthenticatedUsers, DiscordBotsOrgTransactions
 from titanembeds.oauth import generate_guild_icon_url
-from titanembeds.utils import get_online_embed_user_keys
+from titanembeds.utils import get_online_embed_user_keys, redisqueue
 import datetime
 import json
 from sqlalchemy import func

@@ -1,4 +1,4 @@
-from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, GuildMembers, get_guild_member
+from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers
 from titanembeds.constants import LANGUAGES
 from flask import request, session
 from flask_limiter import Limiter
@@ -98,8 +98,8 @@ def checkUserRevoke(guild_id, user_key=None):
         banned = checkUserBanned(guild_id)
         if banned:
             return revoked
-        dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == session["user_id"]).first()
-        revoked = not dbUser or not dbUser.active
+        dbUser = redisqueue.get_guild_member(guild_id, session["user_id"])
+        revoked = not dbUser
     return revoked
     
 def checkUserBanned(guild_id, ip_address=None):
@@ -114,11 +114,9 @@ def checkUserBanned(guild_id, ip_address=None):
                     banned = False
     else:
         banned = False
-        dbUser = GuildMembers.query.filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == session["user_id"]).first()
-        if not dbUser:
-            banned = False
-        else:
-            banned = dbUser.banned
+        #dbUser = redisqueue.get_guild_member(guild_id, session["user_id"])
+        #if not dbUser:
+        #    banned = True # TODO: Figure out ban logic with guild member
     return banned
 
 from titanembeds.oauth import check_user_can_administrate_guild, user_has_permission
@@ -163,9 +161,9 @@ def update_user_status(guild_id, username, user_key=None):
         }
         if status['banned'] or status['revoked']:
             return status
-        dbMember = get_guild_member(guild_id, status["user_id"])
+        dbMember = redisqueue.get_guild_member(guild_id, status["user_id"])
         if dbMember:
-            status["nickname"] = dbMember.nickname
+            status["nickname"] = dbMember["nick"]
         bump_user_presence_timestamp(guild_id, "AuthenticatedUsers", status["user_id"])
     return status
 
@@ -195,18 +193,8 @@ def check_user_in_guild(guild_id):
         return dbUser is not None and not checkUserRevoke(guild_id)
 
 def get_member_roles(guild_id, user_id):
-    q = db.session.query(GuildMembers).filter(GuildMembers.guild_id == guild_id).filter(GuildMembers.user_id == user_id).first()
-    roles = [guild_id]
-    if not q:
-        member = discord_api.get_guild_member(guild_id, user_id)
-        if member["success"]:
-            roles = member["content"]["roles"]
-            member = GuildMembers(guild_id, user_id, member["content"]["user"]["username"], int(member["content"]["user"]["discriminator"]), member["content"].get("nick", None), member["content"]["user"]["avatar"], True, False, json.dumps(roles))
-            db.session.add(member)
-            db.session.commit()
-    else:
-        roles = json.loads(q.roles)
-    return roles
+    q = redisqueue.get_guild_member(guild_id, user_id)
+    return q["roles"]
 
 def get_guild_channels(guild_id, force_everyone=False):
     if user_unauthenticated() or force_everyone:
