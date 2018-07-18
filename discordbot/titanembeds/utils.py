@@ -66,7 +66,6 @@ def get_formatted_user(user):
     roles = sorted(user.roles, key=lambda k: k.position, reverse=True)
     for role in roles:
         userobj["roles"].append(str(role.id))
-        print(role, role.hoist)
         if role.hoist and userobj["hoist-role"] == None:
             userobj["hoist-role"] = {
                 "id": str(role.id),
