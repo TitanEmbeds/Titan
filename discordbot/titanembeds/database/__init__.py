@@ -67,7 +67,6 @@ class DatabaseInterface(object):
     async def remove_guild(self, guild):
         gui = await Guilds.get(int(guild.id))
         if gui:
-            await Messages.delete.where(Messages.guild_id == int(guild.id)).gino.status()
             await gui.delete()
                 
     async def ban_unauth_user_by_query(self, guild_id, placer_id, username, discriminator):
