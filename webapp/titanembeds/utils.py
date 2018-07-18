@@ -194,7 +194,11 @@ def check_user_in_guild(guild_id):
 
 def get_member_roles(guild_id, user_id):
     q = redisqueue.get_guild_member(guild_id, user_id)
-    return q["roles"]
+    roles = q["roles"]
+    role_converted = []
+    for role in roles:
+        role_converted.append(str(role))
+    return role_converted
 
 def get_guild_channels(guild_id, force_everyone=False):
     if user_unauthenticated() or force_everyone:

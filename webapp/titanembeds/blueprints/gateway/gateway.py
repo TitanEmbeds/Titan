@@ -148,7 +148,6 @@ class Gateway(Namespace):
         return color
     
     def on_lookup_user_info(self, data):
-        print("test")
         guild_id = data["guild_id"]
         name = data["name"]
         discriminator = data["discriminator"]
@@ -164,25 +163,18 @@ class Gateway(Namespace):
             "discordbotsorgvoted": False,
         }
         member = redisqueue.get_guild_member_named(guild_id, "{}#{}".format(name, discriminator))
-        print("test1")
         if member:
-            print("test1.5")
             usr["id"] = str(member["id"])
             usr["username"] = member["username"]
             usr["nickname"] = member["nick"]
             usr["avatar"] = member["avatar"]
-            print("test1.54")
             usr["color"] = self.get_user_color(guild_id, usr["id"])
-            print("test1.55")
             if (usr["avatar"]):
                 usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.png".format(usr["id"], usr["avatar"])
             usr["roles"] = member["roles"]
             usr["discordbotsorgvoted"] = bool(redis_store.get("DiscordBotsOrgVoted/" + str(member["id"])))
-            print("test1.6")
         else:
-            print("test2")
             member = redisqueue.get_guild_member_named(guild_id, name)
-            print("test3")
             if member:
                 usr["id"] = str(member["id"])
                 usr["username"] = member["username"]
@@ -193,6 +185,5 @@ class Gateway(Namespace):
                     usr["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}.png".format(usr["id"], usr["avatar"])
                 usr["roles"] = member["roles"]
                 usr["discordbotsorgvoted"] = bool(redis_store.get("DiscordBotsOrgVoted/" + str(member["id"])))
-        print("test4")
         emit("lookup_user_info", usr)
         self.teardown_db_session()

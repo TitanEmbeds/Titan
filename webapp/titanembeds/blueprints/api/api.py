@@ -103,7 +103,7 @@ def get_online_discord_users(guild_id, embed):
     apimembers = redisqueue.list_guild_members(guild_id)
     apimembers_filtered = {}
     for member in apimembers:
-        apimembers_filtered[member["id"]] = member
+        apimembers_filtered[int(member["id"])] = member
     guild_roles = json.loads(db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().roles)
     guildroles_filtered = {}
     for role in guild_roles:
@@ -113,29 +113,10 @@ def get_online_discord_users(guild_id, embed):
         member["hoist-role"] = None
         member["color"] = None
         if apimem:
-            mem_roles = []
-            for roleid in apimem["roles"]:
-                role = guildroles_filtered.get(roleid)
-                if not role:
-                    continue
-                mem_roles.append(role)
-            mem_roles = sorted(mem_roles, key=lambda k: k['position'])
-            for role in mem_roles:
-                if role["color"] != 0:
-                    member["color"] = '{0:02x}'.format(role["color"]) #int to hex
-                    while len(member["color"]) < 6:
-                        member["color"] = "0" + member["color"]
-                if role["hoist"]:
-                    member["hoist-role"] = {}
-                    member["hoist-role"]["name"] = role["name"]
-                    member["hoist-role"]["id"] = role["id"]
-                    member["hoist-role"]["position"] = role["position"]
-            if member.get("avatar", None):
-                member["avatar_url"] = "https://cdn.discordapp.com/avatars/{}/{}".format(member["id"], member["avatar"])
-                if member["avatar"].startswith("a_"):
-                    member["avatar_url"] = member["avatar_url"] + ".gif"
-                else:
-                    member["avatar_url"] = member["avatar_url"] + ".png"
+            member["hoist-role"] = apimem["hoist-role"]
+            member["color"] = apimem["color"]
+            member["avatar"] = apimem["avatar"]
+            member["avatar_url"] = apimem["avatar_url"]
     return embed['members']
 
 def get_online_embed_users(guild_id):
