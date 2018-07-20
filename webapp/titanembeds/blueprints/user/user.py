@@ -5,6 +5,7 @@ from config import config
 from titanembeds.decorators import discord_users_only
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, Cosmetics, UserCSS, Patreon, set_titan_token, get_titan_token, add_badge, list_disabled_guilds
 from titanembeds.oauth import authorize_url, token_url, make_authenticated_session, get_current_authenticated_user, get_user_managed_servers, check_user_can_administrate_guild, check_user_permission, generate_avatar_url, generate_guild_icon_url, generate_bot_invite_url
+from titanembeds.utils import redisqueue
 import time
 import datetime
 import paypalrestsdk
@@ -188,11 +189,16 @@ def edit_custom_css_delete(css_id):
 def administrate_guild(guild_id):
     if not check_user_can_administrate_guild(guild_id):
         return redirect(url_for("user.dashboard"))
-    db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-    if not db_guild:
+    guild = redisqueue.get_guild(guild_id)
+    if not guild:
         session["redirect"] = url_for("user.administrate_guild", guild_id=guild_id, _external=True)
         return redirect(url_for("user.add_bot", guild_id=guild_id))
     session["redirect"] = None
+    db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+    if not db_guild:
+        db_guild = Guilds(guild["id"])
+        db.session.add(db_guild)
+        db.session.commit()
     permissions=[]
     if check_user_permission(guild_id, 5):
         permissions.append("Manage Embed Settings")
@@ -206,7 +212,7 @@ def administrate_guild(guild_id):
     users = prepare_guild_members_list(all_members, all_bans)
     dbguild_dict = {
         "id": db_guild.guild_id,
-        "name": db_guild.name,
+        "name": guild["name"],
         "unauth_users": db_guild.unauth_users,
         "visitor_view": db_guild.visitor_view,
         "webhook_messages": db_guild.webhook_messages,
@@ -214,7 +220,7 @@ def administrate_guild(guild_id):
         "bracket_links": db_guild.bracket_links,
         "mentions_limit": db_guild.mentions_limit,
         "unauth_captcha": db_guild.unauth_captcha,
-        "icon": db_guild.icon,
+        "icon": guild["icon"],
         "invite_link": db_guild.invite_link if db_guild.invite_link != None else "",
         "guest_icon": db_guild.guest_icon if db_guild.guest_icon != None else "",
         "post_timeout": db_guild.post_timeout,

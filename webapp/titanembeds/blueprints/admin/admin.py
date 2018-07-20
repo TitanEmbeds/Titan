@@ -155,10 +155,15 @@ def prepare_guild_members_list(members, bans):
 @admin.route("/administrate_guild/<guild_id>", methods=["GET"])
 @is_admin
 def administrate_guild(guild_id):
+    guild = redisqueue.get_guild(guild_id)
+    if not guild:
+        abort(404)
+        return
     db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     if not db_guild:
-        abort(500)
-        return
+        db_guild = Guilds(guild["id"])
+        db.session.add(db_guild)
+        db.session.commit()
     session["redirect"] = None
     cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
     permissions=[]
@@ -169,8 +174,8 @@ def administrate_guild(guild_id):
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
     dbguild_dict = {
-        "id": db_guild.guild_id,
-        "name": db_guild.name,
+        "id": guild["id"],
+        "name": guild["name"],
         "unauth_users": db_guild.unauth_users,
         "visitor_view": db_guild.visitor_view,
         "webhook_messages": db_guild.webhook_messages,
@@ -178,7 +183,7 @@ def administrate_guild(guild_id):
         "bracket_links": db_guild.bracket_links,
         "mentions_limit": db_guild.mentions_limit,
         "unauth_captcha": db_guild.unauth_captcha,
-        "icon": db_guild.icon,
+        "icon": guild["icon"],
         "invite_link": db_guild.invite_link if db_guild.invite_link != None else "",
         "guest_icon": db_guild.guest_icon if db_guild.guest_icon != None else "",
         "post_timeout": db_guild.post_timeout,

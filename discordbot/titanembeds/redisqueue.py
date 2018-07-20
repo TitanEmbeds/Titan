@@ -1,4 +1,4 @@
-from titanembeds.utils import get_formatted_message, get_formatted_user
+from titanembeds.utils import get_formatted_message, get_formatted_user, get_formatted_guild
 from urllib.parse import urlparse
 import asyncio_redis
 import json
@@ -70,6 +70,8 @@ class RedisQueue:
             members = await self.connection.smembers(key)
             for member in members:
                 the_member = await member
+                if not the_member:
+                    continue
                 parsed = json.loads(the_member)
                 if re.match(str(dict_value_pattern), str(parsed[dict_key])):
                     unformatted_item = the_member
@@ -94,7 +96,7 @@ class RedisQueue:
         messages = []
         async for message in channel.history(limit=50):
             formatted = get_formatted_message(message)
-            messages.append(json.dumps(formatted))
+            messages.append(json.dumps(formatted, separators=(',', ':')))
         await self.connection.sadd(key, [""] + messages)
     
     async def push_message(self, message):
@@ -103,7 +105,7 @@ class RedisQueue:
             exists = await self.connection.exists(key)
             if exists:
                 message = get_formatted_message(message)
-                await self.connection.sadd(key, [json.dumps(message)])
+                await self.connection.sadd(key, [json.dumps(message, separators=(',', ':'))])
     
     async def delete_message(self, message):
         if message.guild:
@@ -125,7 +127,7 @@ class RedisQueue:
             return
         user = get_formatted_user(member)
         await self.enforce_expiring_key(key)
-        await self.connection.set(key, json.dumps(user))
+        await self.connection.set(key, json.dumps(user, separators=(',', ':')))
     
     async def on_get_guild_member_named(self, key, params):
         guild = self.bot.get_guild(int(params["guild_id"]))
@@ -141,7 +143,7 @@ class RedisQueue:
             result = ""
         else:
             result_id = result.id
-            result = json.dumps({"user_id": result_id})
+            result = json.dumps({"user_id": result_id}, separators=(',', ':'))
             get_guild_member_key = "Queue/guilds/{}/members/{}".format(guild.id, result_id)
             get_guild_member_param = {"guild_id": guild.id, "user_id": result_id}
             await self.on_get_guild_member(get_guild_member_key, get_guild_member_param)
@@ -152,7 +154,7 @@ class RedisQueue:
         members = guild.members
         member_ids = []
         for member in members:
-            member_ids.append(json.dumps({"user_id": member.id}))
+            member_ids.append(json.dumps({"user_id": member.id}, separators=(',', ':')))
             get_guild_member_key = "Queue/guilds/{}/members/{}".format(guild.id, member.id)
             get_guild_member_param = {"guild_id": guild.id, "user_id": member.id}
             await self.on_get_guild_member(get_guild_member_key, get_guild_member_param)
@@ -162,14 +164,14 @@ class RedisQueue:
         key = "Queue/guilds/{}/members".format(member.guild.id)
         exists = await self.connection.exists(key)
         if exists:
-            await self.connection.sadd(key, [json.dumps({"user_id": member.id})])
+            await self.connection.sadd(key, [json.dumps({"user_id": member.id}, separators=(',', ':'))])
     
     async def remove_member(self, member, guild=None):
         if not guild:
             guild = member.guild
         guild_member_key = "Queue/guilds/{}/members/{}".format(guild.id, member.id)
         list_members_key = "Queue/guilds/{}/members".format(guild.id)
-        await self.connection.srem(list_members_key, [json.dumps({"user_id": member.id})])
+        await self.connection.srem(list_members_key, [json.dumps({"user_id": member.id}, separators=(',', ':'))])
         await self.connection.delete([guild_member_key])
     
     async def update_member(self, member):
@@ -178,3 +180,31 @@ class RedisQueue:
 
     async def ban_member(self, guild, user):
         await self.remove_member(user, guild)
+    
+    async def on_get_guild(self, key, params):
+        guild = self.bot.get_guild(int(params["guild_id"]))
+        if not guild:
+            await self.connection.set(key, "")
+            return
+        if guild.me.guild_permissions.manage_webhooks:
+            try:
+                server_webhooks = await guild.webhooks()
+            except:
+                server_webhooks = []
+        else:
+            server_webhooks = []
+        guild_fmtted = get_formatted_guild(guild, server_webhooks)
+        await self.connection.set(key, json.dumps(guild_fmtted, separators=(',', ':')))
+        await self.enforce_expiring_key(key)
+    
+    async def delete_guild(self, guild):
+        key = "Queue/guilds/{}".format(guild.id)
+        await self.connection.delete([key])
+    
+    async def update_guild(self, guild):
+        key = "Queue/guilds/{}".format(guild.id)
+        exists = await self.connection.exists(key)
+        if exists:
+            await self.delete_guild(guild)
+            await self.on_get_guild(key, {"guild_id": guild.id})
+        await self.enforce_expiring_key(key)

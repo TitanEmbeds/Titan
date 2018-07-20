@@ -5,7 +5,6 @@ import datetime
 
 db = Gino()
 
-from titanembeds.database.guilds import Guilds
 from titanembeds.database.unauthenticated_users import UnauthenticatedUsers
 from titanembeds.database.unauthenticated_bans import UnauthenticatedBans
 
@@ -17,57 +16,6 @@ class DatabaseInterface(object):
 
     async def connect(self, dburi):
         await db.set_bind(dburi)
-    
-    async def update_guild(self, guild):
-        if guild.me.guild_permissions.manage_webhooks:
-            try:
-                server_webhooks = await guild.webhooks()
-            except:
-                server_webhooks = []
-        else:
-            server_webhooks = []
-        gui = await Guilds.get(guild.id)
-        if not gui:
-            await Guilds.create(
-                guild_id = int(guild.id),
-                name = guild.name,
-                unauth_users = True,
-                visitor_view = False,
-                webhook_messages = False,
-                guest_icon = None,
-                chat_links = True,
-                bracket_links = True,
-                unauth_captcha = True,
-                mentions_limit = -1,
-                roles = json.dumps(get_roles_list(guild.roles)),
-                channels = json.dumps(get_channels_list(guild.channels)),
-                webhooks = json.dumps(get_webhooks_list(server_webhooks)),
-                emojis = json.dumps(get_emojis_list(guild.emojis)),
-                owner_id = int(guild.owner_id),
-                icon = guild.icon
-            )
-        else:
-            await gui.update(
-                name = guild.name,
-                roles = json.dumps(get_roles_list(guild.roles)),
-                channels = json.dumps(get_channels_list(guild.channels)),
-                webhooks = json.dumps(get_webhooks_list(server_webhooks)),
-                emojis = json.dumps(get_emojis_list(guild.emojis)),
-                owner_id = int(guild.owner_id),
-                icon = guild.icon
-            ).apply()
-
-    async def remove_unused_guilds(self, guilds):
-        dbguilds = await Guilds.query.gino.all()
-        for guild in dbguilds:
-            disguild = discord.utils.get(guilds, id=guild.guild_id)
-            if not disguild:
-                await Messages.delete.where(Messages.guild_id == int(guild.guild_id)).gino.status()
-
-    async def remove_guild(self, guild):
-        gui = await Guilds.get(int(guild.id))
-        if gui:
-            await gui.delete()
                 
     async def ban_unauth_user_by_query(self, guild_id, placer_id, username, discriminator):
         dbuser = None

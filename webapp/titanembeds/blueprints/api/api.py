@@ -104,7 +104,7 @@ def get_online_discord_users(guild_id, embed):
     apimembers_filtered = {}
     for member in apimembers:
         apimembers_filtered[int(member["id"])] = member
-    guild_roles = json.loads(db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().roles)
+    guild_roles = redisqueue.get_guild(guild_id)["roles"]
     guildroles_filtered = {}
     for role in guild_roles:
         guildroles_filtered[role["id"]] = role
@@ -144,19 +144,17 @@ def get_online_embed_users(guild_id):
     return users
 
 def get_guild_emojis(guild_id):
-    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-    return json.loads(dbguild.emojis)
+    return redisqueue.get_guild(guild_id)["emojis"]
 
 def get_guild_roles(guild_id):
-    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-    return json.loads(dbguild.roles)
+    return redisqueue.get_guild(guild_id)["roles"]
 
 # Returns webhook url if exists and can post w/webhooks, otherwise None
 def get_channel_webhook_url(guild_id, channel_id):
     if not guild_webhooks_enabled(guild_id):
         return None
-    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-    guild_webhooks = json.loads(dbguild.webhooks)
+    guild = redisqueue.get_guild(guild_id)
+    guild_webhooks = guild["webhooks"]
     name = "[Titan] "
     username = session["username"]
     if len(username) > 19:
@@ -517,8 +515,7 @@ def user_info(guild_id, user_id):
         usr["avatar"] = member["avatar"]
         usr["avatar_url"] = generate_avatar_url(usr["id"], usr["avatar"], usr["discriminator"], True)
         roles = get_member_roles(guild_id, user_id)
-        dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-        guild_roles = json.loads(dbguild.roles)
+        guild_roles = redisqueue.get_guild(guild_id)["roles"]
         for r in roles:
             for gr in guild_roles:
                 if gr["id"] == r:

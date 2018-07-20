@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, redirect, url_for, session, request
 from flask_babel import gettext
-from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled, is_int
+from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled, is_int, redisqueue
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
 from titanembeds.database import db, Guilds, UserCSS, list_disabled_guilds
 from config import config
@@ -64,15 +64,16 @@ def parse_url_domain(url):
 @embed.route("/<int:guild_id>")
 def guild_embed(guild_id):
     if check_guild_existance(guild_id):
-        guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+        guild = redisqueue.get_guild(guild_id)
+        dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
         guild_dict = {
-            "id": guild.guild_id,
-            "name": guild.name,
-            "unauth_users": guild.unauth_users,
-            "icon": guild.icon,
-            "invite_link": guild.invite_link,
-            "invite_domain": parse_url_domain(guild.invite_link),
-            "post_timeout": guild.post_timeout,
+            "id": guild["id"],
+            "name": guild["name"],
+            "unauth_users": dbguild.unauth_users,
+            "icon": guild["icon"],
+            "invite_link": dbguild.invite_link,
+            "invite_domain": parse_url_domain(dbguild.invite_link),
+            "post_timeout": dbguild.post_timeout,
         }
         customcss = get_custom_css()
         return render_template("embed.html.j2",

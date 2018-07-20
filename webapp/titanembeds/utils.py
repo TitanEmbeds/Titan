@@ -70,8 +70,8 @@ def guild_ratelimit_key():
     return (ip + guild_id)
 
 def check_guild_existance(guild_id):
-    dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
-    if not dbGuild:
+    guild = redisqueue.get_guild(guild_id)
+    if not guild:
         return False
     else:
         return True
@@ -210,10 +210,10 @@ def get_guild_channels(guild_id, force_everyone=False):
     bot_member_roles = get_member_roles(guild_id, config["client-id"])
     if guild_id not in bot_member_roles:
         bot_member_roles.append(guild_id)
-    dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-    guild_channels = json.loads(dbguild.channels)
-    guild_roles = json.loads(dbguild.roles)
-    guild_owner = str(dbguild.owner_id)
+    guild = redisqueue.get_guild(guild_id)
+    guild_channels = guild["channels"]
+    guild_roles = guild["roles"]
+    guild_owner = guild["owner_id"]
     result_channels = []
     for channel in guild_channels:
         if channel['type'] in ["text", "category"]:
@@ -293,13 +293,13 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     
 def bot_can_create_webhooks(guild):
     perm = 0
-    guild_roles = json.loads(guild.roles)
+    guild_roles = guild["roles"]
     # @everyone
     for role in guild_roles:
-        if role["id"] == guild.guild_id:
+        if role["id"] == guild["id"]:
             perm |= role["permissions"]
             continue
-    member_roles = get_member_roles(guild.guild_id, config["client-id"])
+    member_roles = get_member_roles(guild["id"], config["client-id"])
     # User Guild Roles
     for m_role in member_roles:
         for g_role in guild_roles:
@@ -314,7 +314,8 @@ def guild_webhooks_enabled(guild_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     if not dbguild.webhook_messages:
         return False
-    return bot_can_create_webhooks(dbguild)
+    guild = redisqueue.get_guild(guild_id)
+    return bot_can_create_webhooks(guild)
 
 def guild_unauthcaptcha_enabled(guild_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()

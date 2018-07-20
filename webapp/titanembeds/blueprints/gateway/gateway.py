@@ -1,5 +1,5 @@
 from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api, check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled, redis_store, redisqueue
-from titanembeds.database import db, Guilds
+from titanembeds.database import db
 from flask_socketio import Namespace, emit, disconnect, join_room, leave_room
 import functools
 from flask import request, session
@@ -57,8 +57,7 @@ class Gateway(Namespace):
                 msg = {"unauthenticated": False, "id": str(session["user_id"])}
             emit("embed_user_disconnect", msg, room="GUILD_"+guild_id)
             if guild_webhooks_enabled(guild_id): # Delete webhooks
-                dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
-                guild_webhooks = json.loads(dbguild.webhooks)
+                guild_webhooks = redisqueue.get_guild(guild_id)["webhooks"]
                 name = "[Titan] "
                 username = session["username"]
                 if len(username) > 19:
@@ -128,7 +127,7 @@ class Gateway(Namespace):
         member = redisqueue.get_guild_member(guild_id, user_id)
         if not member:
             return None
-        guild_roles = json.loads(db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().roles)
+        guild_roles = redisqueue.get_guild(guild_id)["roles"]
         guildroles_filtered = {}
         for role in guild_roles:
             guildroles_filtered[role["id"]] = role

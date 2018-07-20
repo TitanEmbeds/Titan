@@ -100,12 +100,17 @@ def get_formatted_emojis(emojis):
         })
     return emotes
 
-def get_formatted_guild(guild):
+def get_formatted_guild(guild, webhooks=[]):
     guil = {
         "id": str(guild.id),
         "name": guild.name,
         "icon": guild.icon,
         "icon_url": guild.icon_url,
+        "owner_id": guild.owner_id,
+        "roles": get_roles_list(guild.roles),
+        "channels": get_channels_list(guild.channels),
+        "webhooks": get_webhooks_list(webhooks),
+        "emojis": get_emojis_list(guild.emojis)
     }
     return guil
 

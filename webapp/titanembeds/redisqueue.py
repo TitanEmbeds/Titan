@@ -109,3 +109,8 @@ class RedisQueue:
             if member:
                 members.append(member)
         return members
+    
+    def get_guild(self, guild_id):
+        key = "/guilds/{}".format(guild_id)
+        q = self.get(key, "get_guild", {"guild_id": guild_id})
+        return q
