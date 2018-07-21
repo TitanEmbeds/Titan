@@ -89,8 +89,4 @@ ENV/
 
 # Project specifc
 config.py
-redislite.db
-redislite.db.settings
-webapp/tmp/*
-!webapp/tmp/.gitinclude
 alembic.ini
