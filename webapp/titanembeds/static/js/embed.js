@@ -591,6 +591,12 @@
             }
         }
         if (typeof curr_default_channel == "object") {
+            if (curr_default_channel == null) {
+                $("#messagebox").prop('disabled', true);
+                $("#messagebox").prop('placeholder', "NO TEXT CHANNELS");
+                Materialize.toast("You find yourself in a strange place. You don't have access to any text channels, or there are none in this server.", 20000);
+                return;
+            }
             selected_channel = curr_default_channel.channel.id;
         }
         var this_channel = guild_channels[selected_channel];
@@ -1246,6 +1252,9 @@
         var channel_id = selected_channel;
         var fet;
         var jumpscroll;
+        if (channel_id == null) {
+            return;
+        }
         $("#message-spinner").fadeIn();
         if (last_message_id == null) {
             $("#chatcontent").empty();
