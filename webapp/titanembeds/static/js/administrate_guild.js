@@ -1,4 +1,5 @@
 $('.chips').material_chip();
+$('select').material_select();
 
 $('#unauth_users').change(function() {
     var pathname = window.location.pathname;
@@ -153,6 +154,24 @@ function add_delete_banned_words(action, word) {
       Materialize.toast('Updated Banned Words list!', 2000)
     });
 }
+
+$("#autorole_unauth").change(function () {
+    var pathname = window.location.pathname;
+    var value = $(this).val();
+    var payload = {"autorole_unauth": value}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated Guest AutoRole setting!', 2000)
+    });
+});
+
+$("#autorole_discord").change(function () {
+    var pathname = window.location.pathname;
+    var value = $(this).val();
+    var payload = {"autorole_discord": value}
+    $.post(pathname, payload, function(data) {
+      Materialize.toast('Updated Discord AutoRole setting!', 2000)
+    });
+});
 
 function initiate_ban(guild_id, user_id) {
   var reason = prompt("Please enter your reason for ban");

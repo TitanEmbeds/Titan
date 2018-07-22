@@ -1,4 +1,4 @@
-from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api, check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled, redis_store, redisqueue
+from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api, check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled, redis_store, redisqueue, get_forced_role
 from titanembeds.database import db
 from flask_socketio import Namespace, emit, disconnect, join_room, leave_room
 import functools
@@ -21,10 +21,11 @@ class Gateway(Namespace):
             return
         session["socket_guild_id"] = guild_id
         channels = []
+        forced_role = get_forced_role(guild_id)
         if guild_accepts_visitors(guild_id) and not check_user_in_guild(guild_id):
-            channels = get_guild_channels(guild_id, force_everyone=True)
+            channels = get_guild_channels(guild_id, force_everyone=True, forced_role=forced_role)
         else:
-            channels = get_guild_channels(guild_id)
+            channels = get_guild_channels(guild_id, forced_role=forced_role)
         join_room("GUILD_"+guild_id)
         for chan in channels:
             if chan["read"]:
@@ -96,10 +97,11 @@ class Gateway(Namespace):
         guild_id = data["guild_id"]
         visitor_mode = data["visitor_mode"]
         channels = None
+        forced_role = get_forced_role(guild_id)
         if visitor_mode or session.get("unauthenticated", True):
-            channels = get_guild_channels(guild_id, True)
+            channels = get_guild_channels(guild_id, True, forced_role=forced_role)
         else:
-            channels = get_guild_channels(guild_id)
+            channels = get_guild_channels(guild_id, forced_role=forced_role)
         for chan in channels:
             if chan["read"]:
                 join_room("CHANNEL_"+chan["channel"]["id"])

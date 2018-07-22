@@ -213,6 +213,7 @@ def administrate_guild(guild_id):
     dbguild_dict = {
         "id": db_guild.guild_id,
         "name": guild["name"],
+        "roles": guild["roles"],
         "unauth_users": db_guild.unauth_users,
         "visitor_view": db_guild.visitor_view,
         "webhook_messages": db_guild.webhook_messages,
@@ -228,6 +229,8 @@ def administrate_guild(guild_id):
         "banned_words_enabled": db_guild.banned_words_enabled,
         "banned_words_global_included": db_guild.banned_words_global_included,
         "banned_words": json.loads(db_guild.banned_words),
+        "autorole_unauth": db_guild.autorole_unauth,
+        "autorole_discord": db_guild.autorole_discord
     }
     return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics, disabled=(guild_id in list_disabled_guilds()))
 
@@ -254,6 +257,8 @@ def update_administrate_guild(guild_id):
     db_guild.max_message_length = request.form.get("max_message_length", db_guild.max_message_length)
     db_guild.banned_words_enabled = request.form.get("banned_words_enabled", db_guild.banned_words_enabled) in ["true", True]
     db_guild.banned_words_global_included = request.form.get("banned_words_global_included", db_guild.banned_words_global_included) in ["true", True]
+    db_guild.autorole_unauth = request.form.get("autorole_unauth", db_guild.autorole_unauth, type=int)
+    db_guild.autorole_discord = request.form.get("autorole_discord", db_guild.autorole_discord, type=int)
     
     invite_link = request.form.get("invite_link", db_guild.invite_link)
     if invite_link != None and invite_link.strip() == "":
@@ -293,6 +298,8 @@ def update_administrate_guild(guild_id):
         banned_words_enabled=db_guild.banned_words_enabled,
         banned_words_global_included=db_guild.banned_words_global_included,
         banned_words=json.loads(db_guild.banned_words),
+        autorole_unauth=db_guild.autorole_unauth,
+        autorole_discord=db_guild.autorole_discord
     )
 
 @user.route("/add-bot/<guild_id>")

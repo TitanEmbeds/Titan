@@ -186,6 +186,34 @@
             </div>
             <p>(Hit enter after each word to add to list)</p>
             <div id="banned_words" class="chips"></div>
+            
+            <p class="flow-text">AutoRole Embed Users</p>
+            <p>A "hidden" role may be applied and inherited to users using the embed. Enabling this will allow the user to have different permission on the embed than in Discord. May be used so that the embed users see different channels for example.</p>
+            <div class="col s12">
+              <div class="input-field col m6 s12">
+                <select id="autorole_unauth">
+                  <option value="0" {% if not guild["autorole_unauth"] %}selected{% endif %}>No Role</option>
+                  {% for role in guild["roles"]|sort(attribute="position", reverse=True) %}
+                  {% if role.id|int != guild.id|int %}
+                  <option value="{{ role.id }}" {% if role.color %}style="color: #{{ '{0:0{1}x}'.format(role.color, 6) }};"{% endif %} {% if role.id|int == guild["autorole_unauth"]|int %}selected{% endif %}>{{ role.name }}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+                <label>Guests/Visitors Auto Role</label>
+              </div>
+              <div class="input-field col m6 s12">
+                <select id="autorole_discord">
+                  <option value="0" {% if not guild["autorole_unauth"] %}selected{% endif %}>No Role</option>
+                  {% for role in guild["roles"]|sort(attribute="position", reverse=True) %}
+                  {% if role.id|int != guild.id|int %}
+                  <option value="{{ role.id }}" {% if role.color %}style="color: #{{ '{0:0{1}x}'.format(role.color, 6) }};"{% endif %} {% if role.id|int == guild["autorole_discord"]|int %}selected{% endif %}>{{ role.name }}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+                <label>Discord Users Auto Role</label>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

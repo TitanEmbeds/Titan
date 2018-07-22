@@ -17,6 +17,8 @@ class Guilds(db.Model):
     banned_words_enabled = db.Column(db.Boolean(), nullable=False, server_default="0") # If banned words are enforced
     banned_words_global_included = db.Column(db.Boolean(), nullable=False, server_default="0") # Add global banned words to the list
     banned_words = db.Column(db.Text(), nullable=False, server_default="[]")    # JSON list of strings to block from sending
+    autorole_unauth = db.Column(db.BigInteger, nullable=True, server_default=None) # Automatic Role inherit for unauthenticated users
+    autorole_discord = db.Column(db.BigInteger, nullable=True, server_default=None) # Automatic Role inherit for discord users
 
     def __init__(self, guild_id):
         self.guild_id = guild_id

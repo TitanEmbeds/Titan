@@ -1,6 +1,6 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, get_administrators_list, get_badges, DiscordBotsOrgTransactions
 from titanembeds.decorators import valid_session_required, discord_users_only, abort_if_guild_disabled
-from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles, get_online_embed_user_keys, redis_store, redisqueue
+from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles, get_online_embed_user_keys, redis_store, redisqueue, get_forced_role
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 import titanembeds.constants as constants
 from flask import Blueprint, abort, jsonify, session, request, url_for
@@ -93,7 +93,8 @@ def format_everyone_mention(channel, content):
     return content
 
 def filter_guild_channel(guild_id, channel_id, force_everyone=False):
-    channels = get_guild_channels(guild_id, force_everyone)
+    forced_role = get_forced_role(guild_id)
+    channels = get_guild_channels(guild_id, force_everyone, forced_role)
     for chan in channels:
         if chan["channel"]["id"] == channel_id:
             return chan
@@ -426,7 +427,8 @@ def get_guild_guest_icon(guild_id):
 
 def process_query_guild(guild_id, visitor=False):
     widget = discord_api.get_widget(guild_id)
-    channels = get_guild_channels(guild_id, visitor)
+    forced_role = get_forced_role(guild_id)
+    channels = get_guild_channels(guild_id, visitor, forced_role=forced_role)
     if widget.get("success", True):
         discordmembers = get_online_discord_users(guild_id, widget)
     else:
