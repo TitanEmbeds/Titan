@@ -1,5 +1,11 @@
 /*global $, ace, Materialize, newCSS, CSS_ID, ADMIN*/
 (function () {
+    $(window).bind('beforeunload', function(){
+        if ($("#live_preview_warning").is(":visible")) {
+            return true;
+        }
+    });
+    
     if($("#css_editor").length != 0) {
         var editor = ace.edit("css_editor");
     }
