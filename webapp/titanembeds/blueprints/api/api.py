@@ -540,8 +540,6 @@ def webhook_discordbotsorg_vote():
     params = dict(parse_qsl(urlsplit(incoming.get("query", "")).query))
     if vote_type == "upvote":
         redis_store.set("DiscordBotsOrgVoted/" + user_id, "voted", 86400)
-    else:
-        redis_store.delete("DiscordBotsOrgVoted/" + user_id)
     referrer = None
     if "referrer" in params:
         try:

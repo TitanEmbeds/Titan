@@ -208,3 +208,17 @@ class RedisQueue:
             await self.delete_guild(guild)
             await self.on_get_guild(key, {"guild_id": guild.id})
         await self.enforce_expiring_key(key)
+    
+    async def on_get_user(self, key, params):
+        user = self.bot.get_user(int(params["user_id"]))
+        if not user:
+            await self.connection.set(key, "")
+            return
+        user_formatted = {
+            "id": user.id,
+            "username": user.name,
+            "discriminator": user.discriminator,
+            "avatar": user.avatar,
+            "bot": user.bot
+        }
+        await self.connection.set(key, json.dumps(user_formatted, separators=(',', ':')))

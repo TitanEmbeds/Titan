@@ -435,19 +435,9 @@ def voting_get():
     users = db.session.query(DiscordBotsOrgTransactions).filter(DiscordBotsOrgTransactions.timestamp >= start, DiscordBotsOrgTransactions.timestamp <= end).order_by(DiscordBotsOrgTransactions.timestamp)
     all_users = []
     for u in users:
-        uid = u.user_id # Let's fix this OBO error
-        gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
-        count = 0
-        if not gmember:
-            uid = uid - 10
-            while uid < u.user_id + 10:
-                gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
-                if gmember:
-                    break
-                uid = uid + 1
         all_users.append({
             "id": u.id,
-            "user_id": uid,
+            "user_id": u.user_id,
             "timestamp": u.timestamp,
             "action": u.action,
             "referrer": u.referrer
@@ -458,8 +448,6 @@ def voting_get():
         action = u["action"]
         if uid not in overall_votes:
             overall_votes[uid] = 0
-        if action == "none":
-            overall_votes[uid] = overall_votes[uid] - 1
         if action == "upvote":
             overall_votes[uid] = overall_votes[uid] + 1
     sorted_overall_votes = []
@@ -467,13 +455,13 @@ def voting_get():
         sorted_overall_votes.append(uid)
     overall = []
     for uid in sorted_overall_votes:
-        gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
+        gmember = redisqueue.get_user(uid)
         u = {
             "user_id": uid,
             "votes": overall_votes[uid]
         }
         if gmember:
-            u["discord"] = gmember.username + "#" + str(gmember.discriminator)
+            u["discord"] = gmember["username"] + "#" + str(gmember["discriminator"])
         overall.append(u)
     referrer = {}
     for u in all_users:
@@ -488,12 +476,12 @@ def voting_get():
         sorted_referrers.append(uid)
     referrals = []
     for uid in sorted_referrers:
-        gmember = db.session.query(GuildMembers).filter(GuildMembers.user_id == uid).first()
+        gmember = redisqueue.get_user(uid)
         u = {
             "user_id": uid,
             "votes": referrer[uid]
         }
         if gmember:
-            u["discord"] = gmember.username + "#" + str(gmember.discriminator)
+            u["discord"] = gmember["username"] + "#" + str(gmember["discriminator"])
         referrals.append(u)
     return render_template("admin_voting.html.j2", overall=overall, referrals=referrals, datestart=datestart, timestart=timestart, dateend=dateend, timeend=timeend)

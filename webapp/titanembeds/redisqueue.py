@@ -114,3 +114,8 @@ class RedisQueue:
         key = "/guilds/{}".format(guild_id)
         q = self.get(key, "get_guild", {"guild_id": guild_id})
         return q
+    
+    def get_user(self, user_id):
+        key = "/users/{}".format(user_id)
+        q = self.get(key, "get_user", {"user_id": user_id})
+        return q
