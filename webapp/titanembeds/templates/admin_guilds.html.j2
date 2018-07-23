@@ -4,9 +4,20 @@
 {% block content %}
 <h1>Manage Guilds (Admin)</h1>
 <p class="flow-text">Select a server to configure Titan Embeds. <strong>(Total server count: {{ servers|length }})</strong></p>
+<div class="col s12">
+  <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
+    <p class="black-text flow-text">Filter by ID</p>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="guild_id" type="text" class="validate black-text">
+        <label for="guild_id">Server/Embed ID</label>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row">
   {% for server in servers %}
-  <div class="col l4 m6 s12">
+  <div class="col l4 m6 s12 guild-card" data-guildid="{{ server.guild_id }}">
     <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
       <div class="row valign-wrapper">
         <div class="col s3">
@@ -19,14 +30,30 @@
         <div class="col s7">
           <span class="black-text">
             <p class="flow-text truncate">{{ server.name|e }}</p>
-            <br>
             <a class="waves-effect waves-light btn" href="{{url_for('admin.administrate_guild', guild_id=server['guild_id'])}}">Modify</a>
           </span>
         </div>
+      </div>
+      <div class="s12 black-text">
+        <p>ID: <code>{{ server.guild_id }}</code></p>
       </div>
     </div>
   </div>
   {% endfor %}
 </div>
-
+{% endblock %}
+{% block script %}
+<script>
+  $("#guild_id").keyup(function() {
+    var guildid = this.value.trim();
+    var cards = document.getElementsByClassName("guild-card");
+    for (var i = 0; i < cards.length; i++) {
+      if (cards[i].dataset.guildid.indexOf(guildid) > -1) {
+        cards[i].style.display = "";
+      } else {
+        cards[i].style.display = "none";
+      }
+    }
+  });
+</script>
 {% endblock %}

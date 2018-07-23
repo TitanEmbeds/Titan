@@ -256,7 +256,17 @@ def update_administrate_guild(guild_id):
 @admin.route("/guilds")
 @is_admin
 def guilds():
-    guilds = db.session.query(Guilds).all()
+    guilds = []
+    dbguilds = db.session.query(Guilds).all()
+    for guild in dbguilds:
+        rguild = redisqueue.get_guild(guild.guild_id)
+        if not rguild:
+            continue
+        guilds.append({
+            "guild_id": guild.guild_id,
+            "name": rguild["name"],
+            "icon": rguild["icon"]
+        })
     return render_template("admin_guilds.html.j2", servers=guilds, icon_generate=generate_guild_icon_url)
 
 @admin.route("/tokens", methods=["GET"])
