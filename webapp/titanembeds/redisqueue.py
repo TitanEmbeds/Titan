@@ -85,7 +85,7 @@ class RedisQueue:
                     mention["discriminator"] = author["discriminator"]
             msgs.append(message)
         sorted_msgs = sorted(msgs, key=lambda k: k['id'], reverse=True) 
-        return sorted_msgs
+        return sorted_msgs[:50] # only return last 50 messages in cache please
 
     def get_guild_member(self, guild_id, user_id):
         key = "/guilds/{}/members/{}".format(guild_id, user_id)
