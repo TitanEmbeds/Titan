@@ -350,7 +350,7 @@
     </script>
     
     <script id="mustache_usermessage" type="text/template">
-      <p><img class="authoravatar" src="{{avatar}}"> <span class="chatusername"><span class="authorname">{{username}}</span><span class="authorhash">#</span><span class="authordiscriminator">{{discriminator}}</span></span> <span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatmessage">{{{content}}}</span><span class="embeds"></span></p>
+      <p><img class="authoravatar" src="{{avatar}}"> <span class="chatusername"><span class="authorname">{{username}}</span><span class="authorhash">#</span><span class="authordiscriminator">{{discriminator}}</span></span> <span id="discordmessage_{{id}}" title="{{full_timestamp}}" class="chattimestamp">{{time}}</span> <span class="chatmessage">{{{content}}}</span><span class="embeds"></span><span class="reactions"></span></p>
     </script>
 
     <script id="mustache_memberrole" type="text/template">
@@ -480,6 +480,10 @@
             <span class="username">{{ username }}</span><span class="hash">#</span><span class="discriminator">{{ discriminator }}</span>
           </span>
         </div>
+    </script>
+    
+    <script id="mustache_reactionchip" type="text/template">
+      <span class="reaction tooltipped" data-position="top" data-delay="200" data-tooltip="{{#emoji.id}}:{{/emoji.id}}{{emoji.name}}{{#emoji.id}}:{{/emoji.id}}"><img src="{{img_url}}"> <span class="count">{{count}}</span></span>
     </script>
     {% endraw %}
 

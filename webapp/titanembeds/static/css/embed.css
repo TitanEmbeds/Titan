@@ -793,6 +793,42 @@ p.mentioned span.chatmessage {
   max-width: 400px;
 }
 
+#chatcontent span.reactions {
+  display: block;
+}
+
+#chatcontent span.reactions .reaction {
+  background-color: rgba(0, 0, 0, 0.1);
+  font-size: 12pt;
+  border-radius: 5px;
+  margin-left: 6px;
+  padding-left: 3px;
+  padding-right: 3px;
+  color: #C3C4C5;
+  cursor: pointer;
+  height: 27px;
+  display: inline-block;
+  min-width: 50px;
+}
+
+#chatcontent span.reactions .reaction:hover {
+  transform: scale(1.3);
+}
+
+#chatcontent span.reactions .reaction:hover:active {
+  transform: scale(0.9);
+}
+
+#chatcontent span.reactions .reaction img {
+  width: 18px;
+  vertical-align: middle;
+}
+
+#chatcontent span.reactions .reaction .count {
+  float: right;
+  margin-right: 6px;
+}
+
 .wdt-emoji-popup {
   position: fixed;
   bottom: 5%;

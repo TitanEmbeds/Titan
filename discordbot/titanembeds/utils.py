@@ -36,6 +36,8 @@ def get_formatted_message(message):
             member = message.guild.get_member(mention["id"])
             if member:
                 mention["nickname"] = member.nick
+    if hasattr(message, "reactions"):
+        msg["reactions"] = get_message_reactions(message.reactions)
     return msg
 
 def get_formatted_user(user):
@@ -247,3 +249,25 @@ def get_embeds_list(embeds):
     for e in embeds:
         em.append(e.to_dict())
     return em
+
+def get_message_reactions(reactions):
+    reacts = []
+    for reaction in reactions:
+        reacts.append({
+            "emoji": get_partial_emoji(reaction.emoji),
+            "count": reaction.count
+        })
+    return reacts
+
+def get_partial_emoji(emoji):
+    emote = {
+        "animated": False,
+        "id": None,
+        "name": str(emoji)
+    }
+    if isinstance(emoji, str):
+        return emote
+    emote["animated"] = emoji.animated
+    emote["id"] = str(emoji.id)
+    emote["name"] = emoji.name
+    return emote

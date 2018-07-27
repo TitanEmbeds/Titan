@@ -102,6 +102,18 @@ class Titan(discord.AutoShardedClient):
         self.delete_list.append(message.id)
         await self.redisqueue.delete_message(message)
         await self.socketio.on_message_delete(message)
+        
+    async def on_reaction_add(self, reaction, user):
+        await self.redisqueue.update_message(reaction.message)
+        await self.socketio.on_reaction_add(reaction.message)
+    
+    async def on_reaction_remove(self, reaction, user):
+        await self.redisqueue.update_message(reaction.message)
+        await self.socketio.on_reaction_remove(reaction.message)
+    
+    async def on_reaction_clear(self, message, reactions):
+        await self.redisqueue.update_message(message)
+        await self.socketio.on_reaction_clear(message)
 
     async def on_guild_join(self, guild):
         await self.redisqueue.update_guild(guild)
@@ -205,6 +217,31 @@ class Titan(discord.AutoShardedClient):
         data = {'content': "What fun is there in making sense?", 'type': 0, 'edited_timestamp': None, 'id': msg_id, 'channel_id': channel_id, 'timestamp': '2017-01-15T02:59:58+00:00'}
         msg = discord.Message(channel=channel, state=self._connection, data=data) # Procreate a fake message object
         await self.on_message_delete(msg)
+    
+    async def on_raw_reaction_add(self, payload):
+        message_id = payload.message_id
+        if not self.in_messages_cache(message_id):
+            channel = self.get_channel(payload.channel_id)
+            message = await channel.get_message(message_id)
+            await self.on_reaction_add(message.reactions[0], None)
+    
+    async def on_raw_reaction_remove(self, payload):
+        message_id = payload.message_id
+        if not self.in_messages_cache(message_id):
+            partial = payload.emoji
+            emoji = self._connection._upgrade_partial_emoji(partial)
+            channel = self.get_channel(payload.channel_id)
+            message = await channel.get_message(message_id)
+            message._add_reaction({"me": payload.user_id == self.user.id}, emoji, payload.user_id)
+            reaction = message._remove_reaction({}, emoji, payload.user_id)
+            await self.on_reaction_remove(reaction, None)
+    
+    async def on_raw_reaction_clear(self, payload):
+        message_id = payload.message_id
+        if not self.in_messages_cache(message_id):
+            channel = self.get_channel(payload.channel_id)
+            message = await channel.get_message(message_id)
+            await self.on_reaction_clear(message, [])
     
     def in_messages_cache(self, msg_id):
         for msg in self._connection._messages:

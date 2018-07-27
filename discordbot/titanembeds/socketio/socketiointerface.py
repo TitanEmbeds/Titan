@@ -22,6 +22,21 @@ class SocketIOInterface:
             msg = get_formatted_message(message)
             await self.io.emit('MESSAGE_UPDATE', data=msg, room=str("CHANNEL_"+str(message.channel.id)), namespace='/gateway')
 
+    async def on_reaction_add(self, message):
+        if message.guild:
+            msg = get_formatted_message(message)
+            await self.io.emit('MESSAGE_REACTION_ADD', data=msg, room=str("CHANNEL_"+str(message.channel.id)), namespace='/gateway')
+
+    async def on_reaction_remove(self, message):
+        if message.guild:
+            msg = get_formatted_message(message)
+            await self.io.emit('MESSAGE_REACTION_REMOVE', data=msg, room=str("CHANNEL_"+str(message.channel.id)), namespace='/gateway')
+
+    async def on_reaction_clear(self, message):
+        if message.guild:
+            msg = get_formatted_message(message)
+            await self.io.emit('MESSAGE_REACTION_REMOVE_ALL', data=msg, room=str("CHANNEL_"+str(message.channel.id)), namespace='/gateway')
+
     async def on_guild_member_add(self, member):
         user = get_formatted_user(member)
         await self.io.emit('GUILD_MEMBER_ADD', data=user, room=str("GUILD_"+str(member.guild.id)), namespace='/gateway')

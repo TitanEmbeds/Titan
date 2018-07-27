@@ -59,6 +59,7 @@ class RedisQueue:
                 "channel_id": str(x["channel_id"]),
                 "mentions": x["mentions"],
                 "embeds": x["embeds"],
+                "reactions": x["reactions"]
             }
             if message["author"]["id"] not in guild_members:
                 member = self.get_guild_member(guild_id, message["author"]["id"])

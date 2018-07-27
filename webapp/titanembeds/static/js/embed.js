@@ -1152,6 +1152,29 @@
         }
         return emb;
     }
+    
+    function parse_message_reactions(reactions) {
+        var reacts = []
+        var template = $("#mustache_reactionchip").html();
+        Mustache.parse(template);
+        for (var i = 0; i < reactions.length; i++) {
+            var disreact = reactions[i];
+            var emoji = disreact.emoji;
+            if (emoji.id) {
+                disreact.img_url = "https://cdn.discordapp.com/emojis/" + emoji.id;
+                if (emoji.animated) {
+                    disreact.img_url += ".gif";
+                } else {
+                    disreact.img_url += ".png";
+                }
+            } else {
+                disreact.img_url = $(twemoji.parse(emoji.name)).attr("src");
+            }
+            var rendered = Mustache.render(template, disreact);
+            reacts.push(rendered);
+        }
+        return reacts;
+    }
 
     function fill_discord_messages(messages, jumpscroll, replace) {
         if (replace === undefined) {
@@ -1214,6 +1237,11 @@
             $("#discordmessage_"+message.id).parent().find("span.embeds").text("");
             for(var j = 0; j < embeds.length; j++) {
                 $("#discordmessage_"+message.id).parent().find("span.embeds").append(embeds[j]);
+            }
+            var reactions = parse_message_reactions(message.reactions);
+            $("#discordmessage_"+message.id).parent().find("span.reactions").text("");
+            for(var j = 0; j < reactions.length; j++) {
+                $("#discordmessage_"+message.id).parent().find("span.reactions").append(reactions[j]);
             }
             var usrcachekey = username + "#" + message.author.discriminator;
             if (usrcachekey.startsWith("(Titan Dev) ")) {
@@ -1775,6 +1803,33 @@
         });
         
         socket.on("MESSAGE_UPDATE", function (msg) {
+            var msgelem = $("#discordmessage_"+msg.id);
+            if (msgelem.length == 0) {
+                return;
+            }
+            var msgelem_parent = msgelem.parent();
+            fill_discord_messages([msg], false, msgelem_parent);
+        });
+        
+        socket.on("MESSAGE_REACTION_ADD", function (msg) {
+            var msgelem = $("#discordmessage_"+msg.id);
+            if (msgelem.length == 0) {
+                return;
+            }
+            var msgelem_parent = msgelem.parent();
+            fill_discord_messages([msg], false, msgelem_parent);
+        });
+        
+        socket.on("MESSAGE_REACTION_REMOVE", function (msg) {
+            var msgelem = $("#discordmessage_"+msg.id);
+            if (msgelem.length == 0) {
+                return;
+            }
+            var msgelem_parent = msgelem.parent();
+            fill_discord_messages([msg], false, msgelem_parent);
+        });
+        
+        socket.on("MESSAGE_REACTION_REMOVE_ALL", function (msg) {
             var msgelem = $("#discordmessage_"+msg.id);
             if (msgelem.length == 0) {
                 return;
