@@ -99,6 +99,7 @@
             return;
         }
         
+        $("#live_preview_warning").hide();
         var formPost = postForm();
         formPost.done(function (data) {
             if (newCSS) {
@@ -111,6 +112,7 @@
         });
         formPost.fail(function () {
             Materialize.toast('Oh no! Something has failed posting your CSS!', 10000);
+            $("#live_preview_warning").show();
         });
     }
 
