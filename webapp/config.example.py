@@ -27,4 +27,7 @@ config = {
     
     # https://titanembeds.com/api/webhook/discordbotsorg/vote
     'discordbotsorg-webhook-secret': "Secret code used in the authorization header for DBL webhook",
+    
+    # Sentry.io is used to track and upload errors
+    "sentry-dsn": "Copy the dns string when creating a project on sentry",
 }

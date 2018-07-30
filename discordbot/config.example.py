@@ -10,4 +10,6 @@ config = {
     'bots-discord-pw-token': "bots.discord.pw Post Stats Token",
     
     'logging-location': "/home/titan/Titan/discordbot/titanbot.log",
+    
+    "sentry-dsn": "Copy the dns string when creating a project on sentry",
 }

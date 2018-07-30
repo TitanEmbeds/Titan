@@ -40,6 +40,10 @@ def init_debug():
             subprocess.Popen("git pull", shell=True).wait()
         except OSError:
             return "ERROR"
+    
+    @app.route("/error")
+    def make_error():
+        1 / 0
 
         return "OK"
 if __name__ == "__main__":

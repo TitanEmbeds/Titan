@@ -1,0 +1,11 @@
+<!-- Sentry JS SDK 2.1.+ required -->
+<script src="https://cdn.ravenjs.com/2.3.0/raven.min.js"></script>
+
+{% if event_id %}
+  <script>
+  Raven.showReportDialog({
+    eventId: '{{ event_id }}',
+    dsn: '{{ public_dsn }}'
+  });
+  </script>
+{% endif %}

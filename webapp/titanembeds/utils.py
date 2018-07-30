@@ -7,6 +7,7 @@ from flask_babel import Babel
 from flask_redis import FlaskRedis
 from config import config
 from sqlalchemy import and_
+from raven.contrib.flask import Sentry
 import random
 import string
 import hashlib
@@ -352,6 +353,7 @@ def is_int(specimen):
 rate_limiter = Limiter(key_func=get_client_ipaddr) # Default limit by ip address
 socketio = SocketIO(engineio_logger=config.get("engineio-logging", False))
 babel = Babel()
+sentry = Sentry(dsn=config.get("sentry-dsn", None))
 
 @socketio.on_error_default  # disconnect on all errors
 def default_socketio_error_handler(e):
