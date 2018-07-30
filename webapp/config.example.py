@@ -30,4 +30,5 @@ config = {
     
     # Sentry.io is used to track and upload errors
     "sentry-dsn": "Copy the dns string when creating a project on sentry",
+    "sentry-js-dsn": "Same as above, but you can create a seperate sentry project to track the client side js errors",
 }

@@ -336,6 +336,8 @@
     <script src="{{ url_for('static', filename='js/vendor/emoji.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/vendor/wdt-emoji-bundle.min.js') }}"></script>
 
+    {% include 'sentry_js_init.html.j2' %}
+
     {% raw %}
     <script id="mustache_channellistings" type="text/template">
       <li><a class="waves-effect truncate" id="channel-{{channelid}}"><span class="channel-hash">#</span> {{channelname}}</a></li>

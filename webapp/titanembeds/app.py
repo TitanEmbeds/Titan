@@ -88,6 +88,7 @@ def before_first_request():
 def context_processor():
     return {
         "devs": get_administrators_list(),
+        "sentry_js_dsn": config.get("sentry-js-dsn", None),
         "constants": constants,
         "af_mode_enabled": datetime.datetime.now().date() == datetime.date(datetime.datetime.now().year, 4, 1),
         "dbl_voted": session.get("unauthenticated", True) == False and bool(redis_store.get("DiscordBotsOrgVoted/" + str(session.get("user_id", -1))))
