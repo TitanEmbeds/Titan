@@ -14,7 +14,7 @@ Flask-Babel
 patreon
 flask-redis
 gino
-sqlalchemy==1.2.8
+sqlalchemy==1.2.10
 asyncio_redis
 raven
 raven[flask]
