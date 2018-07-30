@@ -16,5 +16,4 @@ flask-redis
 gino
 sqlalchemy==1.2.10
 asyncio_redis
-raven
 raven[flask]
