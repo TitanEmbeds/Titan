@@ -124,10 +124,11 @@ class RedisQueue:
         member = self.bot.get_guild(int(params["guild_id"])).get_member(int(params["user_id"]))
         if not member:
             await self.connection.set(key, "")
+            await self.enforce_expiring_key(key)
             return
         user = get_formatted_user(member)
-        await self.enforce_expiring_key(key)
         await self.connection.set(key, json.dumps(user, separators=(',', ':')))
+        await self.enforce_expiring_key(key)
     
     async def on_get_guild_member_named(self, key, params):
         guild = self.bot.get_guild(int(params["guild_id"]))
@@ -148,6 +149,7 @@ class RedisQueue:
             get_guild_member_param = {"guild_id": guild.id, "user_id": result_id}
             await self.on_get_guild_member(get_guild_member_key, get_guild_member_param)
         await self.connection.set(key, result)
+        await self.enforce_expiring_key(key)
     
     async def on_list_guild_members(self, key, params):
         guild = self.bot.get_guild(int(params["guild_id"]))
@@ -185,6 +187,7 @@ class RedisQueue:
         guild = self.bot.get_guild(int(params["guild_id"]))
         if not guild:
             await self.connection.set(key, "")
+            await self.enforce_expiring_key(key)
             return
         if guild.me.guild_permissions.manage_webhooks:
             try:
@@ -213,6 +216,7 @@ class RedisQueue:
         user = self.bot.get_user(int(params["user_id"]))
         if not user:
             await self.connection.set(key, "")
+            await self.enforce_expiring_key(key)
             return
         user_formatted = {
             "id": user.id,
@@ -222,3 +226,4 @@ class RedisQueue:
             "bot": user.bot
         }
         await self.connection.set(key, json.dumps(user_formatted, separators=(',', ':')))
+        await self.enforce_expiring_key(key)
