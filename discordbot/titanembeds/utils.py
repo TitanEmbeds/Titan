@@ -43,7 +43,7 @@ def get_formatted_message(message):
 def get_formatted_user(user):
     userobj = {
         "avatar": user.avatar,
-        "avatar_url": user.avatar_url,
+        "avatar_url": user.avatar_url_as(format="png", size=512),
         "color": str(user.color)[1:],
         "discriminator": user.discriminator,
         "game": None,
