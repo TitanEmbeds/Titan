@@ -381,6 +381,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 .modal {
   background-color: #546E7A;
   background-color: var(--modal);
+  border-radius: 25px;
 }
 
 .modal-overlay {
