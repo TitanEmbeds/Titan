@@ -311,6 +311,12 @@
             }
         });
         
+        $("#chatcontent").click(function () {
+            if (!$('#messagebox').prop('disabled')) {
+                $("#messagebox").focus();
+            }
+        });
+        
         if (disabled) {
             Materialize.toast('This server is currently disabled. If you are an administrator of this server, please get in touch with a TitanEmbeds team member to lift the ban.', 100000);
             return;
