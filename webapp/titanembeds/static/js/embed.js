@@ -463,6 +463,7 @@
     function lock_login_fields() {
         $("#loginProgress").show();
         $("#discordlogin_btn").attr("disabled",true);
+        $("#guestlogin_btn").attr("disabled",true);
         $("#custom_username_field").prop("disabled",true);
         logintimer = setTimeout(function() {
             unlock_login_fields();
@@ -1514,7 +1515,7 @@
 
     $("#submit-unauthenticated-captcha-btn").click(function(){
         lock_login_fields();
-        var usr = create_unauthenticated_user($("#custom_username_field").val(), grecaptcha.getResponse());
+        var usr = create_unauthenticated_user($("#").val(), grecaptcha.getResponse());
         usr.done(function(data) {
             grecaptcha.reset();
             setVisitorMode(false);
