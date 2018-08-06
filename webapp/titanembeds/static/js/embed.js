@@ -1515,7 +1515,7 @@
 
     $("#submit-unauthenticated-captcha-btn").click(function(){
         lock_login_fields();
-        var usr = create_unauthenticated_user($("#").val(), grecaptcha.getResponse());
+        var usr = create_unauthenticated_user($("#custom_username_field").val(), grecaptcha.getResponse());
         usr.done(function(data) {
             grecaptcha.reset();
             setVisitorMode(false);
