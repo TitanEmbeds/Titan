@@ -51,6 +51,7 @@
     var display_richembeds; // true/false - if rich embeds should be displayed
     var guild_roles_list = []; // List of all guild roles
     var all_users = []; // List of all the users in guild
+    var is_dragging_chatcontainer = false; // Track if is dragging on chatcontainer (does not trigger messagebox focus) or not
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -311,11 +312,21 @@
             }
         });
         
-        $("#chatcontent").click(function () {
-            if (!$('#messagebox').prop('disabled')) {
-                $("#messagebox").focus();
-            }
-        });
+        $("#chatcontent")
+            .mousedown(function () {
+                $(window).mousemove(function() {
+                    is_dragging_chatcontainer = true;
+                    $(window).unbind("mousemove");
+                });
+            })
+            .mouseup(function () {
+                var wasDragging = is_dragging_chatcontainer;
+                is_dragging_chatcontainer = false;
+                $(window).unbind("mousemove");
+                if (!wasDragging) {
+                    $("#messagebox").focus();
+                }
+            });
         
         if (disabled) {
             Materialize.toast('This server is currently disabled. If you are an administrator of this server, please get in touch with a TitanEmbeds team member to lift the ban.', 100000);
