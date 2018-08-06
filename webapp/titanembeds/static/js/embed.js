@@ -52,6 +52,7 @@
     var guild_roles_list = []; // List of all guild roles
     var all_users = []; // List of all the users in guild
     var is_dragging_chatcontainer = false; // Track if is dragging on chatcontainer (does not trigger messagebox focus) or not
+    var localstorage_avaliable = false; // Check if localstorage is avaliable on this browser
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -162,7 +163,21 @@
         return funct.promise();
     }
     
+    function performLocalStorageTest() {
+        var test = 'test';
+        try {
+            localStorage.setItem(test, test);
+            localStorage.removeItem(test);
+            localstorage_avaliable = true;
+            return true;
+        } catch(e) {
+            localstorage_avaliable = false;
+            return false;
+        }
+    }
+    
     $(function() {
+        performLocalStorageTest();
         if ($("#user-defined-css").length > 0) {
             user_def_css = $("#user-defined-css").text();
         }
@@ -247,7 +262,10 @@
         wdtEmojiBundle.init('#messagebox');
         
         var themeparam = getParameterByName('theme');
-        var localstore_theme = localStorage.getItem("theme");
+        var localstore_theme = "";
+        if (localstorage_avaliable) {
+            localstore_theme = localStorage.getItem("theme");
+        }
         if ((themeparam && $.inArray(themeparam, theme_options) != -1) || (localstore_theme)) {
             var theme;
             if (themeparam) {
@@ -264,7 +282,10 @@
         $("[name=notification_sound_radiobtn]").click(function (event) {
             changeNotificationSound(event.target.value);
         });
-        var localstore_notification_sound = localStorage.getItem("notification_sound");
+        var localstore_notification_sound = "";
+        if (localstorage_avaliable) {
+            localstore_notification_sound = localStorage.getItem("notification_sound");
+        }
         if (localstore_notification_sound) {
             changeNotificationSound(localstore_notification_sound);
         } else {
@@ -282,7 +303,10 @@
             localStorage.setItem("display_richembeds", display_richembeds);
             $("[name=richembed_toggle_radiobtn][value=" + display_richembeds + "]").prop("checked", true);
         });
-        var localstore_display_richembeds = localStorage.getItem("display_richembeds");
+        var localstore_display_richembeds = "";
+        if (localstorage_avaliable) {
+            localstore_display_richembeds = localStorage.getItem("display_richembeds");
+        }
         if (localstore_display_richembeds) {
             display_richembeds = !(localstore_display_richembeds == "false");
         } else {
@@ -476,7 +500,10 @@
     }
     
     function displayDblAdvert() {
-        var hideDblUntil = localStorage.getItem("hideDiscordBotsOrgVoteAdUntil");
+        var hideDblUntil = "";
+        if (localstorage_avaliable) {
+            localstorage_avaliable = localStorage.getItem("hideDiscordBotsOrgVoteAdUntil");
+        }
         var now = moment();
         var hideDblUntilMoment = null;
         if (hideDblUntil) {
