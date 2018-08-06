@@ -149,6 +149,7 @@
                   <p id="guest_login_instr">{{ _("Of course, you also have the option to login by picking a temporary username for your current browsing session.") }}</p>
                   <input id="custom_username_field" type="text" {% if session.unauthenticated and session.username %}value="{{ session['username'] }}"{% endif %}>
                   <label id="custom_username_field_label" class="active" for="custom_username_field">{{ _("Username (Hit ENTER/RETURN key to confirm)") }}</label>
+                  <a id="guestlogin_btn" class="waves-effect waves-light btn-large">Guest Login</a>
                 </div>
                 {% endif %}
               </div>

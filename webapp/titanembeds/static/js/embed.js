@@ -1489,20 +1489,28 @@
     
     $("#custom_username_field").keyup(function(event){
         if (event.keyCode == 13) {
-            if (!(new RegExp(/^[a-z\d\-_\s]+$/i).test($(this).val()))) {
-                Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
-                return;
-            }
-            if($(this).val().length >= 2 && $(this).val().length <= 32) {
-                $("#custom_username_field").blur();
-                if (unauth_captcha_enabled) {
-                    $('#recaptchamodal').modal('open');
-                } else {
-                    submit_unauthenticated_captcha();
-                }
-            }
+            do_guest_login();
         }
     });
+    
+    $("#guestlogin_btn").click(function () {
+        do_guest_login();
+    });
+
+    function do_guest_login() {
+        if (!(new RegExp(/^[a-z\d\-_\s]+$/i).test($("#custom_username_field").val()))) {
+            Materialize.toast('Illegal username provided! Only alphanumeric, spaces, dashes, and underscores allowed in usernames.', 10000);
+            return;
+        }
+        if($("#custom_username_field").val().length >= 2 && $("#custom_username_field").val().length <= 32) {
+            $("#custom_username_field").blur();
+            if (unauth_captcha_enabled) {
+                $('#recaptchamodal').modal('open');
+            } else {
+                submit_unauthenticated_captcha();
+            }
+        }
+    }
 
     $("#submit-unauthenticated-captcha-btn").click(function(){
         lock_login_fields();

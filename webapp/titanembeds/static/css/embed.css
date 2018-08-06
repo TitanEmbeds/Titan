@@ -446,6 +446,10 @@ a {
   max-width: 100%;
 }
 
+#guestlogin_btn {
+  display: none;
+}
+
 #modal_invite_btn {
   padding: 0 1em;
 }
