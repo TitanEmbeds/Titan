@@ -67,6 +67,138 @@ QUERY_PARAMETERS = [
         ],
     },
     {
+        "name": "scrollbartheme",
+        "type": "string",
+        "description": "Sets the scrollbar theme. View the demo of all themes <a href=\"http://manos.malihu.gr/repository/custom-scrollbar/demo/examples/scrollbar_themes_demo.html\" target=\"_blank\">here</a>. Or create your own theme by overriding <a href=\"https://i.imgur.com/SZPL0ag.png\" target=\"_blank\">these classes</a> and following at <a href=\"https://github.com/malihu/malihu-custom-scrollbar-plugin/blob/master/jquery.mCustomScrollbar.css\" target=\"_blank\">these examples</a>!",
+        "example": "3d-dark",
+        "options": [
+            {
+                "name": "light",
+                "default": True,
+            },
+            {
+                "name": "dark",
+                "default": False,
+            },
+            {
+                "name": "minimal",
+                "default": False,
+            },
+            {
+                "name": "minimal-dark",
+                "default": False,
+            },
+            {
+                "name": "light-2",
+                "default": False,
+            },
+            {
+                "name": "dark-2",
+                "default": False,
+            },
+            {
+                "name": "light-3",
+                "default": False,
+            },
+            {
+                "name": "dark-3",
+                "default": False,
+            },
+            {
+                "name": "light-thick",
+                "default": False,
+            },
+            {
+                "name": "dark-thick",
+                "default": False,
+            },
+            {
+                "name": "light-thin",
+                "default": False,
+            },
+            {
+                "name": "dark-thin",
+                "default": False,
+            },
+            {
+                "name": "inset",
+                "default": False,
+            },
+            {
+                "name": "inset-dark",
+                "default": False,
+            },
+            {
+                "name": "inset-2",
+                "default": False,
+            },
+            {
+                "name": "inset-2-dark",
+                "default": False,
+            },
+            {
+                "name": "inset-3",
+                "default": False,
+            },
+            {
+                "name": "inset-3-dark",
+                "default": False,
+            },
+            {
+                "name": "rounded",
+                "default": False,
+            },
+            {
+                "name": "rounded-dark",
+                "default": False,
+            },
+            {
+                "name": "rounded-dots",
+                "default": False,
+            },
+            {
+                "name": "rounded-dots-dark",
+                "default": False,
+            },
+            {
+                "name": "3d",
+                "default": False,
+            },
+            {
+                "name": "3d-dark",
+                "default": False,
+            },
+            {
+                "name": "3d-thick",
+                "default": False,
+            },
+            {
+                "name": "3d-thick-dark",
+                "default": False,
+            },
+            {
+                "name": "custom",
+                "default": False,
+            },
+        ],
+    },
+    {
+        "name": "showscrollbar",
+        "type": "boolean",
+        "description": "Shows the scrollbar permanently without autohiding.",
+        "example": "true",
+        "options": [
+            {
+                "name": "true",
+                "default": False,
+            },
+            {
+                "name": "false",
+                "default": True,
+            },
+        ],
+    },
+    {
         "name": "theme",
         "type": "string",
         "description": "Want your embed to use one of our premade themes? Look no further!",

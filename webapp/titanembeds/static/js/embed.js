@@ -328,7 +328,7 @@
             if (!has_already_been_initially_resized) {
                 has_already_been_initially_resized = true;
                 if (has_handled_noscroll) {
-                    $("html, body").animate({ scrollTop: $(document).height() }, "fast");
+                    $("main").mCustomScrollbar("scrollTo", "bottom", {scrollEasing:"easeOut"});
                 } else {
                     has_handled_noscroll = true;
                     Materialize.toast('Continue scrolling to read on...', 5000);
@@ -351,6 +351,21 @@
                     $("#messagebox").focus();
                 }
             });
+        
+        var showScrollbar = getParameterByName("showscrollbar") == "true";
+        if (showScrollbar) {
+            showScrollbar = 2;
+        } else {
+            showScrollbar = 0;
+        }
+        var scrollbarTheme = getParameterByName("scrollbartheme");
+        if (!scrollbarTheme) {
+            scrollbarTheme = "light";
+        }
+        $("main").mCustomScrollbar({
+            alwaysShowScrollbar: showScrollbar,
+            theme: scrollbarTheme
+        });
         
         if (disabled) {
             Materialize.toast('This server is currently disabled. If you are an administrator of this server, please get in touch with a TitanEmbeds team member to lift the ban.', 100000);
@@ -1304,12 +1319,17 @@
         if ($("#chatcontent p:last-child.mentioned").length) {
             play_notification_sound("mention");
         }
+        
         if (replace == null && jumpscroll) {
             if (!has_handled_noscroll) {
                 has_handled_noscroll = true;
                 Materialize.toast('Continue scrolling to read on...', 5000);
             } else {
-                $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                $("main .mCSB_container").animate({
+                    top: -1 * ($("main .mCSB_container").height() - $(window).height())
+                }, "slow", function () {
+                    $("main").mCustomScrollbar("update");
+                });
             }
         }
         $('#chatcontent').linkify({

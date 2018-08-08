@@ -48,9 +48,19 @@ html {
   }
 }
 
+body, #overall-main-content {
+  height: 100vh;
+}
+
+#overall-main-content {
+  overflow-y: hidden;
+}
+
 main {
+  overflow-y: scroll;
   min-height: calc(100vh - 80px);
   overflow-x: hidden;
+  height: 100%;
 }
 
 footer {
@@ -172,7 +182,7 @@ nav .brand-logo {
   padding-left: 1%;
   padding-top: 1%;
   padding-bottom: 40px;
-  margin-bottom: 13px;
+  margin-bottom: 90px;
   word-wrap: break-word;
 }
 
