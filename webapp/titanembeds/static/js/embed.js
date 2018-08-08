@@ -518,7 +518,7 @@
     function displayDblAdvert() {
         var hideDblUntil = "";
         if (localstorage_avaliable) {
-            localstorage_avaliable = localStorage.getItem("hideDiscordBotsOrgVoteAdUntil");
+            hideDblUntil = localStorage.getItem("hideDiscordBotsOrgVoteAdUntil");
         }
         var now = moment();
         var hideDblUntilMoment = null;
