@@ -328,7 +328,11 @@
             if (!has_already_been_initially_resized) {
                 has_already_been_initially_resized = true;
                 if (has_handled_noscroll) {
-                    $("main").mCustomScrollbar("scrollTo", "bottom", {scrollEasing:"easeOut"});
+                    if (getParameterByName("scrollbartheme")) {
+                        $("main").mCustomScrollbar("scrollTo", "bottom", {scrollEasing:"easeOut"});
+                    } else {
+                        $("main").animate({ scrollTop: $("#chatcontent").height() }, "slow");
+                    }
                 } else {
                     has_handled_noscroll = true;
                     Materialize.toast('Continue scrolling to read on...', 5000);
@@ -359,13 +363,12 @@
             showScrollbar = 0;
         }
         var scrollbarTheme = getParameterByName("scrollbartheme");
-        if (!scrollbarTheme) {
-            scrollbarTheme = "light";
+        if (scrollbarTheme) {
+            $("main").mCustomScrollbar({
+                autoHideScrollbar: !showScrollbar,
+                theme: scrollbarTheme
+            });
         }
-        $("main").mCustomScrollbar({
-            autoHideScrollbar: !showScrollbar,
-            theme: scrollbarTheme
-        });
         
         if (disabled) {
             Materialize.toast('This server is currently disabled. If you are an administrator of this server, please get in touch with a TitanEmbeds team member to lift the ban.', 100000);
@@ -1325,12 +1328,16 @@
                 has_handled_noscroll = true;
                 Materialize.toast('Continue scrolling to read on...', 5000);
             } else {
-                if ($(window).height() < $("main .mCSB_container").height()) {
-                    $("main .mCSB_container").animate({
-                        top: -1 * ($("main .mCSB_container").height() - $(window).height())
-                    }, "slow", function () {
-                        $("main").mCustomScrollbar("update");
-                    });
+                if (getParameterByName("scrollbartheme")) {
+                    if ($(window).height() < $("main .mCSB_container").height()) {
+                        $("main .mCSB_container").animate({
+                            top: -1 * ($("main .mCSB_container").height() - $(window).height())
+                        }, "slow", function () {
+                            $("main").mCustomScrollbar("update");
+                        });
+                    }
+                } else {
+                    $("main").animate({ scrollTop: $("#chatcontent").height() }, "slow");
                 }
             }
         }

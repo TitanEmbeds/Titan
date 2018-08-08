@@ -74,7 +74,7 @@ QUERY_PARAMETERS = [
         "options": [
             {
                 "name": "light",
-                "default": True,
+                "default": False,
             },
             {
                 "name": "dark",
@@ -185,7 +185,7 @@ QUERY_PARAMETERS = [
     {
         "name": "showscrollbar",
         "type": "boolean",
-        "description": "Shows the scrollbar permanently without autohiding.",
+        "description": "Shows the scrollbar permanently without autohiding. (Requires the scrollbar theme param to be set)",
         "example": "true",
         "options": [
             {
