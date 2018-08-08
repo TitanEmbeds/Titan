@@ -73,6 +73,10 @@ footer {
   background-color: var(--chatbox);
 }
 
+.navbar-fixed {
+  position: fixed;
+}
+
 nav {
   background-color: #263238;
   background-color: var(--header);
@@ -182,7 +186,7 @@ nav .brand-logo {
   padding-left: 1%;
   padding-top: 1%;
   padding-bottom: 40px;
-  margin-bottom: 90px;
+  margin-bottom: 20px;
   word-wrap: break-word;
 }
 
