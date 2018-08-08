@@ -1325,11 +1325,13 @@
                 has_handled_noscroll = true;
                 Materialize.toast('Continue scrolling to read on...', 5000);
             } else {
-                $("main .mCSB_container").animate({
-                    top: -1 * ($("main .mCSB_container").height() - $(window).height())
-                }, "slow", function () {
-                    $("main").mCustomScrollbar("update");
-                });
+                if ($(window).height() < $("main .mCSB_container").height()) {
+                    $("main .mCSB_container").animate({
+                        top: -1 * ($("main .mCSB_container").height() - $(window).height())
+                    }, "slow", function () {
+                        $("main").mCustomScrollbar("update");
+                    });
+                }
             }
         }
         $('#chatcontent').linkify({
