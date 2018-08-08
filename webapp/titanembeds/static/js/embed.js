@@ -363,7 +363,7 @@
             scrollbarTheme = "light";
         }
         $("main").mCustomScrollbar({
-            alwaysShowScrollbar: showScrollbar,
+            autoHideScrollbar: !showScrollbar,
             theme: scrollbarTheme
         });
         

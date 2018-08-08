@@ -61,6 +61,7 @@ main {
   min-height: calc(100vh - 80px);
   overflow-x: hidden;
   height: 100%;
+  padding-bottom: 50px;
 }
 
 footer {
@@ -185,8 +186,6 @@ nav .brand-logo {
 #chatcontent {
   padding-left: 1%;
   padding-top: 1%;
-  padding-bottom: 40px;
-  margin-bottom: 20px;
   word-wrap: break-word;
 }
 
