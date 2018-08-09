@@ -61,7 +61,6 @@ main {
   min-height: calc(100vh - 80px);
   overflow-x: hidden;
   height: 100%;
-  padding-bottom: 50px;
 }
 
 footer {
