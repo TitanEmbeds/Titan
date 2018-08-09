@@ -56,6 +56,10 @@ body, #overall-main-content {
   overflow-y: hidden;
 }
 
+body.custom-scrollbars main {
+  overflow: hidden;
+}
+
 main {
   overflow-y: scroll;
   min-height: calc(100vh - 80px);

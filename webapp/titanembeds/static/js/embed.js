@@ -368,6 +368,7 @@
                 autoHideScrollbar: !showScrollbar,
                 theme: scrollbarTheme
             });
+            $("body").addClass("custom-scrollbars");
         }
         
         if (disabled) {
