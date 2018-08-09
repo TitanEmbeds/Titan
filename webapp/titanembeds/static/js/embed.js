@@ -1238,6 +1238,13 @@
         }
         return reacts;
     }
+    
+    function scroll_on_dom_update() {
+        var scrollRegion = $(window).height() / 2;
+        if (!getParameterByName("scrollbartheme") && $("main").prop("scrollHeight") - ($("main").scrollTop() + $("main").outerHeight()) < scrollRegion) {
+            $("main").scrollTop($("#chatcontent").outerHeight());
+        }
+    }
 
     function fill_discord_messages(messages, jumpscroll, replace) {
         if (replace === undefined) {
@@ -1341,6 +1348,7 @@
                 }
             }
         }
+        $("#chatcontent img").on("load", scroll_on_dom_update);
         $('#chatcontent').linkify({
             target: "_blank"
         });
