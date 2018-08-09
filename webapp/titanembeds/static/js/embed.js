@@ -356,7 +356,7 @@
                 }
             });
         
-        var showScrollbar = getParameterByName("showscrollbar") == "true";
+        var showScrollbar = getParameterByName("lockscrollbar") == "true";
         if (showScrollbar) {
             showScrollbar = 2;
         } else {
