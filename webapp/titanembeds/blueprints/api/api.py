@@ -553,7 +553,7 @@ def webhook_discordbotsorg_vote():
 
 @api.route("/bot/ban", methods=["POST"])
 def bot_ban():
-    if request.headers.get("Authorization", "") != config.get("bot-token", ""):
+    if request.headers.get("Authorization", "") != config.get("app-secret", ""):
         return jsonify(error="Authorization header does not match."), 403
     incoming = request.get_json()
     guild_id = incoming.get("guild_id", None)
@@ -590,7 +590,7 @@ def bot_ban():
 
 @api.route("/bot/revoke", methods=["POST"])
 def bot_revoke():
-    if request.headers.get("Authorization", "") != config.get("bot-token", ""):
+    if request.headers.get("Authorization", "") != config.get("app-secret", ""):
         return jsonify(error="Authorization header does not match."), 403
     incoming = request.get_json()
     guild_id = incoming.get("guild_id", None)

@@ -16,7 +16,7 @@ class Commands():
         content = content.split()
         username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
         discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
-        headers = {"Authorization": self.config["bot-token"]}
+        headers = {"Authorization": self.config["titan-web-app-secret"]}
         payload = {
             "guild_id": message.guild.id,
             "placer_id": message.author.id,
@@ -47,7 +47,7 @@ class Commands():
         content = content.split()
         username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
         discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
-        headers = {"Authorization": self.config["bot-token"]}
+        headers = {"Authorization": self.config["titan-web-app-secret"]}
         payload = {
             "guild_id": message.guild.id,
             "username": username

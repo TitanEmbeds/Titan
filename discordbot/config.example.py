@@ -7,6 +7,8 @@ config = {
     
     'titan-web-url': "https://titanembeds.com/",
     
+    'titan-web-app-secret': "app secret from the webapp config",
+    
     'discord-bots-org-token': "DiscordBots.org Post Stats Token",
     
     'bots-discord-pw-token': "bots.discord.pw Post Stats Token",
