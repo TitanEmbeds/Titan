@@ -564,26 +564,26 @@ def bot_ban():
         return jsonify(error="Missing required parameters."), 400
     if discriminator:
         dbuser = db.session.query(UnauthenticatedUsers) \
-            .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
+            .filter(UnauthenticatedUsers.guild_id == str(guild_id)) \
             .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
             .filter(UnauthenticatedUsers.discriminator == discriminator) \
             .order_by(UnauthenticatedUsers.id.desc()).first()
     else:
         dbuser = db.session.query(UnauthenticatedUsers) \
-            .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
+            .filter(UnauthenticatedUsers.guild_id == str(guild_id)) \
             .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
             .order_by(UnauthenticatedUsers.id.desc()).first()
     if not dbuser:
         return jsonify(error="Guest user cannot be found."), 404
     dbban = db.session.query(UnauthenticatedBans) \
-        .filter(UnauthenticatedBans.guild_id == int(guild_id)) \
+        .filter(UnauthenticatedBans.guild_id == str(guild_id)) \
         .filter(UnauthenticatedBans.last_username == dbuser.username) \
         .filter(UnauthenticatedBans.last_discriminator == dbuser.discriminator).first()
     if dbban is not None:
         if dbban.lifter_id is None:
             return jsonify(error="Guest user, **{}#{}**, has already been banned.".format(dbban.last_username, dbban.last_discriminator)), 409
         db.session.delete(dbban)
-    dbban = UnauthenticatedBans(int(guild_id), dbuser.ip_address, dbuser.username, dbuser.discriminator, "", int(placer_id))
+    dbban = UnauthenticatedBans(str(guild_id), dbuser.ip_address, dbuser.username, dbuser.discriminator, "", int(placer_id))
     db.session.add(dbban)
     db.session.commit()
     return jsonify(success="Guest user, **{}#{}**, has successfully been added to the ban list!".format(dbban.last_username, dbban.last_discriminator))
@@ -600,13 +600,13 @@ def bot_revoke():
         return jsonify(error="Missing required parameters."), 400
     if discriminator:
         dbuser = db.session.query(UnauthenticatedUsers) \
-            .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
+            .filter(UnauthenticatedUsers.guild_id == str(guild_id)) \
             .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
             .filter(UnauthenticatedUsers.discriminator == discriminator) \
             .order_by(UnauthenticatedUsers.id.desc()).first()
     else:
         dbuser = db.session.query(UnauthenticatedUsers) \
-            .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
+            .filter(UnauthenticatedUsers.guild_id == str(guild_id)) \
             .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
             .order_by(UnauthenticatedUsers.id.desc()).first()
     if not dbuser:
