@@ -1,5 +1,4 @@
 from config import config
-from titanembeds.database import DatabaseInterface
 from titanembeds.redisqueue import RedisQueue
 from titanembeds.commands import Commands
 from titanembeds.socketio import SocketIOInterface
@@ -27,9 +26,8 @@ class Titan(discord.AutoShardedClient):
         super().__init__(max_messages=20000)
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
-        self.database = DatabaseInterface(self)
         self.redisqueue = RedisQueue(self, config["redis-uri"])
-        self.command = Commands(self, self.database)
+        self.command = Commands(self, config)
         self.socketio = SocketIOInterface(self, config["redis-uri"])
         
         self.delete_list = deque(maxlen=100) # List of msg ids to prevent duplicate delete
@@ -64,7 +62,6 @@ class Titan(discord.AutoShardedClient):
             self.loop.close()
     
     async def start(self):
-        await self.database.connect(config["database-uri"])
         await self.redisqueue.connect()
         self.loop.create_task(self.redisqueue.subscribe())
         await super().start(config["bot-token"])

@@ -551,6 +551,72 @@ def webhook_discordbotsorg_vote():
     db.session.commit()
     return ('', 204)
 
+@api.route("/bot/ban", methods=["POST"])
+def bot_ban():
+    if request.headers.get("Authorization", "") != config.get("bot-token", ""):
+        return jsonify(error="Authorization header does not match."), 403
+    incoming = request.get_json()
+    guild_id = incoming.get("guild_id", None)
+    placer_id = incoming.get("placer_id", None)
+    username = incoming.get("username", None)
+    discriminator = incoming.get("discriminator", None)
+    if not guild_id or not placer_id or not username:
+        return jsonify(error="Missing required parameters."), 400
+    if discriminator:
+        dbuser = db.session.query(UnauthenticatedUsers) \
+            .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
+            .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+            .filter(UnauthenticatedUsers.discriminator == discriminator) \
+            .order_by(UnauthenticatedUsers.id.desc()).first()
+    else:
+        dbuser = db.session.query(UnauthenticatedUsers) \
+            .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
+            .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+            .order_by(UnauthenticatedUsers.id.desc()).first()
+    if not dbuser:
+        return jsonify(error="Guest user cannot be found."), 404
+    dbban = db.session.query(UnauthenticatedBans) \
+        .filter(UnauthenticatedBans.guild_id == int(guild_id)) \
+        .filter(UnauthenticatedBans.last_username == dbuser.username) \
+        .filter(UnauthenticatedBans.last_discriminator == dbuser.discriminator).first()
+    if dbban is not None:
+        if dbban.lifter_id is None:
+            return jsonify(error="Guest user, **{}#{}**, has already been banned.".format(dbban.last_username, dbban.last_discriminator)), 409
+        db.session.delete(dbban)
+    dbban = UnauthenticatedBans(int(guild_id), dbuser.ip_address, dbuser.username, dbuser.discriminator, "", int(placer_id))
+    db.session.add(dbban)
+    db.session.commit()
+    return jsonify(success="Guest user, **{}#{}**, has successfully been added to the ban list!".format(dbban.last_username, dbban.last_discriminator))
+
+@api.route("/bot/revoke", methods=["POST"])
+def bot_revoke():
+    if request.headers.get("Authorization", "") != config.get("bot-token", ""):
+        return jsonify(error="Authorization header does not match."), 403
+    incoming = request.get_json()
+    guild_id = incoming.get("guild_id", None)
+    username = incoming.get("username", None)
+    discriminator = incoming.get("discriminator", None)
+    if not guild_id or not username:
+        return jsonify(error="Missing required parameters."), 400
+    if discriminator:
+        dbuser = db.session.query(UnauthenticatedUsers) \
+            .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
+            .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+            .filter(UnauthenticatedUsers.discriminator == discriminator) \
+            .order_by(UnauthenticatedUsers.id.desc()).first()
+    else:
+        dbuser = db.session.query(UnauthenticatedUsers) \
+            .filter(UnauthenticatedUsers.guild_id == int(guild_id)) \
+            .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+            .order_by(UnauthenticatedUsers.id.desc()).first()
+    if not dbuser:
+        return jsonify(error="Guest user cannot be found."), 404
+    elif dbuser.revoked:
+        return jsonify(error="Guest user **{}#{}** has already been kicked!".format(dbuser.username, dbuser.discriminator)), 409
+    dbuser.revoked = True
+    db.session.commit()
+    return jsonify(success="Successfully kicked **{}#{}**!".format(dbuser.username, dbuser.discriminator))
+
 @api.route("/af/direct_message", methods=["POST"])
 def af_direct_message_post():
     cs = request.form.get('cs', None)

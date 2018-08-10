@@ -5,6 +5,8 @@ config = {
     
     'redis-uri': "redis://",
     
+    'titan-web-url': "https://titanembeds.com/",
+    
     'discord-bots-org-token': "DiscordBots.org Post Stats Token",
     
     'bots-discord-pw-token': "bots.discord.pw Post Stats Token",
