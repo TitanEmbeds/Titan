@@ -617,6 +617,14 @@ def bot_revoke():
     db.session.commit()
     return jsonify(success="Successfully kicked **{}#{}**!".format(dbuser.username, dbuser.discriminator))
 
+@api.route("/bot/members")
+def bot_members():
+    if request.headers.get("Authorization", "") != config.get("app-secret", ""):
+        return jsonify(error="Authorization header does not match."), 403
+    guild_id = request.args.get("guild_id")
+    members = get_online_embed_users(guild_id)
+    return jsonify(members)
+
 @api.route("/af/direct_message", methods=["POST"])
 def af_direct_message_post():
     cs = request.form.get('cs', None)

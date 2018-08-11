@@ -1,4 +1,5 @@
 import aiohttp
+import discord
 
 class Commands():
     def __init__(self, client, config):
@@ -74,3 +75,44 @@ class Commands():
         
     async def shard(self, message):
         await message.channel.send("This instance of Titan Embeds Discord Bot is running on shard **{}**. There are **{}** shards in total.".format(message.guild.shard_id, self.client.shard_count))
+    
+    async def members(self, message):
+        headers = {"Authorization": self.config["titan-web-app-secret"]}
+        payload = {
+            "guild_id": message.guild.id,
+        }
+        users = {"authenticated": [], "unauthenticated": []}
+        url = self.config["titan-web-url"] + "api/bot/members"
+        async with aiohttp.ClientSession() as aioclient:
+            async with aioclient.get(url, params=payload, headers=headers) as resp:
+                if resp.status >= 200 and resp.status < 300:
+                    users = await resp.json()
+        embed_description = ""
+        if users["authenticated"]:
+            embed_description = embed_description + "__(Discord)__\n"
+            count = 1
+            for user in users["authenticated"]:
+                server_user = message.guild.get_member(int(user["id"]))
+                embed_description = embed_description + "**{}.** {}#{}".format(count, server_user.name, server_user.discriminator)
+                if server_user.nick:
+                    embed_description = embed_description + " ({})".format(server_user.nick)
+                embed_description = embed_description + " {}\n".format(server_user.mention)
+                count = count + 1
+        if users["unauthenticated"]:
+            if users["authenticated"]:
+                embed_description = embed_description + "\n"
+            embed_description = embed_description + "__(Guest)__\n"
+            count = 1
+            for user in users["unauthenticated"]:
+                embed_description = embed_description + "**{}.** {}#{}\n".format(count, user["username"], user["discriminator"])
+                count = count + 1
+        if users["authenticated"] or users["unauthenticated"]:
+            embed_description = embed_description + "\n"
+        embed_description = embed_description + "**Total Members Online: __{}__**".format(len(users["authenticated"]) + len(users["unauthenticated"]))
+        embed = discord.Embed(
+            title = "Currently Online Embed Members",
+            url = "https://TitanEmbeds.com/",
+            color = 7964363,
+            description = embed_description
+        )
+        await message.channel.send(embed=embed)
