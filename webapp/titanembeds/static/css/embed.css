@@ -357,7 +357,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 #currentuserimage_parent {
   display: inline-block;
-  vertical-align: middle;
+  margin-top: 3px;
 }
 
 .currentuserimage {
@@ -365,10 +365,13 @@ textarea.materialize-textarea:focus:not([readonly]) {
 }
 
 .currentusername {
-  display: inline-block;
+  display: none;
   position: relative;
-  top: 7px;
   left: 5px;
+}
+
+#nameplate:hover #currentusername {
+  display: inline-block
 }
 
 #curuser_discrim {

@@ -1483,13 +1483,12 @@
             discrim = null;
         }
         if (authenticated) {
-            $("#currentuserimage").show();
             $("#currentuserimage").attr("src", avatar);
             $("#curuser_name").text(username);
             $("#curuser_discrim").text("#" + discrim);
             current_username_discrim = "#" + discrim;
         } else {
-            $("#currentuserimage").hide();
+            $("#currentuserimage").attr("src", global_guest_icon);
             $("#curuser_name").text(username);
             $("#curuser_discrim").text("#" + userid);
             current_username_discrim = "#" + userid;
