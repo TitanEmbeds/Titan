@@ -115,4 +115,7 @@ class Commands():
             color = 7964363,
             description = embed_description
         )
-        await message.channel.send(embed=embed)
+        if message.guild.me.permissions_in(message.channel).embed_links:
+            await message.channel.send(embed=embed)
+        else:
+            await message.channel.send("__**Currently Online Embed Members**__\n" + embed_description)
