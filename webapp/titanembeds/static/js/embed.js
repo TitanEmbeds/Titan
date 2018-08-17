@@ -1855,7 +1855,6 @@
                 $("#messagebox-filemodal").val("");
                 $("#fileinput").val("");
                 $("#filemodal").modal("close");
-                $("#filemodalprogress").hide();
             });
             funct.fail(function(data) {
                 Materialize.toast('Failed to send message.', 10000);
@@ -1876,6 +1875,7 @@
                 $("#messagebox").attr('readonly', false);
                 $("#messagebox-filemodal").attr('readonly', false);
                 $("#proceed_fileupload_btn").attr("disabled", false);
+                $("#filemodalprogress").hide();
                 if ($("#filemodal").is(":visible")) {
                     $("#messagebox-filemodal").focus();
                 } else {
