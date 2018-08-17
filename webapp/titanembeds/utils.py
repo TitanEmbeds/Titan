@@ -229,7 +229,7 @@ def get_guild_channels(guild_id, force_everyone=False, forced_role=0):
                 result["write"] = False
             if not bot_result["mention_everyone"]:
                 result["mention_everyone"] = False
-            if not bot_result["attach_files"] or not db_guild.file_upload:
+            if not bot_result["attach_files"] or not db_guild.file_upload or not result["write"]:
                 result["attach_files"] = False
             result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
