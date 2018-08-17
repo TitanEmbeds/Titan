@@ -32,7 +32,7 @@ app.config['SQLALCHEMY_POOL_SIZE'] = 15
 app.config['RATELIMIT_STORAGE_URL'] = config["redis-uri"]
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=3)
 app.config['REDIS_URL'] = config["redis-uri"]
-app.config['MAX_CONTENT_LENGTH'] = 4 * 1024 * 1024 # Limit upload size to 4mb
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 # Limit upload size to ~5mb
 app.secret_key = config['app-secret']
 
 sentry.init_app(app)

@@ -1868,6 +1868,8 @@
             funct.catch(function(data) {
                 if (data.status == 429) {
                     Materialize.toast('You are sending messages too fast! 1 message per ' + post_timeout + ' seconds', 10000);
+                } else if (data.status == 413) {
+                    Materialize.toast('Your file is too powerful! The maximum file size is 4 megabytes.', 5000);
                 }
             });
             funct.always(function() {
