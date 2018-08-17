@@ -214,6 +214,7 @@ def get_guild_channels(guild_id, force_everyone=False, forced_role=0):
     if guild_id not in bot_member_roles:
         bot_member_roles.append(guild_id)
     guild = redisqueue.get_guild(guild_id)
+    db_guild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     guild_channels = guild["channels"]
     guild_roles = guild["roles"]
     guild_owner = guild["owner_id"]
@@ -228,17 +229,20 @@ def get_guild_channels(guild_id, force_everyone=False, forced_role=0):
                 result["write"] = False
             if not bot_result["mention_everyone"]:
                 result["mention_everyone"] = False
+            if not bot_result["attach_files"] or not db_guild.file_upload:
+                result["attach_files"] = False
             result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
 
 def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_roles, user_id=None, force_everyone=False):
-    result = {"channel": channel, "read": False, "write": False, "mention_everyone": False}
+    result = {"channel": channel, "read": False, "write": False, "mention_everyone": False, "attach_files": False}
     if not user_id:
         user_id = str(session.get("user_id"))
     if guild_owner == user_id:
         result["read"] = True
         result["write"] = True
         result["mention_everyone"] = True
+        result["attach_files"] = True
         return result
     channel_perm = 0
     
@@ -265,6 +269,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
         result["read"] = True
         result["write"] = True
         result["mention_everyone"] = True
+        result["attach_files"] = True
         return result
     
     denies = 0
@@ -287,16 +292,14 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     result["read"] = user_has_permission(channel_perm, 10)
     result["write"] = user_has_permission(channel_perm, 11)
     result["mention_everyone"] = user_has_permission(channel_perm, 17)
-    
-    # If default channel, you can read
-    if channel["id"] == guild_id:
-        result["read"] = True
+    result["attach_files"] = user_has_permission(channel_perm, 15)
     
     # If you cant read channel, you cant write in it
     if not user_has_permission(channel_perm, 10):
         result["read"] = False
         result["write"] = False
         result["mention_everyone"] = False
+        result["attach_files"] = False
     return result
     
 def get_forced_role(guild_id):

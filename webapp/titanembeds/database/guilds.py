@@ -19,6 +19,7 @@ class Guilds(db.Model):
     banned_words = db.Column(db.Text(), nullable=False, server_default="[]")    # JSON list of strings to block from sending
     autorole_unauth = db.Column(db.BigInteger, nullable=True, server_default=None) # Automatic Role inherit for unauthenticated users
     autorole_discord = db.Column(db.BigInteger, nullable=True, server_default=None) # Automatic Role inherit for discord users
+    file_upload = db.Column(db.Boolean(), nullable=False, server_default="0")     # Allow file uploading for server
 
     def __init__(self, guild_id):
         self.guild_id = guild_id

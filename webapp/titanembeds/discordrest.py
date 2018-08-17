@@ -2,6 +2,7 @@ import requests
 import sys
 import time
 import json
+import urllib
 from titanembeds.utils import redis_store
 from flask import request
 
@@ -61,7 +62,12 @@ class DiscordREST:
                 time.sleep(int(self._get_bucket(url)) - curepoch)
 
             url_formatted = _DISCORD_API_BASE + url
-            req = requests.request(verb, url_formatted, params=params, data=data, headers=headers)
+            if data and "payload_json" in data:
+                if "Content-Type" in headers:
+                    del headers["Content-Type"]
+                req = requests.request(verb, url_formatted, params=params, files=data, headers=headers)
+            else:
+                req = requests.request(verb, url_formatted, params=params, data=data, headers=headers)
 
             remaining = None
             if 'X-RateLimit-Remaining' in req.headers:
@@ -103,9 +109,11 @@ class DiscordREST:
     # Channel
     #####################
 
-    def create_message(self, channel_id, content):
+    def create_message(self, channel_id, content, file=None):
         _endpoint = "/channels/{channel_id}/messages".format(channel_id=channel_id)
         payload = {'content': content}
+        if file:
+            payload = {"payload_json": (None, json.dumps(payload)), "file": (file.filename, file.read(), 'application/octet-stream')}
         r = self.request("POST", _endpoint, data=payload)
         return r
 
@@ -164,7 +172,7 @@ class DiscordREST:
         r = self.request("POST", _endpoint, data=payload, json=True)
         return r
     
-    def execute_webhook(self, webhook_id, webhook_token, username, avatar, content, wait=True):
+    def execute_webhook(self, webhook_id, webhook_token, username, avatar, content, file=None, wait=True):
         _endpoint = "/webhooks/{id}/{token}".format(id=webhook_id, token=webhook_token)
         if wait:
             _endpoint += "?wait=true"
@@ -173,6 +181,8 @@ class DiscordREST:
             'avatar_url': avatar,
             'username': username
         }
+        if file:
+            payload = {"payload_json": (None, json.dumps(payload)), "file": (file.filename, file.read(), 'application/octet-stream')}
         r = self.request("POST", _endpoint, data=payload)
         return r
     

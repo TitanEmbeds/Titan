@@ -137,13 +137,44 @@
         return funct.promise();
     }
 
-    function post(channel_id, content) {
-        var funct = $.ajax({
+    function post(channel_id, content, file) {
+        if (content == "") {
+            content = null;
+        }
+        var data = null;
+        var ajaxobj = {
             method: "POST",
             dataType: "json",
-            url: "/api/post",
-            data: {"guild_id": guild_id, "channel_id": channel_id, "content": content}
-        });
+            url: "/api/post"
+        }
+        if (file) {
+            data = new FormData();
+            data.append("guild_id", guild_id);
+            data.append("channel_id", channel_id);
+            if (content) {
+                data.append("content", content);
+            }
+            data.append("file", file);
+            ajaxobj.cache = false;
+            ajaxobj.contentType = false;
+            ajaxobj.processData = false;
+            ajaxobj.xhr = function() {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    // For handling the progress of the upload
+                    myXhr.upload.addEventListener('progress', function(e) {
+                        if (e.lengthComputable) {
+                            $("#filemodalprogress-inner").css("width", (e.loaded/e.total) + "%")
+                        }
+                    } , false);
+                }
+                return myXhr;
+            }
+        } else {
+            data = {"guild_id": guild_id, "channel_id": channel_id, "content": content};
+        }
+        ajaxobj.data = data;
+        var funct = $.ajax(ajaxobj);
         return funct.promise();
     }
     
@@ -214,6 +245,13 @@
             inDuration: 400,
             outDuration: 400,
         });
+        $("#filemodal").modal({
+            dismissible: true,
+            opacity: .3,
+            inDuration: 400,
+            outDuration: 400,
+            complete: function () { $("#fileinput").val(""); }
+        });
         $("#usercard").modal({
             opacity: .5,
         });
@@ -235,6 +273,44 @@
         
         $("#dismiss_nsfw_btn").click(function () {
             $("#nsfwmodal").modal("close");
+        });
+        
+        $("#upload-file-btn").click(function () {
+            $("#fileinput").trigger('click');
+        });
+        
+        $("#proceed_fileupload_btn").click(function () {
+            $("#messagebox-filemodal").trigger(jQuery.Event("keydown", { keyCode: 13 } ));
+        });
+        
+        $("#fileinput").change(function (e){
+            var files = e.target.files;
+            if (files && files.length > 0) {
+                $("#messagebox-filemodal").val($("#messagebox").val());
+                $("#filename").text($("#fileinput")[0].files[0].name);
+                $("#filemodal").modal("open");
+                $("#messagebox-filemodal").focus();
+                var file = files[0];
+                var file_size = file.size;
+                var file_max_size = 4 * 1024 * 1024;
+                if (file_size > file_max_size) {
+                    $("#filemodal").modal("close");
+                    Materialize.toast('Your file is too powerful! The maximum file size is 4 megabytes.', 5000);
+                    return;
+                }
+                var name = file.name;
+                var extension = name.substr(-4).toLowerCase();
+                var image_extensions = [".png", ".jpg", ".jpeg", ".gif"];
+                $("#filepreview").hide();
+                if (FileReader && image_extensions.indexOf(extension) > -1) {
+                    var reader = new FileReader();
+                    reader.onload = function() {
+                        $("#filepreview").show();
+                        $("#filepreview")[0].src = reader.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
         });
         
         $( "#theme-selector" ).change(function () {
@@ -444,11 +520,13 @@
             $("#messagebox").hide();
             $("#emoji-tray-toggle").hide();
             $(".wdt-emoji-picker").hide();
+            $("#upload-file-btn").hide();
         } else {
             $("#visitor_mode_message").hide();
             $("#messagebox").show();
             $("#emoji-tray-toggle").show();
             $(".wdt-emoji-picker").show();
+            $("#upload-file-btn").show();
         }
     }
 
@@ -658,6 +736,7 @@
             if (curr_default_channel == null) {
                 $("#messagebox").prop('disabled', true);
                 $("#messagebox").prop('placeholder', "NO TEXT CHANNELS");
+                $("#upload-file-btn").hide();
                 Materialize.toast("You find yourself in a strange place. You don't have access to any text channels, or there are none in this server.", 20000);
                 return;
             }
@@ -667,9 +746,18 @@
         if (this_channel.write) {
             $("#messagebox").prop('disabled', false);
             $("#messagebox").prop('placeholder', "Enter message");
+            $("#upload-file-btn").show();
+            $(".wdt-emoji-picker").show();
         } else {
             $("#messagebox").prop('disabled', true);
             $("#messagebox").prop('placeholder', "Messages is disabled in this channel.");
+            $("#upload-file-btn").hide();
+            $(".wdt-emoji-picker").hide();
+        }
+        if (this_channel.attach_files) {
+            $("#upload-file-btn").show();
+        } else {
+            $("#upload-file-btn").hide();
         }
         $("#channeltopic").text(this_channel.channel.topic);
         $("#channel-"+selected_channel).parent().addClass("active");
@@ -1744,9 +1832,11 @@
         if (event.keyCode == 16) {
             shift_pressed = true;
         }
-        if(event.keyCode == 13 && !shift_pressed && $(this).val().length >= 1) {
+        if(event.keyCode == 13 && !shift_pressed && ($(this).val().length >= 1 || $("#fileinput").val().length >= 1)) {
             $(this).val($.trim($(this).val()));
             $(this).blur();
+            $("#messagebox-filemodal").attr('readonly', true);
+            $("#proceed_fileupload_btn").attr("disabled", true);
             $("#messagebox").attr('readonly', true);
             var emojiConvertor = new EmojiConvertor();
             emojiConvertor.init_env();
@@ -1754,9 +1844,18 @@
             emojiConvertor.allow_native = true;
             var messageInput = emojiConvertor.replace_colons($(this).val());
             messageInput = stringToDefaultEmote(messageInput);
-            var funct = post(selected_channel, messageInput);
+            var file = null;
+            if ($("#fileinput")[0].files.length > 0) {
+                file = $("#fileinput")[0].files[0];
+            }
+            $("#filemodalprogress").show();
+            var funct = post(selected_channel, messageInput, file);
             funct.done(function(data) {
                 $("#messagebox").val("");
+                $("#messagebox-filemodal").val("");
+                $("#fileinput").val("");
+                $("#filemodal").modal("close");
+                $("#filemodalprogress").hide();
             });
             funct.fail(function(data) {
                 Materialize.toast('Failed to send message.', 10000);
@@ -1773,8 +1872,36 @@
             });
             funct.always(function() {
                 $("#messagebox").attr('readonly', false);
-                $("#messagebox").focus();
+                $("#messagebox-filemodal").attr('readonly', false);
+                $("#proceed_fileupload_btn").attr("disabled", false);
+                if ($("#filemodal").is(":visible")) {
+                    $("#messagebox-filemodal").focus();
+                } else {
+                    $("#messagebox").focus();
+                }
             });
+        }
+    });
+    
+    $("#messagebox-filemodal").keyup(function (event) {
+        if (event.keyCode == 16) {
+            shift_pressed = false;
+        }
+    });
+    
+    $("#messagebox-filemodal").keydown(function (event) {
+        if ($(this).val().length == 1) {
+            $(this).val($.trim($(this).val()));
+        }
+        if (event.keyCode == 16) {
+            shift_pressed = true;
+        }
+        
+        if(event.keyCode == 13 && !shift_pressed) {
+            $(this).val($.trim($(this).val()));
+            $(this).blur();
+            $("#messagebox").val($(this).val());
+            $("#messagebox").trigger(jQuery.Event("keydown", { keyCode: 13 } ));
         }
     });
 

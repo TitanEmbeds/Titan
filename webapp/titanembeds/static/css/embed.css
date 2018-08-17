@@ -873,16 +873,65 @@ p.mentioned span.chatmessage {
   padding: 2px;
 }
 
-@media only screen and (max-device-width: 320px) {
+@media only screen and (max-width: 320px) {
   .wdt-emoji-picker {
       display: none;
   }
+  
+  #upload-file-btn {
+    display: none;
+  }
 }
 
-@media only screen and (min-device-width: 321px) {
+@media only screen and (min-width: 321px) {
   .wdt-emoji-picker {
       display: block;
   }
+  
+  #upload-file-btn {
+    display: block;
+  }
+}
+
+#upload-file-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 38px;
+  color: gray;
+  padding: 1px;
+  transition: .3s ease-out;
+}
+
+#upload-file-btn:hover {
+  color: white;
+}
+
+#fileinput {
+  display: none;
+}
+
+@media only screen and (min-width: 500px) {
+  #filemodal-body {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  #filemodal-right {
+    width: 75%;
+  }
+}
+
+#filepreview {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+#messagebox-filemodal {
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+#messagebox-filemodal::placeholder {
+  color: #90a4ae;
 }
 
 #mention-picker {
@@ -934,7 +983,7 @@ p.mentioned span.chatmessage {
   margin-left: auto;
 }
 
-@media only screen and (max-device-width: 320px) {
+@media only screen and (max-width: 320px) {
   #mention-picker .realname {
     display: none;
   }

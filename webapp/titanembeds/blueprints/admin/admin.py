@@ -193,7 +193,8 @@ def administrate_guild(guild_id):
         "banned_words_global_included": db_guild.banned_words_global_included,
         "banned_words": json.loads(db_guild.banned_words),
         "autorole_unauth": db_guild.autorole_unauth,
-        "autorole_discord": db_guild.autorole_discord
+        "autorole_discord": db_guild.autorole_discord,
+        "file_upload": db_guild.file_upload,
     }
     return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics)
 
@@ -214,6 +215,7 @@ def update_administrate_guild(guild_id):
     db_guild.banned_words_global_included = request.form.get("banned_words_global_included", db_guild.banned_words_global_included) in ["true", True]
     db_guild.autorole_unauth = request.form.get("autorole_unauth", db_guild.autorole_unauth, type=int)
     db_guild.autorole_discord = request.form.get("autorole_discord", db_guild.autorole_discord, type=int)
+    db_guild.file_upload = request.form.get("file_upload", db_guild.file_upload) in ["true", True]
     invite_link = request.form.get("invite_link", db_guild.invite_link)
     if invite_link != None and invite_link.strip() == "":
         invite_link = None
@@ -250,7 +252,8 @@ def update_administrate_guild(guild_id):
         banned_words_global_included=db_guild.banned_words_global_included,
         banned_words=json.loads(db_guild.banned_words),
         autorole_unauth=db_guild.autorole_unauth,
-        autorole_discord=db_guild.autorole_discord
+        autorole_discord=db_guild.autorole_discord,
+        file_upload=db_guild.file_upload,
     )
 
 @admin.route("/guilds")

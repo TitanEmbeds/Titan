@@ -273,7 +273,12 @@ def get_post_content_max_len(guild_id):
 def post():
     guild_id = request.form.get("guild_id")
     channel_id = request.form.get('channel_id')
-    content = request.form.get('content')
+    content = request.form.get('content', "")
+    file = None
+    if "file" in request.files:
+        file = request.files["file"]
+    if file and file.filename == "":
+        file = None
     if "user_id" in session:
         dbUser = redisqueue.get_guild_member(guild_id, session["user_id"])
     else:
@@ -293,6 +298,8 @@ def post():
         chan = filter_guild_channel(guild_id, channel_id)
         if not chan.get("write") or chan["channel"]["type"] != "text":
             status_code = 401
+        elif file and not chan.get("attach_files"):
+            status_code = 406
         elif not illegal_post:
             userid = session["user_id"]
             content = format_everyone_mention(chan, content)
@@ -318,9 +325,9 @@ def post():
                     #     username = "(Titan Dev) " + username
                     username = username + "#" + str(session['discriminator'])
                     avatar = session['avatar']
-                message = discord_api.execute_webhook(webhook.get("id"), webhook.get("token"), username, avatar, content)
+                message = discord_api.execute_webhook(webhook.get("id"), webhook.get("token"), username, avatar, content, file)
             else:
-                message = discord_api.create_message(channel_id, content)
+                message = discord_api.create_message(channel_id, content, file)
             status_code = message['code']
     db.session.commit()
     response = jsonify(message=message.get('content', message), status=status, illegal_reasons=illegal_reasons)

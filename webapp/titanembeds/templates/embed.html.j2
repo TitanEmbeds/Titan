@@ -79,6 +79,7 @@
           <div id="messageboxouter" class="input-field inline">
             <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea wdt-emoji-open-on-colon" rows="1"></textarea>
             <span id="visitor_mode_message" style="display:none;"><span id="visitor_mode_message_note">{{ _("Please login to post a message.") }}</span> <a id="visitor_login_btn" class="waves-effect waves-light btn">{{ _("Login") }}</a></span>
+            <a id="upload-file-btn" class="btn-flat"><i class="material-icons">file_upload</i></a>
           </div>
         </div>
       </footer>
@@ -240,6 +241,31 @@
           <a id="dismiss_nsfw_btn" class="waves-effect waves-light btn">{{ _("Nope") }}</a>
           <a id="proceed_nsfw_btn" class="waves-effect waves-light btn">{{ _("Continue") }}</a>
         </p>
+      </div>
+    </div>
+    
+    <div id="filemodal" class="modal">
+      <div class="modal-content">
+        <h4 class="center-align">{{ _("Attach File") }}</h4>
+        <h5 id="filename" class="center-align"></h5>
+        <div id="filemodalprogress" class="progress" style="display: none;">
+          <div id="filemodalprogress-inner" class="determinate"></div>
+        </div>
+        <div id="filemodal-body">
+          <div id="filemodal-left" class="valign-wrapper">
+            <img id="filepreview" class="responsive-img" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png">
+          </div>
+          <div id="filemodal-right">
+            <p>{{ _("Add a comment (optional)") }}</p>
+            <p class="center-align">
+              <textarea placeholder="Enter message" id="messagebox-filemodal" type="text" class="materialize-textarea" rows="1"></textarea>
+            </p>
+          </div>
+        </div>
+        <p class="right-align">
+          <a id="proceed_fileupload_btn" class="waves-effect waves-light btn">{{ _("Upload") }}</a>
+        </p>
+        <input type="file" id="fileinput">
       </div>
     </div>
     

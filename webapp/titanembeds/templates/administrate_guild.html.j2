@@ -214,6 +214,19 @@
               </div>
             </div>
 
+            <br>
+            
+            <p class="flow-text">Toggle File Attachments</p>
+            <p>Allow embed users to attach files to your Discord server in messages</p>
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="file_upload" name="file_upload" {% if guild['file_upload'] %}checked{% endif %}  >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
+
           </div>
         </div>
       </div>
