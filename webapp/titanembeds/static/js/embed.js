@@ -164,7 +164,7 @@
                     // For handling the progress of the upload
                     myXhr.upload.addEventListener('progress', function(e) {
                         if (e.lengthComputable) {
-                            $("#filemodalprogress-inner").css("width", (e.loaded/e.total) + "%")
+                            $("#filemodalprogress-inner").css("width", (e.loaded/e.total) * 100 + "%")
                         }
                     } , false);
                 }
