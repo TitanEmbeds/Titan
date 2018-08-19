@@ -18,6 +18,7 @@ def get_formatted_message(message):
         "author": get_message_author(message),
         "timestamp": format_datetime(message.created_at),
         "edited_timestamp": edit_ts,
+        "type": message.type.value,
     }
     if hasattr(message, "mentions"):
         msg["mentions"] = get_message_mentions(message.mentions)

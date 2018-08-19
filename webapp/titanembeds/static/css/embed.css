@@ -231,6 +231,20 @@ nav .brand-logo {
 /*  display: table-row*/
 /*}*/
 
+#chatcontent .new-member .new-member-arrow {
+  color: green;
+  cursor: pointer;
+  vertical-align: bottom;
+}
+
+#chatcontent .new-member .chatusername,  #chatcontent .new-member .authoravatar{
+  display: none;
+}
+
+#chatcontent .new-member .chatmessage {
+  display: inline;
+}
+
 ::-webkit-input-placeholder {
   color: #636363;
   color: var(--placeholder);
