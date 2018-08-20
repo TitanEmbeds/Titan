@@ -444,11 +444,10 @@ def process_query_guild(guild_id, visitor=False):
     emojis = get_guild_emojis(guild_id)
     roles = get_guild_roles(guild_id)
     guest_icon = get_guild_guest_icon(guild_id)
-    all_users = get_all_users(guild_id)
     if visitor:
         for channel in channels:
             channel["write"] = False
-    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, allusers=all_users, emojis=emojis, roles=roles, guest_icon=guest_icon, instant_invite=widget.get("instant_invite", None))
+    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, roles=roles, guest_icon=guest_icon, instant_invite=widget.get("instant_invite", None))
 
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)
@@ -533,6 +532,11 @@ def user_info(guild_id, user_id):
         if redis_store.get("DiscordBotsOrgVoted/" + str(member["id"])):
             usr["badges"].append("discordbotsorgvoted")
     return jsonify(usr)
+
+@api.route("/user/<guild_id>")
+def list_users(guild_id):
+    all_users = get_all_users(guild_id)
+    return jsonify(all_users)
     
 @api.route("/webhook/discordbotsorg/vote", methods=["POST"])
 def webhook_discordbotsorg_vote():

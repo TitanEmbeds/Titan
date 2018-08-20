@@ -194,6 +194,14 @@
         return funct.promise();
     }
     
+    function list_users() {
+        var funct = $.ajax({
+            dataType: "json",
+            url: "/api/user/" + guild_id,
+        });
+        return funct.promise();
+    }
+    
     function performLocalStorageTest() {
         var test = 'test';
         try {
@@ -644,7 +652,6 @@
     }
 
     function prepare_guild(guildobj) {
-        all_users = guildobj.allusers;
         global_guest_icon = guildobj.guest_icon;
         emoji_store = guildobj.emojis;
         update_emoji_picker();
@@ -1793,6 +1800,12 @@
             return;
         }
         lastWord = lastWord.substr(1);
+        if (all_users.length == 0) {
+            var usrs = list_users();
+            usrs.done(function (lst) {
+                all_users = lst;
+            });
+        }
         var template = $('#mustache_usermentionchoices').html();
         Mustache.parse(template);
         var users = [];
@@ -2114,6 +2127,9 @@
             if (usr.status != "offline") {
                 discord_users_list.push(usr);
                 fill_discord_members(discord_users_list);
+            }
+            if (all_users.length == 0) {
+                return;
             }
             all_users.push({
                 "id": usr.id,
