@@ -503,6 +503,7 @@ def create_authenticated_user():
             return response
             
 @api.route("/user/<guild_id>/<user_id>")
+@abort_if_guild_disabled()
 def user_info(guild_id, user_id):
     usr = {
         "id": None,
@@ -534,6 +535,8 @@ def user_info(guild_id, user_id):
     return jsonify(usr)
 
 @api.route("/user/<guild_id>")
+@abort_if_guild_disabled()
+@valid_session_required(api=True)
 def list_users(guild_id):
     all_users = get_all_users(guild_id)
     return jsonify(all_users)

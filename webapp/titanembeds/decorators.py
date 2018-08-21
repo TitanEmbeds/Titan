@@ -28,11 +28,13 @@ def discord_users_only(api=False):
         return decorated_function
     return decorator
 
-def abort_if_guild_disabled():
+def abort_if_guild_disabled(*args):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             guild_id = request.args.get("guild_id", None)
+            if not guild_id and len(args) > 0:
+                guild_id = args[0]
             if guild_id in list_disabled_guilds():
                 return ('', 423)
             return f(*args, **kwargs)
