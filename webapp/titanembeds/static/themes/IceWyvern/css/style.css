@@ -167,6 +167,10 @@ nav a {
   background-color: rgba(255,255,255,0.9)
 }
 
+.chatusername {
+  color: #628788;
+}
+
 [src="/static/img/titanembeds_shield.png"]{
   display: none
 }
