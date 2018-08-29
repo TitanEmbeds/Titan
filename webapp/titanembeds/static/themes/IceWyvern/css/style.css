@@ -171,6 +171,15 @@ nav a {
   color: #628788;
 }
 
+.chatmessage .channellink, .chatmessage .discordmention, .rolemention {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+a {
+  color: #4688f7;
+}
+
 [src="/static/img/titanembeds_shield.png"]{
   display: none
 }
