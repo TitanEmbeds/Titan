@@ -176,6 +176,14 @@ nav a {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+.field-content, .description {
+    color: black;
+}
+
+.footer {
+    color: rgb(100,100,100);
+}
+
 a {
   color: #4688f7;
 }
