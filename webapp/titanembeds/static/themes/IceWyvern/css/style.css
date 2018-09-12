@@ -180,8 +180,8 @@ nav a {
     color: black;
 }
 
-.footer {
-    color: rgb(100,100,100);
+.footer, code.blockcode {
+    color: rgb(100,100,100)
 }
 
 a {
