@@ -176,8 +176,8 @@ nav a {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.field-content, .description {
-    color: black;
+.richembed .author .name, .richembed .field-content, .richembed .description {
+  color: black;
 }
 
 .footer, code.blockcode {
