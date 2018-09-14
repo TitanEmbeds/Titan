@@ -757,7 +757,7 @@
             $(".wdt-emoji-picker").show();
         } else {
             $("#messagebox").prop('disabled', true);
-            $("#messagebox").prop('placeholder', "Messages is disabled in this channel.");
+            $("#messagebox").prop('placeholder', "Messaging is disabled in this channel.");
             $("#upload-file-btn").hide();
             $(".wdt-emoji-picker").hide();
         }
