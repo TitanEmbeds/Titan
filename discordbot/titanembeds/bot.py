@@ -185,8 +185,8 @@ class Titan(discord.AutoShardedClient):
             await self.redisqueue.update_guild(guild)
             await self.socketio.on_guild_emojis_update(after)
             
-    async def on_webhooks_update(self, guild, channel):
-        await self.redisqueue.update_guild(guild)
+    async def on_webhooks_update(self, channel):
+        await self.redisqueue.update_guild(channel.guild)
         
     async def on_raw_message_edit(self, payload):
         message_id = payload.message_id
