@@ -1,7 +1,11 @@
-/* Ice Wyvern theme by Jelle Z. @ https://gitlab.com/jelle619 */
+/* Ice Wyvern theme by Jelle Z. @ https://github.com/jelle619 */
 
 label {
     color: black;
+}
+
+nav {
+    background: none;
 }
 
 .modal-content {
@@ -191,9 +195,35 @@ a {
 [src="/static/img/titanembeds_shield.png"]{
   display: none
 }
+
+/* Webkit specific features */
+@media screen and (-webkit-min-device-pixel-ratio:0) {  
+  .nav-wrapper { background-color: rgba(255,255,255,0.7); } 
+  .nav-wrapper { -webkit-backdrop-filter: blur(10px); }
+  #footer { background-color: rgba(255,255,255,0.7); }  
+  #footer { -webkit-backdrop-filter: blur(10px); }
+  #members-nav { background-color: rgba(255,255,255,0.6); }
+  #members-nav { -webkit-backdrop-filter: blur(10px); }
+  #guild-nav { background-color: rgba(255,255,255,0.6); }  
+  #guild-nav { -webkit-backdrop-filter: blur(10px); }  
+}
+
+/* Microsoft Edge specific features */
+@supports (-ms-ime-align: auto) {
+  .nav-wrapper { background-color: rgba(255,255,255,0.7); } 
+  .nav-wrapper { backdrop-filter: blur(10px); }
+  #footer { background-color: rgba(255,255,255,0.7); }  
+  #footer { backdrop-filter: blur(10px); }
+  #members-nav { background-color: rgba(255,255,255,0.6); }
+  #members-nav { backdrop-filter: blur(10px); }
+  #guild-nav { background-color: rgba(255,255,255,0.6); }  
+  #guild-nav { backdrop-filter: blur(10px); }  
+}
+
 :root {
     --modal: rgb(240,240,240);
     --noroleusers: rgb(100,100,100);
     --main: rgb(240,240,240);
     --chatmessage: rgb(10,10,10);
     --discrim: rgb(100,100,100)
+}
