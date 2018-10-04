@@ -1,7 +1,15 @@
-/* Fire Wyvern theme by Jelle Z. @ https://gitlab.com/jelle619 */
+/* Fire Wyvern theme by Jelle Z. @ https://github.com/jelle619 */
 
 input:not([type]):disabled, input:not([type])[readonly="readonly"], input[type=text]:not(.browser-default):disabled, input[type=text]:not(.browser-default)[readonly="readonly"], input[type=password]:not(.browser-default):disabled, input[type=password]:not(.browser-default)[readonly="readonly"], input[type=email]:not(.browser-default):disabled, input[type=email]:not(.browser-default)[readonly="readonly"], input[type=url]:not(.browser-default):disabled, input[type=url]:not(.browser-default)[readonly="readonly"], input[type=time]:not(.browser-default):disabled, input[type=time]:not(.browser-default)[readonly="readonly"], input[type=date]:not(.browser-default):disabled, input[type=date]:not(.browser-default)[readonly="readonly"], input[type=datetime]:not(.browser-default):disabled, input[type=datetime]:not(.browser-default)[readonly="readonly"], input[type=datetime-local]:not(.browser-default):disabled, input[type=datetime-local]:not(.browser-default)[readonly="readonly"], input[type=tel]:not(.browser-default):disabled, input[type=tel]:not(.browser-default)[readonly="readonly"], input[type=number]:not(.browser-default):disabled, input[type=number]:not(.browser-default)[readonly="readonly"], input[type=search]:not(.browser-default):disabled, input[type=search]:not(.browser-default)[readonly="readonly"], textarea.materialize-textarea:disabled, textarea.materialize-textarea[readonly="readonly"] {
   border-bottom: 1px dotted rgb(158,158,158);
+}
+
+nav {
+    background: none;
+}
+
+#modal_guildinfobox {
+    background-color: rgb(35,35,35);
 }
 
 input:not([type]):disabled+label, input:not([type])[readonly="readonly"]+label, input[type=text]:not(.browser-default):disabled+label, input[type=text]:not(.browser-default)[readonly="readonly"]+label, input[type=password]:not(.browser-default):disabled+label, input[type=password]:not(.browser-default)[readonly="readonly"]+label, input[type=email]:not(.browser-default):disabled+label, input[type=email]:not(.browser-default)[readonly="readonly"]+label, input[type=url]:not(.browser-default):disabled+label, input[type=url]:not(.browser-default)[readonly="readonly"]+label, input[type=time]:not(.browser-default):disabled+label, input[type=time]:not(.browser-default)[readonly="readonly"]+label, input[type=date]:not(.browser-default):disabled+label, input[type=date]:not(.browser-default)[readonly="readonly"]+label, input[type=datetime]:not(.browser-default):disabled+label, input[type=datetime]:not(.browser-default)[readonly="readonly"]+label, input[type=datetime-local]:not(.browser-default):disabled+label, input[type=datetime-local]:not(.browser-default)[readonly="readonly"]+label, input[type=tel]:not(.browser-default):disabled+label, input[type=tel]:not(.browser-default)[readonly="readonly"]+label, input[type=number]:not(.browser-default):disabled+label, input[type=number]:not(.browser-default)[readonly="readonly"]+label, input[type=search]:not(.browser-default):disabled+label, input[type=search]:not(.browser-default)[readonly="readonly"]+label, textarea.materialize-textarea:disabled+label, textarea.materialize-textarea[readonly="readonly"]+label {
@@ -155,9 +163,34 @@ display: none
   border: 2px solid #5a5a5a;
 }
 
+/* Backdrop filter support for Webkit browsers */
+@supports (-webkit-backdrop-filter: blur(0px)) {  
+  .nav-wrapper { background-color: rgba(0,0,0,0.7); } 
+  .nav-wrapper { -webkit-backdrop-filter: blur(10px); }
+  #footer { background-color: rgba(0,0,0,0.7); }  
+  #footer { -webkit-backdrop-filter: blur(10px); }
+  #members-nav { background-color: rgba(0,0,0,0.6); }
+  #members-nav { -webkit-backdrop-filter: blur(10px); }
+  #guild-nav { background-color: rgba(0,0,0,0.6); }  
+  #guild-nav { -webkit-backdrop-filter: blur(10px); }  
+}
+
+/* Backdrop filter support for other browsers */
+@supports (backdrop-filter: blur(0px)) {
+  .nav-wrapper { background-color: rgba(0,0,0,0.7); } 
+  .nav-wrapper { backdrop-filter: blur(10px); }
+  #footer { background-color: rgba(0,0,0,0.7); }  
+  #footer { backdrop-filter: blur(10px); }
+  #members-nav { background-color: rgba(0,0,0,0.6); }
+  #members-nav { backdrop-filter: blur(10px); }
+  #guild-nav { background-color: rgba(0,0,0,0.6); }  
+  #guild-nav { backdrop-filter: blur(10px); }  
+}
+
 :root {
   --modal: rgb(20,20,20);
   --noroleusers: rgb(100,100,100);
   --main: rgb(20,20,20);
   --chatmessage: rgb(255,255,255);
   --discrim: rgb(100,100,100)
+}
