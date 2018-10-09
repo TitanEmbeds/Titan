@@ -66,6 +66,8 @@ def guild_embed(guild_id):
     if check_guild_existance(guild_id):
         guild = redisqueue.get_guild(guild_id)
         dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
+        if not dbguild:
+            abort(404)
         guild_dict = {
             "id": guild["id"],
             "name": guild["name"],
