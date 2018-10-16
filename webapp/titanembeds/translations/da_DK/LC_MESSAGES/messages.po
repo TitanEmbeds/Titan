@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-04-02 13:35-0400\n"
+"PO-Revision-Date: 2018-10-16 06:18\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Danish\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr "Hvad bringer dig hid?"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "....what do you expect this text to say?"
-msgstr "...hvad forventer du denne tekst at sige?"
+msgstr "...hvad forventer du denne tekst skal sige?"
 
 #: titanembeds/blueprints/embed/embed.py:19
 msgid "Aha! ..made you look!"
@@ -39,7 +39,7 @@ msgstr "Aha!... fik dig til at kigge!"
 
 #: titanembeds/blueprints/embed/embed.py:20
 msgid "Initiating launch sequence..."
-msgstr "Igangsættende lancerings sekvens..."
+msgstr "Igangsættende lanceringssekvens..."
 
 #: titanembeds/blueprints/embed/embed.py:21
 msgid "Captain, what's your option?"
@@ -55,15 +55,15 @@ msgstr "Handlinger"
 
 #: titanembeds/templates/embed.html.j2:79
 msgid "Manage Guild Embed"
-msgstr "Administrere Guild Integreringer"
+msgstr "Administrer Server Emed"
 
 #: titanembeds/templates/embed.html.j2:80
 msgid "Open Server on Discordapp"
-msgstr "Åben Server på Discordapp"
+msgstr "Åben Server på Discordappen"
 
 #: titanembeds/templates/embed.html.j2:84
 msgid "Channel Topic"
-msgstr "Kanal Emne"
+msgstr "Kanalemne"
 
 #: titanembeds/templates/embed.html.j2:89
 msgid "Channels"
@@ -79,11 +79,11 @@ msgstr "Godkendte Integrerede Brugere"
 
 #: titanembeds/templates/embed.html.j2:102
 msgid "Guest Embed Users"
-msgstr "Integrerede Gæst Brugere"
+msgstr "Integrerede Gæste Brugere"
 
 #: titanembeds/templates/embed.html.j2:122
 msgid "Please choose one of the following methods to authenticate!"
-msgstr "Vælg en af følgende metoder til at godkende!"
+msgstr "Vælg en af følgende metoder for at godkende!"
 
 #: titanembeds/templates/embed.html.j2:128
 msgid "Discord Login"
@@ -99,15 +99,15 @@ msgstr "Selvfølgelig, har du også mulighed for at logge ind, ved at vælge et 
 
 #: titanembeds/templates/embed.html.j2:135
 msgid "Username (Hit ENTER/RETURN key to confirm)"
-msgstr "Brugernavn (Tryk Enter/Tilbage tasten for at bekræfte)"
+msgstr "Brugernavn (Tryk ENTER/RETUR tasten til at bekræfte)"
 
 #: titanembeds/templates/embed.html.j2:147
 msgid "Change Username"
-msgstr "Ændre Brugernavn"
+msgstr "Ændrer Brugernavn"
 
 #: titanembeds/templates/embed.html.j2:150
 msgid "Guests Accounts Only"
-msgstr "Gæste Kontier Kun"
+msgstr "Kun Gæste brugere"
 
 #: titanembeds/templates/embed.html.j2:152
 msgid "Change your username (Hit ENTER/RETURN key to confirm)"
@@ -123,7 +123,7 @@ msgstr "Overskriv Aktuel Integreret Tema m/bruger CSS"
 
 #: titanembeds/templates/embed.html.j2:171
 msgid "Notification Sound"
-msgstr "Meddelelseslyd"
+msgstr "Notifikationslyd"
 
 #: titanembeds/templates/embed.html.j2:176
 msgid "New Messages"
@@ -131,7 +131,7 @@ msgstr "Nye Meddelelser"
 
 #: titanembeds/templates/embed.html.j2:180
 msgid "Mentions"
-msgstr "Nævninger"
+msgstr "Notifikationer"
 
 #: titanembeds/templates/embed.html.j2:184
 msgid "Nothing"
@@ -143,7 +143,7 @@ msgstr "Vis Rige Integreringer"
 
 #: titanembeds/templates/embed.html.j2:193
 msgid "Enable"
-msgstr "Aktiverer"
+msgstr "Aktiver"
 
 #: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
@@ -159,11 +159,11 @@ msgstr "NSFW kanal"
 
 #: titanembeds/templates/embed.html.j2:218
 msgid "You must be at least eighteen years old to view this channel. Are you over eighteen and willing to see adult content?"
-msgstr "Du skal være mindst atten år gammel for at se denne kanal. Er du over atten og villig til at se voksenindhold?"
+msgstr "Du skal være mindst 19 år gammel for at se denne kanal. Er du over 18 år og villig til at se voksenindhold?"
 
 #: titanembeds/templates/embed.html.j2:220
 msgid "Nope"
-msgstr "Nej"
+msgstr "Nope"
 
 #: titanembeds/templates/embed.html.j2:221
 msgid "Continue"
@@ -183,7 +183,7 @@ msgstr "TitanEmbeds Partner"
 
 #: titanembeds/templates/embed.html.j2:239
 msgid "TitanEmbeds Supporter"
-msgstr "TitanEmbeds Støtter"
+msgstr "TitanEmbeds Supporter"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
