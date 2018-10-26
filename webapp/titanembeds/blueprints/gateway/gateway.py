@@ -84,7 +84,7 @@ class Gateway(Namespace):
             status = update_user_status(guild_id, session["username"], key)
             if status["revoked"] or status["banned"]:
                 emit("revoke")
-                time.sleep(1000)
+                #time.sleep(1000)
                 disconnect()
             else:
                 emit("ack")

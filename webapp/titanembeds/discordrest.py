@@ -55,11 +55,12 @@ class DiscordREST:
         for tries in range(5):
             curepoch = time.time()
             if self._get_bucket("global_limited") == "True":
-                time.sleep(int(float(self._get_bucket("global_limit_expire"))) - curepoch)
+                #time.sleep(int(float(self._get_bucket("global_limit_expire"))) - curepoch)
                 curepoch = time.time()
 
             if self._bucket_contains(url) and float(int(self._get_bucket(url))) > curepoch:
-                time.sleep(int(self._get_bucket(url)) - curepoch)
+                #time.sleep(int(self._get_bucket(url)) - curepoch)
+                pass
 
             url_formatted = _DISCORD_API_BASE + url
             if data and "payload_json" in data:
@@ -91,7 +92,7 @@ class DiscordREST:
                     self._set_bucket("global_limit_expire", time.time() + int(req.headers['Retry-After']))
 
             if req.status_code == 502 and tries <= 5:
-                time.sleep(1 + tries * 2)
+                #time.sleep(1 + tries * 2)
                 continue
 
             if req.status_code == 403 or req.status_code == 404:

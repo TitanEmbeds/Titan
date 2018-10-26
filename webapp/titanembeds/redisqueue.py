@@ -18,7 +18,7 @@ class RedisQueue:
         while (not data and data != "") and loop_count < 50:
             if loop_count % 25 == 0:
                 redis_store.publish("discord-api-req", json.dumps(payload))
-            time.sleep(0.1)
+            #time.sleep(0.1)
             data = self._get(key, data_type)
             loop_count += 1
         redis_store.expire(key, 60 * 5)
