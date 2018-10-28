@@ -151,6 +151,8 @@ def get_message_mentions(mentions):
 def get_webhooks_list(guild_webhooks):
     webhooks = []
     for webhook in guild_webhooks:
+        if not webhook.channel or not webhook.guild:
+            continue
         webhooks.append({
             "id": str(webhook.id),
             "guild_id": str(webhook.guild.id),

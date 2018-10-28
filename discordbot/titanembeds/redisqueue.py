@@ -189,7 +189,7 @@ class RedisQueue:
             await self.connection.set(key, "")
             await self.enforce_expiring_key(key)
             return
-        if guild.me.guild_permissions.manage_webhooks:
+        if guild.me and guild.me.guild_permissions.manage_webhooks:
             try:
                 server_webhooks = await guild.webhooks()
             except:
