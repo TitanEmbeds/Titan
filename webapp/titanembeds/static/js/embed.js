@@ -461,7 +461,7 @@
         }
         
         primeEmbed();
-        setInterval(send_socket_heartbeat, 5000);
+        setInterval(send_socket_heartbeat, 30000);
         if (getParameterByName("username")) {
             $("#custom_username_field").val(getParameterByName("username"));
         }

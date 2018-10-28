@@ -170,7 +170,7 @@ def update_user_status(guild_id, username, user_key=None):
 
 def bump_user_presence_timestamp(guild_id, user_type, client_key):
     redis_key = "MemberPresence/{}/{}/{}".format(guild_id, user_type, client_key)
-    redis_store.set(redis_key, "", 15)
+    redis_store.set(redis_key, "", 60)
 
 def get_online_embed_user_keys(guild_id="*", user_type=None):
     if not user_type:
