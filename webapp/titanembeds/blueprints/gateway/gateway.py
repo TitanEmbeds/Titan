@@ -78,18 +78,21 @@ class Gateway(Namespace):
         if not visitor_mode:
             key = None
             if "unauthenticated" not in session:
+                self.teardown_db_session()
                 disconnect()
             if session["unauthenticated"]:
                 key = session["user_keys"][guild_id]
             status = update_user_status(guild_id, session["username"], key)
             if status["revoked"] or status["banned"]:
                 emit("revoke")
-                time.sleep(1000)
+                self.teardown_db_session()
+                time.sleep(1)
                 disconnect()
             else:
                 emit("ack")
         else:
             if not guild_accepts_visitors(guild_id):
+                self.teardown_db_session()
                 disconnect()
         self.teardown_db_session()
         
