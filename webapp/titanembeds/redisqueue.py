@@ -29,6 +29,7 @@ class RedisQueue:
             data = list(data)
             data_parsed = []
             for d in data:
+                time.sleep(0)
                 if d != "":
                     data_parsed.append(json.loads(d))
             return data_parsed

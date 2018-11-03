@@ -4,6 +4,7 @@ from requests_oauthlib import OAuth2Session
 from flask import session, abort, url_for, request
 from titanembeds.utils import redis_store, make_user_cache_key
 from flask_socketio import disconnect
+import time
 
 authorize_url = "https://discordapp.com/api/oauth2/authorize"
 token_url = "https://discordapp.com/api/oauth2/token"
@@ -65,6 +66,7 @@ def get_user_managed_servers():
     guilds = json.loads(fetched)
     filtered = []
     for guild in guilds:
+        time.sleep(0)
         permission = guild['permissions'] # Manage Server, Ban Members, Kick Members
         if guild['owner'] or user_has_permission(permission, 5) or user_has_permission(permission, 2) or user_has_permission(permission, 1):
             filtered.append(guild)
@@ -81,6 +83,7 @@ def get_user_managed_servers_id():
     guilds = get_user_managed_servers_safe()
     ids=[]
     for guild in guilds:
+        time.sleep(0)
         ids.append(guild['id'])
     return ids
 
@@ -91,6 +94,7 @@ def check_user_can_administrate_guild(guild_id):
 def check_user_permission(guild_id, id):
     guilds = get_user_managed_servers_safe()
     for guild in guilds:
+        time.sleep(0)
         if guild['id'] == guild_id:
             return user_has_permission(guild['permissions'], id) or guild['owner']
     return False

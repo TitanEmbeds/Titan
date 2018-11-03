@@ -111,6 +111,7 @@ def checkUserBanned(guild_id, ip_address=None):
             banned = False
         else:
             for usr in dbUser:
+                time.sleep(0)
                 if usr.lifter_id is not None:
                     banned = False
     else:
@@ -265,6 +266,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     
     # User Guild Roles
     for m_role in member_roles:
+        time.sleep(0)
         for g_role in guild_roles:
             time.sleep(0)
             if g_role["id"] == m_role:
