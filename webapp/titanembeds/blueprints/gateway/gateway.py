@@ -28,6 +28,7 @@ class Gateway(Namespace):
             channels = get_guild_channels(guild_id, forced_role=forced_role)
         join_room("GUILD_"+guild_id)
         for chan in channels:
+            time.sleep(0)
             if chan["read"]:
                 join_room("CHANNEL_"+chan["channel"]["id"])
         if session.get("unauthenticated", True) and guild_id in session.get("user_keys", {}):
@@ -68,6 +69,7 @@ class Gateway(Namespace):
                 else:
                     name = name + username + "#" + str(session["discriminator"])
                 for webhook in guild_webhooks:
+                    time.sleep(0)
                     if webhook["name"] == name:
                         discord_api.delete_webhook(webhook["id"], webhook["token"])
         self.teardown_db_session()
@@ -135,19 +137,23 @@ class Gateway(Namespace):
         guild_roles = redisqueue.get_guild(guild_id)["roles"]
         guildroles_filtered = {}
         for role in guild_roles:
+            time.sleep(0)
             guildroles_filtered[role["id"]] = role
         member_roleids = member["roles"]
         member_roles = []
         for roleid in member_roleids:
+            time.sleep(0)
             role = guildroles_filtered.get(str(roleid))
             if not role:
                 continue
             member_roles.append(role)
         member_roles = sorted(member_roles, key=lambda k: k['position'])
         for role in member_roles:
+            time.sleep(0)
             if role["color"] != 0:
                 color = '{0:02x}'.format(role["color"])
                 while len(color) < 6:
+                    time.sleep(0)
                     color = "0" + color
         return color
     

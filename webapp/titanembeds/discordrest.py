@@ -53,6 +53,7 @@ class DiscordREST:
             data = json.dumps(data)
 
         for tries in range(5):
+            time.sleep(0)
             curepoch = time.time()
             if self._get_bucket("global_limited") == "True":
                 time.sleep(int(float(self._get_bucket("global_limit_expire"))) - curepoch)
