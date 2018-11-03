@@ -179,9 +179,11 @@ def get_online_embed_user_keys(guild_id="*", user_type=None):
         user_type = [user_type]
     usrs = {}
     for utype in user_type:
+        time.sleep(0)
         usrs[utype] = []
         keys = redis_store.keys("MemberPresence/{}/{}/*".format(guild_id, utype))
         for key in keys:
+            time.sleep(0)
             client_key = key.split("/")[-1]
             usrs[utype].append(client_key)
     return usrs
@@ -198,6 +200,7 @@ def get_member_roles(guild_id, user_id):
     roles = q["roles"]
     role_converted = []
     for role in roles:
+        time.sleep(0)
         role_converted.append(str(role))
     return role_converted
 
@@ -220,6 +223,7 @@ def get_guild_channels(guild_id, force_everyone=False, forced_role=0):
     guild_owner = guild["owner_id"]
     result_channels = []
     for channel in guild_channels:
+        time.sleep(0)
         if channel['type'] in ["text", "category"]:
             result = get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_roles, str(session.get("user_id")), force_everyone)
             bot_result = get_channel_permission(channel, guild_id, guild_owner, guild_roles, bot_member_roles, config["client-id"], False)
@@ -248,11 +252,13 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     
     role_positions = {}
     for role in guild_roles:
+        time.sleep(0)
         role_positions[str(role["id"])] = role["position"]
     member_roles = sorted(member_roles, key=lambda x: role_positions.get(str(x), -1), reverse=True)
     
     # @everyone
     for role in guild_roles:
+        time.sleep(0)
         if role["id"] == guild_id:
             channel_perm |= role["permissions"]
             continue
@@ -260,6 +266,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     # User Guild Roles
     for m_role in member_roles:
         for g_role in guild_roles:
+            time.sleep(0)
             if g_role["id"] == m_role:
                 channel_perm |= g_role["permissions"]
                 continue
@@ -277,6 +284,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     
     # channel specific
     for overwrite in channel["permission_overwrites"]:
+        time.sleep(0)
         if overwrite["type"] == "role" and overwrite["id"] in member_roles:
             denies |= overwrite["deny"]
             allows |= overwrite["allow"]
@@ -285,6 +293,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     
     # member specific
     for overwrite in channel["permission_overwrites"]:
+        time.sleep(0)
         if overwrite["type"] == "member" and overwrite["id"] == str(session.get("user_id")):
             channel_perm = (channel_perm & ~overwrite['deny']) | overwrite['allow']
             break
@@ -315,13 +324,16 @@ def bot_can_create_webhooks(guild):
     guild_roles = guild["roles"]
     # @everyone
     for role in guild_roles:
+        time.sleep(0)
         if role["id"] == guild["id"]:
             perm |= role["permissions"]
             continue
     member_roles = get_member_roles(guild["id"], config["client-id"])
     # User Guild Roles
     for m_role in member_roles:
+        time.sleep(0)
         for g_role in guild_roles:
+            time.sleep(0)
             if g_role["id"] == m_role:
                 perm |= g_role["permissions"]
                 continue
