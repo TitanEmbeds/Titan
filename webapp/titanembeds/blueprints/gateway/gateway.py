@@ -8,16 +8,19 @@ import json
 
 class Gateway(Namespace):
     def teardown_db_session(self):
+        time.sleep(0)
         db.session.commit()
         db.session.remove()
-    
+
     def on_connect(self):
         emit('hello')
-    
+
     def on_identify(self, data):
+        time.sleep(0)
         guild_id = data["guild_id"]
         if not guild_accepts_visitors(guild_id) and not check_user_in_guild(guild_id):
             disconnect()
+            self.teardown_db_session()
             return
         session["socket_guild_id"] = guild_id
         channels = []
@@ -44,12 +47,15 @@ class Gateway(Namespace):
                 emit("embed_user_connect", {"unauthenticated": False, "id": str(session["user_id"]), "nickname": nickname, "username": session["username"],"discriminator": session["discriminator"], "avatar_url": session["avatar"]}, room="GUILD_"+guild_id)
         emit("identified")
         self.teardown_db_session()
-    
+
     def on_disconnect(self):
+        time.sleep(0)
         if "user_keys" not in session:
-            disconnect()
+            self.teardown_db_session()
+            return
         if "socket_guild_id" not in session:
-            disconnect()
+            self.teardown_db_session()
+            return
         else:
             guild_id = session["socket_guild_id"]
             msg = {}
@@ -73,10 +79,12 @@ class Gateway(Namespace):
                     if webhook["name"] == name:
                         discord_api.delete_webhook(webhook["id"], webhook["token"])
         self.teardown_db_session()
-        
+
     def on_heartbeat(self, data):
+        time.sleep(0)
         if "socket_guild_id" not in session:
             disconnect()
+            return
         guild_id = data["guild_id"]
         visitor_mode = data["visitor_mode"]
         if not visitor_mode:
@@ -84,25 +92,31 @@ class Gateway(Namespace):
             if "unauthenticated" not in session:
                 self.teardown_db_session()
                 disconnect()
+                return
             if session["unauthenticated"]:
                 key = session["user_keys"][guild_id]
+            time.sleep(0)
             status = update_user_status(guild_id, session["username"], key)
             if status["revoked"] or status["banned"]:
                 emit("revoke")
                 self.teardown_db_session()
                 time.sleep(1)
                 disconnect()
+                return
             else:
                 emit("ack")
         else:
             if not guild_accepts_visitors(guild_id):
                 self.teardown_db_session()
                 disconnect()
+                return
         self.teardown_db_session()
-        
+
     def on_channel_list(self, data):
+        time.sleep(0)
         if "socket_guild_id" not in session:
             disconnect()
+            return
         guild_id = data["guild_id"]
         visitor_mode = data["visitor_mode"]
         channels = None
@@ -118,10 +132,12 @@ class Gateway(Namespace):
                 leave_room("CHANNEL_"+chan["channel"]["id"])
         emit("channel_list", channels)
         self.teardown_db_session()
-        
+
     def on_current_user_info(self, data):
+        time.sleep(0)
         if "socket_guild_id" not in session:
             disconnect()
+            return
         guild_id = data["guild_id"]
         if "user_keys" in session and not session["unauthenticated"]:
             dbMember = get_guild_member(guild_id, session["user_id"])
@@ -134,7 +150,7 @@ class Gateway(Namespace):
             }
             emit("current_user_info", usr)
         self.teardown_db_session()
-        
+
     def get_user_color(self, guild_id, user_id):
         color = None
         member = redisqueue.get_guild_member(guild_id, user_id)
@@ -162,10 +178,12 @@ class Gateway(Namespace):
                     time.sleep(0)
                     color = "0" + color
         return color
-    
+
     def on_lookup_user_info(self, data):
+        time.sleep(0)
         if "socket_guild_id" not in session:
             disconnect()
+            return
         guild_id = data["guild_id"]
         name = data["name"]
         discriminator = data["discriminator"]
@@ -180,6 +198,7 @@ class Gateway(Namespace):
             "avatar_url": None,
             "discordbotsorgvoted": False,
         }
+        time.sleep(0)
         member = redisqueue.get_guild_member_named(guild_id, "{}#{}".format(name, discriminator))
         if member:
             usr["id"] = str(member["id"])
