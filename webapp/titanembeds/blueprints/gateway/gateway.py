@@ -47,7 +47,7 @@ class Gateway(Namespace):
     
     def on_disconnect(self):
         if "user_keys" not in session:
-            return
+            disconnect()
         if "socket_guild_id" not in session:
             disconnect()
         else:
@@ -75,6 +75,8 @@ class Gateway(Namespace):
         self.teardown_db_session()
         
     def on_heartbeat(self, data):
+        if "socket_guild_id" not in session:
+            disconnect()
         guild_id = data["guild_id"]
         visitor_mode = data["visitor_mode"]
         if not visitor_mode:
@@ -99,6 +101,8 @@ class Gateway(Namespace):
         self.teardown_db_session()
         
     def on_channel_list(self, data):
+        if "socket_guild_id" not in session:
+            disconnect()
         guild_id = data["guild_id"]
         visitor_mode = data["visitor_mode"]
         channels = None
@@ -116,6 +120,8 @@ class Gateway(Namespace):
         self.teardown_db_session()
         
     def on_current_user_info(self, data):
+        if "socket_guild_id" not in session:
+            disconnect()
         guild_id = data["guild_id"]
         if "user_keys" in session and not session["unauthenticated"]:
             dbMember = get_guild_member(guild_id, session["user_id"])
@@ -158,6 +164,8 @@ class Gateway(Namespace):
         return color
     
     def on_lookup_user_info(self, data):
+        if "socket_guild_id" not in session:
+            disconnect()
         guild_id = data["guild_id"]
         name = data["name"]
         discriminator = data["discriminator"]
