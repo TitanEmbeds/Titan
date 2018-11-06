@@ -53,6 +53,7 @@
     var all_users = []; // List of all the users in guild
     var is_dragging_chatcontainer = false; // Track if is dragging on chatcontainer (does not trigger messagebox focus) or not
     var localstorage_avaliable = false; // Check if localstorage is avaliable on this browser
+    var shouldUtilizeGateway = false; // Don't connect to gateway until page is focused or has interaction.
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -215,10 +216,45 @@
         }
     }
     
+    function enableGateway(event) {
+        if (shouldUtilizeGateway) {
+            return;
+        }
+        $(document).off("click focus", enableGateway);
+        $("main").off("mousewheel", enableGateway);
+        shouldUtilizeGateway = true;
+        initiate_websockets();
+    }
+    
+    function inIframe() {
+        try {
+            console.log(window.self, window.top)
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+    
+    function isSameDomain() {
+        try {
+            return location.hostname == parent.location.hostname;
+        } catch (e) {
+            return false;
+        }
+    }
+    
     $(function() {
         performLocalStorageTest();
         if ($("#user-defined-css").length > 0) {
             user_def_css = $("#user-defined-css").text();
+        }
+        
+        // is not in iframe
+        if (!inIframe() || isSameDomain()) {
+            shouldUtilizeGateway = true;
+        } else {
+            $(document).on("click focus", enableGateway);
+            $("main").on("mousewheel", enableGateway);
         }
         
         $('select').material_select();
@@ -450,7 +486,7 @@
         if (scrollbarTheme) {
             $("main").mCustomScrollbar({
                 autoHideScrollbar: !showScrollbar,
-                theme: scrollbarTheme
+                theme: scrollbarTheme,
             });
             $("body").addClass("custom-scrollbars");
         }
@@ -1995,7 +2031,7 @@
     });
     
     function initiate_websockets() {
-        if (socket) {
+        if (socket || !shouldUtilizeGateway) {
             return;
         }
         
