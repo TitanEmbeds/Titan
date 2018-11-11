@@ -33,7 +33,7 @@ class Guilds(db.Model):
         self.mentions_limit = -1 # -1 = unlimited mentions
 
     def __repr__(self):
-        return '<Guilds {0} {1}>'.format(self.id, self.guild_id)
+        return '<Guilds {0}>'.format(self.guild_id)
 
     def set_unauthUsersBool(self, value):
         self.unauth_users = value
