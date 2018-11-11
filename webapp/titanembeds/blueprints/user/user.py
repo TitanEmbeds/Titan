@@ -207,7 +207,7 @@ def administrate_guild(guild_id):
     if check_user_permission(guild_id, 1):
         permissions.append("Kick Members")
     cosmetics = db.session.query(Cosmetics).filter(Cosmetics.user_id == session['user_id']).first()
-    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.id).limit(500).all()
+    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.id).limit(2000).all()
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
     dbguild_dict = {

@@ -170,7 +170,7 @@ def administrate_guild(guild_id):
     permissions.append("Manage Embed Settings")
     permissions.append("Ban Members")
     permissions.append("Kick Members")
-    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.id).limit(500).all()
+    all_members = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.guild_id == guild_id).order_by(UnauthenticatedUsers.id).limit(2000).all()
     all_bans = db.session.query(UnauthenticatedBans).filter(UnauthenticatedBans.guild_id == guild_id).all()
     users = prepare_guild_members_list(all_members, all_bans)
     dbguild_dict = {
