@@ -20,6 +20,7 @@
 /* global wdtEmojiBundle */
 /* global EmojiConvertor */
 /* global post_timeout */
+/* global is_peak */
 
 (function () {
     const theme_options = ["DiscordDark", "FireWyvern", "IceWyvern", "MetroEdge", "BetterTitan"]; // All the avaliable theming names
@@ -249,11 +250,13 @@
         }
         
         // is not in iframe
-        if (!inIframe() || isSameDomain()) {
+        if ((!inIframe() || isSameDomain()) && !is_peak) {
             shouldUtilizeGateway = true;
         } else {
             $(document).on("click focus", enableGateway);
-            $("main").on("mousewheel", enableGateway);
+            if (!is_peak) {
+                $("main").on("mousewheel", enableGateway);
+            }
         }
         
         $('select').material_select();

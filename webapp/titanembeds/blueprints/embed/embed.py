@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, redirect, url_for, session, request
 from flask_babel import gettext
-from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled, is_int, redisqueue
+from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled, is_int, redisqueue, get_online_embed_user_keys
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
 from titanembeds.database import db, Guilds, UserCSS, list_disabled_guilds
 from config import config
@@ -60,6 +60,10 @@ def parse_url_domain(url):
     if parsed.netloc != "":
         return parsed.netloc
     return url
+    
+def is_peak(guild_id):
+    usrs = get_online_embed_user_keys(guild_id)
+    return (len(usrs["AuthenticatedUsers"]) + len(usrs["UnauthenticatedUsers"])) > 10
 
 @embed.route("/<int:guild_id>")
 def guild_embed(guild_id):
@@ -93,7 +97,8 @@ def guild_embed(guild_id):
             cssvariables=parse_css_variable(customcss),
             same_target=request.args.get("sametarget", False) == "true",
             userscalable=request.args.get("userscalable", "True").lower().startswith("t"),
-            fixed_sidenav=request.args.get("fixedsidenav", "False").lower().startswith("t")
+            fixed_sidenav=request.args.get("fixedsidenav", "False").lower().startswith("t"),
+            is_peak=is_peak(guild_id)
         )
     abort(404)
 

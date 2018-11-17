@@ -525,6 +525,7 @@
         const post_timeout = {{ guild["post_timeout"]|tojson|safe }};
         const visitors_enabled = {% if visitors_enabled %}true{% else %}false{% endif %};
         const unauth_captcha_enabled = {% if unauth_captcha_enabled %}true{% else %}false{% endif %};
+        const is_peak = {{ is_peak|tojson|safe }};
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
