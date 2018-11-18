@@ -252,6 +252,21 @@ QUERY_PARAMETERS = [
 
 LANGUAGES = [
     {
+        "code": "bg_BG",
+        "name_en": "Bulgarian",
+        "name": "български",
+        "translators": [
+            {
+                "name": "kr3t3n",
+                "crowdin_profile": "kr3t3n",
+            },
+            {
+                "name": "Dremski",
+                "crowdin_profile": "Dremski",
+            },
+        ],
+    },
+    {
         "code": "ca_ES",
         "name_en": "Catalan",
         "name": "Català",
@@ -265,7 +280,8 @@ LANGUAGES = [
                 "crowdin_profile": "jmmartin_5",
             },
         ],
-    },{
+    },
+    {
         "code": "cs_CZ",
         "name_en": "Czech",
         "name": "čeština",
@@ -289,6 +305,14 @@ LANGUAGES = [
                 "name": "Victor Fisker",
                 "crowdin_profile": "victorfrb",
             },
+            {
+                "name": "Brian \"Ztyle\" Aagesen",
+                "crowdin_profile": "b-l",
+            },
+            {
+                "name": "Lucas Gundelach",
+                "crowdin_profile": "lucas.g",
+            },
         ],
     },
     {
@@ -303,6 +327,10 @@ LANGUAGES = [
             {
                 "name": "Sascha Greuel",
                 "crowdin_profile": "SoftCreatR",
+            },
+            {
+                "name": "Markus Heinz",
+                "crowdin_profile": "nanzowatz",
             },
         ],
     },
@@ -334,6 +362,14 @@ LANGUAGES = [
                 "name": "Jaime Muñoz Martín",
                 "crowdin_profile": "jmmartin_5",
             },
+            {
+                "name": "Amy Y",
+                "crowdin_profile": "amytheacmaster",
+            },
+            {
+                "name": "NicholasG04",
+                "crowdin_profile": "NicholasG04",
+            },
         ],
     },
     {
@@ -344,6 +380,18 @@ LANGUAGES = [
             {
                 "name": "𝔻𝕣.𝕄𝕦𝕣𝕠𝕨",
                 "crowdin_profile": "drmurow",
+            },
+            {
+                "name": "SytheS Boi",
+                "crowdin_profile": "clawschaospsn",
+            },
+            {
+                "name": "MVP_54",
+                "crowdin_profile": "54Mvp",
+            },
+            {
+                "name": "Serveur gta",
+                "crowdin_profile": "givemefive.serveur",
             },
         ],
     },
@@ -371,6 +419,10 @@ LANGUAGES = [
                 "name": "csongorhunt",
                 "crowdin_profile": "csongorhunt",
             },
+            {
+                "name": "Amy Y",
+                "crowdin_profile": "amytheacmaster",
+            },
         ],
     },
     {
@@ -386,6 +438,10 @@ LANGUAGES = [
                 "name": "riesky",
                 "crowdin_profile": "riesky",
             },
+            {
+                "name": "Qodam",
+                "crowdin_profile": "Qodam",
+            },
         ],
     },
     {
@@ -396,6 +452,10 @@ LANGUAGES = [
             {
                 "name": "dotJS",
                 "crowdin_profile": "justdotJS",
+            },
+            {
+                "name": "Amy Y",
+                "crowdin_profile": "amytheacmaster",
             },
         ],
     },
@@ -438,6 +498,14 @@ LANGUAGES = [
                 "name": "That Guy",
                 "crowdin_profile": "maksinibob",
             },
+            {
+                "name": "Ukas9",
+                "crowdin_profile": "Ukas9",
+            },
+            {
+                "name": "Krzysztof Kurzawa",
+                "crowdin_profile": "Crisu192",
+            },
         ],
     },
     {
@@ -449,6 +517,18 @@ LANGUAGES = [
                 "name": "Miguel Dos Reis",
                 "crowdin_profile": "siersod",
             },
+            {
+                "name": "Ivo Pereira",
+                "crowdin_profile": "ivo-pereira",
+            },
+            {
+                "name": "DJ MARCIO EXTREME",
+                "crowdin_profile": "krsolucoesweb",
+            },
+            {
+                "name": "André Gama",
+                "crowdin_profile": "ToeOficial",
+            },
         ],
     },
     {
@@ -459,6 +539,25 @@ LANGUAGES = [
             {
                 "name": "Andra",
                 "crowdin_profile": "sarmizegetusa",
+            },
+            {
+                "name": "Florin Andrei",
+                "crowdin_profile": "florinandrei344",
+            },
+        ],
+    },
+    {
+        "code": "ru_RU",
+        "name_en": "Russian",
+        "name": "русский",
+        "translators": [
+            {
+                "name": "haha_yes",
+                "crowdin_profile": "haha_yes",
+            },
+            {
+                "name": "Влад Гаврилович",
+                "crowdin_profile": "vladik0701",
             },
         ],
     },
@@ -497,6 +596,10 @@ LANGUAGES = [
                 "name": "Ciker",
                 "crowdin_profile": "CikerDeveloper",
             },
+            {
+                "name": "shame741",
+                "crowdin_profile": "shame741",
+            },
         ],
     },
     {
@@ -507,6 +610,10 @@ LANGUAGES = [
             {
                 "name": "Samuel Sandstrom",
                 "crowdin_profile": "ssandstrom95",
+            },
+            {
+                "name": "_CatInATopHat",
+                "crowdin_profile": "_CatInATopHat",
             },
         ],
     },
@@ -519,6 +626,14 @@ LANGUAGES = [
                 "name": "Pantakarn Toopprateep",
                 "crowdin_profile": "CardKunG",
             },
+            {
+                "name": "Jay Kh.",
+                "crowdin_profile": "ds-al-coda",
+            },
+            {
+                "name": "Apinat Yodprasit",
+                "crowdin_profile": "apinatyodprasit",
+            },
         ],
     },
     {
@@ -529,6 +644,10 @@ LANGUAGES = [
             {
                 "name": "monomyth",
                 "crowdin_profile": "monomyth",
+            },
+            {
+                "name": "erdogdu96",
+                "crowdin_profile": "erdogdu96",
             },
         ],
     },
@@ -544,6 +663,10 @@ LANGUAGES = [
             {
                 "name": "myjourney in Steemit",
                 "crowdin_profile": "myjourney",
+            },
+            {
+                "name": "Jack Mao",
+                "crowdin_profile": "mrjacksonvillecc",
             },
         ],
     },
