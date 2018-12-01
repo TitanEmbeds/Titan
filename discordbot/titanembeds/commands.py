@@ -76,8 +76,8 @@ class Commands():
     async def shard(self, message):
         await message.channel.send("This instance of Titan Embeds Discord Bot is running on shard **{}**. There are **{}** shards in total.".format(message.guild.shard_id, self.client.shard_count))
 
-        async def help(self, message):
-            await message.channel.send("Commands available on: https://titanembeds.com/about\nTo setup an embed please visit: https://titanembeds.com/user/dashboard")
+    async def help(self, message):
+        await message.channel.send("Commands available on: https://titanembeds.com/about\nTo setup an embed please visit: https://titanembeds.com/user/dashboard")
 
     async def members(self, message):
         headers = {"Authorization": self.config["titan-web-app-secret"]}
