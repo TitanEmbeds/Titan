@@ -69,13 +69,16 @@ class Commands():
 
     async def invite(self, message):
         await message.channel.send("You can invite Titan to your server by visiting this link: https://discordapp.com/oauth2/authorize?&client_id=299403260031139840&scope=bot&permissions=641195117")
-        
+
     async def server(self, message):
         await message.channel.send("Join the Titan Embeds Discord server! https://discord.gg/pFDDtcN")
-        
+
     async def shard(self, message):
         await message.channel.send("This instance of Titan Embeds Discord Bot is running on shard **{}**. There are **{}** shards in total.".format(message.guild.shard_id, self.client.shard_count))
-    
+
+    async def help(self, message):
+        await message.channel.send("Commands available on: https://titanembeds.com/about\nTo setup an embed please visit: https://titanembeds.com/user/dashboard")
+
     async def members(self, message):
         headers = {"Authorization": self.config["titan-web-app-secret"]}
         payload = {
