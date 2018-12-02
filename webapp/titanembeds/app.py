@@ -28,7 +28,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Suppress the warning/no need this on for now.
 app.config['RATELIMIT_HEADERS_ENABLED'] = True
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 100
-app.config['SQLALCHEMY_POOL_SIZE'] = 15
+app.config['SQLALCHEMY_POOL_SIZE'] = 40
 app.config['RATELIMIT_STORAGE_URL'] = config["redis-uri"]
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=3)
 app.config['REDIS_URL'] = config["redis-uri"]
