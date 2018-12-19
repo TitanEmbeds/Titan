@@ -841,8 +841,8 @@ p.mentioned span.chatmessage {
   font-size: 12pt;
   border-radius: 5px;
   margin-left: 6px;
+  margin-top: 6px;
   padding-left: 3px;
-  padding-right: 3px;
   color: #C3C4C5;
   cursor: pointer;
   height: 27px;
