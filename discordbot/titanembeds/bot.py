@@ -181,7 +181,7 @@ class Titan(discord.AutoShardedClient):
         await self.redisqueue.update_guild(guild)
         if len(after) == 0:
             await self.socketio.on_guild_emojis_update(before)
-        elif len(before) == 0:
+        else:
             await self.socketio.on_guild_emojis_update(after)
             
     async def on_webhooks_update(self, channel):

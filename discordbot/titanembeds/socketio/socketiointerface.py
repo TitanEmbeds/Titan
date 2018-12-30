@@ -50,6 +50,8 @@ class SocketIOInterface:
         await self.io.emit('GUILD_MEMBER_UPDATE', data=user, room=str("GUILD_"+str(member.guild.id)), namespace='/gateway')
     
     async def on_guild_emojis_update(self, emojis):
+        if len(emojis) == 0:
+            return
         emotes = get_formatted_emojis(emojis)
         await self.io.emit('GUILD_EMOJIS_UPDATE', data=emotes, room=str("GUILD_"+str(emojis[0].guild.id)), namespace='/gateway')
     
