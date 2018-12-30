@@ -121,7 +121,12 @@ class RedisQueue:
         await self.push_message(message)
 
     async def on_get_guild_member(self, key, params):
-        member = self.bot.get_guild(int(params["guild_id"])).get_member(int(params["user_id"]))
+        guild = self.bot.get_guild(int(params["guild_id"]))
+        if not guild:
+            await self.connection.set(key, "")
+            await self.enforce_expiring_key(key)
+            return
+        member = guild.get_member(int(params["user_id"]))
         if not member:
             await self.connection.set(key, "")
             await self.enforce_expiring_key(key)

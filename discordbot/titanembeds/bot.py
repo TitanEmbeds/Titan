@@ -178,11 +178,10 @@ class Titan(discord.AutoShardedClient):
         await self.redisqueue.ban_member(guild, user)
     
     async def on_guild_emojis_update(self, guild, before, after):
+        await self.redisqueue.update_guild(guild)
         if len(after) == 0:
-            await self.redisqueue.update_guild(guild)
             await self.socketio.on_guild_emojis_update(before)
-        else:
-            await self.redisqueue.update_guild(guild)
+        elif len(before) == 0:
             await self.socketio.on_guild_emojis_update(after)
             
     async def on_webhooks_update(self, channel):
@@ -193,8 +192,10 @@ class Titan(discord.AutoShardedClient):
         data = payload.data
         if not self.in_messages_cache(int(message_id)):
             channel = self.get_channel(int(data["channel_id"]))
-            message = await channel.get_message(int(message_id))
-            await self.on_message_edit(None, message)
+            me = channel.guild.get_member(self.user.id)
+            if channel.permissions_for(me).read_messages:
+                message = await channel.get_message(int(message_id))
+                await self.on_message_edit(None, message)
     
     async def on_raw_message_delete(self, payload):
         message_id = payload.message_id
@@ -225,8 +226,10 @@ class Titan(discord.AutoShardedClient):
         message_id = payload.message_id
         if not self.in_messages_cache(message_id):
             channel = self.get_channel(payload.channel_id)
-            message = await channel.get_message(message_id)
-            await self.on_reaction_add(message.reactions[0], None)
+            me = channel.guild.get_member(self.user.id)
+            if channel.permissions_for(me).read_messages:
+                message = await channel.get_message(message_id)
+                await self.on_reaction_add(message.reactions[0], None)
     
     async def on_raw_reaction_remove(self, payload):
         message_id = payload.message_id
@@ -234,17 +237,21 @@ class Titan(discord.AutoShardedClient):
             partial = payload.emoji
             emoji = self._connection._upgrade_partial_emoji(partial)
             channel = self.get_channel(payload.channel_id)
-            message = await channel.get_message(message_id)
-            message._add_reaction({"me": payload.user_id == self.user.id}, emoji, payload.user_id)
-            reaction = message._remove_reaction({}, emoji, payload.user_id)
-            await self.on_reaction_remove(reaction, None)
+            me = channel.guild.get_member(self.user.id)
+            if channel.permissions_for(me).read_messages:
+                message = await channel.get_message(message_id)
+                message._add_reaction({"me": payload.user_id == self.user.id}, emoji, payload.user_id)
+                reaction = message._remove_reaction({}, emoji, payload.user_id)
+                await self.on_reaction_remove(reaction, None)
     
     async def on_raw_reaction_clear(self, payload):
         message_id = payload.message_id
         if not self.in_messages_cache(message_id):
             channel = self.get_channel(payload.channel_id)
-            message = await channel.get_message(message_id)
-            await self.on_reaction_clear(message, [])
+            me = channel.guild.get_member(self.user.id)
+            if channel.permissions_for(me).read_messages:
+                message = await channel.get_message(message_id)
+                await self.on_reaction_clear(message, [])
     
     def in_messages_cache(self, msg_id):
         for msg in self._connection._messages:
