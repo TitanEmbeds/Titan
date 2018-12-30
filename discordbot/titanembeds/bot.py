@@ -4,8 +4,8 @@ from titanembeds.commands import Commands
 from titanembeds.socketio import SocketIOInterface
 from titanembeds.poststats import DiscordBotsOrg, BotsDiscordPw
 from collections import deque
-from raven import Client as RavenClient
-import raven
+# from raven import Client as RavenClient
+# import raven
 import discord
 import aiohttp
 import asyncio
@@ -16,10 +16,10 @@ logging.basicConfig(filename='titanbot.log',level=logging.INFO,format='%(asctime
 handler = logging.FileHandler(config.get("logging-location", "titanbot.log"))
 logging.getLogger('TitanBot')
 logging.getLogger('sqlalchemy')
-try:
-    raven_client = RavenClient(config["sentry-dsn"])
-except raven.exceptions.InvalidDsn:
-    pass
+# try:
+#     raven_client = RavenClient(config["sentry-dsn"])
+# except raven.exceptions.InvalidDsn:
+#     pass
 
 class Titan(discord.AutoShardedClient):
     def __init__(self):

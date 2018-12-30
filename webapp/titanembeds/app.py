@@ -14,7 +14,7 @@ except:
 from .database import db
 from flask import Flask, render_template, request, session, url_for, redirect, jsonify, g
 from flask_sslify import SSLify
-from titanembeds.utils import rate_limiter, discord_api, socketio, babel, redis_store, language_code_list, sentry
+from titanembeds.utils import rate_limiter, discord_api, socketio, babel, redis_store, language_code_list#, sentry
 from .blueprints import api, user, admin, embed, gateway
 import os
 from titanembeds.database import get_administrators_list
@@ -35,7 +35,7 @@ app.config['REDIS_URL'] = config["redis-uri"]
 app.config['MAX_CONTENT_LENGTH'] = 4 * 1024 * 1024 # Limit upload size to 4mb
 app.secret_key = config['app-secret']
 
-sentry.init_app(app)
+#sentry.init_app(app)
 db.init_app(app)
 rate_limiter.init_app(app)
 if config.get("enable-ssl", False):
@@ -95,9 +95,9 @@ def context_processor():
         "dbl_voted": session.get("unauthenticated", True) == False and bool(redis_store.get("DiscordBotsOrgVoted/" + str(session.get("user_id", -1))))
     }
 
-@app.errorhandler(500)
-def internal_server_error(error):
-    return render_template('500.html.j2',
-        event_id=g.sentry_event_id,
-        public_dsn=sentry.client.get_public_dsn('https')
-    ), 500
+# @app.errorhandler(500)
+# def internal_server_error(error):
+#     return render_template('500.html.j2',
+#         event_id=g.sentry_event_id,
+#         public_dsn=sentry.client.get_public_dsn('https')
+#     ), 500
