@@ -2,6 +2,8 @@ from titanembeds.utils import redis_store
 import json
 import time
 
+from titanembeds.decorators import timeit
+
 class RedisQueue:
     def __init__(self):
         pass # Nothing really to initialize
@@ -105,6 +107,7 @@ class RedisQueue:
             return self.get_guild_member(guild_id, guild_member_id["user_id"])
         return None
     
+    @timeit
     def list_guild_members(self, guild_id):
         key = "/guilds/{}/members".format(guild_id)
         member_ids = self.get(key, "list_guild_members", {"guild_id": guild_id}, data_type="set")

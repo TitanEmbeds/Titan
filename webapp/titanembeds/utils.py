@@ -14,6 +14,8 @@ import hashlib
 import time
 import json
 
+from titanembeds.decorators import timeit
+
 redis_store = FlaskRedis(charset="utf-8", decode_responses=True)
 
 from titanembeds.discordrest import DiscordREST
@@ -205,6 +207,7 @@ def get_member_roles(guild_id, user_id):
         role_converted.append(str(role))
     return role_converted
 
+@timeit
 def get_guild_channels(guild_id, force_everyone=False, forced_role=0):
     if user_unauthenticated() or force_everyone:
         member_roles = [guild_id] #equivilant to @everyone role
@@ -313,6 +316,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
         result["attach_files"] = False
     return result
     
+@timeit
 def get_forced_role(guild_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     if not session.get("unauthenticated", True):

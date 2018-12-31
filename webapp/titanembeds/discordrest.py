@@ -6,6 +6,8 @@ import urllib
 from titanembeds.utils import redis_store
 from flask import request
 
+from titanembeds.decorators import timeit
+
 _DISCORD_API_BASE = "https://discordapp.com/api/v6"
 
 def json_or_text(response):
@@ -148,6 +150,7 @@ class DiscordREST:
     # Widget Handler
     #####################
 
+    @timeit
     def get_widget(self, guild_id):
         _endpoint = _DISCORD_API_BASE + "/servers/{guild_id}/widget.json".format(guild_id=guild_id)
         embed = self.get_guild_embed(guild_id)

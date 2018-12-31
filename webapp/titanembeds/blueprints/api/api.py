@@ -1,5 +1,5 @@
 from titanembeds.database import db, Guilds, UnauthenticatedUsers, UnauthenticatedBans, AuthenticatedUsers, get_administrators_list, get_badges, DiscordBotsOrgTransactions
-from titanembeds.decorators import valid_session_required, discord_users_only, abort_if_guild_disabled
+from titanembeds.decorators import valid_session_required, discord_users_only, abort_if_guild_disabled, timeit
 from titanembeds.utils import check_guild_existance, guild_accepts_visitors, guild_query_unauth_users_bool, get_client_ipaddr, discord_api, rate_limiter, channel_ratelimit_key, guild_ratelimit_key, user_unauthenticated, checkUserRevoke, checkUserBanned, update_user_status, check_user_in_guild, get_guild_channels, guild_webhooks_enabled, guild_unauthcaptcha_enabled, get_member_roles, get_online_embed_user_keys, redis_store, redisqueue, get_forced_role
 from titanembeds.oauth import user_has_permission, generate_avatar_url, check_user_can_administrate_guild
 import titanembeds.constants as constants
@@ -100,6 +100,7 @@ def filter_guild_channel(guild_id, channel_id, force_everyone=False):
             return chan
     return None
 
+@timeit
 def get_online_discord_users(guild_id, embed):
     apimembers = redisqueue.list_guild_members(guild_id)
     apimembers_filtered = {}
@@ -120,6 +121,7 @@ def get_online_discord_users(guild_id, embed):
             member["avatar_url"] = apimem["avatar_url"]
     return embed['members']
 
+@timeit
 def get_online_embed_users(guild_id):
     usrs = get_online_embed_user_keys(guild_id)
     unauths = db.session.query(UnauthenticatedUsers).filter(UnauthenticatedUsers.user_key.in_(usrs["UnauthenticatedUsers"]), UnauthenticatedUsers.revoked == False, UnauthenticatedUsers.guild_id == guild_id).all() if usrs["UnauthenticatedUsers"] else []
@@ -144,9 +146,11 @@ def get_online_embed_users(guild_id):
         users['authenticated'].append(meta)
     return users
 
+@timeit
 def get_guild_emojis(guild_id):
     return redisqueue.get_guild(guild_id)["emojis"]
 
+@timeit
 def get_guild_roles(guild_id):
     return redisqueue.get_guild(guild_id)["roles"]
 
@@ -428,11 +432,13 @@ def change_unauthenticated_username():
     db.session.commit()
     return final_response
 
+@timeit
 def get_guild_guest_icon(guild_id):
     guest_icon = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first().guest_icon
     return guest_icon if guest_icon else url_for('static', filename='img/titanembeds_square.png')
 
 def process_query_guild(guild_id, visitor=False):
+    #print("process_query_guild")
     widget = discord_api.get_widget(guild_id)
     forced_role = get_forced_role(guild_id)
     channels = get_guild_channels(guild_id, visitor, forced_role=forced_role)
