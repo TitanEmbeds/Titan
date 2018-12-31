@@ -71,6 +71,8 @@ def guild_ratelimit_key():
     return (ip + guild_id)
 
 def check_guild_existance(guild_id):
+    if not is_int(guild_id):
+        return False
     guild = redisqueue.get_guild(guild_id)
     if not guild:
         return False

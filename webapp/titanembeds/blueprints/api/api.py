@@ -433,21 +433,17 @@ def get_guild_guest_icon(guild_id):
     return guest_icon if guest_icon else url_for('static', filename='img/titanembeds_square.png')
 
 def process_query_guild(guild_id, visitor=False):
-    widget = discord_api.get_widget(guild_id)
     forced_role = get_forced_role(guild_id)
     channels = get_guild_channels(guild_id, visitor, forced_role=forced_role)
-    if widget.get("success", True):
-        discordmembers = get_online_discord_users(guild_id, widget)
-    else:
-        discordmembers = [{"id": 0, "color": "FFD6D6", "status": "dnd", "username": "Discord Server Widget is Currently Disabled"}]
-    embedmembers = get_online_embed_users(guild_id)
+    discordmembers = [] # Discord members & embed members listed here is moved to its own api endpoint
+    embedmembers = {"authenticated": [], "unauthenticated": []} 
     emojis = get_guild_emojis(guild_id)
     roles = get_guild_roles(guild_id)
     guest_icon = get_guild_guest_icon(guild_id)
     if visitor:
         for channel in channels:
             channel["write"] = False
-    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, roles=roles, guest_icon=guest_icon, instant_invite=widget.get("instant_invite", None))
+    return jsonify(channels=channels, discordmembers=discordmembers, embedmembers=embedmembers, emojis=emojis, roles=roles, guest_icon=guest_icon, instant_invite=None)
 
 @api.route("/query_guild", methods=["GET"])
 @valid_session_required(api=True)
@@ -469,6 +465,40 @@ def query_guild_visitor():
             abort(403)
         return process_query_guild(guild_id, True)
     abort(404)
+    
+@api.route("/server_members", methods=["GET"])
+@abort_if_guild_disabled()
+@valid_session_required(api=True)
+def server_members():
+    guild_id = request.args.get("guild_id", None)
+    if not check_guild_existance(guild_id):
+        abort(404)
+    if not check_user_in_guild(guild_id):
+        abort(403)
+    members = query_server_members(guild_id)
+    return jsonify(members)
+
+@api.route("/server_members_visitor", methods=["GET"])
+@abort_if_guild_disabled()
+def server_members_visitor():
+    guild_id = request.args.get("guild_id", None)
+    if not check_guild_existance(guild_id):
+        abort(404)
+    if not guild_accepts_visitors(guild_id):
+        abort(403)
+    members = query_server_members(guild_id)
+    return jsonify(members)
+
+def query_server_members(guild_id):
+    widget = discord_api.get_widget(guild_id)
+    if widget.get("success", True):
+        discordmembers = get_online_discord_users(guild_id, widget)
+        widgetenabled = True
+    else:
+        discordmembers = [{"id": 0, "color": "FFD6D6", "status": "dnd", "username": "Discord Server Widget is Currently Disabled"}]
+        widgetenabled = False
+    embedmembers = get_online_embed_users(guild_id)
+    return {"discordmembers": discordmembers, "embedmembers": embedmembers, "widgetenabled": widgetenabled}
 
 @api.route("/create_authenticated_user", methods=["POST"])
 @discord_users_only(api=True)

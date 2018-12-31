@@ -99,12 +99,12 @@ margin-right:10px;
 /*height:150%*/
 }
 #discord-members > li > a.subheader,
-#members-nav > li:nth-child(1) > a,
+#online-server-members-header > a,
 #discord-members-count,
 #embed-discord-members-count,
-#members-nav > li:nth-child(4) > a,
+#authenticated-embed-users-header > a,
 #guest-members-count,
-#members-nav > li:nth-child(6) > a {
+#guest-embed-users-header > a {
 text-transform: uppercase;
 color:rgb(130,131,134)
 }

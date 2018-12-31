@@ -55,6 +55,7 @@
     var is_dragging_chatcontainer = false; // Track if is dragging on chatcontainer (does not trigger messagebox focus) or not
     var localstorage_avaliable = false; // Check if localstorage is avaliable on this browser
     var shouldUtilizeGateway = false; // Don't connect to gateway until page is focused or has interaction.
+    var discord_users_list_enabled = false; // Allow automatic population of discord users list
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -204,6 +205,19 @@
         return funct.promise();
     }
     
+    function server_members() {
+        var url = "/api/server_members";
+        if (visitor_mode) {
+            url = url += "_visitor";
+        }
+        var funct = $.ajax({
+            dataType: "json",
+            url: url,
+            data: {"guild_id": guild_id}
+        });
+        return funct.promise();
+    }
+    
     function performLocalStorageTest() {
         var test = 'test';
         try {
@@ -300,6 +314,17 @@
         });
         $("#usercard").modal({
             opacity: .5,
+        });
+        
+        $("#members-btn").click(function () {
+            var sm = server_members();
+            sm.done(function (data) {
+                $("#members-spinner").hide();
+                discord_users_list_enabled = data.widgetenabled;
+                fill_discord_members(data.discordmembers);
+                fill_authenticated_users(data.embedmembers.authenticated);
+                fill_unauthenticated_users(data.embedmembers.unauthenticated);
+            });
         });
         
         $("#nameplate").click(function () {
@@ -695,9 +720,6 @@
         update_emoji_picker();
         guild_roles_list = guildobj.roles;
         fill_channels(guildobj.channels);
-        fill_discord_members(guildobj.discordmembers);
-        fill_authenticated_users(guildobj.embedmembers.authenticated);
-        fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
         $("#instant-inv").attr("href", guildobj.instant_invite);
         run_fetch_routine();
         initiate_websockets();
@@ -838,6 +860,9 @@
     }
 
     function fill_discord_members(discordmembers) {
+        if (!discord_users_list_enabled) {
+            return;
+        }
         discord_users_list = discordmembers;
         var template = $('#mustache_authedusers').html();
         Mustache.parse(template);

@@ -109,15 +109,19 @@
       </ul>
 
       <ul id="members-nav" class="side-nav">
-        <li><a class="subheader">{{ _("Online Server Members") }} - <span id="discord-members-count"></span></a></li>
+        <div id="members-spinner" class="sk-double-bounce">
+          <div class="sk-child sk-double-bounce1"></div>
+          <div class="sk-child sk-double-bounce2"></div>
+        </div>
+        <li id="online-server-members-header"><a class="subheader">{{ _("Online Server Members") }} - <span id="discord-members-count">0</span></a></li>
         <span id="discord-members"></span>
 
-        <li><div class="divider"></div></li>
+        <li id="member-divider-1"><div class="divider"></div></li>
 
-        <li><a class="subheader">{{ _("Authenticated Embed Users") }} - <span id="embed-discord-members-count"></span></a></li>
+        <li id="authenticated-embed-users-header"><a class="subheader">{{ _("Authenticated Embed Users") }} - <span id="embed-discord-members-count">0</span></a></li>
         <span id="embed-discord-members"></span>
 
-        <li><a class="subheader">{{ _("Guest Embed Users") }} - <span id="guest-members-count"></span></a></li>
+        <li id="guest-embed-users-header"><a class="subheader">{{ _("Guest Embed Users") }} - <span id="guest-members-count">0</span></a></li>
         <span id="embed-unauth-users"></span>
       </ul>
 
