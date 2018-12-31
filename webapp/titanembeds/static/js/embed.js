@@ -861,7 +861,9 @@
 
     function fill_discord_members(discordmembers) {
         if (!discord_users_list_enabled) {
-            return;
+            if (discordmembers.length == 0 || discordmembers[0].id != 0) {
+                return;
+            }
         }
         discord_users_list = discordmembers;
         var template = $('#mustache_authedusers').html();
