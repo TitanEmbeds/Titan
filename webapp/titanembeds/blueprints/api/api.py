@@ -446,7 +446,8 @@ def process_query_guild(guild_id, visitor=False):
         discordmembers = get_online_discord_users(guild_id, widget)
     else:
         discordmembers = [{"id": 0, "color": "FFD6D6", "status": "dnd", "username": "Discord Server Widget is Currently Disabled"}]
-    embedmembers = get_online_embed_users(guild_id)
+    #embedmembers = get_online_embed_users(guild_id)
+    embedmembers = {"authenticated": [], "unauthenticated": []}
     emojis = get_guild_emojis(guild_id)
     roles = get_guild_roles(guild_id)
     guest_icon = get_guild_guest_icon(guild_id)
