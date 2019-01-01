@@ -89,6 +89,7 @@ def guild_query_unauth_users_bool(guild_id):
     dbGuild = db.session.query(Guilds).filter(Guilds.guild_id==guild_id).first()
     return dbGuild.unauth_users
 
+@timeit
 def user_unauthenticated():
     if 'unauthenticated' in session:
         return session['unauthenticated']
@@ -201,6 +202,7 @@ def check_user_in_guild(guild_id):
         dbUser = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
         return dbUser is not None and not checkUserRevoke(guild_id)
 
+@timeit
 def get_member_roles(guild_id, user_id):
     q = redisqueue.get_guild_member(guild_id, user_id)
     roles = q["roles"]
@@ -245,6 +247,7 @@ def get_guild_channels(guild_id, force_everyone=False, forced_role=0):
             result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
 
+@timeit
 def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_roles, user_id=None, force_everyone=False):
     result = {"channel": channel, "read": False, "write": False, "mention_everyone": False, "attach_files": False}
     if not user_id:
