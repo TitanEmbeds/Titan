@@ -54,7 +54,7 @@
     var all_users = []; // List of all the users in guild
     var is_dragging_chatcontainer = false; // Track if is dragging on chatcontainer (does not trigger messagebox focus) or not
     var localstorage_avaliable = false; // Check if localstorage is avaliable on this browser
-    var shouldUtilizeGateway = true; // Don't connect to gateway until page is focused or has interaction. -- set to true for now as an experiment to see how long this lasts...
+    var shouldUtilizeGateway = false; // Don't connect to gateway until page is focused or has interaction.
     var discord_users_list_enabled = false; // Allow automatic population of discord users list
 
     function element_in_view(element, fullyInView) {
@@ -267,9 +267,11 @@
         if ((!inIframe() || isSameDomain()) && !is_peak) {
             shouldUtilizeGateway = true;
         } else {
-            $(document).on("click focus", enableGateway);
-            if (!is_peak) {
+            if (is_peak) {
+                $(document).on("click focus", enableGateway);
                 $("main").on("mousewheel", enableGateway);
+            } else {
+                shouldUtilizeGateway = true;
             }
         }
         
