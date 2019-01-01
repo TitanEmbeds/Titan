@@ -13,6 +13,7 @@ import string
 import hashlib
 import time
 import json
+from titanembeds.decorators import timeit
 
 redis_store = FlaskRedis(charset="utf-8", decode_responses=True)
 
@@ -79,6 +80,7 @@ def check_guild_existance(guild_id):
     else:
         return True
 
+@timeit
 def guild_accepts_visitors(guild_id):
     dbGuild = Guilds.query.filter_by(guild_id=guild_id).first()
     return dbGuild.visitor_view
@@ -191,6 +193,7 @@ def get_online_embed_user_keys(guild_id="*", user_type=None):
             usrs[utype].append(client_key)
     return usrs
 
+@timeit
 def check_user_in_guild(guild_id):
     if user_unauthenticated():
         return guild_id in session.get("user_keys", {})
@@ -207,6 +210,7 @@ def get_member_roles(guild_id, user_id):
         role_converted.append(str(role))
     return role_converted
 
+@timeit
 def get_guild_channels(guild_id, force_everyone=False, forced_role=0):
     if user_unauthenticated() or force_everyone:
         member_roles = [guild_id] #equivilant to @everyone role
@@ -315,6 +319,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
         result["attach_files"] = False
     return result
     
+@timeit
 def get_forced_role(guild_id):
     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
     if not session.get("unauthenticated", True):

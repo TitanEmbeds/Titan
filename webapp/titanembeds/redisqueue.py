@@ -1,6 +1,7 @@
 from titanembeds.utils import redis_store
 import json
 import time
+from titanembeds.decorators import timeit
 
 class RedisQueue:
     def __init__(self):
@@ -93,6 +94,7 @@ class RedisQueue:
         sorted_msgs = sorted(msgs, key=lambda k: k['id'], reverse=True) 
         return sorted_msgs[:50] # only return last 50 messages in cache please
 
+    @timeit
     def get_guild_member(self, guild_id, user_id):
         key = "/guilds/{}/members/{}".format(guild_id, user_id)
         q = self.get(key, "get_guild_member", {"guild_id": guild_id, "user_id": user_id})
