@@ -40,3 +40,30 @@ def abort_if_guild_disabled(*args):
             return f(*args, **kwargs)
         return decorated_function
     return decorator
+    
+import time
+import logging
+from config import config
+
+logger = logging.getLogger('myapp')
+hdlr = logging.FileHandler(config["app-location"] + "/timeit.log")
+formatter = logging.Formatter('%(asctime)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr)
+logger.setLevel(logging.CRITICAL)
+    
+def timeit(method):
+    def timed(*args, **kw):
+        ts = time.time()
+        result = method(*args, **kw)
+        te = time.time()
+        if 'log_time' in kw:
+            name = kw.get('log_name', method.__name__.upper())
+            kw['log_time'][name] = int((te - ts) * 1000)
+        else:
+            # print('%r  %2.2f ms' % \
+            #       (method.__name__, (te - ts) * 1000))
+            logger.critical('%r  %2.2f ms' % \
+                   (method.__name__, (te - ts) * 1000) + " " + str(session) + " " + str(request))
+        return result
+    return timed

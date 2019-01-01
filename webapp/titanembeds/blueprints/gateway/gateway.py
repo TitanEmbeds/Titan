@@ -5,16 +5,20 @@ import functools
 from flask import request, session
 import time
 import json
+from titanembeds.decorators import timeit
 
 class Gateway(Namespace):
+    @timeit
     def teardown_db_session(self):
         time.sleep(0)
         db.session.commit()
         db.session.remove()
 
+    @timeit
     def on_connect(self):
         emit('hello')
 
+    @timeit
     def on_identify(self, data):
         time.sleep(0)
         guild_id = data["guild_id"]
@@ -48,6 +52,7 @@ class Gateway(Namespace):
         emit("identified")
         self.teardown_db_session()
 
+    @timeit
     def on_disconnect(self):
         time.sleep(0)
         if "user_keys" not in session:
@@ -80,6 +85,7 @@ class Gateway(Namespace):
                         discord_api.delete_webhook(webhook["id"], webhook["token"])
         self.teardown_db_session()
 
+    @timeit
     def on_heartbeat(self, data):
         time.sleep(0)
         if "socket_guild_id" not in session:
@@ -112,6 +118,7 @@ class Gateway(Namespace):
                 return
         self.teardown_db_session()
 
+    @timeit
     def on_channel_list(self, data):
         time.sleep(0)
         if "socket_guild_id" not in session:
@@ -133,6 +140,7 @@ class Gateway(Namespace):
         emit("channel_list", channels)
         self.teardown_db_session()
 
+    @timeit
     def on_current_user_info(self, data):
         time.sleep(0)
         if "socket_guild_id" not in session:
@@ -151,6 +159,7 @@ class Gateway(Namespace):
             emit("current_user_info", usr)
         self.teardown_db_session()
 
+    @timeit
     def get_user_color(self, guild_id, user_id):
         color = None
         member = redisqueue.get_guild_member(guild_id, user_id)
@@ -179,6 +188,7 @@ class Gateway(Namespace):
                     color = "0" + color
         return color
 
+    @timeit
     def on_lookup_user_info(self, data):
         time.sleep(0)
         if "socket_guild_id" not in session:
