@@ -262,22 +262,18 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     
     role_positions = {}
     for role in guild_roles:
-        time.sleep(0)
         role_positions[str(role["id"])] = role["position"]
     member_roles = sorted(member_roles, key=lambda x: role_positions.get(str(x), -1), reverse=True)
     
     # @everyone
     for role in guild_roles:
-        time.sleep(0)
         if role["id"] == guild_id:
             channel_perm |= role["permissions"]
             continue
     
     # User Guild Roles
     for m_role in member_roles:
-        time.sleep(0)
         for g_role in guild_roles:
-            time.sleep(0)
             if g_role["id"] == m_role:
                 channel_perm |= g_role["permissions"]
                 continue
@@ -295,7 +291,6 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     
     # channel specific
     for overwrite in channel["permission_overwrites"]:
-        time.sleep(0)
         if overwrite["type"] == "role" and overwrite["id"] in member_roles:
             denies |= overwrite["deny"]
             allows |= overwrite["allow"]
@@ -304,7 +299,6 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     
     # member specific
     for overwrite in channel["permission_overwrites"]:
-        time.sleep(0)
         if overwrite["type"] == "member" and overwrite["id"] == str(session.get("user_id")):
             channel_perm = (channel_perm & ~overwrite['deny']) | overwrite['allow']
             break
