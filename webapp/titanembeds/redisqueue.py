@@ -17,7 +17,6 @@ class RedisQueue:
         }
         loop_count = 0
         while (not data and data != "") and loop_count < 50:
-            time.sleep(0)
             if loop_count % 25 == 0:
                 redis_store.publish("discord-api-req", json.dumps(payload))
             time.sleep(0.1)
@@ -30,7 +29,6 @@ class RedisQueue:
             data = list(data)
             data_parsed = []
             for d in data:
-                time.sleep(0)
                 if d != "":
                     data_parsed.append(json.loads(d))
             return data_parsed
@@ -49,7 +47,6 @@ class RedisQueue:
         snowflakes = []
         guild_members = {}
         for x in q:
-            time.sleep(0)
             if x["id"] in snowflakes or int(x["id"]) <= int(after_snowflake):
                 continue
             snowflakes.append(x["id"])
@@ -78,7 +75,6 @@ class RedisQueue:
                 message["author"]["discriminator"] = member["discriminator"]
                 message["author"]["username"] = member["username"]
             for mention in message["mentions"]:
-                time.sleep(0)
                 if mention["id"] not in guild_members:
                     author = self.get_guild_member(guild_id, mention["id"])
                     guild_members[mention["id"]] = author
@@ -112,7 +108,6 @@ class RedisQueue:
         member_ids = self.get(key, "list_guild_members", {"guild_id": guild_id}, data_type="set")
         members = []
         for member_id in member_ids:
-            time.sleep(0)
             usr_id = member_id["user_id"]
             member = self.get_guild_member(guild_id, usr_id)
             if member:

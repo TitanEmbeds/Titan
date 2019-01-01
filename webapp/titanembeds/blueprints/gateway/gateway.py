@@ -9,7 +9,6 @@ from titanembeds.decorators import timeit
 
 class Gateway(Namespace):
     def teardown_db_session(self):
-        time.sleep(0)
         db.session.commit()
         db.session.remove()
 
@@ -18,7 +17,6 @@ class Gateway(Namespace):
 
     @timeit
     def on_identify(self, data):
-        time.sleep(0)
         guild_id = data["guild_id"]
         if not guild_accepts_visitors(guild_id) and not check_user_in_guild(guild_id):
             disconnect()
@@ -33,7 +31,6 @@ class Gateway(Namespace):
             channels = get_guild_channels(guild_id, forced_role=forced_role)
         join_room("GUILD_"+guild_id)
         for chan in channels:
-            time.sleep(0)
             if chan["read"]:
                 join_room("CHANNEL_"+chan["channel"]["id"])
         if session.get("unauthenticated", True) and guild_id in session.get("user_keys", {}):
@@ -51,7 +48,6 @@ class Gateway(Namespace):
         self.teardown_db_session()
 
     def on_disconnect(self):
-        time.sleep(0)
         if "user_keys" not in session:
             self.teardown_db_session()
             return
@@ -77,13 +73,11 @@ class Gateway(Namespace):
                 else:
                     name = name + username + "#" + str(session["discriminator"])
                 for webhook in guild_webhooks:
-                    time.sleep(0)
                     if webhook["name"] == name:
                         discord_api.delete_webhook(webhook["id"], webhook["token"])
         self.teardown_db_session()
 
     def on_heartbeat(self, data):
-        time.sleep(0)
         if "socket_guild_id" not in session:
             disconnect()
             return
@@ -97,7 +91,6 @@ class Gateway(Namespace):
                 return
             if session["unauthenticated"]:
                 key = session["user_keys"][guild_id]
-            time.sleep(0)
             status = update_user_status(guild_id, session["username"], key)
             if status["revoked"] or status["banned"]:
                 emit("revoke")
@@ -115,7 +108,6 @@ class Gateway(Namespace):
         self.teardown_db_session()
 
     def on_channel_list(self, data):
-        time.sleep(0)
         if "socket_guild_id" not in session:
             disconnect()
             return
@@ -136,7 +128,6 @@ class Gateway(Namespace):
         self.teardown_db_session()
 
     def on_current_user_info(self, data):
-        time.sleep(0)
         if "socket_guild_id" not in session:
             disconnect()
             return
@@ -161,28 +152,23 @@ class Gateway(Namespace):
         guild_roles = redisqueue.get_guild(guild_id)["roles"]
         guildroles_filtered = {}
         for role in guild_roles:
-            time.sleep(0)
             guildroles_filtered[role["id"]] = role
         member_roleids = member["roles"]
         member_roles = []
         for roleid in member_roleids:
-            time.sleep(0)
             role = guildroles_filtered.get(str(roleid))
             if not role:
                 continue
             member_roles.append(role)
         member_roles = sorted(member_roles, key=lambda k: k['position'])
         for role in member_roles:
-            time.sleep(0)
             if role["color"] != 0:
                 color = '{0:02x}'.format(role["color"])
                 while len(color) < 6:
-                    time.sleep(0)
                     color = "0" + color
         return color
 
     def on_lookup_user_info(self, data):
-        time.sleep(0)
         if "socket_guild_id" not in session:
             disconnect()
             return
@@ -200,7 +186,6 @@ class Gateway(Namespace):
             "avatar_url": None,
             "discordbotsorgvoted": False,
         }
-        time.sleep(0)
         member = redisqueue.get_guild_member_named(guild_id, "{}#{}".format(name, discriminator))
         if member:
             usr["id"] = str(member["id"])
