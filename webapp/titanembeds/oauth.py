@@ -66,7 +66,6 @@ def get_user_managed_servers():
     guilds = json.loads(fetched)
     filtered = []
     for guild in guilds:
-        time.sleep(0)
         permission = guild['permissions'] # Manage Server, Ban Members, Kick Members
         if guild['owner'] or user_has_permission(permission, 5) or user_has_permission(permission, 2) or user_has_permission(permission, 1):
             filtered.append(guild)
@@ -83,7 +82,6 @@ def get_user_managed_servers_id():
     guilds = get_user_managed_servers_safe()
     ids=[]
     for guild in guilds:
-        time.sleep(0)
         ids.append(guild['id'])
     return ids
 
@@ -94,7 +92,6 @@ def check_user_can_administrate_guild(guild_id):
 def check_user_permission(guild_id, id):
     guilds = get_user_managed_servers_safe()
     for guild in guilds:
-        time.sleep(0)
         if guild['id'] == guild_id:
             return user_has_permission(guild['permissions'], id) or guild['owner']
     return False
