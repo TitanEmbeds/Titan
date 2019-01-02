@@ -70,6 +70,19 @@
         }
     }
     
+    // https://stackoverflow.com/questions/2956966/javascript-telling-setinterval-to-only-fire-x-amount-of-times
+    function setIntervalX(callback, delay, repetitions) {
+        var x = 0;
+        var intervalID = window.setInterval(function () {
+    
+           callback();
+    
+           if (++x === repetitions) {
+               window.clearInterval(intervalID);
+           }
+        }, delay);
+    }
+    
     String.prototype.replaceAll = function(target, replacement) {
         return this.split(target).join(replacement);
     };
@@ -1553,14 +1566,18 @@
             } else {
                 if (getParameterByName("scrollbartheme")) {
                     if ($(window).height() < $("main .mCSB_container").height()) {
-                        $("main .mCSB_container").animate({
-                            top: -1 * ($("main .mCSB_container").height() - $(window).height())
-                        }, "slow", function () {
-                            $("main").mCustomScrollbar("update");
-                        });
+                        setIntervalX(function () {
+                            $("main .mCSB_container").animate({
+                                top: -1 * ($("main .mCSB_container").height() - $(window).height())
+                            }, "slow", function () {
+                                $("main").mCustomScrollbar("update");
+                            });
+                        }, 1000, 3);
                     }
                 } else {
-                    $("main").animate({ scrollTop: $("#chatcontent").height() }, "slow");
+                    setIntervalX(function () {
+                        $("main").animate({ scrollTop: $("#chatcontent").height() }, "slow");
+                    }, 1000, 3);
                 }
             }
         }
