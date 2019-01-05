@@ -229,7 +229,8 @@ class Titan(discord.AutoShardedClient):
             me = channel.guild.get_member(self.user.id)
             if channel.permissions_for(me).read_messages:
                 message = await channel.get_message(message_id)
-                await self.on_reaction_add(message.reactions[0], None)
+                if len(message.reactions):
+                    await self.on_reaction_add(message.reactions[0], None)
     
     async def on_raw_reaction_remove(self, payload):
         message_id = payload.message_id

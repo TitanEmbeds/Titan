@@ -139,8 +139,11 @@ class RedisQueue:
         guild = self.bot.get_guild(int(params["guild_id"]))
         query = params["query"]
         result = None
-        members = guild.members
-        if len(query) > 5 and query[-5] == '#':
+        if guild:
+            members = guild.members
+        else:
+            members = None
+        if members and len(query) > 5 and query[-5] == '#':
             potential_discriminator = query[-4:]
             result = discord.utils.get(members, name=query[:-5], discriminator=potential_discriminator)
             if not result:
