@@ -36,11 +36,17 @@ class RedisQueue:
         await self.bot.wait_until_ready()
         subscriber = await self.sub_connection.start_subscribe()
         await subscriber.subscribe(["discord-api-req"])
+        count = 0
         while True:
             reply = await subscriber.next_published()
             request = json.loads(reply.value)
             resource = request["resource"]
             self.dispatch(resource, request["key"], request["params"])
+            count = count + 1
+            if count > 10:
+                count = 0
+            elif count == 10:
+                await asyncio.sleep(0)
     
     def dispatch(self, event, key, params):
         method = "on_" + event
