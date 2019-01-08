@@ -184,8 +184,8 @@ class Titan(discord.AutoShardedClient):
         else:
             await self.socketio.on_guild_emojis_update(after)
             
-    async def on_webhooks_update(self, channel):
-        await self.redisqueue.update_guild(channel.guild)
+    # async def on_webhooks_update(self, channel):
+    #     await self.redisqueue.update_guild(channel.guild)
         
     async def on_raw_message_edit(self, payload):
         message_id = payload.message_id
@@ -253,6 +253,14 @@ class Titan(discord.AutoShardedClient):
             if channel.permissions_for(me).read_messages:
                 message = await channel.get_message(message_id)
                 await self.on_reaction_clear(message, [])
+    
+    async def on_socket_response(self, msg):
+        if "op" in msg and "t" in msg and msg["op"] == 0:
+            if msg["t"] == "WEBHOOKS_UPDATE":
+                guild_id = int(msg["d"]["guild_id"])
+                guild = self.get_guild(guild_id)
+                if guild:
+                    await self.redisqueue.update_guild(guild)
     
     def in_messages_cache(self, msg_id):
         for msg in self._connection._messages:
