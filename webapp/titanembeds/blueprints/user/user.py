@@ -440,8 +440,12 @@ def donate_post():
     donation_amount = request.form.get('amount')
     if not donation_amount:
         abort(402)
+        
+    donation_amount = float(donation_amount)
+    if donation_amount < 5 or donation_amount > 100:
+        abort(412)
 
-    donation_amount = "{0:.2f}".format(float(donation_amount))
+    donation_amount = "{0:.2f}".format(donation_amount)
     payer = {"payment_method": "paypal"}
     items = [{"name": "TitanEmbeds Donation",
               "price": donation_amount,
