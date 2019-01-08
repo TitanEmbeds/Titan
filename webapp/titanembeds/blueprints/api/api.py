@@ -171,7 +171,10 @@ def get_channel_webhook_url(guild_id, channel_id):
                 "token": webhook["token"]
             }
     webhook = discord_api.create_webhook(channel_id, name)
-    return webhook["content"]
+    if webhook and "content" in webhook:
+        return webhook["content"]
+    else:
+        return None
 
 def get_all_users(guild_id):
     users = redisqueue.list_guild_members(guild_id)
