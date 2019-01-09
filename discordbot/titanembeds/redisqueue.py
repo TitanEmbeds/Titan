@@ -38,6 +38,9 @@ class RedisQueue:
         await subscriber.subscribe(["discord-api-req"])
         count = 0
         while True:
+            if not self.bot.is_ready() or self.bot.is_closed():
+                await asyncio.sleep(0)
+                continue
             reply = await subscriber.next_published()
             request = json.loads(reply.value)
             resource = request["resource"]
