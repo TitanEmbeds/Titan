@@ -634,6 +634,41 @@ def bot_ban():
     db.session.add(dbban)
     db.session.commit()
     return jsonify(success="Guest user, **{}#{}**, has successfully been added to the ban list!".format(dbban.last_username, dbban.last_discriminator))
+    
+@api.route("/bot/unban", methods=["POST"])
+def bot_unban():
+    if request.headers.get("Authorization", "") != config.get("app-secret", ""):
+        return jsonify(error="Authorization header does not match."), 403
+    incoming = request.get_json()
+    guild_id = incoming.get("guild_id", None)
+    lifter_id = incoming.get("lifter_id", None)
+    username = incoming.get("username", None)
+    discriminator = incoming.get("discriminator", None)
+    if not guild_id or not lifter_id or not username:
+        return jsonify(error="Missing required parameters."), 400
+    if discriminator:
+        dbuser = db.session.query(UnauthenticatedUsers) \
+            .filter(UnauthenticatedUsers.guild_id == str(guild_id)) \
+            .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+            .filter(UnauthenticatedUsers.discriminator == discriminator) \
+            .order_by(UnauthenticatedUsers.id.desc()).first()
+    else:
+        dbuser = db.session.query(UnauthenticatedUsers) \
+            .filter(UnauthenticatedUsers.guild_id == str(guild_id)) \
+            .filter(UnauthenticatedUsers.username.ilike("%" + username + "%")) \
+            .order_by(UnauthenticatedUsers.id.desc()).first()
+    if not dbuser:
+        return jsonify(error="Guest user cannot be found."), 404
+    dbban = db.session.query(UnauthenticatedBans) \
+        .filter(UnauthenticatedBans.guild_id == str(guild_id)) \
+        .filter(UnauthenticatedBans.ip_address == dbuser.ip_address).first()
+    if dbban is None:
+        return jsonify(error="Guest user **{}#{}** has not been banned.".format(dbuser.username, dbuser.discriminator)), 404
+    if dbban.lifter_id is not None:
+        return jsonify(error="Guest user **{}#{}** ban has already been removed.".format(dbuser.username, dbuser.discriminator)), 409
+    dbban.liftBan(int(lifter_id))
+    db.session.commit()
+    return jsonify(success="Guest user, **{}#{}**, has successfully been removed from the ban list!".format(dbuser.username, dbuser.discriminator))
 
 @api.route("/bot/revoke", methods=["POST"])
 def bot_revoke():

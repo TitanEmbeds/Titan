@@ -36,6 +36,37 @@ class Commands():
                     await message.channel.send(message.author.mention + " " + j["success"])
                     return
         await message.channel.send("Unhandled webservice error in banning guest user!")
+        
+    async def unban(self, message):
+        if not message.author.guild_permissions.ban_members:
+            await message.channel.send(message.author.mention + " I'm sorry, but you do not have permissions to unban guest members.")
+            return
+        content = message.content.strip()
+        if len(content.split()) == 2:
+            await message.channel.send(message.author.mention + " Please provide a username-query (or optionally a discriminator) to unban a guest user.\nExample: `unban Titan#0001`")
+            return
+        content = content.split()
+        username = content[2][:content[2].find("#")] if "#" in content[2] else content[2]
+        discriminator = int(content[2][content[2].find("#") + 1:]) if "#" in content[2] else None
+        headers = {"Authorization": self.config["titan-web-app-secret"]}
+        payload = {
+            "guild_id": message.guild.id,
+            "lifter_id": message.author.id,
+            "username": username
+        }
+        if discriminator:
+            payload["discriminator"] = discriminator
+        url = self.config["titan-web-url"] + "api/bot/unban"
+        async with aiohttp.ClientSession() as aioclient:
+            async with aioclient.post(url, json=payload, headers=headers) as resp:
+                j = await resp.json()
+                if "error" in j:
+                    await message.channel.send(message.author.mention + " Unban error! " + j["error"])
+                    return
+                if "success" in j:
+                    await message.channel.send(message.author.mention + " " + j["success"])
+                    return
+        await message.channel.send("Unhandled webservice error in unbanning guest user!")
 
     async def kick(self, message):
         if not message.author.guild_permissions.kick_members:
