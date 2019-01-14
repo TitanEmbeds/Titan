@@ -22,7 +22,7 @@ class DiscordREST:
 
     def init_discordrest(self):
         if not self._bucket_contains("global_limited"):
-            self._set_bucket("global_limited", False)
+            self._set_bucket("global_limited", "False")
             self._set_bucket("global_limit_expire", 0)
 
     def _get_bucket(self, key):
@@ -76,7 +76,7 @@ class DiscordREST:
                     self._set_bucket(url, int(req.headers['X-RateLimit-Reset']))
 
             if 300 > req.status_code >= 200:
-                self._set_bucket("global_limited", False)
+                self._set_bucket("global_limited", "False")
                 return {
                     'success': True,
                     'content': json_or_text(req),
@@ -87,7 +87,7 @@ class DiscordREST:
                 if 'X-RateLimit-Global' not in req.headers:
                     self._set_bucket(url, int(req.headers['X-RateLimit-Reset']))
                 else:
-                    self._set_bucket("global_limited", True)
+                    self._set_bucket("global_limited", "True")
                     self._set_bucket("global_limit_expire", time.time() + int(req.headers['Retry-After']))
 
             if req.status_code == 502 and tries <= 5:
