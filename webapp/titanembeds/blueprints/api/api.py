@@ -311,7 +311,10 @@ def post():
             #     content = "(Titan Dev) " + content
             if webhook:
                 if (session['unauthenticated']):
-                    username = session["username"] + "#" + str(session["user_id"])
+                    username = session["username"]
+                    if len(username) > 25:
+                        username = username[:25]
+                    username = username + "#" + str(session["user_id"])
                     avatar = url_for('static', filename='img/titanembeds_square.png', _external=True)
                     dbguild = db.session.query(Guilds).filter(Guilds.guild_id == guild_id).first()
                     if dbguild:
@@ -326,6 +329,8 @@ def post():
                     # if content.startswith("(Titan Dev) "):
                     #     content = content[12:]
                     #     username = "(Titan Dev) " + username
+                    if len(username) > 25:
+                        username = username[:25]
                     username = username + "#" + str(session['discriminator'])
                     avatar = session['avatar']
                 message = discord_api.execute_webhook(webhook.get("id"), webhook.get("token"), username, avatar, content, file)
