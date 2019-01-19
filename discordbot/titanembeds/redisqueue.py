@@ -103,9 +103,11 @@ class RedisQueue:
             return
         await self.connection.delete([key])
         messages = []
-        async for message in channel.history(limit=50):
-            formatted = get_formatted_message(message)
-            messages.append(json.dumps(formatted, separators=(',', ':')))
+        me = channel.guild.get_member(self.bot.user.id)
+        if channel.permissions_for(me).read_messages:
+            async for message in channel.history(limit=50):
+                formatted = get_formatted_message(message)
+                messages.append(json.dumps(formatted, separators=(',', ':')))
         await self.connection.sadd(key, [""] + messages)
     
     async def push_message(self, message):
