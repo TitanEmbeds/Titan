@@ -611,6 +611,27 @@ a {
   }
 }
 
+#third-party-cookies-notice {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+#third-party-cookies-notice h5 {
+  font-weight: 700;
+}
+
+#third-party-cookies-notice a {
+  color: #040505;
+  text-decoration: underline;
+}
+
+#third-party-cookies-notice p {
+  font-size: 12pt;
+}
+
 #nameplate {
   cursor: pointer;
   background: transparent;

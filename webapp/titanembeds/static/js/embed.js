@@ -21,6 +21,7 @@
 /* global EmojiConvertor */
 /* global post_timeout */
 /* global is_peak */
+/* global cookie_test_s2_URL */
 
 (function () {
     const theme_options = ["DiscordDark", "FireWyvern", "IceWyvern", "MetroEdge", "BetterTitan"]; // All the avaliable theming names
@@ -2408,3 +2409,28 @@ function submit_unauthenticated_captcha() { // To be invoked when recaptcha is c
     $('#recaptchamodal').modal('close');
     $("#submit-unauthenticated-captcha-btn").click();
 }
+
+window._3rd_party_test_step1_loaded = function () {
+    // At this point, a third-party domain has now attempted to set a cookie (if all went to plan!)
+    var step2El = document.createElement('script');
+    // And load the second part of the test (reading the cookie)
+    step2El.setAttribute('src', cookie_test_s2_URL);
+    document.getElementById("third-party-cookies-notice").appendChild(step2El);
+};
+
+window._3rd_party_test_step2_loaded = function (cookieSuccess) {
+    if (!cookieSuccess) {
+        $("#third-party-cookies-notice").show().addClass("done");
+        $("#login-greeting-msg, #loginmodal-maincontent").hide();
+    } else {
+        $("#third-party-cookies-notice").hide().addClass("done");
+        $("#login-greeting-msg, #loginmodal-maincontent").show();
+    }
+};
+
+window.setTimeout(function(){
+    var noticeDiv = $("#third-party-cookies-notice");
+    if (!noticeDiv.hasClass("done")) {
+        window._3rd_party_test_step2_loaded(false);
+    }
+}, 7*1000);

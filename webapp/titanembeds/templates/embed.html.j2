@@ -127,7 +127,11 @@
 
       <div id="loginmodal" class="modal">
         <div class="modal-content">
-          <h4>{{ login_greeting }}</h4>
+          <h4 id="login-greeting-msg">{{ login_greeting }}</h4>
+          <div id="third-party-cookies-notice" style="display: none;">
+            <h5>Heads up, third party cookies are disabled in your browser!</h5>
+            <p>Because third party cookies are disabled, login will be made unavailable. Please enable your cookies and refresh the page. Tutorials such as <a href="https://support.panopto.com/s/article/How-to-Enable-Third-Party-Cookies-in-Supported-Browsers" target="_blank">this one</a> show how you can enable cookies on your browser.</p>
+          </div>
           <div id="loginmodal-maincontent" class="row valign-wrap">
             <div id="modal_guildinfobox" class="col s3 center-align">
               {% if guild['icon'] %}
@@ -530,6 +534,7 @@
         const visitors_enabled = {% if visitors_enabled %}true{% else %}false{% endif %};
         const unauth_captcha_enabled = {% if unauth_captcha_enabled %}true{% else %}false{% endif %};
         const is_peak = {{ is_peak|tojson|safe }};
+        const cookie_test_s2_URL = {{ url_for("embed.cookietest2", _external=True)|tojson|safe }};
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
@@ -538,6 +543,9 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.af.directmessage.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/site.af.sausage.js') }}"></script>
     {% endif %}
+    
+    <!-- Third party cookie test -->
+    <script type="text/javascript" src="{{ url_for("embed.cookietest1", _external=True) }}"></script>
     
     <!-- Electron fix -->
     <script>

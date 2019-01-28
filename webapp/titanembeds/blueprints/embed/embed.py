@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, redirect, url_for, session, request
+from flask import Blueprint, render_template, abort, redirect, url_for, session, request, make_response
 from flask_babel import gettext
 from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled, is_int, redisqueue, get_online_embed_user_keys
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
@@ -113,3 +113,22 @@ def login_discord():
 @embed.route("/noscript")
 def noscript():
     return render_template("noscript.html.j2")
+    
+@embed.route("/cookietest1")
+def cookietest1():
+    js = "window._3rd_party_test_step1_loaded();"
+    response = make_response(js, 200, {'Content-Type': 'application/javascript'})
+    response.set_cookie('third_party_c_t', "works", max_age=30)
+    return response
+
+@embed.route("/cookietest2")
+def cookietest2():
+    js = "window._3rd_party_test_step2_loaded("
+    if "third_party_c_t" in request.cookies and request.cookies["third_party_c_t"] == "works":
+        js = js + "true"
+    else:
+        js = js + "false"
+    js = js + ");"
+    response = make_response(js, 200, {'Content-Type': 'application/javascript'})
+    response.set_cookie('third_party_c_t', "", expires=0)
+    return response
