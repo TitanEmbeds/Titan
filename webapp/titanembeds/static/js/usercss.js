@@ -94,7 +94,7 @@
     
     function submitForm() {
         var name = $('#css_name').val();
-        if (name == "") {
+        if (!name) {
             Materialize.toast("Don't forget to name your CSS!", 10000);
             return;
         }
