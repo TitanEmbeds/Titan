@@ -632,6 +632,20 @@ a {
   font-size: 12pt;
 }
 
+#third-party-cookies-notice .collapsible-header {
+  font-size: 1.3rem;
+  padding: 0.5rem;
+}
+
+#third-party-cookies-notice .collapsible-body {
+  background-color: #f5f4f4;
+  padding-top: 1rem;
+}
+
+#third-party-cookies-force-hide, #third-party-cookies-force-window {
+  cursor: pointer;
+}
+
 #nameplate {
   cursor: pointer;
   background: transparent;

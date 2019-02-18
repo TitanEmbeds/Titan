@@ -131,6 +131,22 @@
           <div id="third-party-cookies-notice" style="display: none;">
             <h5>Heads up, third party cookies are disabled in your browser!</h5>
             <p>Because third party cookies are disabled, login will be made unavailable. Please enable your cookies and refresh the page. Tutorials such as <a href="https://support.panopto.com/s/article/How-to-Enable-Third-Party-Cookies-in-Supported-Browsers" target="_blank">this one</a> show how you can enable cookies on your browser.</p>
+            <ul class="collapsible" data-collapsible="accordion">
+              <li>
+                <div class="collapsible-header"><i class="material-icons">info</i>Learn more</div>
+                <div class="collapsible-body">
+                  <p>
+                    We store session data (like your username, avatar, Discord user ID, Discord oauth token, etc) in cookies to
+                    help Titan identify who is using the service when logging in. Without these pieces of data, we won't know who
+                    is sending the messages and whether if you have permission to view messages at all. When the embed is loaded,
+                    the first thing we check is whether cookies are enabled. However small issues like high latency internet connection 
+                    or other anomalies can prevent the cookie check from performing successfully.<br>
+                    <span id="third-party-cookies-opt1">With that being said, <a id="third-party-cookies-force-hide">you may attempt to login</a>, however, there are no gurantee that the login will be made successfully.<br></span>
+                    <span id="third-party-cookies-opt2">Alternatively, you may <a id="third-party-cookies-force-window">try logging in from a new window</a>.</span>
+                  </p>
+                </div>
+              </li>
+            </ul>
           </div>
           <div id="loginmodal-maincontent" class="row valign-wrap">
             <div id="modal_guildinfobox" class="col s3 center-align">

@@ -2434,3 +2434,11 @@ window.setTimeout(function(){
         window._3rd_party_test_step2_loaded(false);
     }
 }, 7*1000);
+
+$("#third-party-cookies-force-hide").click(function () {
+    window._3rd_party_test_step2_loaded(true);
+});
+
+$("#third-party-cookies-force-window").click(function () {
+    window.open(window.location.href);
+});
