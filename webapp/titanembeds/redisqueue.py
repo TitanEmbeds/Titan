@@ -38,6 +38,12 @@ class RedisQueue:
             return redis_store.smembers(key)
         else:
             return redis_store.get(key)
+            
+    def validate_not_none(self, key, data_key, data):
+        if data[data_key] == None:
+            redis_store.delete(key)
+            return False
+        return True
     
     def get_channel_messages(self, guild_id, channel_id, after_snowflake=0):
         key = "/channels/{}/messages".format(channel_id)
@@ -92,6 +98,8 @@ class RedisQueue:
     def get_guild_member(self, guild_id, user_id):
         key = "/guilds/{}/members/{}".format(guild_id, user_id)
         q = self.get(key, "get_guild_member", {"guild_id": guild_id, "user_id": user_id})
+        if q and not self.validate_not_none(key, "username", q):
+            return self.get_user(user_id)
         return q
     
     def get_guild_member_named(self, guild_id, query):
@@ -115,9 +123,13 @@ class RedisQueue:
     def get_guild(self, guild_id):
         key = "/guilds/{}".format(guild_id)
         q = self.get(key, "get_guild", {"guild_id": guild_id})
+        if q and not self.validate_not_none(key, "name", q):
+            return self.get_guild(guild_id)
         return q
     
     def get_user(self, user_id):
         key = "/users/{}".format(user_id)
         q = self.get(key, "get_user", {"user_id": user_id})
+        if q and not self.validate_not_none(key, "username", q):
+            return self.get_user(user_id)
         return q
