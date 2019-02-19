@@ -42,6 +42,7 @@ class RedisQueue:
     def validate_not_none(self, key, data_key, data):
         if data[data_key] == None:
             redis_store.delete(key)
+            time.sleep(0.1)
             return False
         return True
     
