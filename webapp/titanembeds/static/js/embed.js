@@ -289,6 +289,9 @@
             }
         }
         
+        $("#upload-file-btn").hide();
+        $("#send-msg-btn").hide();
+        
         $('select').material_select();
         
         $("#loginmodal").modal({
@@ -608,12 +611,14 @@
             $("#emoji-tray-toggle").hide();
             $(".wdt-emoji-picker").hide();
             $("#upload-file-btn").hide();
+            $("#send-msg-btn").hide();
         } else {
             $("#visitor_mode_message").hide();
             $("#messagebox").show();
             $("#emoji-tray-toggle").show();
             $(".wdt-emoji-picker").show();
             $("#upload-file-btn").show();
+            $("#send-msg-btn").show();
         }
     }
 
@@ -820,6 +825,7 @@
                 $("#messagebox").prop('disabled', true);
                 $("#messagebox").prop('placeholder', "NO TEXT CHANNELS");
                 $("#upload-file-btn").hide();
+                $("#send-msg-btn").hide();
                 Materialize.toast("You find yourself in a strange place. You don't have access to any text channels, or there are none in this server.", 20000);
                 return;
             }
@@ -830,11 +836,13 @@
             $("#messagebox").prop('disabled', false);
             $("#messagebox").prop('placeholder', "Enter message");
             $("#upload-file-btn").show();
+            $("#send-msg-btn").show();
             $(".wdt-emoji-picker").show();
         } else {
             $("#messagebox").prop('disabled', true);
             $("#messagebox").prop('placeholder', "Messaging is disabled in this channel.");
             $("#upload-file-btn").hide();
+            $("#send-msg-btn").hide();
             $(".wdt-emoji-picker").hide();
         }
         if (this_channel.attach_files) {
@@ -1989,6 +1997,7 @@
             $("#messagebox-filemodal").attr('readonly', true);
             $("#proceed_fileupload_btn").attr("disabled", true);
             $("#messagebox").attr('readonly', true);
+            $("#send-msg-btn").attr("disabled", true);
             var emojiConvertor = new EmojiConvertor();
             emojiConvertor.init_env();
             emojiConvertor.replace_mode = "unified";
@@ -2027,6 +2036,7 @@
                 $("#messagebox-filemodal").attr('readonly', false);
                 $("#proceed_fileupload_btn").attr("disabled", false);
                 $("#filemodalprogress").hide();
+                $("#send-msg-btn").attr("disabled", false);
                 if ($("#filemodal").is(":visible")) {
                     $("#messagebox-filemodal").focus();
                 } else {
@@ -2056,6 +2066,11 @@
             $("#messagebox").val($(this).val());
             $("#messagebox").trigger(jQuery.Event("keydown", { keyCode: 13 } ));
         }
+    });
+    
+    $("#send-msg-btn").click(function () {
+        $("#messagebox").focus();
+        $("#messagebox").trigger(jQuery.Event("keydown", { keyCode: 13 } ));
     });
 
     $('#guild-btn').sideNav({

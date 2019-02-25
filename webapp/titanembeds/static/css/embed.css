@@ -915,7 +915,7 @@ p.mentioned span.chatmessage {
 
 .wdt-emoji-picker {
   bottom: 13px;
-  right: 10px;
+  right: 41px;
 }
 
 #wdt-emoji-search, #wdt-emoji-search:focus {
@@ -930,6 +930,10 @@ p.mentioned span.chatmessage {
   #upload-file-btn {
     display: none;
   }
+  
+  #send-msg-btn {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 321px) {
@@ -940,12 +944,16 @@ p.mentioned span.chatmessage {
   #upload-file-btn {
     display: block;
   }
+  
+  #send-msg-btn {
+    display: block;
+  }
 }
 
 #upload-file-btn {
   position: absolute;
   bottom: 5px;
-  right: 38px;
+  right: 67px;
   color: gray;
   padding: 1px;
   transition: .3s ease-out;
@@ -953,6 +961,19 @@ p.mentioned span.chatmessage {
 
 #upload-file-btn:hover {
   color: white;
+}
+
+#send-msg-btn {
+  position: absolute;
+  bottom: 7px;
+  right: 6px;
+  width: 30px;
+  height: 30px;
+}
+
+#send-msg-btn > i {
+  position: relative;
+  top: -13px;
 }
 
 #fileinput {
