@@ -482,7 +482,17 @@
         
         var dembed = discord_embed();
         dembed.done(function (data) {
-            $("#modal_invite_btn").attr("href", data.instant_invite);
+            if (data.instant_invite) {
+                $("#modal_invite_btn").show().attr("href", data.instant_invite);
+                $("#instant-inv").show().attr("href", data.instant_invite);
+            } else {
+                $("#modal_invite_btn").hide();
+                $("#instant-inv").hide();
+            }
+        });
+        dembed.fail(function () {
+            $("#modal_invite_btn").hide();
+            $("#instant-inv").hide();
         });
         
         if (getParameterByName("noscroll") != "true") {
@@ -741,7 +751,6 @@
         update_emoji_picker();
         guild_roles_list = guildobj.roles;
         fill_channels(guildobj.channels);
-        $("#instant-inv").attr("href", guildobj.instant_invite);
         run_fetch_routine();
         initiate_websockets();
     }
@@ -1642,7 +1651,6 @@
                 fill_discord_members(guildobj.discordmembers);
                 fill_authenticated_users(guildobj.embedmembers.authenticated);
                 fill_unauthenticated_users(guildobj.embedmembers.unauthenticated);
-                $("#instant-inv").attr("href", guildobj.instant_invite);
             });
             $("#message-spinner").removeClass("error");
             $("#message-spinner").fadeOut();
