@@ -168,13 +168,34 @@ def get_channel_webhook_url(guild_id, channel_id):
         if channel_id == webhook["channel_id"] and webhook["name"] == name:
             return {
                 "id": webhook["id"],
-                "token": webhook["token"]
+                "token": webhook["token"],
+                "name": webhook.get("name"),
+                "guild_id": webhook.get("guild_id"),
+                "channel_id": webhook.get("channel_id")
             }
     webhook = discord_api.create_webhook(channel_id, name)
     if webhook and "content" in webhook:
         return webhook["content"]
     else:
         return None
+        
+def delete_webhook_if_too_much(webhook):
+    if not webhook:
+        return
+    guild_id = webhook["guild_id"]
+    if guild_webhooks_enabled(guild_id):
+        guild = redisqueue.get_guild(guild_id)
+        guild_webhooks = guild["webhooks"]
+        total_wh_cnt = len(guild_webhooks)
+        titan_wh_cnt = 0
+        for wh in guild_webhooks:
+            if wh["name"].startswith("[Titan] "):
+                titan_wh_cnt = titan_wh_cnt + 1
+        if titan_wh_cnt > 0 and total_wh_cnt >= 8:
+            try:
+                discord_api.delete_webhook(webhook["id"], webhook["token"])
+            except:
+                pass # not my problem now
 
 def get_all_users(guild_id):
     users = redisqueue.list_guild_members(guild_id)
@@ -334,6 +355,7 @@ def post():
                     username = username + "#" + str(session['discriminator'])
                     avatar = session['avatar']
                 message = discord_api.execute_webhook(webhook.get("id"), webhook.get("token"), username, avatar, content, file)
+                delete_webhook_if_too_much(webhook)
             else:
                 message = discord_api.create_message(channel_id, content, file)
             status_code = message['code']
