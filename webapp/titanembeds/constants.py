@@ -252,6 +252,17 @@ QUERY_PARAMETERS = [
 
 LANGUAGES = [
     {
+        "code": "az_AZ",
+        "name_en": "Azerbaijani",
+        "name": "Azərbaycan",
+        "translators": [
+            {
+                "name": "Shahin Farzaliyev",
+                "crowdin_profile": "Khan27",
+            },
+        ],
+    },
+    {
         "code": "bg_BG",
         "name_en": "Bulgarian",
         "name": "български",
@@ -457,6 +468,10 @@ LANGUAGES = [
                 "name": "Amy Y",
                 "crowdin_profile": "amytheacmaster",
             },
+            {
+                "name": "BlackHawk94",
+                "crowdin_profile": "BlackHawk94",
+            }
         ],
     },
     {
@@ -528,6 +543,17 @@ LANGUAGES = [
             {
                 "name": "André Gama",
                 "crowdin_profile": "ToeOficial",
+            },
+        ],
+    },
+    {
+        "code": "pt_BR",
+        "name_en": "Portuguese, Brazilian",
+        "name": "Português do Brasil",
+        "translators": [
+            {
+                "name": "DannielMM",
+                "crowdin_profile": "DannielMM",
             },
         ],
     },
