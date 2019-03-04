@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2018-06-25 00:20+0000\n"
+"PO-Revision-Date: 2019-03-04 04:01\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -147,11 +147,11 @@ msgstr "Attivare"
 
 #: titanembeds/templates/embed.html.j2:197
 msgid "Disable"
-msgstr ""
+msgstr "Disabilita"
 
 #: titanembeds/templates/embed.html.j2:209
 msgid "Just one more step..."
-msgstr ""
+msgstr "Solo un altro passo..."
 
 #: titanembeds/templates/embed.html.j2:217
 msgid "NSFW Channel"
@@ -179,19 +179,19 @@ msgstr "Amministratore di TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:238
 msgid "TitanEmbeds Partner"
-msgstr ""
+msgstr "Partner di TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:239
 msgid "TitanEmbeds Supporter"
-msgstr ""
+msgstr "Supporter di TitanEmbeds"
 
 #: titanembeds/templates/embed.html.j2:240
 msgid "I have voted for Titan on Discord Bots today!"
-msgstr ""
+msgstr "Ho votato per Titan oggi su Discord Bots!"
 
 #: titanembeds/templates/embed.html.j2:242
 msgid "User is offline in Discord."
-msgstr ""
+msgstr "Utente offline su Discord."
 
 #: titanembeds/templates/embed.html.j2:243
 msgid "Playing"
