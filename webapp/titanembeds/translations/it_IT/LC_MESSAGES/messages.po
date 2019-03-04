@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2019-03-04 04:01\n"
+"PO-Revision-Date: 2019-03-04 04:21\n"
 "Last-Translator: EndenDragon <jeremyzhang5000@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: titanembeds/blueprints/embed/embed.py:15
 msgid "Let's get to know each other! My name is Titan, what's yours?"
-msgstr "Conosciamoci! Il mio nome è Titan, cose il tuo?"
+msgstr "Conosciamoci! Il mio nome è Titan, qual'è il tuo?"
 
 #: titanembeds/blueprints/embed/embed.py:16
 msgid "Hello and welcome!"
@@ -31,7 +31,7 @@ msgstr "Cosa ti porta qui oggi?"
 
 #: titanembeds/blueprints/embed/embed.py:18
 msgid "....what do you expect this text to say?"
-msgstr "...cosa ti aspettavi che dicessi questo testo?"
+msgstr "...cosa ti aspettavi che dicesse questo testo?"
 
 #: titanembeds/blueprints/embed/embed.py:19
 msgid "Aha! ..made you look!"
@@ -171,7 +171,7 @@ msgstr "Continuare"
 
 #: titanembeds/templates/embed.html.j2:232
 msgid "Mention"
-msgstr "Menzoine"
+msgstr "Menzione"
 
 #: titanembeds/templates/embed.html.j2:237
 msgid "TitanEmbeds Administrator"
