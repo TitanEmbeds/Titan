@@ -21,11 +21,6 @@ logging.getLogger('sqlalchemy')
 # except raven.exceptions.InvalidDsn:
 #     pass
 
-try:
-    create_task = asyncio.ensure_future
-except AttributeError:
-    create_task = getattr(asyncio, 'async')
-
 class Titan(discord.AutoShardedClient):
     def __init__(self):
         super().__init__(
@@ -71,7 +66,7 @@ class Titan(discord.AutoShardedClient):
     
     async def start(self):
         await self.redisqueue.connect()
-        create_task(self.redisqueue.subscribe())
+        self.loop.create_task(self.redisqueue.subscribe())
         await super().start(config["bot-token"])
 
     async def on_ready(self):
