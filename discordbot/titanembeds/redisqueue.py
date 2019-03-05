@@ -8,6 +8,11 @@ import traceback
 import sys
 import re
 
+try:
+    create_task = asyncio.ensure_future
+except AttributeError:
+    create_task = getattr(asyncio, 'async')
+
 class RedisQueue:
     def __init__(self, bot, redis_uri):
         self.bot = bot
@@ -37,10 +42,7 @@ class RedisQueue:
         subscriber = await self.sub_connection.start_subscribe()
         await subscriber.subscribe(["discord-api-req"])
         count = 0
-        while True:
-            if not self.bot.is_ready() or self.bot.is_closed():
-                await asyncio.sleep(0)
-                continue
+        while not self.bot.is_closed():
             reply = await subscriber.next_published()
             request = json.loads(reply.value)
             resource = request["resource"]
@@ -54,7 +56,7 @@ class RedisQueue:
     def dispatch(self, event, key, params):
         method = "on_" + event
         if hasattr(self, method):
-            self.bot.loop.create_task(self._run_event(method, key, params))
+            create_task(self._run_event(method, key, params))
 
     async def _run_event(self, event, key, params):
         try:

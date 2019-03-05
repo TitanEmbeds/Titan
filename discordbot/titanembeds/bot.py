@@ -21,9 +21,14 @@ logging.getLogger('sqlalchemy')
 # except raven.exceptions.InvalidDsn:
 #     pass
 
+try:
+    create_task = asyncio.ensure_future
+except AttributeError:
+    create_task = getattr(asyncio, 'async')
+
 class Titan(discord.AutoShardedClient):
     def __init__(self):
-        super().__init__(max_messages=20000)
+        super().__init__(max_messages=10000)
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.redisqueue = RedisQueue(self, config["redis-uri"])
@@ -63,7 +68,7 @@ class Titan(discord.AutoShardedClient):
     
     async def start(self):
         await self.redisqueue.connect()
-        self.loop.create_task(self.redisqueue.subscribe())
+        create_task(self.redisqueue.subscribe())
         await super().start(config["bot-token"])
 
     async def on_ready(self):
