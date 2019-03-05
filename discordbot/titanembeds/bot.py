@@ -28,7 +28,10 @@ except AttributeError:
 
 class Titan(discord.AutoShardedClient):
     def __init__(self):
-        super().__init__(max_messages=10000)
+        super().__init__(
+            max_messages=10000,
+            activity=discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.com/")
+        )
         self.aiosession = aiohttp.ClientSession(loop=self.loop)
         self.http.user_agent += ' TitanEmbeds-Bot'
         self.redisqueue = RedisQueue(self, config["redis-uri"])
@@ -79,9 +82,6 @@ class Titan(discord.AutoShardedClient):
         print('------')
         print("Shard count: " + str(self.shard_count))
         print("------")
-        
-        game = discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.com/")
-        await self.change_presence(status=discord.Status.online, activity=game)
         
         self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
         self.botsDiscordPw = BotsDiscordPw(self.user.id, config.get("bots-discord-pw-token", None))
