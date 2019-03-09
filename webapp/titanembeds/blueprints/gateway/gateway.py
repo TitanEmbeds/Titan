@@ -131,12 +131,12 @@ class Gateway(Namespace):
             return
         guild_id = data["guild_id"]
         if "user_keys" in session and not session["unauthenticated"]:
-            dbMember = get_guild_member(guild_id, session["user_id"])
+            dbMember = redisqueue.get_guild_member(guild_id, session["user_id"])
             usr = {
                 'avatar': session["avatar"],
-                'username': dbMember.username,
-                'nickname': dbMember.nickname,
-                'discriminator': dbMember.discriminator,
+                'username': dbMember.get("username"),
+                'nickname': dbMember.get("nickname"),
+                'discriminator': dbMember.get("discriminator"),
                 'user_id': str(session['user_id']),
             }
             emit("current_user_info", usr)
