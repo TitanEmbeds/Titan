@@ -1387,6 +1387,15 @@
                 disembed.isVideo = false;
                 if (disembed.type == "video") {
                     disembed.isVideo = true;
+                    if (disembed.video) {
+                        var url = new URL(disembed.video.url);
+                        if (url.hostname.endsWith("twitch.tv")) {
+                            if (url.searchParams.has("autoplay")) {
+                                url.searchParams.set("autoplay", "false");
+                                disembed.video.url = url.toString();
+                            }
+                        }
+                    }
                 }
                 disembed.toRenderFooter = false;
                 if (disembed.footer) {
