@@ -14,9 +14,9 @@ There was a time when Discord doesn't support embedding the chat on a webpage. B
 
 ## Installation
 Would you like to run your own copy of Titan Embeds? There are two parts that integrate nicely together. The webapp (website) handles the frontend and communication with the database to retrieve server messages, etc. The discordbot (bot) handles the communcation
-between Discord's websockets and pushing out the data to the database for the webapp. Check out the respective folder for their installation instructions. Titan is written in Python and requires **Python 3.5.5** at minimum to run.
+between Discord's websockets and pushing out the data to the database for the webapp. Check out the respective folder for their installation instructions. Titan is written in Python and requires **Python 3.6.8** at minimum to run.
 
-Once you cloned the project, install the Python depends with `pip install -r requirements.txt`. Ensure that you are utilizing Python 3.5's pip.
+Once you cloned the project, install the Python depends with `pip install -r requirements.txt`. Ensure that you are utilizing Python 3.6's pip.
 
 If you happen to have a copy of Ubuntu on your server, you may head onto our [Ansible Playbooks](https://github.com/TitanEmbeds/ansible-playbooks) repository and perform a **near-to-automatic** installation of TitanEmbeds.
 
@@ -24,7 +24,7 @@ If you happen to have a copy of Ubuntu on your server, you may head onto our [An
 ### Database
 To set up the database for it to work with the webapp and the discordbot, one must use **alembic** to *migrate* their databases to the current database state. To do so, please follow these instructions.
 **PostgreSQL supports proper indexing and suitable for Titan needs. For this reason, Titan only supports using a PostgreSQL database.**
-1. Install alembic with **Python 3.5's pip** `pip install alembic`
+1. Install alembic with **Python 3.6's pip** `pip install alembic`
 2. Change your directory to the webapp where the alembic files are located `cd webapp`
 3. Clone `alembic.example.ini` into your own `alembic.ini` file to find and edit the following line `sqlalchemy.url` to equal your database uri. [See here](http://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls) if you need help understanding how database uri works in SQLalchemy.
 4. In your terminal, run `alembic upgrade head` to upgrade your database tables to the current version on git. As long as there are only *INFO* messages and no errors, you should be fine.
