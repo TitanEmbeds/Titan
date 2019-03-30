@@ -1878,8 +1878,9 @@
         };
         for (var i in map) {
             var escaped = i.replace(/([()[{*+.$^\\|?])/g, '\\$1');
+            escaped = "(\\s|^)(" + escaped + ")(\\s|$)";
             var regex = new RegExp(escaped, 'gim');
-            input = input.replace(regex, map[i]);
+            input = input.replace(regex, "$1" + map[i] + "$3");
         }
         return input;
     }
