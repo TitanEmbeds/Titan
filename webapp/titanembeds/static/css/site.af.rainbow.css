@@ -1,0 +1,7 @@
+html {
+  animation: rainbow 4s infinite;
+}
+
+@keyframes rainbow {
+  100% { filter: hue-rotate(360deg); }
+}
