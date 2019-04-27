@@ -13,7 +13,7 @@
       <div class="col s10">
         <span class="black-text">
           <p class="flow-text">Welcome <strong>{{ session['username'] }}#{{ session['discriminator'] }}</strong> to <strong>Titan Embeds</strong>!</p>
-          <p>Not the right account? Sign out of the Discord online client <a href="{{ url_for("user.logout", redirect="https://discordapp.com/channels/@me") }}">here</a> and log back into Titan Embeds.</p>
+          <p>Not the right account? Sign out of the Discord online client <a href="#" onclick="window.open('{{ url_for("user.logout", redirect="https://discordapp.com/channels/@me") }}'); window.location.href = '{{ url_for("index") }}'; return false;">here</a> and log back into Titan Embeds.</p>
         </span>
       </div>
     </div>
