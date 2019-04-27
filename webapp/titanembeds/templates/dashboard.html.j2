@@ -3,6 +3,23 @@
 
 {% block content %}
 <h1>User Dashboard</h1>
+
+<div class="col l12">
+  <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
+    <div class="row valign-wrapper">
+      <div class="col s2">
+        <img src="{{ session['avatar'] }}" alt="" class="circle responsive-img">
+      </div>
+      <div class="col s10">
+        <span class="black-text">
+          <p class="flow-text">Welcome <strong>{{ session['username'] }}#{{ session['discriminator'] }}</strong> to <strong>Titan Embeds</strong>!</p>
+          <p>Not the right account? Sign out of the Discord online client <a href="{{ url_for("user.logout", redirect="https://discordapp.com/channels/@me") }}">here</a> and log back into Titan Embeds.</p>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <p class="flow-text">Select a server to configure Titan Embeds.</p>
 <p>*List missing some servers? It's because you must have either <strong>Manage Server</strong>, <strong>Kick Members</strong>, or <strong>Ban Members</strong> permissions to modify embed settings.</p>
 <div class="row">
