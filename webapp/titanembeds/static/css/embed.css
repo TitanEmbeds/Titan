@@ -918,6 +918,11 @@ p.mentioned span.chatmessage {
   right: 42px;
 }
 
+.wdt-emoji-picker span.emoji-outer.emoji-sizer {
+  width: 20px;
+  height: 20px;
+}
+
 #wdt-emoji-search, #wdt-emoji-search:focus {
   padding: 2px;
 }
