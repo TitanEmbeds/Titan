@@ -916,6 +916,11 @@ p.mentioned span.chatmessage {
 .wdt-emoji-picker {
   bottom: 16px;
   right: 42px;
+  cursor: pointer;
+}
+
+.wdt-emoji-picker:hover {
+  cursor: initial;
 }
 
 .wdt-emoji-picker span.emoji-outer.emoji-sizer {
