@@ -195,7 +195,7 @@ def get_channels_list(guildchannels):
         if isinstance(channel, discord.channel.TextChannel) or isinstance(channel, discord.channel.CategoryChannel):
             overwrites = []
             isTextChannel = isinstance(channel, discord.channel.TextChannel)
-            for target, overwrite in channel.overwrites:
+            for target, overwrite in channel.overwrites.items():
                 if not target:
                     continue
                 if isinstance(target, discord.Role):
