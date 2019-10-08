@@ -194,7 +194,7 @@ class Titan(discord.AutoShardedClient):
             channel = self.get_channel(int(data["channel_id"]))
             me = channel.guild.get_member(self.user.id)
             if channel.permissions_for(me).read_messages:
-                message = await channel.get_message(int(message_id))
+                message = await channel.fetch_message(int(message_id))
                 await self.on_message_edit(None, message)
     
     async def on_raw_message_delete(self, payload):
@@ -228,7 +228,7 @@ class Titan(discord.AutoShardedClient):
             channel = self.get_channel(payload.channel_id)
             me = channel.guild.get_member(self.user.id)
             if channel.permissions_for(me).read_messages:
-                message = await channel.get_message(message_id)
+                message = await channel.fetch_message(message_id)
                 if len(message.reactions):
                     await self.on_reaction_add(message.reactions[0], None)
     
@@ -240,7 +240,7 @@ class Titan(discord.AutoShardedClient):
             channel = self.get_channel(payload.channel_id)
             me = channel.guild.get_member(self.user.id)
             if channel.permissions_for(me).read_messages:
-                message = await channel.get_message(message_id)
+                message = await channel.fetch_message(message_id)
                 message._add_reaction({"me": payload.user_id == self.user.id}, emoji, payload.user_id)
                 reaction = message._remove_reaction({}, emoji, payload.user_id)
                 await self.on_reaction_remove(reaction, None)
@@ -251,7 +251,7 @@ class Titan(discord.AutoShardedClient):
             channel = self.get_channel(payload.channel_id)
             me = channel.guild.get_member(self.user.id)
             if channel.permissions_for(me).read_messages:
-                message = await channel.get_message(message_id)
+                message = await channel.fetch_message(message_id)
                 await self.on_reaction_clear(message, [])
     
     async def on_socket_response(self, msg):
