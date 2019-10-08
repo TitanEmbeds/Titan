@@ -44,7 +44,7 @@ def get_formatted_message(message):
 def get_formatted_user(user):
     userobj = {
         "avatar": user.avatar,
-        "avatar_url": user.avatar_url_as(static_format="png", size=512),
+        "avatar_url": str(user.avatar_url_as(static_format="png", size=512)),
         "color": str(user.color)[1:],
         "discriminator": user.discriminator,
         "game": None,
@@ -108,7 +108,7 @@ def get_formatted_guild(guild, webhooks=[]):
         "id": str(guild.id),
         "name": guild.name,
         "icon": guild.icon,
-        "icon_url": guild.icon_url,
+        "icon_url": str(guild.icon_url),
         "owner_id": guild.owner_id,
         "roles": get_roles_list(guild.roles),
         "channels": get_channels_list(guild.channels),
@@ -171,7 +171,7 @@ def get_emojis_list(guildemojis):
             "require_colons": emote.require_colons,
             "managed": emote.managed,
             "roles": list_role_ids(emote.roles),
-            "url": emote.url,
+            "url": str(emote.url),
             "animated": emote.animated
         })
     return emojis
