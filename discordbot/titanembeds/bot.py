@@ -218,7 +218,20 @@ class Titan(discord.AutoShardedClient):
             self.delete_list.remove(msg_id)
             return
         channel = self.get_channel(int(channel_id))
-        data = {'content': "What fun is there in making sense?", 'type': 0, 'edited_timestamp': None, 'id': msg_id, 'channel_id': channel_id, 'timestamp': '2017-01-15T02:59:58+00:00'}
+        data = {
+            'content': "What fun is there in making sense?",
+            'type': 0,
+            'edited_timestamp': None,
+            'id': msg_id,
+            'channel_id': channel_id,
+            'timestamp': '2017-01-15T02:59:58+00:00',
+            'attachments': [],
+            'embeds': [],
+            'pinned': False,
+            'mention_everyone': False,
+            'tts': False,
+            'nonce': None,
+        }
         msg = discord.Message(channel=channel, state=self._connection, data=data) # Procreate a fake message object
         await self.on_message_delete(msg)
     
