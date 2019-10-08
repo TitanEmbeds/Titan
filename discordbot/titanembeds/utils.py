@@ -99,7 +99,7 @@ def get_formatted_emojis(emojis):
             "name": emo.name,
             "require_colons": emo.require_colons,
             "roles": get_roles_list(emo.roles),
-            "url": emo.url,
+            "url": str(emo.url),
         })
     return emotes
 
