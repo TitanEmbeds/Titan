@@ -31,6 +31,7 @@
     {% include 'google_analytics.html.j2' %}
   </head>
   <body>
+    {% if random.randrange(100) < 50 %}
     <div id="dblbanner">
       <span>
         <strong>Hey!</strong> Upvote us on <a href="{{ url_for("vote") }}">Discord Bots List</a> to show your
@@ -38,6 +39,17 @@
         <span class="yellow-text">golden name</span></em> and rewards in return for your vote)
       </span>
     </div>
+    {% else %}
+    <div id="donbanner">
+      <span>
+        <strong>Hey! We need your help!</strong> Support the Titan Embeds project on <a href="http://patreon.com/TitanEmbeds" target="_blank">Patreon</a> to help us cover the cost of server hosting!
+        {% if application_settings.donation_goal_total %}
+        <br>
+        <strong>Goal: <span class="yellow-text">${{ application_settings.donation_goal_progress }} raised out of ${{ application_settings.donation_goal_total }}</span>{% if application_settings.donation_goal_end %} by {{ application_settings.donation_goal_end }}{% endif %}</strong>
+        {% endif %}
+      </span>
+    </div>
+    {% endif %}
     <main>
       {% if session['unauthenticated'] is defined and not session['unauthenticated'] %}
       <ul id="menu_dropdown" class="dropdown-content">
@@ -106,6 +118,9 @@
       });
     </script>
     {% endif %}
+    <script>
+      $('#donbanner').delay(1000).slideDown("slow");
+    </script>
     
     {% if af_mode_enabled %}
     <script type="text/javascript" src="{{ url_for('static', filename='js/site.af.sausage.js') }}"></script>

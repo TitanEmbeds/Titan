@@ -1,7 +1,7 @@
 from flask import Blueprint, url_for, redirect, session, render_template, abort, request, jsonify
 from flask_socketio import emit
 from functools import wraps
-from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS, AuthenticatedUsers, DiscordBotsOrgTransactions
+from titanembeds.database import db, get_administrators_list, Cosmetics, Guilds, UnauthenticatedUsers, UnauthenticatedBans, TitanTokens, TokenTransactions, get_titan_token, set_titan_token, list_disabled_guilds, DisabledGuilds, UserCSS, AuthenticatedUsers, DiscordBotsOrgTransactions, ApplicationSettings
 from titanembeds.oauth import generate_guild_icon_url
 from titanembeds.utils import get_online_embed_user_keys, redisqueue
 import datetime
@@ -498,3 +498,38 @@ def voting_get():
             u["discord"] = gmember["username"] + "#" + str(gmember["discriminator"])
         referrals.append(u)
     return render_template("admin_voting.html.j2", overall=overall, referrals=referrals, datestart=datestart, timestart=timestart, dateend=dateend, timeend=timeend)
+
+@admin.route("/app_settings", methods=["GET"])
+@is_admin
+def application_settings_get():
+    settings = db.session.query(ApplicationSettings).first()
+    return render_template("admin_application_settings.html.j2", settings=settings)
+
+@admin.route("/app_settings", methods=["POST"])
+@is_admin
+def application_settings_post():
+    settings = db.session.query(ApplicationSettings).first()
+    if "donation_goal_progress" in request.form:
+        donation_goal_progress = request.form.get("donation_goal_progress")
+        settings.donation_goal_progress = int(donation_goal_progress)
+    if "donation_goal_total" in request.form:
+        donation_goal_total = request.form.get("donation_goal_total")
+        settings.donation_goal_total = int(donation_goal_total)
+    if "donation_goal_end" in request.form:
+        res = None
+        donation_goal_end = request.form.get("donation_goal_end")
+        if donation_goal_end:
+            donation_goal_end = donation_goal_end.split("/")
+            month = int(donation_goal_end[0])
+            day = int(donation_goal_end[1])
+            year = int(donation_goal_end[2])
+            res = datetime.date(year, month, day)
+        settings.donation_goal_end = res
+    db.session.commit()
+    return jsonify({
+        "donation_goal_progress": settings.donation_goal_progress,
+        "donation_goal_total": settings.donation_goal_total,
+        "donation_goal_end": settings.donation_goal_end,
+    })
+
+

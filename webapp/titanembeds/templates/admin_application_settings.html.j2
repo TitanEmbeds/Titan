@@ -1,0 +1,30 @@
+{% extends 'site_layout.html.j2' %}
+{% set title="Manage Guilds as Administrator" %}
+
+{% block content %}
+<h1>Application Settings</h1>
+<p class="flow-text">Manage Titan Embeds</p>
+<div class="col s12">
+  <div class="card-panel indigo lighten-5 z-depth-3 hoverable">
+    <p class="black-text flow-text">Donation Goal</p>
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="donation_goal_progress" type="number" class="black-text" value="{{ settings.donation_goal_progress }}">
+        <label for="donation_goal_progress">Current Goal Progress</label>
+      </div>
+      <div class="input-field col s12">
+        <input id="donation_goal_total" type="number" class="black-text" value="{{ settings.donation_goal_total }}">
+        <label for="donation_goal_total">Current Goal Total (set 0 to disable)</label>
+      </div>
+      <div class="input-field col s12">
+        <input id="donation_goal_end" type="text" class="black-text" {% if settings.donation_goal_end %}value="{{ settings.donation_goal_end.strftime('%m/%d/%Y') }}"{% endif %}>
+        <label for="donation_goal_end">Goal End Date (mm/dd/yyyy)</label>
+      </div>
+    </div>
+    <a class="waves-effect waves-light btn" id="submit">Submit</a>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/admin_application_settings.js') }}"></script>
+{% endblock %}

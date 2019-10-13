@@ -81,7 +81,7 @@ img.center-align {
   padding-bottom: 0px;
 }
 
-#dblbanner {
+#dblbanner, #donbanner {
   background-color: darkblue;
   text-align: center;
   font-size: 12pt;
@@ -90,11 +90,11 @@ img.center-align {
   display: none;
 }
 
-#dblbanner a {
+#dblbanner a, #donbanner a {
   transition: font-size 0.5s;
   color: lightskyblue;
 }
 
-#dblbanner a:hover {
+#dblbanner a:hover, #donbanner a:hover {
   font-size: 14pt;
 }

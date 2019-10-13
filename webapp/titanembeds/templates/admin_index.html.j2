@@ -56,5 +56,12 @@
       <a class="waves-effect waves-light btn" href="{{ url_for('admin.get_disabled_guilds') }}">Manage</a>
     </div>
   </div>
+  <div class="col s12">
+    <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+      <h4>Application Settings</h4>
+      <p class="flow-text">Configure Titan Embeds.</p>
+      <a class="waves-effect waves-light btn" href="{{ url_for('admin.application_settings_get') }}">Manage</a>
+    </div>
+  </div>
 </div>
 {% endblock %}

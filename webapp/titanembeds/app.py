@@ -17,10 +17,11 @@ from flask_sslify import SSLify
 from titanembeds.utils import rate_limiter, discord_api, socketio, babel, redis_store, language_code_list#, sentry
 from .blueprints import api, user, admin, embed, gateway
 import os
-from titanembeds.database import get_administrators_list
+from titanembeds.database import get_administrators_list, init_application_settings, get_application_settings
 import titanembeds.constants as constants
 from datetime import timedelta
 import datetime
+import random
 
 os.chdir(config['app-location'])
 app = Flask(__name__, static_folder="static")
@@ -84,11 +85,14 @@ def global_banned_words():
 
 @app.before_first_request
 def before_first_request():
+    init_application_settings()
     discord_api.init_discordrest()
 
 @app.context_processor
 def context_processor():
     return {
+        "random": random,
+        "application_settings": get_application_settings(),
         "devs": get_administrators_list(),
         "sentry_js_dsn": config.get("sentry-js-dsn", None),
         "constants": constants,
