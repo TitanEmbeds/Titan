@@ -11,6 +11,11 @@ def get_formatted_message(message):
         edit_ts = None
     else:
         edit_ts = format_datetime(edit_ts)
+    msg_type = message.type
+    if isinstance(msg_type, int):
+        msg_type = int(msg_type)
+    else:
+        msg_type = message.type.value
     msg = {
         "id": str(message.id),
         "channel_id": str(message.channel.id),
@@ -18,7 +23,7 @@ def get_formatted_message(message):
         "author": get_message_author(message),
         "timestamp": format_datetime(message.created_at),
         "edited_timestamp": edit_ts,
-        "type": message.type.value,
+        "type": msg_type,
     }
     if hasattr(message, "mentions"):
         msg["mentions"] = get_message_mentions(message.mentions)
