@@ -5,6 +5,7 @@ import functools
 from flask import request, session
 import time
 import json
+import os
 
 class Gateway(Namespace):
     def teardown_db_session(self):
@@ -12,7 +13,8 @@ class Gateway(Namespace):
         db.session.remove()
 
     def on_connect(self):
-        emit('hello')
+        gateway_identifier = os.environ.get("TITAN_GATEWAY_ID", None)
+        emit('hello', {"gateway_identifier": gateway_identifier})
 
     def on_identify(self, data):
         guild_id = data["guild_id"]

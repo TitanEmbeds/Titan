@@ -2122,6 +2122,14 @@
             socket.emit('identify', {"guild_id": guild_id, "visitor_mode": visitor_mode});
             process_message_users_cache();
         });
+
+        socket.on('hello', function (msg) {
+            var gateway_identifier = msg.gateway_identifier;
+            if (!gateway_identifier) {
+                gateway_identifier = "null";
+            }
+            console.log("%c[TitanEmbeds]%cConnected to gateway via%c" + gateway_identifier, 'color:aqua;background-color:black;border:1px solid black;padding: 3px;', 'color:white;background-color:black;border:1px solid black;padding: 3px;', 'color:white;background-color:black;border:1px solid black;font-family: Courier;padding: 3px;');
+        });
         
         socket.on("disconnect", function () {
             
