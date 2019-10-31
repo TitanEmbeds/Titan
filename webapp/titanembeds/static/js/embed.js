@@ -41,6 +41,7 @@
     var socket = null; // Socket.io object
     var socket_last_ack = null; // Socket.io last acknowledgement Moment obj
     var socket_error_should_refetch = false; // If true, the next ack will trigger a http refetch if socket connected
+    var socket_identified = false; // identified/loggedin with socket
     var authenticated_users_list = []; // List of all authenticated users
     var unauthenticated_users_list = []; // List of all guest users
     var discord_users_list = []; // List of all discord users that are probably online
@@ -1689,7 +1690,7 @@
             }
             var key_helper = name + "#" + discriminator;
             if (jQuery.isEmptyObject(message_users_cache[key_helper]["data"])) {
-                if (socket) {
+                if (socket && socket_identified) {
                     socket.emit("lookup_user_info", {"guild_id": guild_id, "name": name, "discriminator": discriminator});
                 }
             } else {
@@ -2120,7 +2121,6 @@
         socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway", {path: '/gateway', transports: ['websocket']});
         socket.on('connect', function () {
             socket.emit('identify', {"guild_id": guild_id, "visitor_mode": visitor_mode});
-            process_message_users_cache();
         });
 
         socket.on('hello', function (msg) {
@@ -2130,9 +2130,14 @@
             }
             console.log("%c[TitanEmbeds]%cConnected to gateway via%c" + gateway_identifier, 'color:aqua;background-color:black;border:1px solid black;padding: 3px;', 'color:white;background-color:black;border:1px solid black;padding: 3px;', 'color:white;background-color:black;border:1px solid black;font-family: Courier;padding: 3px;');
         });
+
+        socket.on("identified", function () {
+            socket_identified = true;
+            process_message_users_cache();
+        })
         
         socket.on("disconnect", function () {
-            
+            socket_identified = false;
         });
         
         socket.on("revoke", function () {
