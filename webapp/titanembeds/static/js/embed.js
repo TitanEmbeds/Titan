@@ -2133,8 +2133,8 @@
         
         socket.on("disconnect", function () {
             setTimeout(function () {
-                if (soccket) {
-                    soccket = null;
+                if (socket) {
+                    socket = null;
                     initiate_websockets();
                 }
             }, 500);
