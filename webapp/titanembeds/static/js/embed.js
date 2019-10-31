@@ -2118,7 +2118,7 @@
             return;
         }
         
-        socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway", {path: '/gateway', transports: ['websocket']});
+        socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway", {path: '/gateway', transports: ['websocket'], query: "v=1"});
         socket.on('connect', function () {
             socket.emit('identify', {"guild_id": guild_id, "visitor_mode": visitor_mode});
         });
