@@ -2132,12 +2132,7 @@
         });
         
         socket.on("disconnect", function () {
-            setTimeout(function () {
-                if (socket) {
-                    socket = null;
-                    initiate_websockets();
-                }
-            }, 500);
+            
         });
         
         socket.on("revoke", function () {
