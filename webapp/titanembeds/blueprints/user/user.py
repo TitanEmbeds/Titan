@@ -21,7 +21,8 @@ def login_authenticated():
     discord = make_authenticated_session(scope=scope)
     authorization_url, state = discord.authorization_url(
         authorize_url,
-        access_type="offline"
+        access_type="offline",
+        prompt="none",
     )
     session['oauth2_state'] = state
     return redirect(authorization_url)
