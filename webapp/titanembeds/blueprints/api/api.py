@@ -605,12 +605,12 @@ def list_users(guild_id):
 def webhook_discordbotsorg_vote():
     incoming = request.get_json()
     client_id = incoming.get('bot')
-    if config["client-id"] != client_id:
+    if str(config["client-id"]) != str(client_id):
         abort(401)
-    if request.headers.get("Authorization", "") != config.get("discordbotsorg-webhook-secret", ""):
+    if str(request.headers.get("Authorization", "")) != str(config.get("discordbotsorg-webhook-secret", "")):
         abort(403)
-    user_id = incoming.get("user")
-    vote_type = incoming.get("type")
+    user_id = str(incoming.get("user"))
+    vote_type = str(incoming.get("type"))
     params = dict(parse_qsl(urlsplit(incoming.get("query", "")).query))
     if vote_type == "upvote":
         redis_store.set("DiscordBotsOrgVoted/" + user_id, "voted", 86400)
