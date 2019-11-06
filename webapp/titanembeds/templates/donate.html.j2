@@ -58,6 +58,14 @@
             <a class="waves-effect waves-light btn" id="buy-guest-user-avatar-btn" {% if cosmetics.guest_icon %}disabled{% endif %}>{% if cosmetics.guest_icon %}Already Purchased{% else %}Buy{% endif %}</a>
         </div>
     </div>
+    <div class="col s12">
+        <div class="card-panel indigo lighten-5 z-depth-3 hoverable black-text">
+            <h4>Send Rich Embed <strong>[300 tokens]</strong></h4>
+            <p class="flow-text">Lets you and your users access to send rich embed messages directly within your embed!</p>
+            <p>(Note: Embed Links has to be enabled to be displayed in Discord; Titan needs server permissions to Embed Links)</p>
+            <a class="waves-effect waves-light btn" id="buy-send-rich-embed-btn" {% if cosmetics.send_rich_embed %}disabled{% endif %}>{% if cosmetics.send_rich_embed %}Already Purchased{% else %}Buy{% endif %}</a>
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block script %}

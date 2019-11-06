@@ -515,6 +515,10 @@ def donate_patch():
         subtract_amt = 300
         if entry is not None and entry.guest_icon:
             abort(400)
+    if item == "send_rich_embed":
+        subtract_amt = 300
+        if entry is not None and entry.send_rich_embed:
+            abort(400)
     amt_change = -1 * subtract_amt * amount
     subtract = set_titan_token(session["user_id"], amt_change, "BUY " + item + " x" + str(amount))
     if not subtract:
@@ -530,6 +534,10 @@ def donate_patch():
         if not entry:
             entry = Cosmetics(session["user_id"])
         entry.guest_icon = True
+    if item == "send_rich_embed":
+        if not entry:
+            entry = Cosmetics(session["user_id"])
+        entry.send_rich_embed = True
     db.session.add(entry)
     db.session.commit()
     return ('', 204)

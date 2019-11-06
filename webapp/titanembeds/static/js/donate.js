@@ -63,4 +63,21 @@
             }
         });
     });
+
+    $("#buy-send-rich-embed-btn").click(function () {
+        var formPatch = patchForm("send_rich_embed", 1);
+        formPatch.done(function (data) {
+            alert("Successfully bought send rich embed perk!");
+            location.reload();
+        });
+        formPatch.fail(function (data) {
+            if (data.status == 400) {
+                Materialize.toast('Item already purchased!', 10000);
+            } else if (data.status == 402) {
+                Materialize.toast('Insufficient token funds!', 10000);
+            } else {
+                Materialize.toast('Purchasing send rich embed perk failed!', 10000);
+            }
+        });
+    });
 })();
