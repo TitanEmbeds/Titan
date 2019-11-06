@@ -233,6 +233,7 @@ def administrate_guild(guild_id):
         "autorole_unauth": db_guild.autorole_unauth,
         "autorole_discord": db_guild.autorole_discord,
         "file_upload": db_guild.file_upload,
+        "send_rich_embed": db_guild.send_rich_embed,
     }
     return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics, disabled=(guild_id in list_disabled_guilds()))
 
@@ -262,6 +263,7 @@ def update_administrate_guild(guild_id):
     db_guild.autorole_unauth = request.form.get("autorole_unauth", db_guild.autorole_unauth, type=int)
     db_guild.autorole_discord = request.form.get("autorole_discord", db_guild.autorole_discord, type=int)
     db_guild.file_upload = request.form.get("file_upload", db_guild.file_upload) in ["true", True]
+    db_guild.send_rich_embed = request.form.get("send_rich_embed", db_guild.send_rich_embed) in ["true", True]
     
     invite_link = request.form.get("invite_link", db_guild.invite_link)
     if invite_link != None and invite_link.strip() == "":
@@ -304,6 +306,7 @@ def update_administrate_guild(guild_id):
         autorole_unauth=db_guild.autorole_unauth,
         autorole_discord=db_guild.autorole_discord,
         file_upload=db_guild.file_upload,
+        send_rich_embed=db_guild.send_rich_embed,
     )
 
 @user.route("/add-bot/<guild_id>")

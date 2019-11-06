@@ -182,6 +182,15 @@ $('#file_upload').change(function() {
     });
 });
 
+$('#send_rich_embed').change(function() {
+  var pathname = window.location.pathname;
+  var checked = $(this).is(':checked')
+  var payload = {"send_rich_embed": checked}
+  $.post(pathname, payload, function(data) {
+    Materialize.toast('Updated send rich embed setting!', 2000)
+  });
+});
+
 function initiate_ban(guild_id, user_id) {
   var reason = prompt("Please enter your reason for ban");
   var payload = {

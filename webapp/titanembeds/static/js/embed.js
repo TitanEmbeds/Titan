@@ -155,7 +155,7 @@
         return funct.promise();
     }
 
-    function post(channel_id, content, file) {
+    function post(channel_id, content, file, richembed) {
         if (content == "") {
             content = null;
         }
@@ -187,6 +187,11 @@
                     } , false);
                 }
                 return myXhr;
+            }
+        } else if (richembed) {
+            data = {"guild_id": guild_id, "channel_id": channel_id, "richembed": richembed};
+            if (content) {
+                data["content"] = content;
             }
         } else {
             data = {"guild_id": guild_id, "channel_id": channel_id, "content": content};
@@ -290,6 +295,7 @@
             }
         }
         
+        $("#send-rich-embed-btn").hide();
         $("#upload-file-btn").hide();
         $("#send-msg-btn").hide();
         
@@ -332,6 +338,14 @@
             outDuration: 400,
             complete: function () { $("#fileinput").val(""); }
         });
+        $("#richembedmodal").modal({
+            dismissible: true,
+            opacity: .3,
+            inDuration: 400,
+            outDuration: 400,
+            endingTop: '4%',
+            complete: function () { }
+        });
         $("#usercard").modal({
             opacity: .5,
         });
@@ -373,6 +387,10 @@
         $("#proceed_fileupload_btn").click(function () {
             $("#messagebox-filemodal").trigger(jQuery.Event("keydown", { keyCode: 13 } ));
         });
+
+        $("#proceed_richembedmodal_btn").click(function () {
+            $("#messagebox-richembedmodal").trigger(jQuery.Event("keydown", { keyCode: 13 } ));
+        });
         
         $("#fileinput").change(function (e){
             var files = e.target.files;
@@ -401,6 +419,52 @@
                     };
                     reader.readAsDataURL(file);
                 }
+            }
+        });
+
+        $("#send-rich-embed-btn").click(function () {
+            $("#richembedmodal").modal("open");
+            $("#messagebox-richembedmodal").val($("#messagebox").val());
+
+            $("#richembedform-color").val("#6BABDA");
+            $("#richembedform-title").val("");
+            $("#richembedform-description").val("");
+            $("#richembedform-url").val("");
+            $("#richembedform-thumbnailurl").val("");
+            $("#richembedform-authorname").val("");
+            $("#richembedform-authorurl").val("");
+            $("#richembedform-authoricon").val("");
+            $("#richembedform-footertext").val("");
+            $("#richembedmodal-fields").empty();
+            $("#richembedmodal-preview").empty();
+        });
+
+        $("#richembedmodal-left input").keyup(function () {
+            genPreviewPopulateRichEmbed();
+        });
+
+        $("#richembedmodal_addfield_btn").click(function () {
+            var count = $("#richembedmodal-fields > .row").length;
+            if (count >= 10) {
+                $("#richembedmodal_addfield_btn").addClass("disabled");
+                return;
+            }
+            var template = $($("#mustache_richembedfieldinput").html());
+            $("#richembedmodal-fields").append(template);
+            template.find("input.name").keyup(function () {
+                genPreviewPopulateRichEmbed();
+            });
+            template.find("input.value").keyup(function () {
+                genPreviewPopulateRichEmbed();
+            });
+            template.find(".delete-field").click(function () {
+                $(this).closest(".row").remove();
+                $("#richembedmodal_addfield_btn").removeClass("disabled");
+            });
+            count = $("#richembedmodal-fields > .row").length;
+            if (count >= 10) {
+                $("#richembedmodal_addfield_btn").addClass("disabled");
+                return;
             }
         });
         
@@ -621,6 +685,7 @@
             $("#messagebox").hide();
             $("#emoji-tray-toggle").hide();
             $(".wdt-emoji-picker").hide();
+            $("#send-rich-embed-btn").hide();
             $("#upload-file-btn").hide();
             $("#send-msg-btn").hide();
         } else {
@@ -628,6 +693,7 @@
             $("#messagebox").show();
             $("#emoji-tray-toggle").show();
             $(".wdt-emoji-picker").show();
+            $("#send-rich-embed-btn").show();
             $("#upload-file-btn").show();
             $("#send-msg-btn").show();
         }
@@ -834,6 +900,7 @@
             if (curr_default_channel == null) {
                 $("#messagebox").prop('disabled', true);
                 $("#messagebox").prop('placeholder', "NO TEXT CHANNELS");
+                $("#send-rich-embed-btn").hide();
                 $("#upload-file-btn").hide();
                 $("#send-msg-btn").hide();
                 Materialize.toast("You find yourself in a strange place. You don't have access to any text channels, or there are none in this server.", 20000);
@@ -845,12 +912,14 @@
         if (this_channel.write) {
             $("#messagebox").prop('disabled', false);
             $("#messagebox").prop('placeholder', "Enter message");
+            $("#send-rich-embed-btn").show();
             $("#upload-file-btn").show();
             $("#send-msg-btn").show();
             $(".wdt-emoji-picker").show();
         } else {
             $("#messagebox").prop('disabled', true);
             $("#messagebox").prop('placeholder', "Messaging is disabled in this channel.");
+            $("#send-rich-embed-btn").hide();
             $("#upload-file-btn").hide();
             $("#send-msg-btn").hide();
             $(".wdt-emoji-picker").hide();
@@ -859,6 +928,11 @@
             $("#upload-file-btn").show();
         } else {
             $("#upload-file-btn").hide();
+        }
+        if (this_channel.embed_links) {
+            $("#send-rich-embed-btn").show();
+        } else {
+            $("#send-rich-embed-btn").hide();
         }
         $("#channeltopic").text(this_channel.channel.topic);
         $("#channel-"+selected_channel).parent().addClass("active");
@@ -1108,6 +1182,107 @@
             }
         }
         $("#usercard").modal('open');
+    }
+
+    function generatePreviewRichEmbed() {
+        var richembed = generateRichEmbedObjFromModalForm();
+        var rendered = render_embed(richembed);
+        $("#richembedmodal-preview").html(rendered);
+    }
+
+    function genPreviewPopulateRichEmbed() {
+        generatePreviewRichEmbed();
+        var richembed = generateRichEmbedObjFromModalForm();
+        $("#richembedmodal-object").val("");
+        if (Object.keys(richembed).length > 2) {
+            if (richembed.fields && richembed.fields.length == 0) {
+                return;
+            }
+            $("#richembedmodal-object").val(JSON.stringify(richembed));
+        }
+    }
+
+    function generateRichEmbedObjFromModalForm() {
+        var color = $("#richembedform-color").val();
+        var title = $("#richembedform-title").val();
+        var description = $("#richembedform-description").val();
+        var url = $("#richembedform-url").val();
+        var thumbnailurl = $("#richembedform-thumbnailurl").val();
+        var authorname = $("#richembedform-authorname").val();
+        var authorurl = $("#richembedform-authorurl").val();
+        var authoricon = $("#richembedform-authoricon").val();
+        var footertext = $("#richembedform-footertext").val();
+
+        var output = {
+            "type": "rich"
+        };
+
+        if (color.startsWith("#")) {
+            color = color.substr(1);
+        }
+        color = "0x" + color;
+        color = parseInt(color, 16);
+        output["color"] = color;
+
+        if (title) {
+            output["title"] = title;
+        }
+
+        if (description) {
+            output["description"] = description;
+        }
+
+        if (url) {
+            output["url"] = url;
+        }
+
+        if (thumbnailurl) {
+            output["thumbnail"] = {
+                "url": thumbnailurl,
+                "proxy_url": thumbnailurl,
+            };
+        }
+
+        if (authorname || authorurl || authoricon) {
+            output["author"] = {};
+        }
+        if (authorname) {
+            output["author"]["name"] = authorname;
+        }
+
+        if (authorurl) {
+            output["author"]["url"] = authorurl;
+        }
+
+        if (authoricon) {
+            output["author"]["icon_url"] = authoricon;
+            output["author"]["proxy_icon_url"] = authoricon;
+        }
+
+        if (footertext) {
+            output["footer"] = {
+                "text": footertext
+            }
+        }
+
+        var fieldRows = $("#richembedmodal-fields > .row");
+        if (fieldRows.length) {
+            output["fields"] = [];
+        }
+        for (var i = 0; i < Math.min(fieldRows.length, 10); i++) {
+            var fieldRow = $(fieldRows[i]);
+            var fieldName = fieldRow.find("input.name").val().trim();
+            var fieldValue = fieldRow.find("input.value").val().trim();
+            if (fieldName && fieldValue) {
+                output["fields"].push({
+                    "name": fieldName,
+                    "value": fieldValue,
+                    "inline": false,
+                });
+            }
+        }
+        
+        return output;
     }
     
     function flashElement(element) {
@@ -1378,46 +1553,49 @@
                 // if ($.inArray(disembed.type, ["rich", "link", "video"]) == -1) {
                 //     continue;
                 // }
-                
-                if (disembed.type == "image") {
-                    var img = "<img class=\"image attachment materialboxed\" src=\"" + disembed.thumbnail.proxy_url + "\">";
-                    emb.push(img);
-                    continue;
-                }
-                
-                disembed.isVideo = false;
-                if (disembed.type == "video") {
-                    disembed.isVideo = true;
-                    if (disembed.video) {
-                        var url = new URL(disembed.video.url);
-                        if (url.hostname.endsWith("twitch.tv")) {
-                            if (url.searchParams.has("autoplay")) {
-                                url.searchParams.set("autoplay", "false");
-                                disembed.video.url = url.toString();
-                            }
-                        }
-                    }
-                }
-                disembed.toRenderFooter = false;
-                if (disembed.footer) {
-                    disembed.toRenderFooter = true;
-                } else if (disembed.timestamp) {
-                    disembed.toRenderFooter = true;
-                }
-                disembed.footerVerticalBar = disembed.footer && disembed.timestamp;
-                if (disembed.timestamp) {
-                    disembed.formatted_timestamp = moment(disembed.timestamp).format('ddd MMM Do, YYYY [at] h:mm A');
-                }
-                if (disembed.color) {
-                    disembed.hexColor = "#" + disembed.color.toString(16);
-                }
-                var template = $('#mustache_richembed').html();
-                Mustache.parse(template);
-                var rendered = Mustache.render(template, disembed);
+                var rendered = render_embed(disembed);
                 emb.push(rendered);
             }
         }
         return emb;
+    }
+
+    function render_embed(disembed) {
+        if (disembed.type == "image") {
+            var img = "<img class=\"image attachment materialboxed\" src=\"" + disembed.thumbnail.proxy_url + "\">";
+            return img;
+        }
+        
+        disembed.isVideo = false;
+        if (disembed.type == "video") {
+            disembed.isVideo = true;
+            if (disembed.video) {
+                var url = new URL(disembed.video.url);
+                if (url.hostname.endsWith("twitch.tv")) {
+                    if (url.searchParams.has("autoplay")) {
+                        url.searchParams.set("autoplay", "false");
+                        disembed.video.url = url.toString();
+                    }
+                }
+            }
+        }
+        disembed.toRenderFooter = false;
+        if (disembed.footer) {
+            disembed.toRenderFooter = true;
+        } else if (disembed.timestamp) {
+            disembed.toRenderFooter = true;
+        }
+        disembed.footerVerticalBar = disembed.footer && disembed.timestamp;
+        if (disembed.timestamp) {
+            disembed.formatted_timestamp = moment(disembed.timestamp).format('ddd MMM Do, YYYY [at] h:mm A');
+        }
+        if (disembed.color) {
+            disembed.hexColor = "#" + disembed.color.toString(16);
+        }
+        var template = $('#mustache_richembed').html();
+        Mustache.parse(template);
+        var rendered = Mustache.render(template, disembed);
+        return rendered;
     }
     
     function parse_message_reactions(reactions) {
@@ -2010,12 +2188,15 @@
         if (event.keyCode == 16) {
             shift_pressed = true;
         }
-        if(event.keyCode == 13 && !shift_pressed && ($(this).val().length >= 1 || $("#fileinput").val().length >= 1)) {
+        if(event.keyCode == 13 && !shift_pressed && ($(this).val().length >= 1 || $("#fileinput").val().length >= 1 || $("#richembedmodal-object").val().length >= 1)) {
             $(this).val($.trim($(this).val()));
             $(this).blur();
+            $("#messagebox-richembedmodal").attr('readonly', true);
             $("#messagebox-filemodal").attr('readonly', true);
             $("#proceed_fileupload_btn").attr("disabled", true);
+            $("#proceed_richembedmodal_btn").attr("disabled", true);
             $("#messagebox").attr('readonly', true);
+            $("#richembedmodal-left input").attr('readonly', true);
             $("#send-msg-btn").attr("disabled", true);
             var emojiConvertor = new EmojiConvertor();
             emojiConvertor.init_env();
@@ -2028,12 +2209,18 @@
                 file = $("#fileinput")[0].files[0];
             }
             $("#filemodalprogress").show();
-            var funct = post(selected_channel, messageInput, file);
+            var richembed = $("#richembedmodal-object").val();
+            if (!richembed) {
+                richembed = null;
+            }
+            var funct = post(selected_channel, messageInput, file, richembed);
             funct.done(function(data) {
                 $("#messagebox").val("");
                 $("#messagebox-filemodal").val("");
                 $("#fileinput").val("");
+                $("#richembedmodal-object").val("");
                 $("#filemodal").modal("close");
+                $("#richembedmodal").modal("close");
             });
             funct.fail(function(data) {
                 Materialize.toast('Failed to send message.', 10000);
@@ -2055,6 +2242,9 @@
                 $("#messagebox-filemodal").attr('readonly', false);
                 $("#proceed_fileupload_btn").attr("disabled", false);
                 $("#filemodalprogress").hide();
+                $("#messagebox-richembedmodal").attr('readonly', false);
+                $("#proceed_richembedmodal_btn").attr("disabled", false);
+                $("#richembedmodal-left input").attr('readonly', false);
                 $("#send-msg-btn").attr("disabled", false);
                 if ($("#filemodal").is(":visible")) {
                     $("#messagebox-filemodal").focus();
@@ -2072,6 +2262,28 @@
     });
     
     $("#messagebox-filemodal").keydown(function (event) {
+        if ($(this).val().length == 1) {
+            $(this).val($.trim($(this).val()));
+        }
+        if (event.keyCode == 16) {
+            shift_pressed = true;
+        }
+        
+        if(event.keyCode == 13 && !shift_pressed) {
+            $(this).val($.trim($(this).val()));
+            $(this).blur();
+            $("#messagebox").val($(this).val());
+            $("#messagebox").trigger(jQuery.Event("keydown", { keyCode: 13 } ));
+        }
+    });
+
+    $("#messagebox-richembedmodal").keyup(function (event) {
+        if (event.keyCode == 16) {
+            shift_pressed = false;
+        }
+    });
+    
+    $("#messagebox-richembedmodal").keydown(function (event) {
         if ($(this).val().length == 1) {
             $(this).val($.trim($(this).val()));
         }

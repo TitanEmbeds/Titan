@@ -15,6 +15,7 @@
               <th>CSS</th>
               <th>CSS Limit</th>
               <th>Guest Icon</th>
+              <th>Send Rich Embed</th>
               <th>Badges</th>
               <th>Submit</th>
           </tr>
@@ -52,6 +53,16 @@
                 </div>
             </td>
             <td>
+                <div class="switch">
+                    <label>
+                      Off
+                      <input type="checkbox" id="new_send_rich_embed_switch">
+                      <span class="lever"></span>
+                      On
+                    </label>
+                </div>
+            </td>
+            <td>
               <div class="input-field col s12">
                 <select multiple id="new_badges">
                   <option value="" disabled>Choose your option</option>
@@ -80,6 +91,7 @@
               <th>CSS</th>
               <th>CSS Limit</th>
               <th>Guest Icon</th>
+              <th>Send Rich Embed</th>
               <th>Badges</th>
           </tr>
         </thead>
@@ -108,6 +120,16 @@
                     <label>
                       Off
                       <input type="checkbox" {% if cosmetic.guest_icon %}checked{% endif %} onchange="update_guest_icon_switch('{{ cosmetic.user_id }}', this)">
+                      <span class="lever"></span>
+                      On
+                    </label>
+                </div>
+            </td>
+            <td>
+                <div class="switch">
+                    <label>
+                      Off
+                      <input type="checkbox" {% if cosmetic.send_rich_embed %}checked{% endif %} onchange="update_send_rich_embed_switch('{{ cosmetic.user_id }}', this)">
                       <span class="lever"></span>
                       On
                     </label>

@@ -20,6 +20,7 @@ class Guilds(db.Model):
     autorole_unauth = db.Column(db.BigInteger, nullable=True, server_default=None) # Automatic Role inherit for unauthenticated users
     autorole_discord = db.Column(db.BigInteger, nullable=True, server_default=None) # Automatic Role inherit for discord users
     file_upload = db.Column(db.Boolean(), nullable=False, server_default="0")     # Allow file uploading for server
+    send_rich_embed = db.Column(db.Boolean(), nullable=False, server_default="0") # Allow sending rich embed messages
 
     def __init__(self, guild_id):
         self.guild_id = guild_id

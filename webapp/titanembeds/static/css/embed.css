@@ -926,6 +926,10 @@ p.mentioned span.chatmessage {
   .wdt-emoji-picker {
       display: none;
   }
+
+  #send-rich-embed-btn {
+    display: none;
+  }
   
   #upload-file-btn {
     display: none;
@@ -940,7 +944,11 @@ p.mentioned span.chatmessage {
   .wdt-emoji-picker {
       display: block;
   }
-  
+
+  #send-rich-embed-btn {
+    display: block;
+  }
+
   #upload-file-btn {
     display: block;
   }
@@ -963,6 +971,19 @@ p.mentioned span.chatmessage {
   color: white;
 }
 
+#send-rich-embed-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 91px;
+  color: gray;
+  padding: 1px;
+  transition: .3s ease-out;
+}
+
+#send-rich-embed-btn:hover {
+  color: white;
+}
+
 #send-msg-btn {
   position: absolute;
   bottom: 7px;
@@ -978,6 +999,11 @@ p.mentioned span.chatmessage {
 
 #fileinput {
   display: none;
+}
+
+#richembedmodal {
+  width: 80%;
+  max-height: 89vh;
 }
 
 @media only screen and (min-width: 500px) {
@@ -996,12 +1022,35 @@ p.mentioned span.chatmessage {
   max-height: 100px;
 }
 
-#messagebox-filemodal {
+#messagebox-filemodal, #messagebox-richembedmodal, #richembedmodal-left input {
   background-color: rgba(0, 0, 0, 0.07);
 }
 
-#messagebox-filemodal::placeholder {
+#messagebox-filemodal::placeholder, #messagebox-richembedmodal::placeholder, #richembedmodal-left input::placeholder {
   color: #90a4ae;
+}
+
+#richembedmodal-left .input-field label {
+  color: white;
+}
+
+#richembedmodal-left input[type=text] {
+  height: 25px;
+  margin-bottom: 5px;
+}
+
+#richembedmodal-fields .input-field {
+  margin-top: 25px;
+}
+
+#richembedmodal-fields .delete-field {
+  padding-left: 0;
+  padding-right: 0;
+  color: #F5B7D0;
+}
+
+#richembedmodal-fields > div {
+  margin-bottom: 0;
 }
 
 #mention-picker {

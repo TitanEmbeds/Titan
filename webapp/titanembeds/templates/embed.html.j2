@@ -83,6 +83,7 @@
           <div id="messageboxouter" class="input-field inline">
             <textarea placeholder="Enter message" id="messagebox" type="text" class="materialize-textarea wdt-emoji-open-on-colon" rows="1"></textarea>
             <span id="visitor_mode_message" style="display:none;"><span id="visitor_mode_message_note">{{ _("Please login to post a message.") }}</span> <a id="visitor_login_btn" class="waves-effect waves-light btn">{{ _("Login") }}</a></span>
+            <a id="send-rich-embed-btn" class="btn-flat"><i class="material-icons">queue</i></a>
             <a id="upload-file-btn" class="btn-flat"><i class="material-icons">file_upload</i></a>
             <a id="send-msg-btn" class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">send</i></a>
           </div>
@@ -295,6 +296,67 @@
           <a id="proceed_fileupload_btn" class="waves-effect waves-light btn">{{ _("Upload") }}</a>
         </p>
         <input type="file" id="fileinput">
+      </div>
+    </div>
+
+    <div id="richembedmodal" class="modal">
+      <div class="modal-content">
+        <h4 class="center-align">Send a Rich Embed Message</h4>
+        <p>Add a comment (optional)</p>
+        <p class="center-align">
+          <textarea placeholder="Enter message" id="messagebox-richembedmodal" type="text" class="materialize-textarea" rows="1"></textarea>
+        </p>
+        <div id="richembedmodal-body" class="row">
+          <div id="richembedmodal-left" class="col s12 m5">
+            <div class="input-field">
+              <span>Color</span>
+              <input id="richembedform-color" type="color" value="#6BABDA">
+            </div>
+            <div class="input-field">
+              <input placeholder="title" id="richembedform-title" type="text" data-length="100" maxlength="100">
+              <label for="richembedform-title">Title</label>
+            </div>
+            <div class="input-field">
+              <input placeholder="description" id="richembedform-description" type="text" data-length="100" maxlength="100">
+              <label for="richembedform-description">Description</label>
+            </div>
+            <div class="input-field">
+              <input placeholder="link url" id="richembedform-url" type="text" data-length="100" maxlength="100">
+              <label for="richembedform-url">Link URL</label>
+            </div>
+            <div class="input-field">
+              <input placeholder="thumbnail url" id="richembedform-thumbnailurl" type="text" data-length="100" maxlength="100">
+              <label for="richembedform-thumbnailurl">Thumbnail URL (must begin with http(s))</label>
+            </div>
+            <div class="input-field">
+              <input placeholder="author name" id="richembedform-authorname" type="text" data-length="100" maxlength="100">
+              <label for="richembedform-authorname">Author Name</label>
+            </div>
+            <div class="input-field">
+              <input placeholder="author link url" id="richembedform-authorurl" type="text" data-length="100" maxlength="100">
+              <label for="richembedform-authorurl">Author Link URL (must begin with http(s))</label>
+            </div>
+            <div class="input-field">
+              <input placeholder="author icon url" id="richembedform-authoricon" type="text" data-length="100" maxlength="100">
+              <label for="richembedform-authoricon">Author Icon URL (must begin with http(s))</label>
+            </div>
+            <div class="input-field">
+              <input placeholder="footer text" id="richembedform-footertext" type="text" data-length="100" maxlength="100">
+              <label for="richembedform-footertext">Footer Text</label>
+            </div>
+            <span>Fields:</span>
+            <div id="richembedmodal-fields"></div>
+            <a id="richembedmodal_addfield_btn" class="waves-effect waves-light btn">+ Field</a>
+          </div>
+          <div id="richembedmodal-right" class="col s12 m7">
+            <div id="richembedmodal-preview"></div>
+            <span>Preview</span>
+          </div>
+        </div>
+        <input type="hidden" value="" id="richembedmodal-object">
+        <p class="right-align">
+          <a id="proceed_richembedmodal_btn" class="waves-effect waves-light btn">Send</a>
+        </p>
       </div>
     </div>
     
@@ -544,6 +606,20 @@
     
     <script id="mustache_reactionchip" type="text/template">
       <span class="reaction tooltipped" data-position="top" data-delay="200" data-tooltip="{{#emoji.id}}:{{/emoji.id}}{{emoji.name}}{{#emoji.id}}:{{/emoji.id}}"><img src="{{img_url}}"> <span class="count">{{count}}</span></span>
+    </script>
+
+    <script id="mustache_richembedfieldinput" type="text/template">
+      <div class="row">
+        <div class="input-field col s5">
+          <input placeholder="Name" type="text" data-length="100" class="name" maxlength="100">
+        </div>
+        <div class="input-field col s5">
+          <input placeholder="Value" type="text" data-length="100" class="value" maxlength="100">
+        </div>
+        <div class="col s2">
+          <a class="btn-flat delete-field"><i class="material-icons">delete_forever</i></a>
+        </div>
+      </div>
     </script>
     {% endraw %}
 

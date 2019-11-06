@@ -7,6 +7,7 @@ class Cosmetics(db.Model):
     css = db.Column(db.Boolean(), nullable=False)                   # If they can create/edit custom CSS
     css_limit = db.Column(db.Integer, nullable=False, server_default="0") # Custom CSS Limit
     guest_icon = db.Column(db.Boolean(), nullable=False, server_default=db.false()) # If they can set the guest icon for all guilds
+    send_rich_embed = db.Column(db.Boolean(), nullable=False, server_default=db.false()) # If they can set the send rich embed for all guilds
     badges = db.Column(db.String(255), nullable=False, server_default="[]") # JSON list of all the badges the user has
     
     def __init__(self, user_id, **kwargs):
@@ -26,6 +27,11 @@ class Cosmetics(db.Model):
             self.guest_icon = kwargs["guest_icon"]
         else:
             self.guest_icon = False
+
+        if "send_rich_embed" in kwargs:
+            self.send_rich_embed = kwargs["send_rich_embed"]
+        else:
+            self.send_rich_embed = False
         
         if "badges" in kwargs:
             self.badges = json.dumps(kwargs["badges"])

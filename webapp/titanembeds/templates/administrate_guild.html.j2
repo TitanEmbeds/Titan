@@ -227,6 +227,22 @@
               </label>
             </div>
 
+            <br>
+
+            <p class="flow-text">Send Rich Embed</p>
+            <p>Allow users to send rich embedded messages (both the bot & user need "embed links" permission)</p>
+            {% if not cosmetics.send_rich_embed %}
+            <p class="red lighten-4"><strong>Your user account does not have access to change send rich embed. Please visit the Titan Tokens shop to activate this cosmetic item.</strong></p>
+            {% endif %}
+            <div class="switch">
+              <label>
+                Disable
+                <input type="checkbox" id="send_rich_embed" name="send_rich_embed" {% if guild['send_rich_embed'] %}checked{% endif %}  {% if not cosmetics.send_rich_embed %}disabled{% endif %} >
+                <span class="lever"></span>
+                Enable
+              </label>
+            </div>
+
           </div>
         </div>
       </div>

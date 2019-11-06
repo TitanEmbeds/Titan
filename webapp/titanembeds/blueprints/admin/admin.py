@@ -49,6 +49,7 @@ def cosmetics_post():
     css = request.form.get("css", None)
     css_limit = int(request.form.get("css_limit", 0))
     guest_icon = request.form.get("guest_icon", None)
+    send_rich_embed = request.form.get("send_rich_embed", None)
     badges = request.form.get("badges", None)
     entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == user_id).first()
     if entry:
@@ -62,6 +63,9 @@ def cosmetics_post():
     if guest_icon is not None:
         guest_icon = guest_icon.lower() == "true"
         user.guest_icon = guest_icon
+    if send_rich_embed:
+        send_rich_embed = send_rich_embed.lower() == "true"
+        user.send_rich_embed = send_rich_embed
     if badges is not None:
         badges = badges.split(",")
         if badges == [""]:
@@ -93,6 +97,7 @@ def cosmetics_patch():
     css = request.form.get("css", None)
     css_limit = request.form.get("css_limit", None)
     guest_icon = request.form.get("guest_icon", None)
+    send_rich_embed = request.form.get("send_rich_embed", None)
     badges = request.form.get("badges", None)
     entry = db.session.query(Cosmetics).filter(Cosmetics.user_id == user_id).first()
     if not entry:
@@ -105,6 +110,9 @@ def cosmetics_patch():
     if guest_icon:
         guest_icon = guest_icon.lower() == "true"
         entry.guest_icon = guest_icon
+    if send_rich_embed:
+        send_rich_embed = send_rich_embed.lower() == "true"
+        entry.send_rich_embed = send_rich_embed
     if badges is not None:
         badges = badges.split(",")
         if badges == [""]:
@@ -195,6 +203,7 @@ def administrate_guild(guild_id):
         "autorole_unauth": db_guild.autorole_unauth,
         "autorole_discord": db_guild.autorole_discord,
         "file_upload": db_guild.file_upload,
+        "send_rich_embed": db_guild.send_rich_embed,
     }
     return render_template("administrate_guild.html.j2", guild=dbguild_dict, members=users, permissions=permissions, cosmetics=cosmetics)
 
@@ -216,6 +225,7 @@ def update_administrate_guild(guild_id):
     db_guild.autorole_unauth = request.form.get("autorole_unauth", db_guild.autorole_unauth, type=int)
     db_guild.autorole_discord = request.form.get("autorole_discord", db_guild.autorole_discord, type=int)
     db_guild.file_upload = request.form.get("file_upload", db_guild.file_upload) in ["true", True]
+    db_guild.send_rich_embed = request.form.get("send_rich_embed", db_guild.send_rich_embed) in ["true", True]
     invite_link = request.form.get("invite_link", db_guild.invite_link)
     if invite_link != None and invite_link.strip() == "":
         invite_link = None
@@ -254,6 +264,7 @@ def update_administrate_guild(guild_id):
         autorole_unauth=db_guild.autorole_unauth,
         autorole_discord=db_guild.autorole_discord,
         file_upload=db_guild.file_upload,
+        send_rich_embed=db_guild.send_rich_embed,
     )
 
 @admin.route("/guilds")

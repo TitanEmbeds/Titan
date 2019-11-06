@@ -233,11 +233,13 @@ def get_guild_channels(guild_id, force_everyone=False, forced_role=0):
                 result["mention_everyone"] = False
             if not bot_result["attach_files"] or not db_guild.file_upload or not result["write"]:
                 result["attach_files"] = False
+            if not bot_result["embed_links"] or not db_guild.send_rich_embed or not result["write"]:
+                result["embed_links"] = False
             result_channels.append(result)
     return sorted(result_channels, key=lambda k: k['channel']['position'])
 
 def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_roles, user_id=None, force_everyone=False):
-    result = {"channel": channel, "read": False, "write": False, "mention_everyone": False, "attach_files": False}
+    result = {"channel": channel, "read": False, "write": False, "mention_everyone": False, "attach_files": False, "embed_links": False}
     if not user_id:
         user_id = str(session.get("user_id"))
     if guild_owner == user_id:
@@ -245,6 +247,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
         result["write"] = True
         result["mention_everyone"] = True
         result["attach_files"] = True
+        result["embed_links"] = True
         return result
     channel_perm = 0
     
@@ -272,6 +275,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
         result["write"] = True
         result["mention_everyone"] = True
         result["attach_files"] = True
+        result["embed_links"] = True
         return result
     
     denies = 0
@@ -295,6 +299,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     result["write"] = user_has_permission(channel_perm, 11)
     result["mention_everyone"] = user_has_permission(channel_perm, 17)
     result["attach_files"] = user_has_permission(channel_perm, 15)
+    result["embed_links"] = user_has_permission(channel_perm, 14)
     
     # If you cant read channel, you cant write in it
     if not user_has_permission(channel_perm, 10):
@@ -302,6 +307,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
         result["write"] = False
         result["mention_everyone"] = False
         result["attach_files"] = False
+        result["embed_links"] = False
     return result
     
 def get_forced_role(guild_id):

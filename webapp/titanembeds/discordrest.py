@@ -109,12 +109,20 @@ class DiscordREST:
     # Channel
     #####################
 
-    def create_message(self, channel_id, content, file=None):
+    def create_message(self, channel_id, content, file=None, richembed=None):
         _endpoint = "/channels/{channel_id}/messages".format(channel_id=channel_id)
         payload = {'content': content}
+        is_json = False
         if file:
             payload = {"payload_json": (None, json.dumps(payload)), "file": (file.filename, file.read(), 'application/octet-stream')}
-        r = self.request("POST", _endpoint, data=payload)
+        if richembed:
+            if richembed.get("type"):
+                del richembed["type"]
+            payload["embed"] = richembed
+            if not content:
+                del payload["content"]
+            is_json = True
+        r = self.request("POST", _endpoint, data=payload, json=is_json)
         return r
 
     #####################
@@ -172,10 +180,11 @@ class DiscordREST:
         r = self.request("POST", _endpoint, data=payload, json=True)
         return r
     
-    def execute_webhook(self, webhook_id, webhook_token, username, avatar, content, file=None, wait=True):
+    def execute_webhook(self, webhook_id, webhook_token, username, avatar, content, file=None, richembed=None, wait=True):
         _endpoint = "/webhooks/{id}/{token}".format(id=webhook_id, token=webhook_token)
         if wait:
             _endpoint += "?wait=true"
+        is_json = False
         payload = {
             'content': content,
             'avatar_url': avatar,
@@ -183,7 +192,14 @@ class DiscordREST:
         }
         if file:
             payload = {"payload_json": (None, json.dumps(payload)), "file": (file.filename, file.read(), 'application/octet-stream')}
-        r = self.request("POST", _endpoint, data=payload)
+        if richembed:
+            if richembed.get("type"):
+                del richembed["type"]
+            payload["embeds"] = [richembed]
+            if not content:
+                del payload["content"]
+            is_json = True
+        r = self.request("POST", _endpoint, data=payload, json=is_json)
         return r
     
     def delete_webhook(self, webhook_id, webhook_token):

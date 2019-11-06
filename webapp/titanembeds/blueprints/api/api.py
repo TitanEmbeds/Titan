@@ -303,6 +303,9 @@ def post():
         file = request.files["file"]
     if file and file.filename == "":
         file = None
+    rich_embed = request.form.get("richembed", None)
+    if rich_embed:
+        rich_embed = json.loads(rich_embed)
     if "user_id" in session:
         dbUser = redisqueue.get_guild_member(guild_id, session["user_id"])
     else:
@@ -322,7 +325,7 @@ def post():
         chan = filter_guild_channel(guild_id, channel_id)
         if not chan.get("write") or chan["channel"]["type"] != "text":
             status_code = 401
-        elif file and not chan.get("attach_files"):
+        elif (file and not chan.get("attach_files")) or (rich_embed and not chan.get("embed_links")):
             status_code = 406
         elif not illegal_post:
             userid = session["user_id"]
@@ -354,10 +357,10 @@ def post():
                         username = username[:25]
                     username = username + "#" + str(session['discriminator'])
                     avatar = session['avatar']
-                message = discord_api.execute_webhook(webhook.get("id"), webhook.get("token"), username, avatar, content, file)
+                message = discord_api.execute_webhook(webhook.get("id"), webhook.get("token"), username, avatar, content, file, rich_embed)
                 delete_webhook_if_too_much(webhook)
             else:
-                message = discord_api.create_message(channel_id, content, file)
+                message = discord_api.create_message(channel_id, content, file, rich_embed)
             status_code = message['code']
     db.session.commit()
     response = jsonify(message=message.get('content', message), status=status, illegal_reasons=illegal_reasons)
