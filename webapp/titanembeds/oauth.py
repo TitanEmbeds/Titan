@@ -5,6 +5,7 @@ from flask import session, abort, url_for, request
 from titanembeds.utils import redis_store, make_user_cache_key
 from flask_socketio import disconnect
 import time
+from oauthlib.oauth2.rfc6749.errors import InvalidGrantError
 
 authorize_url = "https://discordapp.com/api/oauth2/authorize"
 token_url = "https://discordapp.com/api/oauth2/token"
@@ -32,7 +33,10 @@ def make_authenticated_session(token=None, state=None, scope=None):
 def discordrest_from_user(endpoint):
     token = session['user_keys']
     discord = make_authenticated_session(token=token)
-    req = discord.get("https://discordapp.com/api/v6{}".format(endpoint))
+    try:
+        req = discord.get("https://discordapp.com/api/v6{}".format(endpoint))
+    except InvalidGrantError as ex:
+        abort(401)
     return req
 
 def get_current_authenticated_user():

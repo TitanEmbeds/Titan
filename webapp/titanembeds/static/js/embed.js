@@ -1845,10 +1845,10 @@
         });
         fet.fail(function(data) {
             if (data.status == 403) {
-                $('#loginmodal').modal('open');
+                setTimeout(function () {$('#loginmodal').modal('open');}, 2000);
                 Materialize.toast('Authentication error! You have been disconnected by the server.', 10000);
             } else if (data.status == 401) {
-                $('#loginmodal').modal('open');
+                setTimeout(function () {$('#loginmodal').modal('open');}, 2000);
                 Materialize.toast('Session expired! You have been logged out.', 10000);
             }
             setVisitorMode(true);
