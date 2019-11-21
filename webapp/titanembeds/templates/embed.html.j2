@@ -634,7 +634,7 @@
         const cookie_test_s2_URL = {{ url_for("embed.cookietest2", _external=True)|tojson|safe }};
     </script>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/embed.js', t=app_start_stamp) }}"></script>
     
     {% if af_mode_enabled %}
     <script type="text/javascript" src="{{ url_for('static', filename='js/embed.af.directmessage.js') }}"></script>

@@ -22,6 +22,9 @@ import titanembeds.constants as constants
 from datetime import timedelta
 import datetime
 import random
+import time
+
+app_start_stamp = time.time()
 
 os.chdir(config['app-location'])
 app = Flask(__name__, static_folder="static")
@@ -97,7 +100,8 @@ def context_processor():
         "sentry_js_dsn": config.get("sentry-js-dsn", None),
         "constants": constants,
         "af_mode_enabled": datetime.datetime.now().date() == datetime.date(datetime.datetime.now().year, 4, 1),
-        "dbl_voted": session.get("unauthenticated", True) == False and bool(redis_store.get("DiscordBotsOrgVoted/" + str(session.get("user_id", -1))))
+        "dbl_voted": session.get("unauthenticated", True) == False and bool(redis_store.get("DiscordBotsOrgVoted/" + str(session.get("user_id", -1)))),
+        "app_start_stamp": app_start_stamp
     }
 
 # @app.errorhandler(500)
