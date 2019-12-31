@@ -133,7 +133,7 @@ def downgrade():
                existing_nullable=False,
                existing_server_default=sa.text(u"'1'"))
     op.alter_column(u'guilds', 'channels',
-               existing_typesa.Text().with_variant(sa.Text(length=4294967295), 'mysql'),
+               existing_type=sa.Text().with_variant(sa.Text(length=4294967295), 'mysql'),
                type_=mysql.LONGTEXT(collation=u'utf8mb4_unicode_ci'),
                existing_nullable=False)
     op.alter_column(u'guilds', 'bracket_links',
