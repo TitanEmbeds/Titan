@@ -118,7 +118,7 @@ def noscript():
 def cookietest1():
     js = "window._3rd_party_test_step1_loaded();"
     response = make_response(js, 200, {'Content-Type': 'application/javascript'})
-    response.set_cookie('third_party_c_t', "works", max_age=30)
+    response.set_cookie('third_party_c_t', "works", max_age=30, secure=True, httponly=True, samesite='Lax')
     return response
 
 @embed.route("/cookietest2")
@@ -130,5 +130,5 @@ def cookietest2():
         js = js + "false"
     js = js + ");"
     response = make_response(js, 200, {'Content-Type': 'application/javascript'})
-    response.set_cookie('third_party_c_t', "", expires=0)
+    response.set_cookie('third_party_c_t', "", expires=0,secure=True, httponly=True, samesite='Lax')
     return response
