@@ -48,7 +48,7 @@ class DiscordREST:
         data = None
         if 'data' in kwargs:
             data = kwargs['data']
-        if 'json' in kwargs:
+        if 'json' in kwargs and kwargs["json"] != False:
             headers['Content-Type'] = 'application/json'
             data = json.dumps(data)
 
@@ -198,7 +198,8 @@ class DiscordREST:
             payload["embeds"] = [richembed]
             if not content:
                 del payload["content"]
-            is_json = True
+            if not file:
+                is_json = True
         r = self.request("POST", _endpoint, data=payload, json=is_json)
         return r
     
