@@ -50,19 +50,7 @@ class Titan(discord.AutoShardedClient):
             self.loop.run_until_complete(gathered)
             gathered.exception()
         except: # Can be ignored
-            pass
-
-    def run(self):
-        try:
-            self.loop.run_until_complete(self.start())
-        except discord.errors.LoginFailure:
-            print("Invalid bot token in config!")
-        finally:
-            try:
-                self._cleanup()
-            except Exception as e:
-                print("Error in cleanup:", e)
-            self.loop.close()
+            pass     
     
     async def start(self):
         await self.redisqueue.connect()
