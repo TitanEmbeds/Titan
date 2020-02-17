@@ -65,6 +65,7 @@ class Titan(discord.AutoShardedClient):
             self.loop.close()
     
     async def start(self):
+        await self.redisqueue.connect()
         await super().start(config["bot-token"])
 
     async def on_ready(self):
@@ -75,7 +76,6 @@ class Titan(discord.AutoShardedClient):
         print('------')
         print("Shard count: " + str(self.shard_count))
         print("------")
-        await self.redisqueue.connect()
         self.loop.create_task(self.redisqueue.subscribe())
         
         self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
