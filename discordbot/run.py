@@ -13,7 +13,7 @@ def print_shards():
     if r.status_code >= 200 and r.status_code < 300:
         print("Suggested number of shards: {}".format(r.json().get("shards", 0)))
     else:
-        print("Status Code: " + r.status_code)
+        print("Status Code: {}".format(r.status_code))
         print(r.text)
 
 def main():
