@@ -129,8 +129,6 @@ class RedisQueue:
     async def on_get_guild_member(self, key, params):
         guild = self.bot.get_guild(int(params["guild_id"]))
         if not guild:
-            await self.connection.set(key, "")
-            await self.enforce_expiring_key(key)
             return
         member = guild.get_member(int(params["user_id"]))
         if not member:
@@ -143,12 +141,11 @@ class RedisQueue:
     
     async def on_get_guild_member_named(self, key, params):
         guild = self.bot.get_guild(int(params["guild_id"]))
+        if not guild:
+            return
         query = params["query"]
         result = None
-        if guild:
-            members = guild.members
-        else:
-            members = None
+        members = guild.members
         if members and len(query) > 5 and query[-5] == '#':
             potential_discriminator = query[-4:]
             result = discord.utils.get(members, name=query[:-5], discriminator=potential_discriminator)
@@ -167,6 +164,8 @@ class RedisQueue:
     
     async def on_list_guild_members(self, key, params):
         guild = self.bot.get_guild(int(params["guild_id"]))
+        if not guild:
+            return
         members = guild.members
         member_ids = []
         for member in members:
@@ -200,8 +199,6 @@ class RedisQueue:
     async def on_get_guild(self, key, params):
         guild = self.bot.get_guild(int(params["guild_id"]))
         if not guild:
-            await self.connection.set(key, "")
-            await self.enforce_expiring_key(key)
             return
         if guild.me and guild.me.guild_permissions.manage_webhooks:
             try:
@@ -229,8 +226,6 @@ class RedisQueue:
     async def on_get_user(self, key, params):
         user = self.bot.get_user(int(params["user_id"]))
         if not user:
-            await self.connection.set(key, "")
-            await self.enforce_expiring_key(key)
             return
         user_formatted = {
             "id": user.id,
