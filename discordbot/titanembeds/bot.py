@@ -78,7 +78,7 @@ class Titan(discord.AutoShardedClient):
         
         self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
         self.botsDiscordPw = BotsDiscordPw(self.user.id, config.get("bots-discord-pw-token", None))
-        await self.postStats()
+        self.loop.create_task(self.auto_post_stats())
 
     async def on_message(self, message):
         await self.socketio.on_message(message)
@@ -278,6 +278,11 @@ class Titan(discord.AutoShardedClient):
             if msg.id == msg_id:
                 return True
         return False
+
+    async def auto_post_stats(self):
+        while not self.is_closed():
+            await self.postStats()
+            await asyncio.sleep(1800)
         
     async def postStats(self):
         count = len(self.guilds)
