@@ -530,12 +530,12 @@
                 <a href="
                   {{#url}}{{url}}{{/url}}
                   {{^url}}#{{/url}}
-                " target="_blank">{{title}}</a>
+                " target="_blank">{{{title}}}</a>
               </div>
               {{/title}}
               {{^isVideo}}
               {{#description}}
-              <div class="description">{{description}}</div>
+              <div class="description">{{{description}}}</div>
               {{/description}}
               {{/isVideo}}
               {{#isVideo}}
@@ -552,8 +552,8 @@
               <div class="fields">
                 {{#fields}}
                 <div class="field {{#inline}}inline{{/inline}}">
-                  <div class="field-name">{{name}}</div>
-                  <div class="field-content">{{value}}</div>
+                  <div class="field-name">{{{name}}}</div>
+                  <div class="field-content">{{{value}}}</div>
                 </div>
                 {{/fields}}
               </div>

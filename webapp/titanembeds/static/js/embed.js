@@ -1343,6 +1343,12 @@
             message.content = message.content.replace(new RegExp("&lt;@!" + mention.id + "&gt;", 'g'), rendered);
         }
         
+        message.content = parse_role_mention(message.content);
+
+        return message;
+    }
+
+    function parse_role_mention(content) {
         var template = $("#mustache_rolemention").html();
         Mustache.parse(template);
         for (var i = 0; i < guild_roles_list.length; i++) {
@@ -1352,9 +1358,9 @@
                 roleobj.color = "#" + role.color.toString(16);
             }
             var rendered = Mustache.render(template, roleobj).trim();
-            message.content = message.content.replace("&lt;@&amp;" + role.id + "&gt;", rendered);
+            content = content.replace("&lt;@&amp;" + role.id + "&gt;", rendered);
         }
-        return message;
+        return content;
     }
 
     function getPosition(string, subString, index) {
@@ -1450,7 +1456,7 @@
         for (var i = 0; i < channelids.length; i++) {
             var pattern = "&lt;#" + channelids[i] + "&gt;";
             var elem = "<span class=\"channellink\" channelid=\"" + channelids[i] + "\">#" + guild_channels[channelids[i]].channel.name + "</span>";
-            message.content = message.content.replace(new RegExp(pattern, "g"), elem);
+            message = message.replace(new RegExp(pattern, "g"), elem);
         }
         return message;
     }
@@ -1467,13 +1473,13 @@
                 emoji_format = "&lt;:" + emoji.name + ":" + emoji.id + "&gt;";
             }
             var rendered = Mustache.render(template, {"id": emoji.id, "name": emoji.name, "animated": emoji.animated}).trim();
-            message.content = message.content.replaceAll(emoji_format, rendered);
+            message = message.replaceAll(emoji_format, rendered);
         }
         var rendered = Mustache.render(template, {"id": "$2", "name": "$1"}).trim();
-        message.content = message.content.replace(/&lt;:(.*?):(.*?)&gt;/g, rendered);
+        message = message.replace(/&lt;:(.*?):(.*?)&gt;/g, rendered);
         rendered = Mustache.render(template, {"id": "$2", "name": "$1", "animated": true}).trim();
-        message.content = message.content.replace(/&lt;a:(.*?):(.*?)&gt;/g, rendered);
-        message.content = twemoji.parse(message.content, {
+        message = message.replace(/&lt;a:(.*?):(.*?)&gt;/g, rendered);
+        message = twemoji.parse(message, {
             className: "message_emoji",
             callback: function(icon, options, variant) { // exclude special characters
                 switch (icon) {
@@ -1592,10 +1598,39 @@
         if (disembed.color) {
             disembed.hexColor = "#" + disembed.color.toString(16);
         }
+        if (disembed.title) {
+            disembed.title = render_embed_text_formatting(disembed.title);
+        }
+        if (disembed.description) {
+            disembed.description = render_embed_text_formatting(disembed.description);
+        }
+        if (disembed.fields) {
+            for (var i = 0; i < disembed.fields.length; i++) {
+                disembed.fields[i].name = render_embed_text_formatting(disembed.fields[i].name);
+                disembed.fields[i].value = render_embed_text_formatting(disembed.fields[i].value);
+            }
+        }
         var template = $('#mustache_richembed').html();
         Mustache.parse(template);
         var rendered = Mustache.render(template, disembed);
         return rendered;
+    }
+
+    function render_embed_text_formatting(content) {
+        content = content.replaceAll("\\<", "<");
+        content = content.replaceAll("\\>", ">");
+        content = escapeHtml(content);
+        content = parse_role_mention(content);
+        content = parse_message_markdown(content);
+        content = parse_channels_in_message(content);
+        content = parse_emoji_in_message(content);
+        content = content.replace(/&lt;https:\/\/(.*?)&gt;/g, "https://$1");
+        content = content.replace(/&lt;http:\/\/(.*?)&gt;/g, "http://$1");
+        var el = $("<div></div>").html(content);
+        el.linkify({
+            target: "_blank"
+        });
+        return el.html();
     }
     
     function parse_message_reactions(reactions) {
@@ -1700,8 +1735,8 @@
             message = replace_message_mentions(message);
             message = parse_message_attachments(message);
             message.content = parse_message_markdown(message.content);
-            message = parse_channels_in_message(message);
-            message = parse_emoji_in_message(message);
+            message.content = parse_channels_in_message(message.content);
+            message.content = parse_emoji_in_message(message.content);
             message.content = message.content.replace(/&lt;https:\/\/(.*?)&gt;/g, "https://$1");
             message.content = message.content.replace(/&lt;http:\/\/(.*?)&gt;/g, "http://$1");
             if (message.type == 7) {
