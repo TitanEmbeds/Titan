@@ -1494,7 +1494,7 @@
         return message;
     }
     
-    function parse_message_markdown(text) {
+    function parse_message_markdown(text, embed=false) {
         var geturl_regex = /(\(.*?)?\b((?:https?|ftp|file):\/\/[-a-z0-9+&@#\/%?=~_()|!:,.;]*[-a-z0-9+&@#\/%=~_()|])/ig;
         var links = text.match(geturl_regex); // temporarily remove urls so markdown won't mark inside of the url
         if (links) {
@@ -1513,6 +1513,9 @@
             for (var i = 0; i < links.length; i++) {
                 text = text.replace("$LINK"+i+"$", links[i]);
             }
+        }
+        if (embed) {
+            text = text.replace(/\[(.*?)\]\((.*?)\)/g, "<a href=\"$2\" target=\"_blank\">$1</a>");
         }
         return text;
     }
@@ -1621,7 +1624,7 @@
         content = content.replaceAll("\\>", ">");
         content = escapeHtml(content);
         content = parse_role_mention(content);
-        content = parse_message_markdown(content);
+        content = parse_message_markdown(content, true);
         content = parse_channels_in_message(content);
         content = parse_emoji_in_message(content);
         content = content.replace(/&lt;https:\/\/(.*?)&gt;/g, "https://$1");
