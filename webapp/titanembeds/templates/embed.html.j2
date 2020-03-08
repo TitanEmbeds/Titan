@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/2-double-bounce.min.css" integrity="sha256-EUobIj2z8wTjkWEwkjqubfq0NEqgOoNScgHP1oUSU7M=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/wdt-emoji-bundle/0.2.1/wdt-emoji-bundle.min.css" integrity="sha256-5+pPkh0iWNYFrqNU7G36rsHynAmXNpL4rq6/NI29mmk=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" integrity="sha256-JHGEmB629pipTkMag9aMaw32I8zle24p3FpsEeI6oZU=" crossorigin="anonymous" />
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/embed.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/embed.css', t=app_start_stamp) }}">
     <link id="css-theme" type="text/css" rel="stylesheet" href="">
     
     {% if af_mode_enabled %}
