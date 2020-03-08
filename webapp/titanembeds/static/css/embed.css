@@ -904,6 +904,14 @@ p.mentioned span.chatmessage {
   margin-right: 6px;
 }
 
+#chatcontent .blockquote {
+  display: inline-block;
+  border-left: 5px;
+  padding-left: 10px;
+  border-left-color: rgba(255, 255, 255, 0.3);
+  border-left-style: solid;
+}
+
 .wdt-emoji-popup {
   position: fixed;
   bottom: 5%;
