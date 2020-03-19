@@ -10,9 +10,10 @@ asyncio_extras
 kombu
 redis
 aioredis
-Flask-Babel
+Flask-Babel>=1.0.0
 patreon
 flask-redis
 sqlalchemy
 asyncio_redis
 raven[flask]
+Werkzeug>=1.0.0
