@@ -8,7 +8,7 @@
         for (let i = 0; i < inputs.length; i++) {
             let input = $(inputs[i]);
             let name = input.attr("name");
-            let value = input.val();
+            let value = input.val().trim();
             if (!value) {
                 continue;
             }
@@ -16,6 +16,9 @@
                 url += "?";
             } else {
                 url += "&";
+            }
+            if (value.startsWith(`${name}=`)) {
+                value = value.substr(name.length + 1);
             }
             url += `${name}=${value}`;
         }
