@@ -7,7 +7,7 @@ class DiscordBotsOrg(): # https://discordbots.org
     
     async def post(self, count, shard_count, shard_id):
         headers = {"Authorization": self.token}
-        payload = {"server_count": count, "shard_count": shard_count, "shard_no": shard_id}
+        payload = {"server_count": count, "shard_count": shard_count, "shard_id": shard_id}
         async with aiohttp.ClientSession() as aioclient:
             await aioclient.post(self.url, json=payload, headers=headers)
 
