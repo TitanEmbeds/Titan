@@ -69,7 +69,7 @@ def format_post_content(guild_id, channel_id, message, dbUser):
         for word in banned_words:
             word_boundaried = r"\b%s\b" % word
             regex = re.compile(word_boundaried, re.IGNORECASE)
-            if regex.match(message):
+            if regex.search(message):
                 illegal_post = True
                 illegal_reasons.append("The following word is prohibited: " + word)
     
