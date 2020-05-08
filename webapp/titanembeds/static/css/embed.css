@@ -964,6 +964,10 @@ p.mentioned span.chatmessage {
   #send-msg-btn {
     display: block;
   }
+
+  textarea.materialize-textarea {
+    max-width: calc(100% - 120px);
+  }
 }
 
 #upload-file-btn {
