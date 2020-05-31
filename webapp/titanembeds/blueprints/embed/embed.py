@@ -83,7 +83,7 @@ def guild_embed(guild_id):
         }
         customcss = get_custom_css()
         return render_template("embed.html.j2",
-            disabled=guild_id in list_disabled_guilds(),
+            disabled=str(guild_id) in list_disabled_guilds(),
             login_greeting=get_logingreeting(),
             guild_id=guild_id,
             guild=guild_dict,
