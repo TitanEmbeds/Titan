@@ -739,6 +739,7 @@
     function unlock_login_fields() {
         $("#loginProgress").hide();
         $("#discordlogin_btn").attr("disabled",false);
+        $("#guestlogin_btn").attr("disabled",false);
         $("#custom_username_field").prop("disabled",false);
         clearTimeout(logintimer);
     }
