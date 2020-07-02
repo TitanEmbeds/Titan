@@ -367,6 +367,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
   padding: 6px;
   padding-right: 9px;
   background-color: #455a64;
+  background-color: var(--main);
 }
 
 #currentuserimage_parent {
@@ -467,6 +468,7 @@ a {
 
 #modal_guildinfobox {
   background-color: #455a64;
+  background-color: var(--main);
   padding-top: 10px;
   padding-bottom: 10px;
 }
