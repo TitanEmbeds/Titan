@@ -117,6 +117,9 @@ nav .brand-logo {
 
 .side-nav li>a {
   color: #eceff1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .side-nav li>a[id^=channel] {
