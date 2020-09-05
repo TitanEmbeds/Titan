@@ -259,8 +259,8 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     # @everyone
     for role in guild_roles:
         if role["id"] == guild_id:
-            channel_perm |= role["permissions"]
-            continue
+            channel_perm = role["permissions"]
+            break
     
     # User Guild Roles
     for m_role in member_roles:
@@ -277,12 +277,25 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
         result["attach_files"] = True
         result["embed_links"] = True
         return result
+
+    # Apply @everyone allow/deny first since it's special
+    try:
+        maybe_everyone = channel["permission_overwrites"][0]
+        if maybe_everyone["id"] == guild_id:
+            allows = maybe_everyone["allow"]
+            denies = maybe_everyone["deny"]
+            channel_perm = (channel_perm & ~denies) | allows
+            remaining_overwrites = channel["permission_overwrites"][1:]
+        else:
+            remaining_overwrites = channel["permission_overwrites"]
+    except IndexError:
+        remaining_overwrites = channel["permission_overwrites"]
     
     denies = 0
     allows = 0
     
     # channel specific
-    for overwrite in channel["permission_overwrites"]:
+    for overwrite in remaining_overwrites:
         if overwrite["type"] == "role" and overwrite["id"] in member_roles:
             denies |= overwrite["deny"]
             allows |= overwrite["allow"]
@@ -290,7 +303,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     channel_perm = (channel_perm & ~denies) | allows
     
     # member specific
-    for overwrite in channel["permission_overwrites"]:
+    for overwrite in remaining_overwrites:
         if overwrite["type"] == "member" and overwrite["id"] == str(session.get("user_id")):
             channel_perm = (channel_perm & ~overwrite['deny']) | overwrite['allow']
             break
