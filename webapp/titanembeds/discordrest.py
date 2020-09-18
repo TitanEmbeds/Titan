@@ -97,6 +97,7 @@ class DiscordREST:
             if req.status_code == 403 or req.status_code == 404:
                 return {
                     'success': False,
+                    'content': json_or_text(req),
                     'code': req.status_code,
                 }
         return {

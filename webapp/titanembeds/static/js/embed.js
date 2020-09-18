@@ -1101,13 +1101,15 @@
             });
             usr.fail(function(data) {
                 if (data.status == 403) {
-                    Materialize.toast('Authentication error! You have been banned.', 10000);
+                    Materialize.toast('Authentication error! You are banned.', 10000);
                     setVisitorMode(true);
                 } else if (data.status == 422) {
                     if (data.responseJSON.code == 403) {
                         Materialize.toast("Attempting to add you into the server store has failed. The bot does not have permissions to create instant invite. Therefore, Discord Login has been disabled.", 10000);
+                    } else if (data.responseJSON.content.code == 30001) { // Maximum number of guilds reached (100)
+                        Materialize.toast("You have reached the 100 servers limit. You may not join more servers.", 10000);
                     } else {
-                        Materialize.toast("Attempting to add you into the server has failed. Either you are banned, reached 100 servers in Discord, or something else bad has happened.", 10000);
+                        Materialize.toast("An unexpected error has occured while attempting to add you into the server.", 10000);
                     }
                 } else if (index < 10) {
                     _wait_for_discord_login(index + 1);

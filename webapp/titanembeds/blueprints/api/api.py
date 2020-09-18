@@ -545,25 +545,25 @@ def create_authenticated_user():
     else:
         if not check_guild_existance(guild_id):
             abort(404)
-        if not checkUserBanned(guild_id):
-            if not check_user_in_guild(guild_id):
-                add_member = discord_api.add_guild_member(guild_id, session['user_id'], session['user_keys']['access_token'])
-                if not add_member["success"]:
+        if not check_user_in_guild(guild_id):
+            add_member = discord_api.add_guild_member(guild_id, session['user_id'], session['user_keys']['access_token'])
+            if not add_member["success"]:
+                discord_status_code = add_member["content"].get("code", 0)
+                if discord_status_code == 40007: # user banned from server
+                    status = {'banned': True}
+                    response = jsonify(status=status)
+                    response.status_code = 403
+                else:
                     response = jsonify(add_member)
                     response.status_code = 422
-                    return response
-            db_user = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
-            if not db_user:
-                db_user = AuthenticatedUsers(guild_id, session['user_id'])
-                db.session.add(db_user)
-                db.session.commit()
-            status = update_user_status(guild_id, session['username'])
-            return jsonify(status=status)
-        else:
-            status = {'banned': True}
-            response = jsonify(status=status)
-            response.status_code = 403
-            return response
+                return response
+        db_user = db.session.query(AuthenticatedUsers).filter(and_(AuthenticatedUsers.guild_id == guild_id, AuthenticatedUsers.client_id == session['user_id'])).first()
+        if not db_user:
+            db_user = AuthenticatedUsers(guild_id, session['user_id'])
+            db.session.add(db_user)
+            db.session.commit()
+        status = update_user_status(guild_id, session['username'])
+        return jsonify(status=status)
             
 @api.route("/user/<guild_id>/<user_id>")
 @abort_if_guild_disabled()
