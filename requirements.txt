@@ -5,7 +5,7 @@ requests_oauthlib
 Flask-SSLify
 flask_socketio
 paypalrestsdk
-discord.py
+discord.py==1.3.4
 asyncio_extras
 kombu
 redis
