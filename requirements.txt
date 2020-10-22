@@ -5,7 +5,7 @@ requests_oauthlib
 Flask-SSLify
 flask_socketio
 paypalrestsdk
-discord.py==1.3.4
+discord.py==1.5.1
 asyncio_extras
 kombu
 redis
@@ -17,3 +17,4 @@ sqlalchemy
 asyncio_redis
 raven[flask]
 Werkzeug>=1.0.0
+yarl==1.4.2
