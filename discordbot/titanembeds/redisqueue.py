@@ -132,9 +132,13 @@ class RedisQueue:
             return
         member = guild.get_member(int(params["user_id"]))
         if not member:
-            await self.connection.set(key, "")
-            await self.enforce_expiring_key(key)
-            return
+            members = await guild.query_members(user_ids=[int(params["user_id"])], cache=True)
+            if not len(members):
+                await self.connection.set(key, "")
+                await self.enforce_expiring_key(key)
+                return
+            else:
+                member = members[0]
         user = get_formatted_user(member)
         await self.connection.set(key, json.dumps(user, separators=(',', ':')))
         await self.enforce_expiring_key(key)
