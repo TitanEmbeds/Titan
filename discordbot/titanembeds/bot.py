@@ -144,12 +144,12 @@ class Titan(discord.AutoShardedClient):
         await self.redisqueue.update_guild(roleafter.guild)
         await self.socketio.on_guild_role_update(roleafter)
 
-    async def on_channel_delete(self, channel):
+    async def on_guild_channel_delete(self, channel):
         if channel.guild:
             await self.redisqueue.update_guild(channel.guild)
             await self.socketio.on_channel_delete(channel)
 
-    async def on_channel_create(self, channel):
+    async def on_guild_channel_create(self, channel):
         if channel.guild:
             await self.redisqueue.update_guild(channel.guild)
             await self.socketio.on_channel_create(channel)
