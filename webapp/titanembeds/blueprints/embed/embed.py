@@ -98,7 +98,7 @@ def guild_embed(guild_id):
             same_target=request.args.get("sametarget", False) == "true",
             userscalable=request.args.get("userscalable", "True").lower().startswith("t"),
             fixed_sidenav=request.args.get("fixedsidenav", "False").lower().startswith("t"),
-            is_peak=is_peak(guild_id) or request.args.get("forcepeak", False) == "1"
+            is_peak=request.args.get("forcepeak", False) == "1" or is_peak(guild_id)
         )
     abort(404)
 
