@@ -23,6 +23,8 @@
 /* global is_peak */
 /* global cookie_test_s2_URL */
 
+var passedCookieTest = true; // If passed cross origin test
+
 (function () {
     const theme_options = ["DiscordDark", "FireWyvern", "IceWyvern", "MetroEdge", "BetterTitan"]; // All the avaliable theming names
     const badges_options = ["administrator", "partner", "supporter", "discordbotsorgvoted"]; // All badges avaliable
@@ -58,6 +60,19 @@
     var localstorage_avaliable = false; // Check if localstorage is avaliable on this browser
     var shouldUtilizeGateway = false; // Don't connect to gateway until page is focused or has interaction.
     var discord_users_list_enabled = false; // Allow automatic population of discord users list
+    var session = ""; // stores the session if cross origin requests are not honored
+
+    function ajax_before_send(jqXHR, settings) {
+        if (session && !passedCookieTest) {
+            jqXHR.setRequestHeader('Authorization', session);
+        }
+    }
+
+    function ajax_always(data, textStatus, jqXHR) {
+        if (!passedCookieTest) {
+            session = data.session;
+        }
+    }
 
     function element_in_view(element, fullyInView) {
         var pageTop = $(window).scrollTop();
@@ -103,8 +118,10 @@
         var funct = $.ajax({
             dataType: "json",
             url: url,
-            data: {"guild_id": guild_id}
+            beforeSend: ajax_before_send,
+            data: {"guild_id": guild_id},
         });
+        funct.always(ajax_always);
         return funct.promise();
     }
 
@@ -113,8 +130,10 @@
             method: "POST",
             dataType: "json",
             url: "/api/create_authenticated_user",
+            beforeSend: ajax_before_send,
             data: {"guild_id": guild_id}
         });
+        funct.always(ajax_always);
         return funct.promise();
     }
 
@@ -123,8 +142,10 @@
             method: "POST",
             dataType: "json",
             url: "/api/create_unauthenticated_user",
+            beforeSend: ajax_before_send,
             data: {"username": username, "guild_id": guild_id, "captcha_response": captchaResponse}
         });
+        funct.always(ajax_always);
         return funct.promise();
     }
     
@@ -133,8 +154,10 @@
             method: "POST",
             dataType: "json",
             url: "/api/change_unauthenticated_username",
+            beforeSend: ajax_before_send,
             data: {"username": username, "guild_id": guild_id}
         });
+        funct.always(ajax_always);
         return funct.promise();
     }
 
@@ -150,8 +173,10 @@
             method: "GET",
             dataType: "json",
             url: url,
+            beforeSend: ajax_before_send,
             data: {"guild_id": guild_id,"channel_id": channel_id, "after": after}
         });
+        funct.always(ajax_always);
         return funct.promise();
     }
 
@@ -163,6 +188,7 @@
         var ajaxobj = {
             method: "POST",
             dataType: "json",
+            beforeSend: ajax_before_send,
             url: "/api/post"
         }
         if (file) {
@@ -198,6 +224,7 @@
         }
         ajaxobj.data = data;
         var funct = $.ajax(ajaxobj);
+        funct.always(ajax_always);
         return funct.promise();
     }
     
@@ -212,16 +239,20 @@
     function api_user(user_id) {
         var funct = $.ajax({
             dataType: "json",
+            beforeSend: ajax_before_send,
             url: "/api/user/" + guild_id + "/" + user_id,
         });
+        funct.always(ajax_always);
         return funct.promise();
     }
     
     function list_users() {
         var funct = $.ajax({
             dataType: "json",
+            beforeSend: ajax_before_send,
             url: "/api/user/" + guild_id,
         });
+        funct.always(ajax_always);
         return funct.promise();
     }
     
@@ -233,8 +264,10 @@
         var funct = $.ajax({
             dataType: "json",
             url: url,
+            beforeSend: ajax_before_send,
             data: {"guild_id": guild_id}
         });
+        funct.always(ajax_always);
         return funct.promise();
     }
     
@@ -1999,7 +2032,14 @@
         }
     }
 
-    $("#discordlogin_btn").click(function() {
+    $("#discordlogin_btn").click(function(e) {
+        e.preventDefault();
+        var wid = window.open($("#discordlogin_btn").attr("href"), "_blank");
+        postRobot.on("setSession", { window: wid }, function(event) {
+            if (!passedCookieTest) {
+                session = event.data.session;
+            }
+        });
         lock_login_fields();
         wait_for_discord_login();
     });
@@ -2374,7 +2414,11 @@
         
         socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + "/gateway", {path: '/gateway', transports: ['websocket'], query: "v=1"});
         socket.on('connect', function () {
-            socket.emit('identify', {"guild_id": guild_id, "visitor_mode": visitor_mode});
+            var sen = {"guild_id": guild_id, "visitor_mode": visitor_mode};
+            if (!passedCookieTest && session) {
+                sen["session"] = session;
+            }
+            socket.emit('identify', sen);
         });
 
         socket.on('hello', function (msg) {
@@ -2720,12 +2764,16 @@ window._3rd_party_test_step1_loaded = function () {
 
 window._3rd_party_test_step2_loaded = function (cookieSuccess) {
     if (!cookieSuccess) {
-        $("#third-party-cookies-notice").show().addClass("done");
-        $("#login-greeting-msg, #loginmodal-maincontent").hide();
+        //$("#third-party-cookies-notice").show().addClass("done");
+        //$("#login-greeting-msg, #loginmodal-maincontent").hide();
+        passedCookieTest = false;
     } else {
-        $("#third-party-cookies-notice").hide().addClass("done");
-        $("#login-greeting-msg, #loginmodal-maincontent").show();
+        //$("#third-party-cookies-notice").hide().addClass("done");
+        //$("#login-greeting-msg, #loginmodal-maincontent").show();
+        passedCookieTest = true;
     }
+    $("#third-party-cookies-notice").hide().addClass("done");
+    $("#login-greeting-msg, #loginmodal-maincontent").show();
 };
 
 window.setTimeout(function(){

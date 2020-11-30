@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, abort, redirect, url_for, session, request, make_response
 from flask_babel import gettext
-from titanembeds.utils import check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled, is_int, redisqueue, get_online_embed_user_keys
+from titanembeds.utils import serializer, check_guild_existance, guild_query_unauth_users_bool, guild_accepts_visitors, guild_unauthcaptcha_enabled, is_int, redisqueue, get_online_embed_user_keys
 from titanembeds.oauth import generate_guild_icon_url, generate_avatar_url
 from titanembeds.database import db, Guilds, UserCSS, list_disabled_guilds
 from config import config
 import random
 import json
+import copy
 from urllib.parse import urlparse
 
 embed = Blueprint("embed", __name__)
@@ -104,7 +105,10 @@ def guild_embed(guild_id):
 
 @embed.route("/signin_complete")
 def signin_complete():
-    return render_template("signin_complete.html.j2")
+    sess = ""
+    session_copy = copy.deepcopy(dict(session))
+    sess = serializer.dumps(json.dumps(session_copy))
+    return render_template("signin_complete.html.j2", session=sess)
 
 @embed.route("/login_discord")
 def login_discord():

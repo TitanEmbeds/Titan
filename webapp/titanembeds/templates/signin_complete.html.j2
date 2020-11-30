@@ -5,8 +5,14 @@
     </head>
     <body>
         <p>Sign in complete! You may now close the window.</p>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/post-robot/10.0.42/post-robot.min.js" integrity="sha512-8rkatbA3uOONyiRqBiT5dvzaE7hWX6m0SpVr/4rpAxxuZX+Vjuvqp+DSmF1sQX3268hMk8BZxHVRdgHmuoDhXQ==" crossorigin="anonymous"></script>
         <script>
-            window.close()
+            const session = {{ session|tojson|safe }};
+            postRobot
+                .send(window.opener, 'setSession', { session: session })
+                .then(function () {
+                    window.close();
+                });
         </script>
     </body>
 </html>

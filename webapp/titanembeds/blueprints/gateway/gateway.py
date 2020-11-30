@@ -1,4 +1,4 @@
-from titanembeds.utils import socketio, guild_accepts_visitors, get_client_ipaddr, discord_api, check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled, redis_store, redisqueue, get_forced_role
+from titanembeds.utils import serializer, socketio, guild_accepts_visitors, get_client_ipaddr, discord_api, check_user_in_guild, get_guild_channels, update_user_status, guild_webhooks_enabled, redis_store, redisqueue, get_forced_role
 from titanembeds.database import db
 from flask_socketio import Namespace, emit, disconnect, join_room, leave_room
 import functools
@@ -17,6 +17,13 @@ class Gateway(Namespace):
         emit('hello', {"gateway_identifier": gateway_identifier})
 
     def on_identify(self, data):
+        authorization = data.get("session", None)
+        if authorization:
+            try:
+                data = json.loads(serializer.loads(authorization))
+                session.update(data)
+            except:
+                pass
         guild_id = data["guild_id"]
         if not guild_accepts_visitors(guild_id) and not check_user_in_guild(guild_id):
             disconnect()

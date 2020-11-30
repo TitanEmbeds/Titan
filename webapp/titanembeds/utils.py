@@ -7,6 +7,7 @@ from flask_babel import Babel
 from flask_redis import FlaskRedis
 from config import config
 from sqlalchemy import and_
+from itsdangerous import URLSafeSerializer
 #from raven.contrib.flask import Sentry
 import random
 import string
@@ -21,6 +22,8 @@ from titanembeds.redisqueue import RedisQueue
 
 discord_api = DiscordREST(config['bot-token'])
 redisqueue = RedisQueue()
+
+serializer = URLSafeSerializer(config["app-secret"])
 
 def get_client_ipaddr():
     if request.headers.getlist("X-Forwarded-For"):
