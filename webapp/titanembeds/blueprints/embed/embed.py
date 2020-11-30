@@ -107,7 +107,7 @@ def guild_embed(guild_id):
 def signin_complete():
     sess = ""
     session_copy = copy.deepcopy(dict(session))
-    sess = serializer.dumps(json.dumps(session_copy))
+    sess = serializer.dumps(session_copy)
     return render_template("signin_complete.html.j2", session=sess)
 
 @embed.route("/login_discord")

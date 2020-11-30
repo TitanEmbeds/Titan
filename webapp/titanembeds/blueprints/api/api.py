@@ -23,7 +23,7 @@ def after_request(response):
     if response.is_json:
         session_copy = copy.deepcopy(dict(session))
         data = response.get_json()
-        data["session"] = serializer.dumps(json.dumps(session_copy))
+        data["session"] = serializer.dumps(session_copy)
         response.set_data(json.dumps(data))
     return response
 
@@ -32,7 +32,7 @@ def before_request():
     authorization = request.headers.get("authorization", None)
     if authorization:
         try:
-            data = json.loads(serializer.loads(authorization))
+            data = serializer.loads(authorization)
             session.update(data)
         except:
             pass

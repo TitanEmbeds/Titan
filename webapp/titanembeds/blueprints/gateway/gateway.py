@@ -20,7 +20,7 @@ class Gateway(Namespace):
         authorization = data.get("session", None)
         if authorization:
             try:
-                data = json.loads(serializer.loads(authorization))
+                data = serializer.loads(authorization)
                 session.update(data)
             except:
                 pass
