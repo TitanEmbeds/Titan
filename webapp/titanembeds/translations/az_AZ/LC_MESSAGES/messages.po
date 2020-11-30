@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: titanembeds\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-02-18 22:46+0000\n"
-"PO-Revision-Date: 2020-09-05 08:11\n"
+"PO-Revision-Date: 2020-11-30 17:36\n"
 "Last-Translator: \n"
 "Language-Team: Azerbaijani\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: titanembeds/blueprints/embed/embed.py:16
 msgid "Hello and welcome!"
-msgstr "Salam və xoş gəldiniz!"
+msgstr ""
 
 #: titanembeds/blueprints/embed/embed.py:17
 msgid "What brings you here today?"
