@@ -1688,7 +1688,11 @@ var passedCookieTest = true; // If passed cross origin test
                     disreact.img_url += ".png";
                 }
             } else {
-                disreact.img_url = $(twemoji.parse(emoji.name)).attr("src");
+                try {
+                    disreact.img_url = $("<div>" + twemoji.parse(emoji.name) + "</div>").children("img").attr("src");
+                } catch (err) {
+                    disreact.img_url = $(twemoji.parse(emoji.name)).attr("src");
+                }
             }
             var rendered = Mustache.render(template, disreact);
             reacts.push(rendered);
