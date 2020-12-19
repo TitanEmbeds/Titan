@@ -191,7 +191,9 @@ class RedisQueue:
         guild_member_key = "Queue/guilds/{}/members/{}".format(guild.id, member.id)
         list_members_key = "Queue/guilds/{}/members".format(guild.id)
         await self.connection.srem(list_members_key, [json.dumps({"user_id": member.id}, separators=(',', ':'))])
-        await self.connection.delete([guild_member_key])
+        #await self.connection.delete([guild_member_key])
+        await self.connection.set(guild_member_key, "")
+        await self.enforce_expiring_key(guild_member_key)
     
     async def update_member(self, member):
         await self.remove_member(member)
