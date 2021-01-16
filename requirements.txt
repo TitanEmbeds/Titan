@@ -3,7 +3,7 @@ flask-sqlalchemy
 flask_limiter
 requests_oauthlib
 Flask-SSLify
-flask_socketio
+Flask-SocketIO==4.3.2
 paypalrestsdk
 discord.py==1.5.1
 asyncio_extras
