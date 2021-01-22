@@ -200,6 +200,8 @@ def check_user_in_guild(guild_id):
 
 def get_member_roles(guild_id, user_id):
     q = redisqueue.get_guild_member(guild_id, user_id)
+    if not q:
+        return []
     roles = q["roles"]
     role_converted = []
     for role in roles:
