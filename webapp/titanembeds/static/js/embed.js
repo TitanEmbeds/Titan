@@ -2038,7 +2038,11 @@ var passedCookieTest = true; // If passed cross origin test
 
     $("#discordlogin_btn").click(function(e) {
         e.preventDefault();
-        var wid = window.open($("#discordlogin_btn").attr("href"), "_blank");
+        var target = "_blank";
+        if (getParameterByName("sametarget") == "true") {
+            target = "";
+        }
+        var wid = window.open($("#discordlogin_btn").attr("href"), target);
         postRobot.on("setSession", { window: wid }, function(event) {
             if (!passedCookieTest) {
                 session = event.data.session;
