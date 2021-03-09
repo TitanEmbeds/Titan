@@ -2037,17 +2037,15 @@ var passedCookieTest = true; // If passed cross origin test
     }
 
     $("#discordlogin_btn").click(function(e) {
-        e.preventDefault();
-        var target = "_blank";
-        if (getParameterByName("sametarget") == "true") {
-            target = "";
+        if (getParameterByName("sametarget") != "true") {
+            e.preventDefault();
+            var wid = window.open($("#discordlogin_btn").attr("href"), "_blank");
+            postRobot.on("setSession", { window: wid }, function(event) {
+                if (!passedCookieTest) {
+                    session = event.data.session;
+                }
+            });
         }
-        var wid = window.open($("#discordlogin_btn").attr("href"), target);
-        postRobot.on("setSession", { window: wid }, function(event) {
-            if (!passedCookieTest) {
-                session = event.data.session;
-            }
-        });
         lock_login_fields();
         wait_for_discord_login();
     });
