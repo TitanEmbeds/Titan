@@ -16,6 +16,7 @@ import json
 #     raven_client = RavenClient(config["sentry-dsn"])
 # except raven.exceptions.InvalidDsn:
 #     pass
+import traceback
 
 intents = discord.Intents.default()
 intents.members = True
@@ -83,6 +84,15 @@ class Titan(discord.AutoShardedClient):
         self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
         self.botsDiscordPw = BotsDiscordPw(self.user.id, config.get("bots-discord-pw-token", None))
         self.loop.create_task(self.auto_post_stats())
+
+    async def on_socket_raw_send(self, data):
+        data = str(data)
+        try:
+            data = json.loads(data)
+        except:
+            return
+        logging.info('DEBUG LOG {}'.format(data.get("op", -1)))
+        logging.info('{}'.format(str(list(traceback.format_stack()))))
 
     async def on_message(self, message):
         await self.socketio.on_message(message)
