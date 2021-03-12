@@ -17,12 +17,16 @@ import json
 # except raven.exceptions.InvalidDsn:
 #     pass
 
+intents = discord.Intents.default()
+intents.members = True
+
 class Titan(discord.AutoShardedClient):
     def __init__(self, shard_ids=None, shard_count=None):
         super().__init__(
             shard_ids=shard_ids,
             shard_count=shard_count,
             max_messages=10000,
+            intents=intents,
             activity=discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.com/")
         )
         self.setup_logger(shard_ids)
