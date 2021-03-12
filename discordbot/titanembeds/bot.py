@@ -15,7 +15,7 @@ import json
 import traceback
 
 intents = discord.Intents.default()
-intents.members = False
+intents.members = True
 
 class Titan(discord.AutoShardedClient):
     def __init__(self, shard_ids=None, shard_count=None):
