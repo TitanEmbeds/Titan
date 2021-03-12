@@ -79,6 +79,7 @@ class Titan(discord.AutoShardedClient):
         logging.info("Shard count: " + str(self.shard_count))
         logging.info("Shard id: "+ str(shard_id))
         logging.info("------")
+        return
         self.loop.create_task(self.redisqueue.subscribe())
         
         self.discordBotsOrg = DiscordBotsOrg(self.user.id, config.get("discord-bots-org-token", None))
