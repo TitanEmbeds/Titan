@@ -95,6 +95,7 @@ class Titan(discord.AutoShardedClient):
         logging.info('{}'.format(str(list(traceback.format_stack()))))
 
     async def on_message(self, message):
+        return
         await self.socketio.on_message(message)
         await self.redisqueue.push_message(message)
 
@@ -110,86 +111,105 @@ class Titan(discord.AutoShardedClient):
                         await getattr(self.command, msg_cmd)(message) #actually run cmd, passing in msg obj
 
     async def on_message_edit(self, message_before, message_after):
+        return
         await self.redisqueue.update_message(message_after)
         await self.socketio.on_message_update(message_after)
 
     async def on_message_delete(self, message):
+        return
         self.delete_list.append(message.id)
         await self.redisqueue.delete_message(message)
         await self.socketio.on_message_delete(message)
         
     async def on_reaction_add(self, reaction, user):
+        return
         await self.redisqueue.update_message(reaction.message)
         await self.socketio.on_reaction_add(reaction.message)
     
     async def on_reaction_remove(self, reaction, user):
+        return
         await self.redisqueue.update_message(reaction.message)
         await self.socketio.on_reaction_remove(reaction.message)
     
     async def on_reaction_clear(self, message, reactions):
+        return
         await self.redisqueue.update_message(message)
         await self.socketio.on_reaction_clear(message)
 
     async def on_guild_join(self, guild):
+        return
         await self.redisqueue.update_guild(guild)
         await self.postStats()
 
     async def on_guild_remove(self, guild):
+        return
         await self.redisqueue.delete_guild(guild)
         await self.postStats()
 
     async def on_guild_update(self, guildbefore, guildafter):
+        return
         await self.redisqueue.update_guild(guildafter)
         await self.socketio.on_guild_update(guildafter)
 
     async def on_guild_role_create(self, role):
+        return
         if role.name == self.user.name and role.managed:
             await asyncio.sleep(2)
         await self.redisqueue.update_guild(role.guild)
         await self.socketio.on_guild_role_create(role)
 
     async def on_guild_role_delete(self, role):
+        return
         if role.guild.me not in role.guild.members:
             return
         await self.redisqueue.update_guild(role.guild)
         await self.socketio.on_guild_role_delete(role)
 
     async def on_guild_role_update(self, rolebefore, roleafter):
+        return
         await self.redisqueue.update_guild(roleafter.guild)
         await self.socketio.on_guild_role_update(roleafter)
 
     async def on_guild_channel_delete(self, channel):
+        return
         if channel.guild:
             await self.redisqueue.update_guild(channel.guild)
             await self.socketio.on_channel_delete(channel)
 
     async def on_guild_channel_create(self, channel):
+        return
         if channel.guild:
             await self.redisqueue.update_guild(channel.guild)
             await self.socketio.on_channel_create(channel)
 
     async def on_guild_channel_update(self, channelbefore, channelafter):
+        return
         await self.redisqueue.update_guild(channelafter.guild)
         await self.socketio.on_channel_update(channelafter)
 
     async def on_member_join(self, member):
+        return
         await self.redisqueue.add_member(member)
         await self.socketio.on_guild_member_add(member)
 
     async def on_member_remove(self, member):
+        return
         await self.redisqueue.remove_member(member)
         await self.socketio.on_guild_member_remove(member)
 
     async def on_member_update(self, memberbefore, memberafter):
+        return
         await self.redisqueue.update_member(memberafter)
         await self.socketio.on_guild_member_update(memberafter)
 
     async def on_member_ban(self, guild, user):
+        return
         if self.user.id == user.id:
             return
         await self.redisqueue.ban_member(guild, user)
     
     async def on_guild_emojis_update(self, guild, before, after):
+        return
         await self.redisqueue.update_guild(guild)
         if len(after) == 0:
             await self.socketio.on_guild_emojis_update(before)
@@ -200,6 +220,7 @@ class Titan(discord.AutoShardedClient):
     #     await self.redisqueue.update_guild(channel.guild)
         
     async def on_raw_message_edit(self, payload):
+        return
         message_id = payload.message_id
         data = payload.data
         if not self.in_messages_cache(int(message_id)):
@@ -210,6 +231,7 @@ class Titan(discord.AutoShardedClient):
                 await self.on_message_edit(None, message)
     
     async def on_raw_message_delete(self, payload):
+        return
         message_id = payload.message_id
         channel_id = payload.channel_id
         if not self.in_messages_cache(int(message_id)):
@@ -217,6 +239,7 @@ class Titan(discord.AutoShardedClient):
             await self.process_raw_message_delete(int(message_id), int(channel_id))
     
     async def raw_bulk_message_delete(self, payload):
+        return
         message_ids = payload.message_ids
         channel_id = payload.channel_id
         await asyncio.sleep(1)
@@ -226,6 +249,7 @@ class Titan(discord.AutoShardedClient):
                 await self.process_raw_message_delete(msgid, int(channel_id))
     
     async def process_raw_message_delete(self, msg_id, channel_id):
+        return
         if msg_id in self.delete_list:
             self.delete_list.remove(msg_id)
             return
@@ -248,6 +272,7 @@ class Titan(discord.AutoShardedClient):
         await self.on_message_delete(msg)
     
     async def on_raw_reaction_add(self, payload):
+        return
         message_id = payload.message_id
         if not self.in_messages_cache(message_id):
             channel = self.get_channel(payload.channel_id)
@@ -258,6 +283,7 @@ class Titan(discord.AutoShardedClient):
                     await self.on_reaction_add(message.reactions[0], None)
     
     async def on_raw_reaction_remove(self, payload):
+        return
         message_id = payload.message_id
         if not self.in_messages_cache(message_id):
             partial = payload.emoji
@@ -271,6 +297,7 @@ class Titan(discord.AutoShardedClient):
                 await self.on_reaction_remove(reaction, None)
     
     async def on_raw_reaction_clear(self, payload):
+        return
         message_id = payload.message_id
         if not self.in_messages_cache(message_id):
             channel = self.get_channel(payload.channel_id)
@@ -280,6 +307,7 @@ class Titan(discord.AutoShardedClient):
                 await self.on_reaction_clear(message, [])
     
     async def on_socket_response(self, msg):
+        return
         if "op" in msg and "t" in msg and msg["op"] == 0:
             if msg["t"] == "WEBHOOKS_UPDATE":
                 guild_id = int(msg["d"]["guild_id"])
@@ -288,6 +316,7 @@ class Titan(discord.AutoShardedClient):
                     await self.redisqueue.update_guild(guild)
     
     def in_messages_cache(self, msg_id):
+        return
         for msg in self._connection._messages:
             if msg.id == msg_id:
                 return True
