@@ -83,13 +83,15 @@ class RedisQueue:
                     break
         return (unformatted_item, formatted_item)
     
-    async def enforce_expiring_key(self, key):
+    async def enforce_expiring_key(self, key, ttloverride=None):
         ttl = await self.connection.ttl(key)
         newttl = 0
         if ttl == -1:
             newttl = 60 * 5 # 5 minutes
         if ttl >= 0:
             newttl = ttl
+        if ttloverride:
+            newttl = ttloverride
         await self.connection.expire(key, newttl)
     
     async def on_get_channel_messages(self, key, params):
@@ -134,7 +136,8 @@ class RedisQueue:
         if not member:
             members = await guild.query_members(user_ids=[int(params["user_id"])], cache=True)
             if not len(members):
-                self.remove_member(member)
+                await self.connection.set(key, "")
+                await self.enforce_expiring_key(key, 15)
                 return
             else:
                 member = members[0]
