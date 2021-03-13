@@ -27,6 +27,7 @@ class Titan(discord.AutoShardedClient):
             shard_count=shard_count,
             max_messages=10000,
             intents=intents,
+            chunk_guilds_at_startup=False,
             activity=discord.Game(name="Embed your Discord server! Visit https://TitanEmbeds.com/")
         )
         self.setup_logger(shard_ids)
