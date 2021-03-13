@@ -134,8 +134,7 @@ class RedisQueue:
         if not member:
             members = await guild.query_members(user_ids=[int(params["user_id"])], cache=True)
             if not len(members):
-                await self.connection.set(key, "")
-                await self.enforce_expiring_key(key)
+                self.remove_member(member)
                 return
             else:
                 member = members[0]
