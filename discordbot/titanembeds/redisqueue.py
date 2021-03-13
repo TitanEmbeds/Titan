@@ -186,6 +186,9 @@ class RedisQueue:
         exists = await self.connection.exists(key)
         if exists:
             await self.connection.sadd(key, [json.dumps({"user_id": member.id}, separators=(',', ':'))])
+        get_guild_member_key = "Queue/guilds/{}/members/{}".format(member.guild.id, member.id)
+        get_guild_member_param = {"guild_id": member.guild.id, "user_id": member.id}
+        await self.on_get_guild_member(get_guild_member_key, get_guild_member_param)
     
     async def remove_member(self, member, guild=None):
         if not guild:
