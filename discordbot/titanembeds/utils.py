@@ -3,7 +3,7 @@ import time
 from email import utils as emailutils
 
 def format_datetime(datetimeobj):
-    return emailutils.formatdate(time.mktime(datetimeobj.timetuple())) # https://stackoverflow.com/questions/3453177/convert-python-datetime-to-rfc-2822
+    return emailutils.format_datetime(datetimeobj) # https://stackoverflow.com/questions/3453177/convert-python-datetime-to-rfc-2822
 
 def get_formatted_message(message):
     edit_ts = message.edited_at
