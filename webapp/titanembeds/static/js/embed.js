@@ -564,7 +564,9 @@ var passedCookieTest = true; // If passed cross origin test
         
         $("[name=richembed_toggle_radiobtn]").click(function (event) {
             display_richembeds = event.target.value == "true";
-            localStorage.setItem("display_richembeds", display_richembeds);
+            if (localstorage_avaliable) {
+                localStorage.setItem("display_richembeds", display_richembeds);
+            }
             $("[name=richembed_toggle_radiobtn][value=" + display_richembeds + "]").prop("checked", true);
         });
         var localstore_display_richembeds = "";
@@ -662,7 +664,9 @@ var passedCookieTest = true; // If passed cross origin test
         if ($.inArray(sound, soundTypes) != -1) {
             notification_sound_setting = sound;
             $("[name=notification_sound_radiobtn][value=" + sound + "]").prop("checked", true);
-            localStorage.setItem("notification_sound", sound);
+            if (localstorage_avaliable) {
+                localStorage.setItem("notification_sound", sound);
+            }
         }
     }
     
@@ -679,7 +683,7 @@ var passedCookieTest = true; // If passed cross origin test
         if (theme == "") {
           $("#css-theme").attr("href", "");
           $("#user-defined-css").text(user_def_css);
-          if (modifyLocalStore) {
+          if (modifyLocalStore && localstorage_avaliable) {
               localStorage.removeItem("theme");
           }
         } else if ($.inArray(theme, theme_options) != -1 || theme == null) {
@@ -690,7 +694,7 @@ var passedCookieTest = true; // If passed cross origin test
             }
             if (theme) {
                 $("#css-theme").attr("href", "/static/themes/" + theme + "/css/style.css");
-                if (modifyLocalStore) {
+                if (modifyLocalStore && localstorage_avaliable) {
                     localStorage.setItem("theme", theme);
                 }
             }
@@ -824,7 +828,9 @@ var passedCookieTest = true; // If passed cross origin test
                 $(".dblballoon").find("i").click(function (event) {
                     event.preventDefault();
                     $(".brand-logo").hideBalloon();
-                    localStorage.setItem("hideDiscordBotsOrgVoteAdUntil", now.add(3, "days").toISOString());
+                    if (localstorage_avaliable) {
+                        localStorage.setItem("hideDiscordBotsOrgVoteAdUntil", now.add(3, "days").toISOString());
+                    }
                 }).css("cursor", "pointer");
             }
         });
