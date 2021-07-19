@@ -30,15 +30,17 @@ def login_authenticated():
 @user.route('/callback', methods=["GET"])
 def callback():
     state = session.get('oauth2_state')
-    if not state or request.values.get('error'):
-        return redirect(url_for('user.logout'))
+    if not state:
+        return redirect(url_for('user.logout', error="state_error"))
+    if request.values.get('error'):
+        return redirect(url_for('user.logout', error="discord_error {}".format(request.values.get('error'))))
     discord = make_authenticated_session(state=state)
     discord_token = discord.fetch_token(
         token_url,
         client_secret=config['client-secret'],
         authorization_response=request.url)
     if not discord_token:
-        return redirect(url_for('user.logout'))
+        return redirect(url_for('user.logout', error="discord_user_token_fetch_error"))
     session['user_keys'] = discord_token
     session['unauthenticated'] = False
     session.permanent = True
