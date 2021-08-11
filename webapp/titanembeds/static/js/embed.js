@@ -843,7 +843,7 @@ var passedCookieTest = true; // If passed cross origin test
         }
         for (var i = 0; i < guildchannels.length; i++) {
             if (guildchannels[i].channel.id == defaultChannel) {
-                if (!guildchannels[i].read || guildchannels[i].type != "text") {
+                if (!guildchannels[i].read || guildchannels[i].channel.type != "text") {
                     return;
                 }
                 selected_channel = defaultChannel;
