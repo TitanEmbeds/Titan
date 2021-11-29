@@ -309,7 +309,7 @@ def get_channel_permission(channel, guild_id, guild_owner, guild_roles, member_r
     
     # member specific
     for overwrite in remaining_overwrites:
-        if overwrite["type"] == "member" and overwrite["id"] == str(session.get("user_id")):
+        if overwrite["type"] == "member" and overwrite["id"] == str(user_id):
             channel_perm = (channel_perm & ~overwrite['deny']) | overwrite['allow']
             break
     
