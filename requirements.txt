@@ -8,7 +8,7 @@ paypalrestsdk
 discord.py==1.6.0
 asyncio_extras
 kombu
-redis
+redis==3.4.1
 aioredis
 Flask-Babel>=1.0.0
 patreon
