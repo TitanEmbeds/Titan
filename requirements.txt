@@ -16,6 +16,6 @@ flask-redis
 sqlalchemy
 asyncio_redis
 raven[flask]
-Werkzeug==2.0.3
+Werkzeug==2.2.3
 yarl==1.4.2
 async-timeout==3.0
